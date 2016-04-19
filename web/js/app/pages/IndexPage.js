@@ -1,5 +1,4 @@
 import React from "react";
-//import "gsap";
 var $ = require('jquery');
 
 export default class IndexPage extends React.Component {
@@ -28,7 +27,7 @@ export default class IndexPage extends React.Component {
 
     render() {
         return (
-            <section key='IndexPage' class='animated-content'>
+            <section key='IndexPage' class='react-page animated-content'>
 
                 <div className="video-container">
                     <video src="res/Reel_Teil.mp4"></video>

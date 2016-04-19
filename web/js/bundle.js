@@ -27291,7 +27291,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	//import "gsap";
 	var $ = __webpack_require__(162);
 	
 	var IndexPage = function (_React$Component) {
@@ -27322,7 +27321,7 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'section',
-	                { key: 'IndexPage', className: 'animated-content' },
+	                { key: 'IndexPage', className: 'react-page animated-content' },
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'video-container' },
