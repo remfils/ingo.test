@@ -56,15 +56,15 @@
 	
 	__webpack_require__(159);
 	
-	var _IndexPage = __webpack_require__(161);
+	var _Application = __webpack_require__(163);
 	
-	var _IndexPage2 = _interopRequireDefault(_IndexPage);
+	var _Application2 = _interopRequireDefault(_Application);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var app = document.getElementById('App');
 	
-	_reactDom2.default.render(_react2.default.createElement(_IndexPage2.default, null), app);
+	_reactDom2.default.render(_react2.default.createElement(_Application2.default, null), app);
 
 /***/ },
 /* 1 */
@@ -27312,7 +27312,7 @@
 	            var video = $('.video-container');
 	
 	            var tl = new TimelineLite();
-	            tl.to(animated_bar, 1, { width: '100%' }).to(loading_msg, 1, { width: '60%', delay: -0.5 }).to(logo, 1, { opacity: 1 }).to(loading_msg, 1, { opacity: 0 }).to(animated_bar, 1, { height: '100%' }).to(video, 0, { opacity: 1 }).to(animated_bar, 1, { opacity: 0 }).to(logo, 1, { delay: -1, opacity: 0 }).to(video, 0, { delay: -1, onComplete: function onComplete(e) {
+	            tl.to(animated_bar, 1, { width: '100%' }).to(loading_msg, 1, { width: '60%', delay: -0.5 }).to(logo, 1, { opacity: 1 }).to(loading_msg, 0.5, { opacity: 0, delay: -0.5 }).to(animated_bar, 1, { height: '100%' }).to(video, 0, { opacity: 1 }).to(animated_bar, 1, { opacity: 0 }).to(logo, 1, { delay: -1, opacity: 0 }).to(video, 0, { delay: -1, onComplete: function onComplete(e) {
 	                    var vid = $('.video-container > video')[0];
 	                    vid.play();
 	                } });
@@ -27324,23 +27324,62 @@
 	                'section',
 	                { key: 'IndexPage', className: 'animated-content' },
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'video-container' },
-	                    _react2.default.createElement('video', { src: 'res/Reel_Teil.mp4' })
-	                ),
-	                _react2.default.createElement('div', { className: 'animated-bar' }),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'index-logo-container' },
-	                    _react2.default.createElement('span', { className: 'index-logo' })
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'index-loading-message' },
+	                    'nav',
+	                    { className: 'index-navigation' },
 	                    _react2.default.createElement(
-	                        'h1',
+	                        'ul',
 	                        null,
-	                        'Loading page...'
+	                        _react2.default.createElement(
+	                            'li',
+	                            null,
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: 'http://google.com' },
+	                                'Films'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'li',
+	                            null,
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: 'http://google.com' },
+	                                'About'
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'li',
+	                            null,
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: 'http://google.com' },
+	                                'Contacts'
+	                            )
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'content' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'video-container' },
+	                        _react2.default.createElement('video', { src: 'res/Reel_Teil.mp4' })
+	                    ),
+	                    _react2.default.createElement('div', { className: 'animated-bar' }),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'index-logo-container' },
+	                        _react2.default.createElement('span', { className: 'index-logo' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'index-loading-message' },
+	                        _react2.default.createElement(
+	                            'h1',
+	                            null,
+	                            'Loading page...'
+	                        )
 	                    )
 	                )
 	            );
@@ -37199,6 +37238,60 @@
 	return jQuery;
 	}));
 
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _IndexPage = __webpack_require__(161);
+	
+	var _IndexPage2 = _interopRequireDefault(_IndexPage);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Application = function (_React$Component) {
+	    _inherits(Application, _React$Component);
+	
+	    function Application() {
+	        _classCallCheck(this, Application);
+	
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Application).apply(this, arguments));
+	    }
+	
+	    _createClass(Application, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'main',
+	                null,
+	                _react2.default.createElement(_IndexPage2.default, null)
+	            );
+	        }
+	    }]);
+	
+	    return Application;
+	}(_react2.default.Component);
+	
+	exports.default = Application;
 
 /***/ }
 /******/ ]);
