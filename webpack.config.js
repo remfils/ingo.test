@@ -2,19 +2,22 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './www/js/app/main.es6',
+    entry: './web/js/app/main.js',
     output: {
-        path: './www/js/',
+        path: './web/js/',
         filename: 'bundle.js'
     },
     devtool: 'source-map',
-    /*watch: true,*/
     module: {
         loaders: [
             {
-                test: /(\.jsx?|\.es6)$/,
-                loaders: ['babel-loader'],
-                exclude: /node_modules/
+                test: /\.jsx?$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/,
+                query: {
+                    presets: ['react', 'es2015', 'stage-0'],
+                    plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy'],
+                }
             }
         ]
     }

@@ -13,6 +13,6 @@ class MainController
             $languages[] = basename($locale);
         }
 
-        $app['twig']->render('index.html.twig', array('languages' => $languages));
+        return $app['twig']->render('index.html.twig', array('languages' => $languages));
     }
 }

@@ -2,11 +2,14 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %} This is title {% endblock %}</title>
+    {% block styles %}
+        <link rel="stylesheet" href="{{ app.asset_path }}/css/style.css">
+    {% endblock %}
 </head>
 <body>
 
 {% block main %}
-<h1>This is a base twig</h1>
+    <h1>This is a base twig</h1>
 {% endblock %}
 
 {% block scripts %}

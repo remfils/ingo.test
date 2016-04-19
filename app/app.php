@@ -12,6 +12,8 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../templates/'
 ));
 
+$app['asset_path'] = 'http://ingo.test/web/';
+
 $app->register(new Silex\Provider\SessionServiceProvider());
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
@@ -36,4 +38,6 @@ foreach (glob(__DIR__ . '/../locale/'. $lang . '/*.yml') as $locale) {
     $app['translator']->addResource('yaml', $locale, $lang);
 }
 
-return $app['translator']->setLocale($lang);
+$app['translator']->setLocale($lang);
+
+return $app;
