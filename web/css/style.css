@@ -5,26 +5,78 @@ html, body, #App {
     margin: 0;
 }
 
-.animated-content {
+a, a:hover, a:focus, a:visited, a:active {
+    text-decoration: none;
+    color: black;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.animated-content,
+.animated-content > .content{
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     position: relative;
-    
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -moz-box-direction: normal;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
 }
 
 /* INDEX PAGE */
 
+.index-navigation {
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.index-navigation ul {
+    text-align: center;
+    margin-top: 5%;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.index-navigation li {
+    display: inline-block;
+    font-size: 2.5em;
+    width: 20%;
+    text-align: left;
+    margin-left: 10px;
+    position: relative;
+}
+
+.index-navigation a {
+    position: relative;
+}
+
+.curtain {
+    overflow: hidden;
+    width: 100%;
+    height: 0;
+}
+
+.underline {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    height: 5px;
+    width: 0;
+    background-color: black;
+}
+
 .animated-bar {
     height: 70%;
+    width: 0;
     background: black;
 }
 
@@ -71,11 +123,4 @@ html, body, #App {
     width: 100%;
     word-wrap: normal;
     width: 20em;
-}
-
-.index-navigation {
-    width: 100%;
-    height: 10px;
-    overflow: hidden;
-    background-color: white;
 }
