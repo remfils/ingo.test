@@ -56,15 +56,15 @@
 	
 	__webpack_require__(159);
 	
-	var _IndexPage = __webpack_require__(161);
+	var _Application = __webpack_require__(161);
 	
-	var _IndexPage2 = _interopRequireDefault(_IndexPage);
+	var _Application2 = _interopRequireDefault(_Application);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var app = document.getElementById('App');
 	
-	_reactDom2.default.render(_react2.default.createElement(_IndexPage2.default, null), app);
+	_reactDom2.default.render(_react2.default.createElement(_Application2.default, null), app);
 
 /***/ },
 /* 1 */
@@ -27283,6 +27283,18 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _IndexPage = __webpack_require__(162);
+	
+	var _IndexPage2 = _interopRequireDefault(_IndexPage);
+	
+	var _MoviePage = __webpack_require__(165);
+	
+	var _MoviePage2 = _interopRequireDefault(_MoviePage);
+	
+	var _TransitionStore = __webpack_require__(163);
+	
+	var _TransitionStore2 = _interopRequireDefault(_TransitionStore);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27291,7 +27303,86 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var $ = __webpack_require__(162);
+	var Application = function (_React$Component) {
+	    _inherits(Application, _React$Component);
+	
+	    function Application() {
+	        _classCallCheck(this, Application);
+	
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Application).call(this));
+	
+	        _this.state = {};
+	
+	        _this.state.pages = [];
+	        _this.state.pages.push(_react2.default.createElement(_IndexPage2.default, null));
+	        return _this;
+	    }
+	
+	    _createClass(Application, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            _TransitionStore2.default.on("leave", this.leavePageListener.bind(this));
+	        }
+	    }, {
+	        key: 'leavePageListener',
+	        value: function leavePageListener() {
+	            var transition = _TransitionStore2.default.current_transition;
+	            console.log(transition);
+	            if (transition.to == _TransitionStore2.default.MOVIE_PAGE) {
+	                var page = _react2.default.createElement(_MoviePage2.default, { from: transition.from, sharedTimeline: transition.sharedTimeline });
+	            }
+	
+	            this.state.pages.push(page);
+	
+	            this.setState({ pages: this.state.pages });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'main',
+	                null,
+	                this.state.pages
+	            );
+	        }
+	    }]);
+	
+	    return Application;
+	}(_react2.default.Component);
+	
+	exports.default = Application;
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _TransitionStore = __webpack_require__(163);
+	
+	var _TransitionStore2 = _interopRequireDefault(_TransitionStore);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	//import "gsap";
+	var $ = __webpack_require__(164);
 	
 	var IndexPage = function (_React$Component) {
 	    _inherits(IndexPage, _React$Component);
@@ -27310,36 +27401,137 @@
 	            var logo = $('.index-logo');
 	            var video = $('.video-container');
 	
+	            $('.video-container > video').on('click', this.showNavigationBar.bind(this));
+	
 	            var tl = new TimelineLite();
-	            tl.to(animated_bar, 1, { width: '100%' }).to(loading_msg, 1, { width: '60%', delay: -0.5 }).to(logo, 1, { opacity: 1 }).to(loading_msg, 1, { opacity: 0 }).to(animated_bar, 1, { height: '100%' }).to(video, 0, { opacity: 1 }).to(animated_bar, 1, { opacity: 0 }).to(logo, 1, { delay: -1, opacity: 0 }).to(video, 0, { delay: -1, onComplete: function onComplete(e) {
+	            tl.to(animated_bar, 1, { width: '100%' }).to(loading_msg, 1, { width: '60%', delay: -0.5 }).to(logo, 1, { opacity: 1 }).to(loading_msg, 0.5, { opacity: 0, delay: -0.5 }).to(animated_bar, 1, { height: '100%' }).to(video, 0, { opacity: 1 }).to(animated_bar, 1, { opacity: 0 }).to(logo, 1, { delay: -1, opacity: 0 }).to(video, 0, { delay: -1, onComplete: function onComplete(e) {
 	                    var vid = $('.video-container > video')[0];
 	                    vid.play();
+	                } }).to(video, 0, { onComplete: function onComplete() {
+	                    var vid = $('.video-container > video')[0];
+	                    vid.style['z-index'] = 999;
 	                } });
+	        }
+	    }, {
+	        key: 'showNavigationBar',
+	        value: function showNavigationBar() {
+	            var navigation = $('.index-navigation');
+	            var video = $('.video-container > video')[0];
+	            var curtains = $('.curtain');
+	            var underlines = $('.underline');
+	
+	            var tl = new TimelineLite();
+	
+	            tl.to(navigation, 1, { height: '30%' }).to(video, 1, { delay: -1, y: '30%' }).to(underlines, 1, { top: '100%' }).to(curtains, 1, { delay: -1, height: '1em' });
+	        }
+	    }, {
+	        key: 'leaveToMovies',
+	        value: function leaveToMovies(event) {
+	            event.preventDefault();
+	
+	            var index_section = $('#IndexPage');
+	            var curtains = $('.curtain');
+	
+	            var tl = new TimelineLite();
+	            tl.to(curtains, 1, { height: '0' }).to(index_section, 1, { y: '-100%' });
+	
+	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.INDEX_PAGE, _TransitionStore2.default.MOVIE_PAGE, tl);
+	        }
+	    }, {
+	        key: 'leavePage',
+	        value: function leavePage(event) {
+	            return false;
+	        }
+	    }, {
+	        key: 'transitionToMovies',
+	        value: function transitionToMovies(event) {
+	            event.preventDefault();
+	            console.log('Leaving index to movies');
+	
+	            var index_section = $('#IndexPage');
+	            var curtains = $('.curtain');
+	
+	            var tl = new TimelineLite();
+	            tl.to(curtains, 1, { height: '0' }).to(index_section, 1, { y: '-100%' });
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'section',
-	                { key: 'IndexPage', className: 'react-page animated-content' },
+	                { id: 'IndexPage', className: 'animated-content' },
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'video-container' },
-	                    _react2.default.createElement('video', { src: 'res/Reel_Teil.mp4' })
-	                ),
-	                _react2.default.createElement('div', { className: 'animated-bar' }),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'index-logo-container' },
-	                    _react2.default.createElement('span', { className: 'index-logo' })
-	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'index-loading-message' },
+	                    'nav',
+	                    { className: 'index-navigation' },
 	                    _react2.default.createElement(
-	                        'h1',
+	                        'ul',
 	                        null,
-	                        'Loading page...'
+	                        _react2.default.createElement(
+	                            'li',
+	                            null,
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'curtain' },
+	                                _react2.default.createElement(
+	                                    'a',
+	                                    { href: 'http://google.com', onClick: this.leaveToMovies.bind(this) },
+	                                    'Films'
+	                                )
+	                            ),
+	                            _react2.default.createElement('span', { className: 'underline' })
+	                        ),
+	                        _react2.default.createElement(
+	                            'li',
+	                            null,
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'curtain' },
+	                                _react2.default.createElement(
+	                                    'a',
+	                                    { href: 'http://google.com', onClick: this.leavePage.bind(this) },
+	                                    'About'
+	                                )
+	                            ),
+	                            _react2.default.createElement('span', { className: 'underline' })
+	                        ),
+	                        _react2.default.createElement(
+	                            'li',
+	                            null,
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'curtain' },
+	                                _react2.default.createElement(
+	                                    'a',
+	                                    { href: 'http://google.com', onClick: this.leavePage.bind(this) },
+	                                    'Contacts'
+	                                )
+	                            ),
+	                            _react2.default.createElement('span', { className: 'underline' })
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'content' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'video-container' },
+	                        _react2.default.createElement('video', { src: 'res/Reel_Teil.mp4' })
+	                    ),
+	                    _react2.default.createElement('div', { className: 'animated-bar' }),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'index-logo-container' },
+	                        _react2.default.createElement('span', { className: 'index-logo' })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'index-loading-message' },
+	                        _react2.default.createElement(
+	                            'h1',
+	                            null,
+	                            'Loading page...'
+	                        )
 	                    )
 	                )
 	            );
@@ -27352,7 +27544,72 @@
 	exports.default = IndexPage;
 
 /***/ },
-/* 162 */
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _events = __webpack_require__(166);
+	
+	var _events2 = _interopRequireDefault(_events);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var TransitionStore = function (_EventEmmiter) {
+	    _inherits(TransitionStore, _EventEmmiter);
+	
+	    function TransitionStore() {
+	        _classCallCheck(this, TransitionStore);
+	
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TransitionStore).call(this));
+	
+	        _this.current_page = _this.INDEX_PAGE;
+	
+	        _this.INDEX_PAGE = 'index';
+	        _this.MOVIE_PAGE = 'movie';
+	
+	        _this.current_transition = null;
+	
+	        return _this;
+	    }
+	
+	    _createClass(TransitionStore, [{
+	        key: 'makeTransition',
+	        value: function makeTransition(from, to, shared_timeline) {
+	            console.log(shared_timeline);
+	            this.current_transition = { from: from, to: to, sharedTimeline: shared_timeline };
+	            this.emit("leave");
+	        }
+	    }, {
+	        key: 'goto',
+	        value: function goto(page) {
+	            this.prev_page = this.current_page;
+	            this.current_page = page;
+	            this.emit("leave");
+	        }
+	    }]);
+	
+	    return TransitionStore;
+	}(_events2.default);
+	
+	var transition_store = new TransitionStore();
+	
+	exports.default = transition_store;
+
+/***/ },
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -37197,6 +37454,379 @@
 	
 	return jQuery;
 	}));
+
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var $ = __webpack_require__(164);
+	
+	var MoviePage = function (_React$Component) {
+	    _inherits(MoviePage, _React$Component);
+	
+	    function MoviePage() {
+	        _classCallCheck(this, MoviePage);
+	
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(MoviePage).apply(this, arguments));
+	    }
+	
+	    _createClass(MoviePage, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var tl = this.props.sharedTimeline;
+	
+	            tl.to($('#MoviePage0'), 1, { y: '-100%' });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            //var movie_name = this.props.movie;
+	
+	            return _react2.default.createElement(
+	                'section',
+	                { id: 'MoviePage0', className: 'content' },
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    _react2.default.createElement(
+	                        'h1',
+	                        null,
+	                        'Hello'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return MoviePage;
+	}(_react2.default.Component);
+	
+	exports.default = MoviePage;
+
+/***/ },
+/* 166 */
+/***/ function(module, exports) {
+
+	// Copyright Joyent, Inc. and other Node contributors.
+	//
+	// Permission is hereby granted, free of charge, to any person obtaining a
+	// copy of this software and associated documentation files (the
+	// "Software"), to deal in the Software without restriction, including
+	// without limitation the rights to use, copy, modify, merge, publish,
+	// distribute, sublicense, and/or sell copies of the Software, and to permit
+	// persons to whom the Software is furnished to do so, subject to the
+	// following conditions:
+	//
+	// The above copyright notice and this permission notice shall be included
+	// in all copies or substantial portions of the Software.
+	//
+	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+	// USE OR OTHER DEALINGS IN THE SOFTWARE.
+	
+	function EventEmitter() {
+	  this._events = this._events || {};
+	  this._maxListeners = this._maxListeners || undefined;
+	}
+	module.exports = EventEmitter;
+	
+	// Backwards-compat with node 0.10.x
+	EventEmitter.EventEmitter = EventEmitter;
+	
+	EventEmitter.prototype._events = undefined;
+	EventEmitter.prototype._maxListeners = undefined;
+	
+	// By default EventEmitters will print a warning if more than 10 listeners are
+	// added to it. This is a useful default which helps finding memory leaks.
+	EventEmitter.defaultMaxListeners = 10;
+	
+	// Obviously not all Emitters should be limited to 10. This function allows
+	// that to be increased. Set to zero for unlimited.
+	EventEmitter.prototype.setMaxListeners = function(n) {
+	  if (!isNumber(n) || n < 0 || isNaN(n))
+	    throw TypeError('n must be a positive number');
+	  this._maxListeners = n;
+	  return this;
+	};
+	
+	EventEmitter.prototype.emit = function(type) {
+	  var er, handler, len, args, i, listeners;
+	
+	  if (!this._events)
+	    this._events = {};
+	
+	  // If there is no 'error' event listener then throw.
+	  if (type === 'error') {
+	    if (!this._events.error ||
+	        (isObject(this._events.error) && !this._events.error.length)) {
+	      er = arguments[1];
+	      if (er instanceof Error) {
+	        throw er; // Unhandled 'error' event
+	      }
+	      throw TypeError('Uncaught, unspecified "error" event.');
+	    }
+	  }
+	
+	  handler = this._events[type];
+	
+	  if (isUndefined(handler))
+	    return false;
+	
+	  if (isFunction(handler)) {
+	    switch (arguments.length) {
+	      // fast cases
+	      case 1:
+	        handler.call(this);
+	        break;
+	      case 2:
+	        handler.call(this, arguments[1]);
+	        break;
+	      case 3:
+	        handler.call(this, arguments[1], arguments[2]);
+	        break;
+	      // slower
+	      default:
+	        args = Array.prototype.slice.call(arguments, 1);
+	        handler.apply(this, args);
+	    }
+	  } else if (isObject(handler)) {
+	    args = Array.prototype.slice.call(arguments, 1);
+	    listeners = handler.slice();
+	    len = listeners.length;
+	    for (i = 0; i < len; i++)
+	      listeners[i].apply(this, args);
+	  }
+	
+	  return true;
+	};
+	
+	EventEmitter.prototype.addListener = function(type, listener) {
+	  var m;
+	
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+	
+	  if (!this._events)
+	    this._events = {};
+	
+	  // To avoid recursion in the case that type === "newListener"! Before
+	  // adding it to the listeners, first emit "newListener".
+	  if (this._events.newListener)
+	    this.emit('newListener', type,
+	              isFunction(listener.listener) ?
+	              listener.listener : listener);
+	
+	  if (!this._events[type])
+	    // Optimize the case of one listener. Don't need the extra array object.
+	    this._events[type] = listener;
+	  else if (isObject(this._events[type]))
+	    // If we've already got an array, just append.
+	    this._events[type].push(listener);
+	  else
+	    // Adding the second element, need to change to array.
+	    this._events[type] = [this._events[type], listener];
+	
+	  // Check for listener leak
+	  if (isObject(this._events[type]) && !this._events[type].warned) {
+	    if (!isUndefined(this._maxListeners)) {
+	      m = this._maxListeners;
+	    } else {
+	      m = EventEmitter.defaultMaxListeners;
+	    }
+	
+	    if (m && m > 0 && this._events[type].length > m) {
+	      this._events[type].warned = true;
+	      console.error('(node) warning: possible EventEmitter memory ' +
+	                    'leak detected. %d listeners added. ' +
+	                    'Use emitter.setMaxListeners() to increase limit.',
+	                    this._events[type].length);
+	      if (typeof console.trace === 'function') {
+	        // not supported in IE 10
+	        console.trace();
+	      }
+	    }
+	  }
+	
+	  return this;
+	};
+	
+	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+	
+	EventEmitter.prototype.once = function(type, listener) {
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+	
+	  var fired = false;
+	
+	  function g() {
+	    this.removeListener(type, g);
+	
+	    if (!fired) {
+	      fired = true;
+	      listener.apply(this, arguments);
+	    }
+	  }
+	
+	  g.listener = listener;
+	  this.on(type, g);
+	
+	  return this;
+	};
+	
+	// emits a 'removeListener' event iff the listener was removed
+	EventEmitter.prototype.removeListener = function(type, listener) {
+	  var list, position, length, i;
+	
+	  if (!isFunction(listener))
+	    throw TypeError('listener must be a function');
+	
+	  if (!this._events || !this._events[type])
+	    return this;
+	
+	  list = this._events[type];
+	  length = list.length;
+	  position = -1;
+	
+	  if (list === listener ||
+	      (isFunction(list.listener) && list.listener === listener)) {
+	    delete this._events[type];
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+	
+	  } else if (isObject(list)) {
+	    for (i = length; i-- > 0;) {
+	      if (list[i] === listener ||
+	          (list[i].listener && list[i].listener === listener)) {
+	        position = i;
+	        break;
+	      }
+	    }
+	
+	    if (position < 0)
+	      return this;
+	
+	    if (list.length === 1) {
+	      list.length = 0;
+	      delete this._events[type];
+	    } else {
+	      list.splice(position, 1);
+	    }
+	
+	    if (this._events.removeListener)
+	      this.emit('removeListener', type, listener);
+	  }
+	
+	  return this;
+	};
+	
+	EventEmitter.prototype.removeAllListeners = function(type) {
+	  var key, listeners;
+	
+	  if (!this._events)
+	    return this;
+	
+	  // not listening for removeListener, no need to emit
+	  if (!this._events.removeListener) {
+	    if (arguments.length === 0)
+	      this._events = {};
+	    else if (this._events[type])
+	      delete this._events[type];
+	    return this;
+	  }
+	
+	  // emit removeListener for all listeners on all events
+	  if (arguments.length === 0) {
+	    for (key in this._events) {
+	      if (key === 'removeListener') continue;
+	      this.removeAllListeners(key);
+	    }
+	    this.removeAllListeners('removeListener');
+	    this._events = {};
+	    return this;
+	  }
+	
+	  listeners = this._events[type];
+	
+	  if (isFunction(listeners)) {
+	    this.removeListener(type, listeners);
+	  } else if (listeners) {
+	    // LIFO order
+	    while (listeners.length)
+	      this.removeListener(type, listeners[listeners.length - 1]);
+	  }
+	  delete this._events[type];
+	
+	  return this;
+	};
+	
+	EventEmitter.prototype.listeners = function(type) {
+	  var ret;
+	  if (!this._events || !this._events[type])
+	    ret = [];
+	  else if (isFunction(this._events[type]))
+	    ret = [this._events[type]];
+	  else
+	    ret = this._events[type].slice();
+	  return ret;
+	};
+	
+	EventEmitter.prototype.listenerCount = function(type) {
+	  if (this._events) {
+	    var evlistener = this._events[type];
+	
+	    if (isFunction(evlistener))
+	      return 1;
+	    else if (evlistener)
+	      return evlistener.length;
+	  }
+	  return 0;
+	};
+	
+	EventEmitter.listenerCount = function(emitter, type) {
+	  return emitter.listenerCount(type);
+	};
+	
+	function isFunction(arg) {
+	  return typeof arg === 'function';
+	}
+	
+	function isNumber(arg) {
+	  return typeof arg === 'number';
+	}
+	
+	function isObject(arg) {
+	  return typeof arg === 'object' && arg !== null;
+	}
+	
+	function isUndefined(arg) {
+	  return arg === void 0;
+	}
 
 
 /***/ }

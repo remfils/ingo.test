@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'gsap';
 
-import IndexPage from './pages/IndexPage';
+import Application from './Application';
 
 var app = document.getElementById('App');
 
-ReactDOM.render(<IndexPage/>, app);
+ReactDOM.render(<Application />, app);
