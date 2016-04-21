@@ -70,7 +70,22 @@ export default class Application extends React.Component {
 
         console.log(transition);
 
-        switch ( transition.to ) {
+        switch ( transition.type ) {
+            case "INDEX-MOVIE":
+            case "MOVIE-MOVIE_LEFT":
+            case "MOVIE-MOVIE_RIGHT":
+                var movie = transition.next_movie || this.movies[0];
+
+                var page = <MoviePage
+                    app={this}
+                    movie={movie}
+                    transition={transition}/>;
+                break;
+                break;
+
+        }
+
+        /*switch ( transition.to ) {
             case TransitionStore.MOVIE_PAGE:
             case TransitionStore.MOVIE_PAGE_RIGHT:
             case TransitionStore.MOVIE_PAGE_LEFT:
@@ -84,7 +99,7 @@ export default class Application extends React.Component {
                     from={transition.from}
                     sharedTimeline={transition.sharedTimeline}/>;
                 break;
-        }
+        }*/
 
         this.prepareNextPageForTransition(page);
 

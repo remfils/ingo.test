@@ -4,6 +4,7 @@ var $ = require('jquery');
 
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
+import * as TransitionActions from '../actions/TransitionActions';
 
 export default class IndexPage extends React.Component {
     componentDidMount() {
@@ -66,18 +67,19 @@ export default class IndexPage extends React.Component {
         var index_section = $('#IndexPage')[0];
         var curtains = $('.curtain');
 
-        TransitionStore.makeTransition(
+        /*TransitionStore.makeTransition(
             TransitionStore.INDEX_PAGE,
             TransitionStore.MOVIE_PAGE,
             tl
-        );
+        );*/
+        var tl = new TimelineLite();
+        TransitionActions.fromIndexToMovieTranstion(tl);
 
         if ( config.DEBUG ) {
             index_section.style['display'] = 'none'
             return;
         }
 
-        var tl = new TimelineLite();
         tl.to(curtains, 1, {height: '0'})
             .to(index_section, 1, {y: '-100%', onComplete:()=>{index_section.style['display'] = 'none'}});
     }

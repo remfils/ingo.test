@@ -28,12 +28,26 @@ class TransitionStore extends EventEmmiter {
     }
 
     handleActions(action) {
+        console.log("recived:", action)
         switch ( action.type ) {
             case "TRANSITION_TO":
+                console.log("is transition");
+                /*if ( this.current_transition ) {
+                    return;
+                }*/
 
+                this.current_transition = {
+                    type: action.transition_type
+                };
+                var trans = this.current_transition;
+                var params = action.params;
+                for ( var param in params ) {
+                    trans[param] = params[param];
+                }
+
+                this.emit("leave");
                 break;
         }
-        console.log("recived:", action)
     }
 }
 
