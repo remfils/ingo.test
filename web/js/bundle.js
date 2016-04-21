@@ -27316,7 +27316,7 @@
 	        _this.state.pages = [];
 	        _this.state.pages.push(_react2.default.createElement(_IndexPage2.default, null));
 	
-	        _this.movies = [{ id: 1, name: "INSULINE MEDICAL - INSUPAD <span class=\"project-year\">2001</span>", logo: "" }, { id: 2, name: "This is a test name", logo: "" }];
+	        _this.movies = [{ id: 1, name: "INSULINE MEDICAL - INSUPAD <span class=\"project-year\">2001</span>", logo: "img/movies/InsuPad-6.png" }, { id: 2, name: "This is a test name", logo: "img/movies/Frame_Renault-5.png" }];
 	        return _this;
 	    }
 	
@@ -37839,8 +37839,12 @@
 	        value: function componentDidMount() {
 	            var tl = this.props.sharedTimeline;
 	
-	            //var logo = $("#Movie" + this.props.movieId + ' > .project-main-image')[0];
-	            //logo.style['background'] = 'url(' + this.props.logo + ')';
+	            var movie_id = "#Movie" + this.props.movieId;
+	
+	            var logo = $(movie_id + ' .project-main-image')[0];
+	            logo.style['background'] = 'url(' + this.props.logo + ')';
+	
+	            var movie_title = $(movie_id + ' .project-title h1')[0];
 	
 	            this.state = {
 	                small_description: null,
@@ -37855,14 +37859,15 @@
 	                    tl.to($this, 1, { delay: -0.5, top: '0' });
 	                    break;
 	                case _TransitionStore2.default.MOVIE_PAGE_RIGHT:
-	                    console.log('RIGHT');
-	                    TweenLite.set($this, { left: '100%' });
-	                    tl.to($this, 1, { delay: -0.5, left: '0' });
+	                    var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
+	
+	                    tl.from(logo, 1, { delay: -0.5, x: '100%' }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
 	                    break;
 	                case _TransitionStore2.default.MOVIE_PAGE_LEFT:
-	                    console.log('LEFT');
-	                    TweenLite.set($this, { left: '100%' });
-	                    tl.to($this, 1, { delay: -0.5, left: '0' });
+	                    /*var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
+	                    console.log('RIGHT');
+	                    TweenLite.set(logo, {x: '-100%'});
+	                    tl.to(logo, 1, {delay:-0.5, x: '0'});*/
 	                    break;
 	            }
 	        }
@@ -37899,19 +37904,25 @@
 	        value: function nextMovieClick(event) {
 	            event.preventDefault();
 	
-	            var movie_id = this.props.movieId;
+	            var movie_id = "#Movie" + this.props.movieId;
 	
-	            var $this = $("#Movie" + movie_id)[0];
+	            var $this = $(movie_id)[0];
 	            var cover = document.createElement('div');
 	            cover.classList.add('movie-curtain');
 	            cover.style['right'] = 0;
-	            $this.appendChild(cover);
+	
+	            var movie_title = $(movie_id + ' .project-title h1')[0];
+	            console.log(movie_title);
+	
+	            var logo = $(movie_id + ' .project-main-image')[0];
+	
+	            logo.appendChild(cover);
 	
 	            var tl = new TimelineLite();
 	
 	            tl.to(cover, 1, { width: "100%", onComplete: function onComplete() {
 	                    $this.style["display"] = "none";
-	                } });
+	                } }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
 	
 	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_RIGHT, _TransitionStore2.default.MOVIE_PAGE_RIGHT, tl, { to_movie_id: 2 });
 	
@@ -37922,7 +37933,7 @@
 	        value: function render() {
 	            var window_scroll = document.body.scrollTop;
 	
-	            var small_description = null;
+	            var small_description = _react2.default.createElement(_SmallDescription2.default, null);
 	            var full_description = null;
 	
 	            var project_name = this.props.projectName;

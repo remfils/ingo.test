@@ -14,8 +14,8 @@ export default class Application extends React.Component {
         this.state.pages.push(<IndexPage />);
 
         this.movies = [
-            {id: 1, name:"INSULINE MEDICAL - INSUPAD <span class=\"project-year\">2001</span>", logo:""},
-            {id: 2, name:"This is a test name", logo:""}
+            {id: 1, name:"INSULINE MEDICAL - INSUPAD <span class=\"project-year\">2001</span>", logo:"img/movies/InsuPad-6.png"},
+            {id: 2, name:"This is a test name", logo:"img/movies/Frame_Renault-5.png"}
         ]
     }
 
