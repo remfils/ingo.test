@@ -27311,7 +27311,12 @@
 	
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Application).call(this));
 	
-	        _this.state = {};
+	        _this.flip = true;
+	
+	        _this.state = {
+	            first_page: _react2.default.createElement(_IndexPage2.default, null),
+	            second_page: null
+	        };
 	
 	        _this.state.pages = [];
 	        _this.state.pages.push(_react2.default.createElement(_IndexPage2.default, null));
@@ -27329,6 +27334,29 @@
 	        key: 'gotoMovie',
 	        value: function gotoMovie(from, shared_timeline) {}
 	    }, {
+	        key: 'prepareNextPageForTransition',
+	        value: function prepareNextPageForTransition(page) {
+	            console.log("prepare");
+	
+	            if (this.flip) {
+	                this.setState({ second_page: page });
+	            } else {
+	                this.setState({ first_page: page });
+	            }
+	        }
+	    }, {
+	        key: 'switchPagesAfterTransition',
+	        value: function switchPagesAfterTransition() {
+	            console.log("switch");
+	            if (this.flip) {
+	                this.setState({ first_page: null });
+	            } else {
+	                this.setState({ second_page: null });
+	            }
+	
+	            this.flip = !this.flip;
+	        }
+	    }, {
 	        key: 'leavePageListener',
 	        value: function leavePageListener() {
 	            var transition = _TransitionStore2.default.current_transition;
@@ -27344,6 +27372,7 @@
 	                    })[0];
 	
 	                    var page = _react2.default.createElement(_MoviePage2.default, {
+	                        app: this,
 	                        movieId: movie_id,
 	                        projectName: movie.name,
 	                        logo: movie.logo,
@@ -27352,9 +27381,10 @@
 	                    break;
 	            }
 	
-	            this.state.pages.push(page);
+	            this.prepareNextPageForTransition(page);
 	
-	            this.setState({ pages: this.state.pages });
+	            /*this.state.pages.push(page);
+	             this.setState({pages: this.state.pages});*/
 	        }
 	    }, {
 	        key: 'render',
@@ -27362,7 +27392,8 @@
 	            return _react2.default.createElement(
 	                'main',
 	                null,
-	                this.state.pages
+	                this.state.first_page,
+	                this.state.second_page
 	            );
 	        }
 	    }]);
@@ -37831,12 +37862,14 @@
 	    function MoviePage() {
 	        _classCallCheck(this, MoviePage);
 	
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(MoviePage).apply(this, arguments));
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(MoviePage).call(this));
 	    }
 	
 	    _createClass(MoviePage, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
+	            if (this.isOnPage) return;
+	
 	            var tl = this.props.sharedTimeline;
 	
 	            var movie_id = "#Movie" + this.props.movieId;
@@ -37856,18 +37889,17 @@
 	            switch (this.props.from) {
 	                case _TransitionStore2.default.INDEX_PAGE:
 	                    TweenLite.set($this, { top: '100%' });
-	                    tl.to($this, 1, { delay: -0.5, top: '0' });
+	                    tl.to($this, 1, { delay: -0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) });
 	                    break;
 	                case _TransitionStore2.default.MOVIE_PAGE_RIGHT:
 	                    var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
 	
-	                    tl.from(logo, 1, { delay: -0.5, x: '100%' }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
+	                    tl.from(logo, 1, { delay: -0.5, x: '100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
 	                    break;
 	                case _TransitionStore2.default.MOVIE_PAGE_LEFT:
-	                    /*var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
-	                    console.log('RIGHT');
-	                    TweenLite.set(logo, {x: '-100%'});
-	                    tl.to(logo, 1, {delay:-0.5, x: '0'});*/
+	                    var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
+	
+	                    tl.from(logo, 1, { delay: -0.5, x: '-100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
 	                    break;
 	            }
 	        }
@@ -37881,35 +37913,15 @@
 	        value: function prevMovieClick(event) {
 	            event.preventDefault();
 	
-	            var movie_id = this.props.movieId;
-	
-	            var $this = $("#Movie" + movie_id)[0];
-	            var cover = document.createElement('div');
-	            cover.classList.add('movie-curtain');
-	            cover.style['left'] = 0;
-	            $this.appendChild(cover);
-	
-	            var tl = new TimelineLite();
-	
-	            tl.to(cover, 1, { width: "100%", onComplete: function onComplete() {
-	                    $this.style["display"] = "none";
-	                } });
-	
-	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_LEFT, _TransitionStore2.default.MOVIE_PAGE_LEFT, tl, { to_movie_id: 1 });
-	
-	            return false;
-	        }
-	    }, {
-	        key: 'nextMovieClick',
-	        value: function nextMovieClick(event) {
-	            event.preventDefault();
-	
 	            var movie_id = "#Movie" + this.props.movieId;
 	
 	            var $this = $(movie_id)[0];
+	
+	            $this.style['z-index'] = 0;
+	
 	            var cover = document.createElement('div');
 	            cover.classList.add('movie-curtain');
-	            cover.style['right'] = 0;
+	            cover.style['left'] = 0;
 	
 	            var movie_title = $(movie_id + ' .project-title h1')[0];
 	            console.log(movie_title);
@@ -37924,6 +37936,40 @@
 	                    $this.style["display"] = "none";
 	                } }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
 	
+	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_LEFT, _TransitionStore2.default.MOVIE_PAGE_LEFT, tl, { to_movie_id: 1 });
+	
+	            return false;
+	        }
+	    }, {
+	        key: 'nextMovieClick',
+	        value: function nextMovieClick(event) {
+	            event.preventDefault();
+	
+	            var movie_id = "#Movie" + this.props.movieId;
+	
+	            var $this = $(movie_id)[0];
+	
+	            $this.style['z-index'] = 0;
+	
+	            var cover = document.createElement('div');
+	            cover.classList.add('movie-curtain');
+	            cover.style['right'] = 0;
+	
+	            var movie_title = $(movie_id + ' .project-title h1')[0];
+	            console.log(movie_title);
+	
+	            var logo = $(movie_id + ' .project-main-image')[0];
+	
+	            logo.appendChild(cover);
+	
+	            var tl = new TimelineLite();
+	
+	            tl.to(cover, 1, { width: "100%", onComplete: function onComplete() {
+	                    //$this.style["display"] = "none";
+	                    /*logo.removeChild(cover);
+	                    TweenLite.set(movie_title, {x: 0});*/
+	                } }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
+	
 	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_RIGHT, _TransitionStore2.default.MOVIE_PAGE_RIGHT, tl, { to_movie_id: 2 });
 	
 	            return false;
@@ -37933,7 +37979,7 @@
 	        value: function render() {
 	            var window_scroll = document.body.scrollTop;
 	
-	            var small_description = _react2.default.createElement(_SmallDescription2.default, null);
+	            var small_description = null;
 	            var full_description = null;
 	
 	            var project_name = this.props.projectName;
@@ -37950,7 +37996,11 @@
 	                _react2.default.createElement(
 	                    'section',
 	                    { className: 'project-title' },
-	                    _react2.default.createElement('div', { className: 'project-main-image' }),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'project-main-image' },
+	                        _react2.default.createElement('div', { className: 'movie-curtain' })
+	                    ),
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'default-side-padding movie-title-section' },

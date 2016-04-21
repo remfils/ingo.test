@@ -8,7 +8,12 @@ export default class Application extends React.Component {
     constructor() {
         super();
 
-        this.state = {};
+        this.flip = true;
+
+        this.state = {
+            first_page: <IndexPage />,
+            second_page: null
+        };
 
         this.state.pages = [];
         this.state.pages.push(<IndexPage />);
@@ -27,6 +32,29 @@ export default class Application extends React.Component {
 
     }
 
+    prepareNextPageForTransition(page) {
+        console.log("prepare");
+
+        if ( this.flip ) {
+            this.setState({second_page: page});
+        }
+        else {
+            this.setState({first_page: page});
+        }
+    }
+
+    switchPagesAfterTransition() {
+        console.log("switch");
+        if ( this.flip ) {
+            this.setState({ first_page: null });
+        }
+        else {
+            this.setState({ second_page: null });
+        }
+
+        this.flip = !this.flip;
+    }
+
     leavePageListener() {
         var transition = TransitionStore.current_transition;
 
@@ -39,6 +67,7 @@ export default class Application extends React.Component {
                 var movie = this.movies.filter((obj)=>{return obj.id == movie_id})[0];
 
                 var page = <MoviePage
+                    app={this}
                     movieId={movie_id}
                     projectName={movie.name}
                     logo={movie.logo}
@@ -47,15 +76,18 @@ export default class Application extends React.Component {
                 break;
         }
 
-        this.state.pages.push(page);
+        this.prepareNextPageForTransition(page);
 
-        this.setState({pages: this.state.pages});
+        /*this.state.pages.push(page);
+
+        this.setState({pages: this.state.pages});*/
     }
 
     render() {
         return (
             <main>
-                { this.state.pages }
+                { this.state.first_page }
+                { this.state.second_page }
             </main>
             );
     }
