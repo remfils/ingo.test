@@ -4,6 +4,7 @@ var $ = require('jquery');
 import TransitionStore from '../stores/TransitionStore';
 import SmallDescription from './MoviePage/SmallDescription';
 import FullDescription from './MoviePage/FullDescription';
+import * as TransitionActions from "../actions/TransitionActions";
 import config from '../config';
 
 export default class MoviePage extends React.Component {
@@ -135,6 +136,12 @@ export default class MoviePage extends React.Component {
 
         tl.to(cover, 1, {width: "100%"})
             .to(movie_title, 0.4, {delay: -1, x: "-200%"});
+
+        TransitionActions.fromMovieToMovie(true, next_movie, {callback: ()=>{
+                TweenLite.set(movie_title, {x: 0});
+                cover.style['width'] = 0;
+                this.props.app.switchPagesAfterTransition();
+            }});
 
         TransitionStore.makeTransition(
             TransitionStore.MOVIE_PAGE_RIGHT,

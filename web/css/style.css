@@ -169,6 +169,7 @@ head, body {
     background: url(../img/movies/InsuPad-6.png);
     height: 70%;
     background-size: cover;
+    position: relative;
 }
 
 .default-side-padding {

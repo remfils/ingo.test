@@ -1,4 +1,5 @@
 import EventEmmiter from 'events';
+import dispatcher from '../dispatcher';
 
 class TransitionStore extends EventEmmiter {
     constructor() {
@@ -25,8 +26,18 @@ class TransitionStore extends EventEmmiter {
         this.current_page = page;
         this.emit("leave");
     }
+
+    handleActions(action) {
+        switch ( action.type ) {
+            case "TRANSITION_TO":
+
+                break;
+        }
+        console.log("recived:", action)
+    }
 }
 
 const transition_store = new TransitionStore();
+dispatcher.register(transition_store.handleActions.bind(transition_store));
 
 export default transition_store;
