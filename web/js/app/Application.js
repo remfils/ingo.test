@@ -63,12 +63,12 @@ export default class Application extends React.Component {
         switch ( transition.to ) {
             case TransitionStore.MOVIE_PAGE:
             case TransitionStore.MOVIE_PAGE_RIGHT:
-                var movie_id = transition.params.to_movie_id || "1";
-                var movie = this.movies.filter((obj)=>{return obj.id == movie_id})[0];
+            case TransitionStore.MOVIE_PAGE_LEFT:
+                var movie = transition.params.next_movie || this.movies[0];
 
                 var page = <MoviePage
                     app={this}
-                    movieId={movie_id}
+                    movie={movie}
                     projectName={movie.name}
                     logo={movie.logo}
                     from={transition.from}

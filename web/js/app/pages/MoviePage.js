@@ -16,7 +16,7 @@ export default class MoviePage extends React.Component {
 
         var tl = this.props.sharedTimeline;
 
-        var movie_id = "#Movie" + this.props.movieId;
+        var movie_id = "#Movie" + this.props.movie.id;
 
         var logo = $( movie_id + ' .project-main-image')[0];
         logo.style['background'] = 'url(' + this.props.logo + ')';
@@ -28,7 +28,7 @@ export default class MoviePage extends React.Component {
             large_description: null
         };
 
-        var $this = $("#Movie" + this.props.movieId)[0];
+        var $this = $("#Movie" + this.props.movie.id)[0];
 
         switch ( this.props.from ) {
             case TransitionStore.INDEX_PAGE:
@@ -40,13 +40,13 @@ export default class MoviePage extends React.Component {
                 tl.to($this, 1, {delay:-0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app)});
                 break;
             case TransitionStore.MOVIE_PAGE_RIGHT:
-                var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
+                var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
 
                 tl.from(logo, 1, {delay:-0.5, x: '100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app)})
                     .from(movie_title, 1, {delay: -1.5, opacity: '0'});
                 break;
             case TransitionStore.MOVIE_PAGE_LEFT:
-                var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
+                var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
 
                 tl.from(logo, 1, {delay:-0.5, x: '-100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app)})
                     .from(movie_title, 1, {delay: -1.5, opacity: '0'});
@@ -61,7 +61,16 @@ export default class MoviePage extends React.Component {
     prevMovieClick(event) {
         event.preventDefault();
 
-        var movie_id = "#Movie" + this.props.movieId;
+        var m_id = this.props.movie.id;
+        var movies = this.props.app.movies;
+        var next_movie =  movies.filter((item) => {return item.id < m_id}).pop();
+        console.log(movies, m_id, next_movie);
+
+        if ( !next_movie ) {
+            return false;
+        }
+
+        var movie_id = "#Movie" + this.props.movie.id;
 
         var $this = $(movie_id)[0];
 
@@ -89,7 +98,7 @@ export default class MoviePage extends React.Component {
             TransitionStore.MOVIE_PAGE_LEFT,
             TransitionStore.MOVIE_PAGE_LEFT,
             tl,
-            {to_movie_id: 1}
+            {next_movie: next_movie}
         );
 
         return false;
@@ -98,7 +107,16 @@ export default class MoviePage extends React.Component {
     nextMovieClick(event) {
         event.preventDefault();
 
-        var movie_id = "#Movie" + this.props.movieId;
+        var m_id = this.props.movie.id;
+        var movie_id = "#Movie" + m_id;
+
+        var movies = this.props.app.movies;
+        var next_movie =  movies.filter((item) => {return item.id > m_id})[0];
+        console.log(next_movie);
+
+        if ( !next_movie ) {
+            return false;
+        }
 
         var $this = $(movie_id)[0];
 
@@ -128,7 +146,7 @@ export default class MoviePage extends React.Component {
             TransitionStore.MOVIE_PAGE_RIGHT,
             TransitionStore.MOVIE_PAGE_RIGHT,
             tl,
-            {to_movie_id: 2}
+            {next_movie: next_movie}
         );
 
         return false;
@@ -140,13 +158,13 @@ export default class MoviePage extends React.Component {
         var small_description = null;
         var full_description = null;
 
-        var project_name = this.props.projectName;
+        var project_name = this.props.movie.name;
         console.log(this.props);
 
         var next_click = this.props.onNextMovieClick;
         var prev_click = this.props.onPrevMovieClick;
 
-        var id = "Movie" + this.props.movieId;
+        var id = "Movie" + this.props.movie.id;
 
         return (
             <div id={id} class="content">
