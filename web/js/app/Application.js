@@ -36,12 +36,12 @@ export default class Application extends React.Component {
             case TransitionStore.MOVIE_PAGE:
             case TransitionStore.MOVIE_PAGE_RIGHT:
                 var movie_id = transition.params.to_movie_id || "1";
-                var name = this.movies.filter((obj)=>{obj.id == movie_id});
+                var movie = this.movies.filter((obj)=>{return obj.id == movie_id})[0];
 
                 var page = <MoviePage
-                    key={movie_id}
                     movieId={movie_id}
-                    projectName={name}
+                    projectName={movie.name}
+                    logo={movie.logo}
                     from={transition.from}
                     sharedTimeline={transition.sharedTimeline}/>;
                 break;

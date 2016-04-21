@@ -9,6 +9,9 @@ export default class MoviePage extends React.Component {
     componentDidMount() {
         var tl = this.props.sharedTimeline;
 
+        //var logo = $("#Movie" + this.props.movieId + ' > .project-main-image')[0];
+        //logo.style['background'] = 'url(' + this.props.logo + ')';
+
         this.state = {
             small_description: null,
             large_description: null
@@ -31,7 +34,6 @@ export default class MoviePage extends React.Component {
                 TweenLite.set($this, {left: '100%'});
                 tl.to($this, 1, {delay:-0.5, left: '0'});
                 break;
-
         }
     }
 
@@ -42,13 +44,27 @@ export default class MoviePage extends React.Component {
     prevMovieClick(event) {
         event.preventDefault();
 
-        var $this = $("#Movie" + this.props.movieId);
+        var movie_id = this.props.movieId;
+
+        var $this = $("#Movie" + movie_id)[0];
+        var cover = document.createElement('div');
+        cover.classList.add('movie-curtain');
+        cover.style['left'] = 0;
+        $this.appendChild(cover);
+
 
         var tl = new TimelineLite();
 
-        tl.to($this, 1, {x: "100%", onComplete: ()=>{
+        tl.to(cover, 1, {width: "100%", onComplete: ()=>{
             $this.style["display"] = "none";
         }});
+
+        TransitionStore.makeTransition(
+            TransitionStore.MOVIE_PAGE_LEFT,
+            TransitionStore.MOVIE_PAGE_LEFT,
+            tl,
+            {to_movie_id: 1}
+        );
 
         return false;
     }
@@ -82,11 +98,13 @@ export default class MoviePage extends React.Component {
     }
 
     render() {
-        var small_description = this.state.small_description || "component dsc is not set";
-        var full_description = <FullDescription />;
+        var window_scroll = document.body.scrollTop;
 
-        var name = this.props.projectName;
-        console.log(name);
+        var small_description = null;
+        var full_description = null;
+
+        var project_name = this.props.projectName;
+        console.log(this.props);
 
         var next_click = this.props.onNextMovieClick;
         var prev_click = this.props.onPrevMovieClick;
@@ -100,7 +118,7 @@ export default class MoviePage extends React.Component {
                     <div class="project-main-image"></div>
 
                     <div class="default-side-padding movie-title-section">
-                        <h1>{name}</h1>
+                        <h1 dangerouslySetInnerHTML={{__html: project_name}}></h1>
                         <div class="movies-nav">
                             <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
                             <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
