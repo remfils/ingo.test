@@ -27321,7 +27321,17 @@
 	        _this.state.pages = [];
 	        _this.state.pages.push(_react2.default.createElement(_IndexPage2.default, null));
 	
-	        _this.movies = [{ id: 1, name: "INSULINE MEDICAL - INSUPAD <span class=\"project-year\">2001</span>", logo: "img/movies/InsuPad-6.png" }, { id: 2, name: "This is a test name", logo: "img/movies/Frame_Renault-5.png" }];
+	        _this.movies = [{
+	            id: 1,
+	            name: "INSULINE MEDICAL - INSUPAD <span class=\"project-year\">2001</span>",
+	            logo: "img/movies/InsuPad-6.png",
+	            color: "#cbfdcb"
+	        }, {
+	            id: 2,
+	            name: "This is a test name",
+	            logo: "img/movies/Frame_Renault-5.png",
+	            color: "#ff0000"
+	        }];
 	        return _this;
 	    }
 	
@@ -37898,6 +37908,9 @@
 	
 	                        var movie_id = "#Movie" + this.props.movie.id;
 	
+	                        var cover = $(movie_id + " .movie-curtain")[0];
+	                        cover.style['background-color'] = this.props.movie.color;
+	
 	                        var logo = $(movie_id + ' .project-main-image')[0];
 	                        logo.style['background'] = 'url(' + this.props.logo + ')';
 	
@@ -37922,12 +37935,12 @@
 	                                case _TransitionStore2.default.MOVIE_PAGE_RIGHT:
 	                                        var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
 	
-	                                        tl.from(logo, 1, { delay: -0.5, x: '100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
+	                                        tl.from(logo, 1, { delay: -1, x: '100%' }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
 	                                        break;
 	                                case _TransitionStore2.default.MOVIE_PAGE_LEFT:
 	                                        var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
 	
-	                                        tl.from(logo, 1, { delay: -0.5, x: '-100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
+	                                        tl.from(logo, 1, { delay: -1, x: '-100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
 	                                        break;
 	                        }
 	                }
@@ -37942,38 +37955,35 @@
 	                        event.preventDefault();
 	
 	                        var m_id = this.props.movie.id;
+	                        var movie_id = "#Movie" + m_id;
+	
 	                        var movies = this.props.app.movies;
 	                        var next_movie = movies.filter(function (item) {
 	                                return item.id < m_id;
 	                        }).pop();
-	                        console.log(movies, m_id, next_movie);
+	                        console.log(next_movie);
 	
 	                        if (!next_movie) {
 	                                return false;
 	                        }
-	
-	                        var movie_id = "#Movie" + this.props.movie.id;
-	
 	                        var $this = $(movie_id)[0];
 	
 	                        $this.style['z-index'] = 0;
 	
-	                        var cover = document.createElement('div');
-	                        cover.classList.add('movie-curtain');
+	                        var cover = $(movie_id + " .movie-curtain")[0];
+	                        //cover.style['z-index'] = 99;
 	                        cover.style['left'] = 0;
 	
 	                        var movie_title = $(movie_id + ' .project-title h1')[0];
-	                        console.log(movie_title);
 	
 	                        var logo = $(movie_id + ' .project-main-image')[0];
-	
-	                        logo.appendChild(cover);
 	
 	                        var tl = new TimelineLite();
 	
 	                        tl.to(cover, 1, { width: "100%", onComplete: function onComplete() {
-	                                        $this.style["display"] = "none";
-	                                } }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
+	                                        TweenLite.set(movie_title, { x: 0 });
+	                                        cover.style['width'] = 0;
+	                                } }).to(movie_title, 0.4, { delay: -1, x: "-200%" }).to(cover, 1, {});
 	
 	                        _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_LEFT, _TransitionStore2.default.MOVIE_PAGE_LEFT, tl, { next_movie: next_movie });
 	
@@ -38001,24 +38011,17 @@
 	
 	                        $this.style['z-index'] = 0;
 	
-	                        var cover = document.createElement('div');
-	                        cover.classList.add('movie-curtain');
+	                        var cover = $(movie_id + " .movie-curtain")[0];
+	                        cover.style['z-index'] = 99;
 	                        cover.style['right'] = 0;
 	
 	                        var movie_title = $(movie_id + ' .project-title h1')[0];
-	                        console.log(movie_title);
 	
 	                        var logo = $(movie_id + ' .project-main-image')[0];
 	
-	                        logo.appendChild(cover);
-	
 	                        var tl = new TimelineLite();
 	
-	                        tl.to(cover, 1, { width: "100%", onComplete: function onComplete() {
-	                                        //$this.style["display"] = "none";
-	                                        logo.removeChild(cover);
-	                                        TweenLite.set(movie_title, { x: 0 });
-	                                } }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
+	                        tl.to(cover, 1, { width: "100%" }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
 	
 	                        _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_RIGHT, _TransitionStore2.default.MOVIE_PAGE_RIGHT, tl, { next_movie: next_movie });
 	
