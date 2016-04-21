@@ -27315,6 +27315,8 @@
 	
 	        _this.state.pages = [];
 	        _this.state.pages.push(_react2.default.createElement(_IndexPage2.default, null));
+	
+	        _this.movies = [{ id: 1, name: "INSULINE MEDICAL - INSUPAD <span class=\"project-year\">2001</span>", logo: "" }, { id: 2, name: "This is a test name", logo: "" }];
 	        return _this;
 	    }
 	
@@ -27324,12 +27326,30 @@
 	            _TransitionStore2.default.on("leave", this.leavePageListener.bind(this));
 	        }
 	    }, {
+	        key: 'gotoMovie',
+	        value: function gotoMovie(from, shared_timeline) {}
+	    }, {
 	        key: 'leavePageListener',
 	        value: function leavePageListener() {
 	            var transition = _TransitionStore2.default.current_transition;
+	
 	            console.log(transition);
-	            if (transition.to == _TransitionStore2.default.MOVIE_PAGE) {
-	                var page = _react2.default.createElement(_MoviePage2.default, { from: transition.from, sharedTimeline: transition.sharedTimeline });
+	
+	            switch (transition.to) {
+	                case _TransitionStore2.default.MOVIE_PAGE:
+	                case _TransitionStore2.default.MOVIE_PAGE_RIGHT:
+	                    var movie_id = transition.params.to_movie_id || "1";
+	                    var name = this.movies.filter(function (obj) {
+	                        obj.id == movie_id;
+	                    });
+	
+	                    var page = _react2.default.createElement(_MoviePage2.default, {
+	                        key: movie_id,
+	                        movieId: movie_id,
+	                        projectName: name,
+	                        from: transition.from,
+	                        sharedTimeline: transition.sharedTimeline });
+	                    break;
 	            }
 	
 	            this.state.pages.push(page);
@@ -27429,11 +27449,13 @@
 	        value: function leaveToMovies(event) {
 	            event.preventDefault();
 	
-	            var index_section = $('#IndexPage');
+	            var index_section = $('#IndexPage')[0];
 	            var curtains = $('.curtain');
 	
 	            var tl = new TimelineLite();
-	            tl.to(curtains, 1, { height: '0' }).to(index_section, 1, { y: '-100%' });
+	            tl.to(curtains, 1, { height: '0' }).to(index_section, 1, { y: '-100%', onComplete: function onComplete() {
+	                    index_section.style['display'] = 'none';
+	                } });
 	
 	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.INDEX_PAGE, _TransitionStore2.default.MOVIE_PAGE, tl);
 	        }
@@ -27579,6 +27601,8 @@
 	
 	        _this.INDEX_PAGE = 'index';
 	        _this.MOVIE_PAGE = 'movie';
+	        _this.MOVIE_PAGE_LEFT = 'movie-left';
+	        _this.MOVIE_PAGE_RIGHT = 'movie-right';
 	
 	        _this.current_transition = null;
 	
@@ -27588,8 +27612,10 @@
 	    _createClass(TransitionStore, [{
 	        key: 'makeTransition',
 	        value: function makeTransition(from, to, shared_timeline) {
+	            var params = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+	
 	            console.log(shared_timeline);
-	            this.current_transition = { from: from, to: to, sharedTimeline: shared_timeline };
+	            this.current_transition = { from: from, to: to, sharedTimeline: shared_timeline, params: params };
 	            this.emit("leave");
 	        }
 	    }, {
@@ -37777,9 +37803,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _TransitionStore = __webpack_require__(163);
+	
+	var _TransitionStore2 = _interopRequireDefault(_TransitionStore);
+	
 	var _SmallDescription = __webpack_require__(167);
 	
 	var _SmallDescription2 = _interopRequireDefault(_SmallDescription);
+	
+	var _FullDescription = __webpack_require__(168);
+	
+	var _FullDescription2 = _interopRequireDefault(_FullDescription);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -37810,7 +37844,25 @@
 	                large_description: null
 	            };
 	
-	            tl.to($('#MoviePage0'), 1, { delay: -1, y: '-100%' });
+	            var $this = $("#Movie" + this.props.movieId)[0];
+	
+	            switch (this.props.from) {
+	                case _TransitionStore2.default.INDEX_PAGE:
+	                    TweenLite.set($this, { top: '100%' });
+	                    tl.to($this, 1, { delay: -0.5, top: '0' });
+	                    break;
+	                case _TransitionStore2.default.MOVIE_PAGE_RIGHT:
+	                    console.log('RIGHT');
+	                    TweenLite.set($this, { left: '100%' });
+	                    tl.to($this, 1, { delay: -0.5, left: '0' });
+	                    break;
+	                case _TransitionStore2.default.MOVIE_PAGE_LEFT:
+	                    console.log('LEFT');
+	                    TweenLite.set($this, { left: '100%' });
+	                    tl.to($this, 1, { delay: -0.5, left: '0' });
+	                    break;
+	
+	            }
 	        }
 	    }, {
 	        key: 'componentWillMount',
@@ -37818,17 +37870,128 @@
 	            this.setState({ small_description: _react2.default.createElement(_SmallDescription2.default, { projectName: 'This is test project' }) });
 	        }
 	    }, {
+	        key: 'prevMovieClick',
+	        value: function prevMovieClick(event) {
+	            event.preventDefault();
+	
+	            var $this = $("#Movie" + this.props.movieId);
+	
+	            var tl = new TimelineLite();
+	
+	            tl.to($this, 1, { x: "100%", onComplete: function onComplete() {
+	                    $this.style["display"] = "none";
+	                } });
+	
+	            return false;
+	        }
+	    }, {
+	        key: 'nextMovieClick',
+	        value: function nextMovieClick(event) {
+	            event.preventDefault();
+	
+	            var movie_id = this.props.movieId;
+	
+	            var $this = $("#Movie" + movie_id)[0];
+	            var cover = document.createElement('div');
+	            cover.classList.add('movie-curtain');
+	            cover.style['right'] = 0;
+	            $this.appendChild(cover);
+	
+	            var tl = new TimelineLite();
+	
+	            tl.to(cover, 1, { width: "100%", onComplete: function onComplete() {
+	                    $this.style["display"] = "none";
+	                } });
+	
+	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_RIGHT, _TransitionStore2.default.MOVIE_PAGE_RIGHT, tl, { to_movie_id: 2 });
+	
+	            return false;
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var small_description = this.state.small_description || "component dsc is not set";
+	            var full_description = _react2.default.createElement(_FullDescription2.default, null);
+	
+	            var name = this.props.projectName;
+	            console.log(name);
+	
+	            var next_click = this.props.onNextMovieClick;
+	            var prev_click = this.props.onPrevMovieClick;
+	
+	            var id = "Movie" + this.props.movieId;
 	
 	            return _react2.default.createElement(
-	                'section',
-	                { id: 'MoviePage0', className: 'content' },
+	                'div',
+	                { id: id, className: 'content' },
 	                _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    small_description
+	                    'section',
+	                    { className: 'project-title' },
+	                    _react2.default.createElement('div', { className: 'project-main-image' }),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'default-side-padding movie-title-section' },
+	                        _react2.default.createElement(
+	                            'h1',
+	                            null,
+	                            name
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'movies-nav' },
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: 'http://ya.ru', onClick: this.prevMovieClick.bind(this), className: 'arrow right' },
+	                                '⟵'
+	                            ),
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: 'http://ya.ru', onClick: this.nextMovieClick.bind(this), className: 'arrow left' },
+	                                '⟶'
+	                            )
+	                        )
+	                    )
+	                ),
+	                small_description,
+	                full_description,
+	                _react2.default.createElement(
+	                    'footer',
+	                    { className: 'default-side-padding project-footer' },
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    )
 	                )
 	            );
 	        }
@@ -37879,62 +38042,80 @@
 	            var name = this.props.projectName;
 	
 	            return _react2.default.createElement(
-	                "div",
-	                null,
+	                "section",
+	                { className: "default-side-padding project-sm-dsc" },
 	                _react2.default.createElement(
-	                    "div",
-	                    null,
+	                    "table",
+	                    { className: "col-md-4 project-stats" },
 	                    _react2.default.createElement(
-	                        "h1",
+	                        "tr",
 	                        null,
-	                        "Name:"
+	                        _react2.default.createElement(
+	                            "th",
+	                            null,
+	                            "PROJECT:"
+	                        ),
+	                        _react2.default.createElement(
+	                            "th",
+	                            null,
+	                            "INSULINE MEDICAL - INSUPAD 2011 "
+	                        )
 	                    ),
 	                    _react2.default.createElement(
-	                        "span",
+	                        "tr",
 	                        null,
-	                        name
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            "Agentur:"
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            "tsitrone medien GmbH & Co. KG"
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "tr",
+	                        null,
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            "Kamera:"
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            "Ingo Scheel"
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "tr",
+	                        null,
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            "Schnitt:"
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            "Ingo Scheel"
+	                        )
 	                    )
 	                ),
 	                _react2.default.createElement(
 	                    "div",
-	                    null,
+	                    { className: "col-md-8 project-demo-video" },
+	                    _react2.default.createElement("iframe", { height: "60%", src: "https://player.vimeo.com/video/67123140?color=ffffff", frameBorder: "0", webkitallowfullscreen: true, mozallowfullscreen: true, allowfullscreen: true }),
 	                    _react2.default.createElement(
-	                        "h1",
-	                        null,
-	                        "Name:"
-	                    ),
-	                    _react2.default.createElement(
-	                        "span",
-	                        null,
-	                        "Project"
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    "div",
-	                    null,
-	                    _react2.default.createElement(
-	                        "h1",
-	                        null,
-	                        "Name:"
-	                    ),
-	                    _react2.default.createElement(
-	                        "span",
-	                        null,
-	                        "Project"
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    "div",
-	                    null,
-	                    _react2.default.createElement(
-	                        "h1",
-	                        null,
-	                        "Name:"
-	                    ),
-	                    _react2.default.createElement(
-	                        "span",
-	                        null,
-	                        "Project"
+	                        "div",
+	                        { className: "btn-mehr-container" },
+	                        _react2.default.createElement(
+	                            "a",
+	                            { className: "btn-mehr" },
+	                            "MEHR ERFAHREN"
+	                        )
 	                    )
 	                )
 	            );
@@ -37945,6 +38126,146 @@
 	}(_react2.default.Component);
 	
 	exports.default = SmallDescription;
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var FullDescription = function (_React$Component) {
+	    _inherits(FullDescription, _React$Component);
+	
+	    function FullDescription() {
+	        _classCallCheck(this, FullDescription);
+	
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(FullDescription).apply(this, arguments));
+	    }
+	
+	    _createClass(FullDescription, [{
+	        key: "render",
+	        value: function render() {
+	            var name = this.props.projectName;
+	
+	            return _react2.default.createElement(
+	                "div",
+	                null,
+	                _react2.default.createElement(
+	                    "section",
+	                    { className: "default-side-padding project-dsc" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "description-container" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "col-md-5" },
+	                            _react2.default.createElement(
+	                                "h1",
+	                                null,
+	                                "ZUM PROJEKT:"
+	                            ),
+	                            _react2.default.createElement(
+	                                "h1",
+	                                null,
+	                                _react2.default.createElement(
+	                                    "strong",
+	                                    null,
+	                                    "INSULINE MEDICAL - INSUPAD 2011"
+	                                )
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "col-md-7" },
+	                            _react2.default.createElement(
+	                                "p",
+	                                null,
+	                                "Wieder ein gemeinsames Projekt mit dem langjahrigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate De- signs und Inszenierung des Produkts fur das Fachpublikum zu ubernehmen. In diesem Rahmen haben wir dieses Video produziert. Hier kommen sowohl Patienten als auch Arzte zu Wort."
+	                            )
+	                        )
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    "section",
+	                    { className: "default-side-padding more-info" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "info-block" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "info-text" },
+	                            _react2.default.createElement(
+	                                "p",
+	                                null,
+	                                "„Braun Olympia“ 2012"
+	                            ),
+	                            _react2.default.createElement(
+	                                "p",
+	                                null,
+	                                "Making of photo´s ",
+	                                _react2.default.createElement("br", null),
+	                                " Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "info-img" },
+	                            _react2.default.createElement("img", { src: "img/movies/Ebene_136.png", alt: "Girl" })
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "info-block" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "info-text" },
+	                            _react2.default.createElement(
+	                                "p",
+	                                null,
+	                                "„Braun Olympia“ 2012"
+	                            ),
+	                            _react2.default.createElement(
+	                                "p",
+	                                null,
+	                                "Making of photo´s ",
+	                                _react2.default.createElement("br", null),
+	                                " Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "info-img" },
+	                            _react2.default.createElement("img", { src: "img/movies/Ebene_136.png", alt: "Girl" })
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return FullDescription;
+	}(_react2.default.Component);
+	
+	exports.default = FullDescription;
 
 /***/ }
 /******/ ]);

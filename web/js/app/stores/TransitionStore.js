@@ -7,14 +7,16 @@ class TransitionStore extends EventEmmiter {
 
         this.INDEX_PAGE = 'index';
         this.MOVIE_PAGE = 'movie';
+        this.MOVIE_PAGE_LEFT = 'movie-left';
+        this.MOVIE_PAGE_RIGHT = 'movie-right';
 
         this.current_transition = null;
 
     }
 
-    makeTransition(from, to, shared_timeline) {
+    makeTransition(from, to, shared_timeline, params={}) {
         console.log(shared_timeline);
-        this.current_transition = {from, to, sharedTimeline: shared_timeline};
+        this.current_transition = {from, to, sharedTimeline: shared_timeline, params};
         this.emit("leave");
     }
 

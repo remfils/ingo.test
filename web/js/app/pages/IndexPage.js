@@ -49,12 +49,12 @@ export default class IndexPage extends React.Component {
     leaveToMovies(event) {
         event.preventDefault();
 
-        var index_section = $('#IndexPage');
+        var index_section = $('#IndexPage')[0];
         var curtains = $('.curtain');
 
         var tl = new TimelineLite();
         tl.to(curtains, 1, {height: '0'})
-            .to(index_section, 1, {y: '-100%'});
+            .to(index_section, 1, {y: '-100%', onComplete:()=>{index_section.style['display'] = 'none'}});
 
         TransitionStore.makeTransition(
             TransitionStore.INDEX_PAGE,
