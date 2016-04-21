@@ -2,6 +2,7 @@ import React from "react";
 //import "gsap";
 var $ = require('jquery');
 
+import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 
 export default class IndexPage extends React.Component {
@@ -12,6 +13,12 @@ export default class IndexPage extends React.Component {
         var video = $('.video-container');
 
         $('.video-container > video').on('click', this.showNavigationBar.bind(this));
+
+        if ( config.DEBUG ) {
+            TweenLite.set(video, {opacity: 1});
+            this.showNavigationBar();
+            return;
+        }
 
         var tl = new TimelineLite();
         tl.to(animated_bar, 1, {width: '100%'})
@@ -38,6 +45,13 @@ export default class IndexPage extends React.Component {
         var curtains = $('.curtain');
         var underlines = $('.underline');
 
+        if ( config.DEBUG ) {
+            TweenLite.set(navigation, {height: '30%'});
+            TweenLite.set(navigation, {y: '30%'});
+            TweenLite.set(underlines, {top: '100%'});
+            TweenLite.set(curtains, {height: '1em'});
+        }
+
         var tl = new TimelineLite();
 
         tl.to(navigation, 1, {height: '30%'})
@@ -52,15 +66,20 @@ export default class IndexPage extends React.Component {
         var index_section = $('#IndexPage')[0];
         var curtains = $('.curtain');
 
-        var tl = new TimelineLite();
-        tl.to(curtains, 1, {height: '0'})
-            .to(index_section, 1, {y: '-100%', onComplete:()=>{index_section.style['display'] = 'none'}});
-
         TransitionStore.makeTransition(
             TransitionStore.INDEX_PAGE,
             TransitionStore.MOVIE_PAGE,
             tl
         );
+
+        if ( config.DEBUG ) {
+            index_section.style['display'] = 'none'
+            return;
+        }
+
+        var tl = new TimelineLite();
+        tl.to(curtains, 1, {height: '0'})
+            .to(index_section, 1, {y: '-100%', onComplete:()=>{index_section.style['display'] = 'none'}});
     }
 
     leavePage(event) {

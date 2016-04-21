@@ -27384,7 +27384,7 @@
 	            this.prepareNextPageForTransition(page);
 	
 	            /*this.state.pages.push(page);
-	             this.setState({pages: this.state.pages});*/
+	              this.setState({pages: this.state.pages});*/
 	        }
 	    }, {
 	        key: 'render',
@@ -27420,6 +27420,10 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _config = __webpack_require__(169);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
 	var _TransitionStore = __webpack_require__(163);
 	
 	var _TransitionStore2 = _interopRequireDefault(_TransitionStore);
@@ -27454,6 +27458,12 @@
 	
 	            $('.video-container > video').on('click', this.showNavigationBar.bind(this));
 	
+	            if (_config2.default.DEBUG) {
+	                TweenLite.set(video, { opacity: 1 });
+	                this.showNavigationBar();
+	                return;
+	            }
+	
 	            var tl = new TimelineLite();
 	            tl.to(animated_bar, 1, { width: '100%' }).to(loading_msg, 1, { width: '60%', delay: -0.5 }).to(logo, 1, { opacity: 1 }).to(loading_msg, 0.5, { opacity: 0, delay: -0.5 }).to(animated_bar, 1, { height: '100%' }).to(video, 0, { opacity: 1 }).to(animated_bar, 1, { opacity: 0 }).to(logo, 1, { delay: -1, opacity: 0 }).to(video, 0, { delay: -1, onComplete: function onComplete(e) {
 	                    var vid = $('.video-container > video')[0];
@@ -27471,6 +27481,13 @@
 	            var curtains = $('.curtain');
 	            var underlines = $('.underline');
 	
+	            if (_config2.default.DEBUG) {
+	                TweenLite.set(navigation, { height: '30%' });
+	                TweenLite.set(navigation, { y: '30%' });
+	                TweenLite.set(underlines, { top: '100%' });
+	                TweenLite.set(curtains, { height: '1em' });
+	            }
+	
 	            var tl = new TimelineLite();
 	
 	            tl.to(navigation, 1, { height: '30%' }).to(video, 1, { delay: -1, y: '30%' }).to(underlines, 1, { top: '100%' }).to(curtains, 1, { delay: -1, height: '1em' });
@@ -27483,12 +27500,17 @@
 	            var index_section = $('#IndexPage')[0];
 	            var curtains = $('.curtain');
 	
+	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.INDEX_PAGE, _TransitionStore2.default.MOVIE_PAGE, tl);
+	
+	            if (_config2.default.DEBUG) {
+	                index_section.style['display'] = 'none';
+	                return;
+	            }
+	
 	            var tl = new TimelineLite();
 	            tl.to(curtains, 1, { height: '0' }).to(index_section, 1, { y: '-100%', onComplete: function onComplete() {
 	                    index_section.style['display'] = 'none';
 	                } });
-	
-	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.INDEX_PAGE, _TransitionStore2.default.MOVIE_PAGE, tl);
 	        }
 	    }, {
 	        key: 'leavePage',
@@ -37824,7 +37846,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	        value: true
 	});
 	exports.default = undefined;
 	
@@ -37846,6 +37868,10 @@
 	
 	var _FullDescription2 = _interopRequireDefault(_FullDescription);
 	
+	var _config = __webpack_require__(169);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37857,216 +37883,220 @@
 	var $ = __webpack_require__(165);
 	
 	var MoviePage = function (_React$Component) {
-	    _inherits(MoviePage, _React$Component);
+	        _inherits(MoviePage, _React$Component);
 	
-	    function MoviePage() {
-	        _classCallCheck(this, MoviePage);
+	        function MoviePage() {
+	                _classCallCheck(this, MoviePage);
 	
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(MoviePage).call(this));
-	    }
-	
-	    _createClass(MoviePage, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            if (this.isOnPage) return;
-	
-	            var tl = this.props.sharedTimeline;
-	
-	            var movie_id = "#Movie" + this.props.movieId;
-	
-	            var logo = $(movie_id + ' .project-main-image')[0];
-	            logo.style['background'] = 'url(' + this.props.logo + ')';
-	
-	            var movie_title = $(movie_id + ' .project-title h1')[0];
-	
-	            this.state = {
-	                small_description: null,
-	                large_description: null
-	            };
-	
-	            var $this = $("#Movie" + this.props.movieId)[0];
-	
-	            switch (this.props.from) {
-	                case _TransitionStore2.default.INDEX_PAGE:
-	                    TweenLite.set($this, { top: '100%' });
-	                    tl.to($this, 1, { delay: -0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) });
-	                    break;
-	                case _TransitionStore2.default.MOVIE_PAGE_RIGHT:
-	                    var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
-	
-	                    tl.from(logo, 1, { delay: -0.5, x: '100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
-	                    break;
-	                case _TransitionStore2.default.MOVIE_PAGE_LEFT:
-	                    var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
-	
-	                    tl.from(logo, 1, { delay: -0.5, x: '-100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
-	                    break;
-	            }
+	                return _possibleConstructorReturn(this, Object.getPrototypeOf(MoviePage).call(this));
 	        }
-	    }, {
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
-	            this.setState({ small_description: _react2.default.createElement(_SmallDescription2.default, { projectName: 'This is test project' }) });
-	        }
-	    }, {
-	        key: 'prevMovieClick',
-	        value: function prevMovieClick(event) {
-	            event.preventDefault();
 	
-	            var movie_id = "#Movie" + this.props.movieId;
+	        _createClass(MoviePage, [{
+	                key: 'componentDidMount',
+	                value: function componentDidMount() {
+	                        if (this.isOnPage) return;
 	
-	            var $this = $(movie_id)[0];
+	                        var tl = this.props.sharedTimeline;
 	
-	            $this.style['z-index'] = 0;
+	                        var movie_id = "#Movie" + this.props.movieId;
 	
-	            var cover = document.createElement('div');
-	            cover.classList.add('movie-curtain');
-	            cover.style['left'] = 0;
+	                        var logo = $(movie_id + ' .project-main-image')[0];
+	                        logo.style['background'] = 'url(' + this.props.logo + ')';
 	
-	            var movie_title = $(movie_id + ' .project-title h1')[0];
-	            console.log(movie_title);
+	                        var movie_title = $(movie_id + ' .project-title h1')[0];
 	
-	            var logo = $(movie_id + ' .project-main-image')[0];
+	                        this.state = {
+	                                small_description: null,
+	                                large_description: null
+	                        };
 	
-	            logo.appendChild(cover);
+	                        var $this = $("#Movie" + this.props.movieId)[0];
 	
-	            var tl = new TimelineLite();
+	                        switch (this.props.from) {
+	                                case _TransitionStore2.default.INDEX_PAGE:
+	                                        if (_config2.default.DEBUG) {
+	                                                this.props.app.switchPagesAfterTransition();
+	                                                return;
+	                                        }
+	                                        TweenLite.set($this, { top: '100%' });
+	                                        tl.to($this, 1, { delay: -0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) });
+	                                        break;
+	                                case _TransitionStore2.default.MOVIE_PAGE_RIGHT:
+	                                        var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
 	
-	            tl.to(cover, 1, { width: "100%", onComplete: function onComplete() {
-	                    $this.style["display"] = "none";
-	                } }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
+	                                        tl.from(logo, 1, { delay: -0.5, x: '100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
+	                                        break;
+	                                case _TransitionStore2.default.MOVIE_PAGE_LEFT:
+	                                        var logo = $("#Movie" + this.props.movieId + " .project-main-image")[0];
 	
-	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_LEFT, _TransitionStore2.default.MOVIE_PAGE_LEFT, tl, { to_movie_id: 1 });
+	                                        tl.from(logo, 1, { delay: -0.5, x: '-100%', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) }).from(movie_title, 1, { delay: -1.5, opacity: '0' });
+	                                        break;
+	                        }
+	                }
+	        }, {
+	                key: 'componentWillMount',
+	                value: function componentWillMount() {
+	                        this.setState({ small_description: _react2.default.createElement(_SmallDescription2.default, { projectName: 'This is test project' }) });
+	                }
+	        }, {
+	                key: 'prevMovieClick',
+	                value: function prevMovieClick(event) {
+	                        event.preventDefault();
 	
-	            return false;
-	        }
-	    }, {
-	        key: 'nextMovieClick',
-	        value: function nextMovieClick(event) {
-	            event.preventDefault();
+	                        var movie_id = "#Movie" + this.props.movieId;
 	
-	            var movie_id = "#Movie" + this.props.movieId;
+	                        var $this = $(movie_id)[0];
 	
-	            var $this = $(movie_id)[0];
+	                        $this.style['z-index'] = 0;
 	
-	            $this.style['z-index'] = 0;
+	                        var cover = document.createElement('div');
+	                        cover.classList.add('movie-curtain');
+	                        cover.style['left'] = 0;
 	
-	            var cover = document.createElement('div');
-	            cover.classList.add('movie-curtain');
-	            cover.style['right'] = 0;
+	                        var movie_title = $(movie_id + ' .project-title h1')[0];
+	                        console.log(movie_title);
 	
-	            var movie_title = $(movie_id + ' .project-title h1')[0];
-	            console.log(movie_title);
+	                        var logo = $(movie_id + ' .project-main-image')[0];
 	
-	            var logo = $(movie_id + ' .project-main-image')[0];
+	                        logo.appendChild(cover);
 	
-	            logo.appendChild(cover);
+	                        var tl = new TimelineLite();
 	
-	            var tl = new TimelineLite();
+	                        tl.to(cover, 1, { width: "100%", onComplete: function onComplete() {
+	                                        $this.style["display"] = "none";
+	                                } }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
 	
-	            tl.to(cover, 1, { width: "100%", onComplete: function onComplete() {
-	                    //$this.style["display"] = "none";
-	                    /*logo.removeChild(cover);
-	                    TweenLite.set(movie_title, {x: 0});*/
-	                } }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
+	                        _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_LEFT, _TransitionStore2.default.MOVIE_PAGE_LEFT, tl, { to_movie_id: 1 });
 	
-	            _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_RIGHT, _TransitionStore2.default.MOVIE_PAGE_RIGHT, tl, { to_movie_id: 2 });
+	                        return false;
+	                }
+	        }, {
+	                key: 'nextMovieClick',
+	                value: function nextMovieClick(event) {
+	                        event.preventDefault();
 	
-	            return false;
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var window_scroll = document.body.scrollTop;
+	                        var movie_id = "#Movie" + this.props.movieId;
 	
-	            var small_description = null;
-	            var full_description = null;
+	                        var $this = $(movie_id)[0];
 	
-	            var project_name = this.props.projectName;
-	            console.log(this.props);
+	                        $this.style['z-index'] = 0;
 	
-	            var next_click = this.props.onNextMovieClick;
-	            var prev_click = this.props.onPrevMovieClick;
+	                        var cover = document.createElement('div');
+	                        cover.classList.add('movie-curtain');
+	                        cover.style['right'] = 0;
 	
-	            var id = "Movie" + this.props.movieId;
+	                        var movie_title = $(movie_id + ' .project-title h1')[0];
+	                        console.log(movie_title);
 	
-	            return _react2.default.createElement(
-	                'div',
-	                { id: id, className: 'content' },
-	                _react2.default.createElement(
-	                    'section',
-	                    { className: 'project-title' },
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'project-main-image' },
-	                        _react2.default.createElement('div', { className: 'movie-curtain' })
-	                    ),
-	                    _react2.default.createElement(
-	                        'div',
-	                        { className: 'default-side-padding movie-title-section' },
-	                        _react2.default.createElement('h1', { dangerouslySetInnerHTML: { __html: project_name } }),
-	                        _react2.default.createElement(
-	                            'div',
-	                            { className: 'movies-nav' },
-	                            _react2.default.createElement(
-	                                'a',
-	                                { href: 'http://ya.ru', onClick: this.prevMovieClick.bind(this), className: 'arrow right' },
-	                                '⟵'
-	                            ),
-	                            _react2.default.createElement(
-	                                'a',
-	                                { href: 'http://ya.ru', onClick: this.nextMovieClick.bind(this), className: 'arrow left' },
-	                                '⟶'
-	                            )
-	                        )
-	                    )
-	                ),
-	                small_description,
-	                full_description,
-	                _react2.default.createElement(
-	                    'footer',
-	                    { className: 'default-side-padding project-footer' },
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: '#goTop' },
-	                        'Contact'
-	                    ),
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: '#goTop' },
-	                        'Contact'
-	                    ),
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: '#goTop' },
-	                        'Contact'
-	                    ),
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: '#goTop' },
-	                        'Contact'
-	                    ),
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: '#goTop' },
-	                        'Contact'
-	                    ),
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: '#goTop' },
-	                        'Contact'
-	                    ),
-	                    _react2.default.createElement(
-	                        'a',
-	                        { href: '#goTop' },
-	                        'Contact'
-	                    )
-	                )
-	            );
-	        }
-	    }]);
+	                        var logo = $(movie_id + ' .project-main-image')[0];
 	
-	    return MoviePage;
+	                        logo.appendChild(cover);
+	
+	                        var tl = new TimelineLite();
+	
+	                        tl.to(cover, 1, { width: "100%", onComplete: function onComplete() {
+	                                        //$this.style["display"] = "none";
+	                                        logo.removeChild(cover);
+	                                        TweenLite.set(movie_title, { x: 0 });
+	                                } }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
+	
+	                        _TransitionStore2.default.makeTransition(_TransitionStore2.default.MOVIE_PAGE_RIGHT, _TransitionStore2.default.MOVIE_PAGE_RIGHT, tl, { to_movie_id: 2 });
+	
+	                        return false;
+	                }
+	        }, {
+	                key: 'render',
+	                value: function render() {
+	                        var window_scroll = document.body.scrollTop;
+	
+	                        var small_description = null;
+	                        var full_description = null;
+	
+	                        var project_name = this.props.projectName;
+	                        console.log(this.props);
+	
+	                        var next_click = this.props.onNextMovieClick;
+	                        var prev_click = this.props.onPrevMovieClick;
+	
+	                        var id = "Movie" + this.props.movieId;
+	
+	                        return _react2.default.createElement(
+	                                'div',
+	                                { id: id, className: 'content' },
+	                                _react2.default.createElement(
+	                                        'section',
+	                                        { className: 'project-title' },
+	                                        _react2.default.createElement(
+	                                                'div',
+	                                                { className: 'project-main-image' },
+	                                                _react2.default.createElement('div', { className: 'movie-curtain' })
+	                                        ),
+	                                        _react2.default.createElement(
+	                                                'div',
+	                                                { className: 'default-side-padding movie-title-section' },
+	                                                _react2.default.createElement('h1', { dangerouslySetInnerHTML: { __html: project_name } }),
+	                                                _react2.default.createElement(
+	                                                        'div',
+	                                                        { className: 'movies-nav' },
+	                                                        _react2.default.createElement(
+	                                                                'a',
+	                                                                { href: 'http://ya.ru', onClick: this.prevMovieClick.bind(this), className: 'arrow right' },
+	                                                                '⟵'
+	                                                        ),
+	                                                        _react2.default.createElement(
+	                                                                'a',
+	                                                                { href: 'http://ya.ru', onClick: this.nextMovieClick.bind(this), className: 'arrow left' },
+	                                                                '⟶'
+	                                                        )
+	                                                )
+	                                        )
+	                                ),
+	                                small_description,
+	                                full_description,
+	                                _react2.default.createElement(
+	                                        'footer',
+	                                        { className: 'default-side-padding project-footer' },
+	                                        _react2.default.createElement(
+	                                                'a',
+	                                                { href: '#goTop' },
+	                                                'Contact'
+	                                        ),
+	                                        _react2.default.createElement(
+	                                                'a',
+	                                                { href: '#goTop' },
+	                                                'Contact'
+	                                        ),
+	                                        _react2.default.createElement(
+	                                                'a',
+	                                                { href: '#goTop' },
+	                                                'Contact'
+	                                        ),
+	                                        _react2.default.createElement(
+	                                                'a',
+	                                                { href: '#goTop' },
+	                                                'Contact'
+	                                        ),
+	                                        _react2.default.createElement(
+	                                                'a',
+	                                                { href: '#goTop' },
+	                                                'Contact'
+	                                        ),
+	                                        _react2.default.createElement(
+	                                                'a',
+	                                                { href: '#goTop' },
+	                                                'Contact'
+	                                        ),
+	                                        _react2.default.createElement(
+	                                                'a',
+	                                                { href: '#goTop' },
+	                                                'Contact'
+	                                        )
+	                                )
+	                        );
+	                }
+	        }]);
+	
+	        return MoviePage;
 	}(_react2.default.Component);
 	
 	exports.default = MoviePage;
@@ -38335,6 +38365,19 @@
 	}(_react2.default.Component);
 	
 	exports.default = FullDescription;
+
+/***/ },
+/* 169 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = {
+	    DEBUG: true
+	};
 
 /***/ }
 /******/ ]);

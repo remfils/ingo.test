@@ -4,6 +4,7 @@ var $ = require('jquery');
 import TransitionStore from '../stores/TransitionStore';
 import SmallDescription from './MoviePage/SmallDescription';
 import FullDescription from './MoviePage/FullDescription';
+import config from '../config';
 
 export default class MoviePage extends React.Component {
     constructor() {
@@ -31,6 +32,10 @@ export default class MoviePage extends React.Component {
 
         switch ( this.props.from ) {
             case TransitionStore.INDEX_PAGE:
+                if ( config.DEBUG ) {
+                    this.props.app.switchPagesAfterTransition();
+                    return;
+                }
                 TweenLite.set($this, {top: '100%'});
                 tl.to($this, 1, {delay:-0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app)});
                 break;
@@ -114,8 +119,8 @@ export default class MoviePage extends React.Component {
 
         tl.to(cover, 1, {width: "100%", onComplete: ()=>{
             //$this.style["display"] = "none";
-            /*logo.removeChild(cover);
-            TweenLite.set(movie_title, {x: 0});*/
+            logo.removeChild(cover);
+            TweenLite.set(movie_title, {x: 0});
         }})
             .to(movie_title, 0.4, {delay: -1, x: "-200%"});
 
