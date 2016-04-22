@@ -2,7 +2,8 @@ import React from 'react';
 
 import IndexPage from './pages/IndexPage';
 import MoviePage from './pages/MoviePage';
-import TransitionStore from './stores/TransitionStore'
+import TransitionStore from './stores/TransitionStore';
+import { asset } from './funcitons';
 
 export default class Application extends React.Component {
     constructor() {
@@ -23,14 +24,14 @@ export default class Application extends React.Component {
                 id: 1,
                 name:"INSULINE MEDICAL - INSUPAD",
                 year: "2001",
-                logo:"img/movies/InsuPad-6.png",
+                logo: asset("img/movies/InsuPad-6.png"),
                 color: "#cbfdcb"
             },
             {
                 id: 2,
                 name:"Renault Twizzy Brand Campaign",
                 year: "2012",
-                logo:"img/movies/Frame_Renault-5.png",
+                logo: asset("img/movies/Frame_Renault-5.png"),
                 color: "#ccf6e2"
             }
         ]
@@ -86,22 +87,6 @@ export default class Application extends React.Component {
                 break;
 
         }
-
-        /*switch ( transition.to ) {
-            case TransitionStore.MOVIE_PAGE:
-            case TransitionStore.MOVIE_PAGE_RIGHT:
-            case TransitionStore.MOVIE_PAGE_LEFT:
-                var movie = transition.params.next_movie || this.movies[0];
-
-                var page = <MoviePage
-                    app={this}
-                    movie={movie}
-                    projectName={movie.name}
-                    logo={movie.logo}
-                    from={transition.from}
-                    sharedTimeline={transition.sharedTimeline}/>;
-                break;
-        }*/
 
         this.prepareNextPageForTransition(page);
 

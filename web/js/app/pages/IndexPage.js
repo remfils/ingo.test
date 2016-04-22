@@ -5,6 +5,7 @@ var $ = require('jquery');
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
+import { asset } from "../funcitons";
 
 export default class IndexPage extends React.Component {
     componentDidMount() {
@@ -113,7 +114,7 @@ export default class IndexPage extends React.Component {
 
                 <div class="content">
                     <div className="video-container">
-                        <video src="res/Reel_Teil.mp4"></video>
+                        <video src={ asset("res/Reel_Teil.mp4") }></video>
                     </div>
 
                     <div className="animated-bar">

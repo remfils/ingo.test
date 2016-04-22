@@ -1,0 +1,76 @@
+* НАЗВАНИЕ
+  ТЗ для проекта INGO
+* ДАТА
+  <2016-04-18 Пн>
+* ОПИСАНИЕ
+
+На сайте должны быть размещены следующие проекты
+
+| Номер | Название  | Видос                                                                       |   |
+|-------+-----------+-----------------------------------------------------------------------------+---|
+|    11 | Проект 11 | https://www.dropbox.com/s/onnhulqaop5sd4j/Lilith%20Trailer.mp4?dl=0         |   |
+|    10 | Проект 10 | https://www.dropbox.com/s/p3nnfm20dtxxj53/Loose%20Connection.mp4?dl=0       |   |
+|     2 | Проект 2  | https://www.dropbox.com/s/0ofhv9o93r7tfv0/Braun%20Olympia.mp4?dl=0          |   |
+|     4 | Проект 4  | [[https://www.dropbox.com/s/pg4jru80tr2vqii/Lukas%20Podolski%20%22Kicken%20f%C3%BCr%20den%20Guten%20Zweck%22.mp4?dl=0][ссыль]]                                                                       |   |
+|    12 | Проект 12 | [[https://www.dropbox.com/s/talvnm82qh2mxja/Werbespot%20%22Bildung%22%20KHM.mp4?dl=0 ][ссыль]]                                                                       |   |
+|     3 | Проект 3  | https://vimeo.com/33023306                                                  |   |
+|     6 | Проект 6  | https://www.youtube.com/watch?v=JL3HeSxWJuY                                 |   |
+|     7 | Проект 7  | https://www.youtube.com/watch?v=JL3HeSxWJuY                                 |   |
+|     1 | Проект 1  | https://www.dropbox.com/s/45fu1zkarymbdsu/B%C3%BCrstner%20Elegance.mp4?dl=0 |   |
+|       |           |                                                                             |   |
+
+* ЗАДАЧИ
+
+** TODO подгрузка данных с сервера
+
+** TODO сделать сайт переводимым
+
+** TODO написать апи для выгрузки данных с сервера
+
+/api/get-movie/{id}
+/api/get-movies
+
+** TODO сделать админку
+
+/admin/add-film
+админка - создание материала филима
+
+ПОЛЯ
+
+- название фильма
+- картинка фильма
+- поля, которые заполняются автоматически
+- краткое описание фильма
+- полное описание фильма. Возможно нужен будет html редактор.
+
+/admin/login
+/admin/arange-films
+
+
+* СТРАНИЦЫ
+
+** /admin/add-film
+админка - создание материала филима
+
+ПОЛЯ
+
+- название фильма
+- картинка фильма
+- поля, которые заполняются автоматически
+- краткое описание фильма
+- полное описание фильма. Возможно нужен будет html редактор.
+
+** /admin/login
+
+** /admin/arange-films
+
+Логин в админку
+
+** /films
+
+** /films/{name}
+
+** /contact
+
+** /about
+

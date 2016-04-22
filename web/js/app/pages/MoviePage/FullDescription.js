@@ -1,5 +1,7 @@
 import React from "react";
 
+import { asset } from "../../funcitons";
+
 export default class FullDescription extends React.Component {
     render() {
         var name = this.props.projectName;
@@ -29,7 +31,7 @@ export default class FullDescription extends React.Component {
                         <p>Making of photo´s <br/> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</p>
                     </div>
                     <div class="info-img">
-                        <img src="img/movies/Ebene_136.png" alt="Girl"/>
+                        <img src={ asset("img/movies/Ebene_136.png") } alt="Girl"/>
                     </div>
                 </div>
 
@@ -39,7 +41,7 @@ export default class FullDescription extends React.Component {
                         <p>Making of photo´s <br/> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</p>
                     </div>
                     <div class="info-img">
-                        <img src="img/movies/Ebene_136.png" alt="Girl"/>
+                        <img src={ asset("img/movies/Ebene_136.png") } alt="Girl"/>
                     </div>
                 </div>
 

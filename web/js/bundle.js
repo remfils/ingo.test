@@ -27295,6 +27295,8 @@
 	
 	var _TransitionStore2 = _interopRequireDefault(_TransitionStore);
 	
+	var _funcitons = __webpack_require__(175);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27325,13 +27327,13 @@
 	            id: 1,
 	            name: "INSULINE MEDICAL - INSUPAD",
 	            year: "2001",
-	            logo: "img/movies/InsuPad-6.png",
+	            logo: (0, _funcitons.asset)("img/movies/InsuPad-6.png"),
 	            color: "#cbfdcb"
 	        }, {
 	            id: 2,
 	            name: "Renault Twizzy Brand Campaign",
 	            year: "2012",
-	            logo: "img/movies/Frame_Renault-5.png",
+	            logo: (0, _funcitons.asset)("img/movies/Frame_Renault-5.png"),
 	            color: "#ccf6e2"
 	        }];
 	        return _this;
@@ -27390,21 +27392,6 @@
 	
 	            }
 	
-	            /*switch ( transition.to ) {
-	                case TransitionStore.MOVIE_PAGE:
-	                case TransitionStore.MOVIE_PAGE_RIGHT:
-	                case TransitionStore.MOVIE_PAGE_LEFT:
-	                    var movie = transition.params.next_movie || this.movies[0];
-	                     var page = <MoviePage
-	                        app={this}
-	                        movie={movie}
-	                        projectName={movie.name}
-	                        logo={movie.logo}
-	                        from={transition.from}
-	                        sharedTimeline={transition.sharedTimeline}/>;
-	                    break;
-	            }*/
-	
 	            this.prepareNextPageForTransition(page);
 	
 	            /*this.state.pages.push(page);
@@ -27455,6 +27442,8 @@
 	var _TransitionActions = __webpack_require__(170);
 	
 	var TransitionActions = _interopRequireWildcard(_TransitionActions);
+	
+	var _funcitons = __webpack_require__(175);
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
@@ -27626,7 +27615,7 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'video-container' },
-	                        _react2.default.createElement('video', { src: 'res/Reel_Teil.mp4' })
+	                        _react2.default.createElement('video', { src: (0, _funcitons.asset)("res/Reel_Teil.mp4") })
 	                    ),
 	                    _react2.default.createElement('div', { className: 'animated-bar' }),
 	                    _react2.default.createElement(
@@ -27663,7 +27652,8 @@
 	    value: true
 	});
 	exports.default = {
-	    DEBUG: true
+	    DEBUG: false,
+	    ASSET_PATH: "http://ingo-test.tk/web/"
 	};
 
 /***/ },
@@ -38750,6 +38740,8 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _funcitons = __webpack_require__(175);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38836,7 +38828,7 @@
 	                        _react2.default.createElement(
 	                            "div",
 	                            { className: "info-img" },
-	                            _react2.default.createElement("img", { src: "img/movies/Ebene_136.png", alt: "Girl" })
+	                            _react2.default.createElement("img", { src: (0, _funcitons.asset)("img/movies/Ebene_136.png"), alt: "Girl" })
 	                        )
 	                    ),
 	                    _react2.default.createElement(
@@ -38861,7 +38853,7 @@
 	                        _react2.default.createElement(
 	                            "div",
 	                            { className: "info-img" },
-	                            _react2.default.createElement("img", { src: "img/movies/Ebene_136.png", alt: "Girl" })
+	                            _react2.default.createElement("img", { src: (0, _funcitons.asset)("img/movies/Ebene_136.png"), alt: "Girl" })
 	                        )
 	                    )
 	                )
@@ -38873,6 +38865,27 @@
 	}(_react2.default.Component);
 	
 	exports.default = FullDescription;
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.asset = asset;
+	
+	var _config = __webpack_require__(163);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function asset(url) {
+	    return _config2.default.ASSET_PATH + url;
+	}
 
 /***/ }
 /******/ ]);

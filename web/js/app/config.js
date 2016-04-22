@@ -1,3 +1,4 @@
 export default {
-    DEBUG: true
+    DEBUG: false,
+    ASSET_PATH: "http://ingo-test.tk/web/"
 };
