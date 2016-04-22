@@ -1,28 +1,55 @@
 import React from "react";
 
 export default class SmallDescription extends React.Component {
+
+    constructor() {
+        super();
+        this.array = [
+            {
+                id: 1,
+                preview: "",
+                table: {
+                    "Agentur": "tsitrone medien GmbH & Co. KG",
+                    "Kamera": "Ingo Scheel",
+                    "Schnitt": "Ingo Scheel"
+                }
+            },
+            {
+                id: 2,
+                preview: "",
+                table: {
+                    "Produktion": "Ingo Scheel",
+                    "DoP": "Ingo Scheel",
+                    "Schnitt": "Ingo Scheel"
+                }
+            }
+        ];
+    }
+
     render() {
-        var name = this.props.projectName;
+        var mov = this.props.movie;
+
+        var dsc = this.array.filter((item)=>{return item.id == mov.id;})[0];
+        var data_table = dsc.table;
+        var table = [];
+
+        for ( var key in data_table ) {
+            table.push(
+                <tr>
+                    <td>{ key }:</td>
+                    <td>{ data_table[key] }</td>
+                </tr>
+            );
+        }
 
         return (
             <section class="default-side-padding project-sm-dsc">
                 <table class="col-md-4 project-stats">
                     <tr>
-                        <th>PROJECT:</th>
-                        <th>INSULINE MEDICAL - INSUPAD 2011 </th>
+                        <th>Project:</th>
+                        <th>{ mov.name }</th>
                     </tr>
-                    <tr>
-                        <td>Agentur:</td>
-                        <td>tsitrone medien GmbH &amp; Co. KG</td>
-                    </tr>
-                    <tr>
-                        <td>Kamera:</td>
-                        <td>Ingo Scheel</td>
-                    </tr>
-                    <tr>
-                        <td>Schnitt:</td>
-                        <td>Ingo Scheel</td>
-                    </tr>
+                    {table}
                 </table>
 
                 <div class="col-md-8 project-demo-video">

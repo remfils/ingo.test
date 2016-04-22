@@ -64,10 +64,22 @@ export default class MoviePage extends React.Component {
                     .from(logo, 1, { delay: -0.5 ,x: '-100%', onComplete: this.props.transition.callback});
                 break;
         }
+
+        $('main').scroll((e)=>{
+            console.log(e);
+        });
     }
 
     componentWillMount() {
-        this.setState({small_description: <SmallDescription projectName="This is test project" />});
+        this.setState({small_description: <SmallDescription movie={this.props.movie} />});
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.scrollListener.bind(this));
+    }
+
+    scrollListener(e) {
+        console.log(e);
     }
 
     prevMovieClick(event) {
@@ -163,10 +175,11 @@ export default class MoviePage extends React.Component {
     render() {
         var window_scroll = document.body.scrollTop;
 
-        var small_description = null;
-        var full_description = null;
+        var small_description = this.state.small_description || null;
+        var full_description = <FullDescription movie={this.props.movie}/>;
 
         var project_name = this.props.movie.name;
+        var project_year = this.props.movie.year;
         console.log(this.props);
 
         var id = "Movie" + this.props.movie.id;
@@ -179,7 +192,7 @@ export default class MoviePage extends React.Component {
                     <div class="project-main-image"></div>
 
                     <div class="default-side-padding movie-title-section">
-                        <h1 dangerouslySetInnerHTML={{__html: project_name}}></h1>
+                        <h1>{ project_name } <span class="project-year">{project_year}</span></h1>
                         <div class="movies-nav">
                             <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
                             <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>

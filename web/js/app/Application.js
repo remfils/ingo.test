@@ -21,15 +21,17 @@ export default class Application extends React.Component {
         this.movies = [
             {
                 id: 1,
-                name:"INSULINE MEDICAL - INSUPAD <span class=\"project-year\">2001</span>",
+                name:"INSULINE MEDICAL - INSUPAD",
+                year: "2001",
                 logo:"img/movies/InsuPad-6.png",
                 color: "#cbfdcb"
             },
             {
                 id: 2,
-                name:"This is a test name",
+                name:"Renault Twizzy Brand Campaign",
+                year: "2012",
                 logo:"img/movies/Frame_Renault-5.png",
-                color: "#ff0000"
+                color: "#ccf6e2"
             }
         ]
     }

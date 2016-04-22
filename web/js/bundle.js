@@ -27287,7 +27287,7 @@
 	
 	var _IndexPage2 = _interopRequireDefault(_IndexPage);
 	
-	var _MoviePage = __webpack_require__(168);
+	var _MoviePage = __webpack_require__(172);
 	
 	var _MoviePage2 = _interopRequireDefault(_MoviePage);
 	
@@ -27323,14 +27323,16 @@
 	
 	        _this.movies = [{
 	            id: 1,
-	            name: "INSULINE MEDICAL - INSUPAD <span class=\"project-year\">2001</span>",
+	            name: "INSULINE MEDICAL - INSUPAD",
+	            year: "2001",
 	            logo: "img/movies/InsuPad-6.png",
 	            color: "#cbfdcb"
 	        }, {
 	            id: 2,
-	            name: "This is a test name",
+	            name: "Renault Twizzy Brand Campaign",
+	            year: "2012",
 	            logo: "img/movies/Frame_Renault-5.png",
-	            color: "#ff0000"
+	            color: "#ccf6e2"
 	        }];
 	        return _this;
 	    }
@@ -27393,7 +27395,7 @@
 	                case TransitionStore.MOVIE_PAGE_RIGHT:
 	                case TransitionStore.MOVIE_PAGE_LEFT:
 	                    var movie = transition.params.next_movie || this.movies[0];
-	                      var page = <MoviePage
+	                     var page = <MoviePage
 	                        app={this}
 	                        movie={movie}
 	                        projectName={movie.name}
@@ -27406,7 +27408,7 @@
 	            this.prepareNextPageForTransition(page);
 	
 	            /*this.state.pages.push(page);
-	              this.setState({pages: this.state.pages});*/
+	             this.setState({pages: this.state.pages});*/
 	        }
 	    }, {
 	        key: 'render',
@@ -27450,7 +27452,7 @@
 	
 	var _TransitionStore2 = _interopRequireDefault(_TransitionStore);
 	
-	var _TransitionActions = __webpack_require__(171);
+	var _TransitionActions = __webpack_require__(170);
 	
 	var TransitionActions = _interopRequireWildcard(_TransitionActions);
 	
@@ -27465,7 +27467,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	//import "gsap";
-	var $ = __webpack_require__(167);
+	var $ = __webpack_require__(171);
 	
 	var IndexPage = function (_React$Component) {
 	    _inherits(IndexPage, _React$Component);
@@ -28076,12 +28078,360 @@
 	  value: true
 	});
 	
-	var _flux = __webpack_require__(172);
+	var _flux = __webpack_require__(167);
 	
 	exports.default = new _flux.Dispatcher();
 
 /***/ },
 /* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 */
+	
+	module.exports.Dispatcher = __webpack_require__(168);
+
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright (c) 2014-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule Dispatcher
+	 * 
+	 * @preventMunge
+	 */
+	
+	'use strict';
+	
+	exports.__esModule = true;
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var invariant = __webpack_require__(169);
+	
+	var _prefix = 'ID_';
+	
+	/**
+	 * Dispatcher is used to broadcast payloads to registered callbacks. This is
+	 * different from generic pub-sub systems in two ways:
+	 *
+	 *   1) Callbacks are not subscribed to particular events. Every payload is
+	 *      dispatched to every registered callback.
+	 *   2) Callbacks can be deferred in whole or part until other callbacks have
+	 *      been executed.
+	 *
+	 * For example, consider this hypothetical flight destination form, which
+	 * selects a default city when a country is selected:
+	 *
+	 *   var flightDispatcher = new Dispatcher();
+	 *
+	 *   // Keeps track of which country is selected
+	 *   var CountryStore = {country: null};
+	 *
+	 *   // Keeps track of which city is selected
+	 *   var CityStore = {city: null};
+	 *
+	 *   // Keeps track of the base flight price of the selected city
+	 *   var FlightPriceStore = {price: null}
+	 *
+	 * When a user changes the selected city, we dispatch the payload:
+	 *
+	 *   flightDispatcher.dispatch({
+	 *     actionType: 'city-update',
+	 *     selectedCity: 'paris'
+	 *   });
+	 *
+	 * This payload is digested by `CityStore`:
+	 *
+	 *   flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'city-update') {
+	 *       CityStore.city = payload.selectedCity;
+	 *     }
+	 *   });
+	 *
+	 * When the user selects a country, we dispatch the payload:
+	 *
+	 *   flightDispatcher.dispatch({
+	 *     actionType: 'country-update',
+	 *     selectedCountry: 'australia'
+	 *   });
+	 *
+	 * This payload is digested by both stores:
+	 *
+	 *   CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'country-update') {
+	 *       CountryStore.country = payload.selectedCountry;
+	 *     }
+	 *   });
+	 *
+	 * When the callback to update `CountryStore` is registered, we save a reference
+	 * to the returned token. Using this token with `waitFor()`, we can guarantee
+	 * that `CountryStore` is updated before the callback that updates `CityStore`
+	 * needs to query its data.
+	 *
+	 *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
+	 *     if (payload.actionType === 'country-update') {
+	 *       // `CountryStore.country` may not be updated.
+	 *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
+	 *       // `CountryStore.country` is now guaranteed to be updated.
+	 *
+	 *       // Select the default city for the new country
+	 *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
+	 *     }
+	 *   });
+	 *
+	 * The usage of `waitFor()` can be chained, for example:
+	 *
+	 *   FlightPriceStore.dispatchToken =
+	 *     flightDispatcher.register(function(payload) {
+	 *       switch (payload.actionType) {
+	 *         case 'country-update':
+	 *         case 'city-update':
+	 *           flightDispatcher.waitFor([CityStore.dispatchToken]);
+	 *           FlightPriceStore.price =
+	 *             getFlightPriceStore(CountryStore.country, CityStore.city);
+	 *           break;
+	 *     }
+	 *   });
+	 *
+	 * The `country-update` payload will be guaranteed to invoke the stores'
+	 * registered callbacks in order: `CountryStore`, `CityStore`, then
+	 * `FlightPriceStore`.
+	 */
+	
+	var Dispatcher = (function () {
+	  function Dispatcher() {
+	    _classCallCheck(this, Dispatcher);
+	
+	    this._callbacks = {};
+	    this._isDispatching = false;
+	    this._isHandled = {};
+	    this._isPending = {};
+	    this._lastID = 1;
+	  }
+	
+	  /**
+	   * Registers a callback to be invoked with every dispatched payload. Returns
+	   * a token that can be used with `waitFor()`.
+	   */
+	
+	  Dispatcher.prototype.register = function register(callback) {
+	    var id = _prefix + this._lastID++;
+	    this._callbacks[id] = callback;
+	    return id;
+	  };
+	
+	  /**
+	   * Removes a callback based on its token.
+	   */
+	
+	  Dispatcher.prototype.unregister = function unregister(id) {
+	    !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.unregister(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
+	    delete this._callbacks[id];
+	  };
+	
+	  /**
+	   * Waits for the callbacks specified to be invoked before continuing execution
+	   * of the current callback. This method should only be used by a callback in
+	   * response to a dispatched payload.
+	   */
+	
+	  Dispatcher.prototype.waitFor = function waitFor(ids) {
+	    !this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Must be invoked while dispatching.') : invariant(false) : undefined;
+	    for (var ii = 0; ii < ids.length; ii++) {
+	      var id = ids[ii];
+	      if (this._isPending[id]) {
+	        !this._isHandled[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Circular dependency detected while ' + 'waiting for `%s`.', id) : invariant(false) : undefined;
+	        continue;
+	      }
+	      !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
+	      this._invokeCallback(id);
+	    }
+	  };
+	
+	  /**
+	   * Dispatches a payload to all registered callbacks.
+	   */
+	
+	  Dispatcher.prototype.dispatch = function dispatch(payload) {
+	    !!this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.') : invariant(false) : undefined;
+	    this._startDispatching(payload);
+	    try {
+	      for (var id in this._callbacks) {
+	        if (this._isPending[id]) {
+	          continue;
+	        }
+	        this._invokeCallback(id);
+	      }
+	    } finally {
+	      this._stopDispatching();
+	    }
+	  };
+	
+	  /**
+	   * Is this Dispatcher currently dispatching.
+	   */
+	
+	  Dispatcher.prototype.isDispatching = function isDispatching() {
+	    return this._isDispatching;
+	  };
+	
+	  /**
+	   * Call the callback stored with the given id. Also do some internal
+	   * bookkeeping.
+	   *
+	   * @internal
+	   */
+	
+	  Dispatcher.prototype._invokeCallback = function _invokeCallback(id) {
+	    this._isPending[id] = true;
+	    this._callbacks[id](this._pendingPayload);
+	    this._isHandled[id] = true;
+	  };
+	
+	  /**
+	   * Set up bookkeeping needed when dispatching.
+	   *
+	   * @internal
+	   */
+	
+	  Dispatcher.prototype._startDispatching = function _startDispatching(payload) {
+	    for (var id in this._callbacks) {
+	      this._isPending[id] = false;
+	      this._isHandled[id] = false;
+	    }
+	    this._pendingPayload = payload;
+	    this._isDispatching = true;
+	  };
+	
+	  /**
+	   * Clear bookkeeping used for dispatching.
+	   *
+	   * @internal
+	   */
+	
+	  Dispatcher.prototype._stopDispatching = function _stopDispatching() {
+	    delete this._pendingPayload;
+	    this._isDispatching = false;
+	  };
+	
+	  return Dispatcher;
+	})();
+	
+	module.exports = Dispatcher;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 169 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule invariant
+	 */
+	
+	"use strict";
+	
+	/**
+	 * Use invariant() to assert state which your program assumes to be true.
+	 *
+	 * Provide sprintf-style format (only %s is supported) and arguments
+	 * to provide information about what broke and what you were
+	 * expecting.
+	 *
+	 * The invariant message will be stripped in production, but the invariant
+	 * will remain to ensure logic does not differ in production.
+	 */
+	
+	var invariant = function (condition, format, a, b, c, d, e, f) {
+	  if (process.env.NODE_ENV !== 'production') {
+	    if (format === undefined) {
+	      throw new Error('invariant requires an error message argument');
+	    }
+	  }
+	
+	  if (!condition) {
+	    var error;
+	    if (format === undefined) {
+	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
+	    } else {
+	      var args = [a, b, c, d, e, f];
+	      var argIndex = 0;
+	      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
+	        return args[argIndex++];
+	      }));
+	    }
+	
+	    error.framesToPop = 1; // we don't care about invariant's own frame
+	    throw error;
+	  }
+	};
+	
+	module.exports = invariant;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 170 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.fromIndexToMovieTranstion = fromIndexToMovieTranstion;
+	exports.fromMovieToMovie = fromMovieToMovie;
+	
+	var _dispatcher = __webpack_require__(166);
+	
+	var _dispatcher2 = _interopRequireDefault(_dispatcher);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function fromIndexToMovieTranstion(shared_timeline) {
+	    var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	    createTransition("INDEX-MOVIE", shared_timeline, params);
+	}
+	
+	function fromMovieToMovie(is_right, shared_timeline) {
+	    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	
+	    createTransition("MOVIE-MOVIE_" + (is_right ? "RIGHT" : "LEFT"), shared_timeline, params);
+	}
+	
+	function createTransition(type, shared_timeline, params) {
+	    params["shared_timeline"] = shared_timeline;
+	
+	    _dispatcher2.default.dispatch({
+	        type: "TRANSITION_TO",
+	        transition_type: type,
+	        params: params
+	    });
+	}
+
+/***/ },
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -37929,13 +38279,13 @@
 
 
 /***/ },
-/* 168 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	        value: true
+	    value: true
 	});
 	exports.default = undefined;
 	
@@ -37949,15 +38299,15 @@
 	
 	var _TransitionStore2 = _interopRequireDefault(_TransitionStore);
 	
-	var _SmallDescription = __webpack_require__(169);
+	var _SmallDescription = __webpack_require__(173);
 	
 	var _SmallDescription2 = _interopRequireDefault(_SmallDescription);
 	
-	var _FullDescription = __webpack_require__(170);
+	var _FullDescription = __webpack_require__(174);
 	
 	var _FullDescription2 = _interopRequireDefault(_FullDescription);
 	
-	var _TransitionActions = __webpack_require__(171);
+	var _TransitionActions = __webpack_require__(170);
 	
 	var TransitionActions = _interopRequireWildcard(_TransitionActions);
 	
@@ -37975,264 +38325,289 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var $ = __webpack_require__(167);
+	var $ = __webpack_require__(171);
 	
 	var MoviePage = function (_React$Component) {
-	        _inherits(MoviePage, _React$Component);
+	    _inherits(MoviePage, _React$Component);
 	
-	        function MoviePage() {
-	                _classCallCheck(this, MoviePage);
+	    function MoviePage() {
+	        _classCallCheck(this, MoviePage);
 	
-	                return _possibleConstructorReturn(this, Object.getPrototypeOf(MoviePage).call(this));
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(MoviePage).call(this));
+	    }
+	
+	    _createClass(MoviePage, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            var tl = this.props.transition.shared_timeline;
+	
+	            var movie_id = "#Movie" + this.props.movie.id;
+	
+	            var cover = $(movie_id + " .movie-curtain")[0];
+	            cover.style['background-color'] = this.props.movie.color;
+	
+	            var logo = $(movie_id + ' .project-main-image')[0];
+	            logo.style['background'] = 'url(' + this.props.movie.logo + ')';
+	
+	            var movie_title = $(movie_id + ' .project-title h1')[0];
+	
+	            this.state = {
+	                small_description: null,
+	                large_description: null
+	            };
+	
+	            var $this = $(movie_id)[0];
+	
+	            switch (this.props.transition.type) {
+	                case "INDEX-MOVIE":
+	                    if (_config2.default.DEBUG) {
+	                        this.props.app.switchPagesAfterTransition();
+	                        return;
+	                    }
+	                    TweenLite.set($this, { top: '100%' });
+	                    tl.to($this, 1, { delay: -0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) });
+	                    break;
+	                case "MOVIE-MOVIE_RIGHT":
+	                    var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
+	                    var cover = $("#Movie" + this.props.movie.id + " .movie-curtain")[0];
+	                    cover.style['z-index'] = 0;
+	                    cover.style['right'] = 0;
+	                    logo.style['z-index'] = 99;
+	
+	                    tl.from(movie_title, 1, { delay: -1, opacity: '0' }).to(cover, 1, { delay: -0.5, width: "100%" }).from(logo, 1, { delay: -0.5, x: '100%', onComplete: this.props.transition.callback });
+	                    break;
+	                case "MOVIE-MOVIE_LEFT":
+	                    var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
+	                    var cover = $("#Movie" + this.props.movie.id + " .movie-curtain")[0];
+	                    cover.style['z-index'] = 0;
+	                    cover.style['left'] = 0;
+	                    logo.style['z-index'] = 99;
+	
+	                    tl.from(movie_title, 1, { delay: -1, opacity: '0' }).to(cover, 1, { delay: -0.5, width: "100%" }).from(logo, 1, { delay: -0.5, x: '-100%', onComplete: this.props.transition.callback });
+	                    break;
+	            }
+	
+	            $('main').scroll(function (e) {
+	                console.log(e);
+	            });
 	        }
+	    }, {
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.setState({ small_description: _react2.default.createElement(_SmallDescription2.default, { movie: this.props.movie }) });
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            window.removeEventListener('scroll', this.scrollListener.bind(this));
+	        }
+	    }, {
+	        key: 'scrollListener',
+	        value: function scrollListener(e) {
+	            console.log(e);
+	        }
+	    }, {
+	        key: 'prevMovieClick',
+	        value: function prevMovieClick(event) {
+	            var _this2 = this;
 	
-	        _createClass(MoviePage, [{
-	                key: 'componentDidMount',
-	                value: function componentDidMount() {
-	                        var tl = this.props.transition.shared_timeline;
+	            event.preventDefault();
 	
-	                        var movie_id = "#Movie" + this.props.movie.id;
+	            var m_id = this.props.movie.id;
+	            var movie_id = "#Movie" + m_id;
 	
-	                        var cover = $(movie_id + " .movie-curtain")[0];
-	                        cover.style['background-color'] = this.props.movie.color;
+	            var movies = this.props.app.movies;
+	            var next_movie = movies.filter(function (item) {
+	                return item.id < m_id;
+	            }).pop();
+	            console.log(next_movie);
 	
-	                        var logo = $(movie_id + ' .project-main-image')[0];
-	                        logo.style['background'] = 'url(' + this.props.movie.logo + ')';
+	            if (!next_movie) {
+	                return false;
+	            }
 	
-	                        var movie_title = $(movie_id + ' .project-title h1')[0];
+	            var $this = $(movie_id)[0];
 	
-	                        this.state = {
-	                                small_description: null,
-	                                large_description: null
-	                        };
+	            $this.style['z-index'] = 0;
 	
-	                        var $this = $(movie_id)[0];
+	            var cover = $(movie_id + " .movie-curtain")[0];
+	            cover.style['width'] = 0;
+	            cover.style['z-index'] = 99;
+	            cover.style['left'] = 0;
+	            cover.style['right'] = 'auto';
 	
-	                        switch (this.props.transition.type) {
-	                                case "INDEX-MOVIE":
-	                                        if (_config2.default.DEBUG) {
-	                                                this.props.app.switchPagesAfterTransition();
-	                                                return;
-	                                        }
-	                                        TweenLite.set($this, { top: '100%' });
-	                                        tl.to($this, 1, { delay: -0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app) });
-	                                        break;
-	                                case "MOVIE-MOVIE_RIGHT":
-	                                        var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
-	                                        var cover = $("#Movie" + this.props.movie.id + " .movie-curtain")[0];
-	                                        cover.style['z-index'] = 0;
-	                                        cover.style['right'] = 0;
-	                                        logo.style['z-index'] = 99;
+	            var movie_title = $(movie_id + ' .project-title h1')[0];
 	
-	                                        tl.from(movie_title, 1, { delay: -1, opacity: '0' }).to(cover, 1, { delay: -0.5, width: "100%" }).from(logo, 1, { delay: -0.5, x: '100%', onComplete: this.props.transition.callback });
-	                                        break;
-	                                case "MOVIE-MOVIE_LEFT":
-	                                        var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
-	                                        var cover = $("#Movie" + this.props.movie.id + " .movie-curtain")[0];
-	                                        cover.style['z-index'] = 0;
-	                                        cover.style['left'] = 0;
-	                                        logo.style['z-index'] = 99;
+	            var logo = $(movie_id + ' .project-main-image')[0];
+	            logo.style['z-index'] = 0;
 	
-	                                        tl.from(movie_title, 1, { delay: -1, opacity: '0' }).to(cover, 1, { delay: -0.5, width: "100%" }).from(logo, 1, { delay: -0.5, x: '-100%', onComplete: this.props.transition.callback });
-	                                        break;
-	                        }
-	                }
-	        }, {
-	                key: 'componentWillMount',
-	                value: function componentWillMount() {
-	                        this.setState({ small_description: _react2.default.createElement(_SmallDescription2.default, { projectName: 'This is test project' }) });
-	                }
-	        }, {
-	                key: 'prevMovieClick',
-	                value: function prevMovieClick(event) {
-	                        var _this2 = this;
+	            var tl = new TimelineLite();
 	
-	                        event.preventDefault();
+	            tl.to(cover, 1, { width: "100%" }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
 	
-	                        var m_id = this.props.movie.id;
-	                        var movie_id = "#Movie" + m_id;
+	            TransitionActions.fromMovieToMovie(false, tl, {
+	                next_movie: next_movie,
+	                callback: function callback() {
+	                    TweenLite.set(movie_title, { x: 0 });
+	                    cover.style['width'] = 0;
+	                    _this2.props.app.switchPagesAfterTransition();
+	                } });
 	
-	                        var movies = this.props.app.movies;
-	                        var next_movie = movies.filter(function (item) {
-	                                return item.id < m_id;
-	                        }).pop();
-	                        console.log(next_movie);
+	            return false;
+	        }
+	    }, {
+	        key: 'nextMovieClick',
+	        value: function nextMovieClick(event) {
+	            var _this3 = this;
 	
-	                        if (!next_movie) {
-	                                return false;
-	                        }
+	            event.preventDefault();
 	
-	                        var $this = $(movie_id)[0];
+	            var m_id = this.props.movie.id;
+	            var movie_id = "#Movie" + m_id;
 	
-	                        $this.style['z-index'] = 0;
+	            var movies = this.props.app.movies;
+	            var next_movie = movies.filter(function (item) {
+	                return item.id > m_id;
+	            })[0];
+	            console.log(next_movie);
 	
-	                        var cover = $(movie_id + " .movie-curtain")[0];
-	                        cover.style['width'] = 0;
-	                        cover.style['z-index'] = 99;
-	                        cover.style['left'] = 0;
-	                        cover.style['right'] = 'auto';
+	            if (!next_movie) {
+	                return false;
+	            }
 	
-	                        var movie_title = $(movie_id + ' .project-title h1')[0];
+	            var $this = $(movie_id)[0];
 	
-	                        var logo = $(movie_id + ' .project-main-image')[0];
-	                        logo.style['z-index'] = 0;
+	            $this.style['z-index'] = 0;
 	
-	                        var tl = new TimelineLite();
+	            var cover = $(movie_id + " .movie-curtain")[0];
+	            cover.style['width'] = 0;
+	            cover.style['z-index'] = 99;
+	            cover.style['right'] = 0;
+	            cover.style['left'] = 'auto';
 	
-	                        tl.to(cover, 1, { width: "100%" }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
+	            var movie_title = $(movie_id + ' .project-title h1')[0];
 	
-	                        TransitionActions.fromMovieToMovie(false, tl, {
-	                                next_movie: next_movie,
-	                                callback: function callback() {
-	                                        TweenLite.set(movie_title, { x: 0 });
-	                                        cover.style['width'] = 0;
-	                                        _this2.props.app.switchPagesAfterTransition();
-	                                } });
+	            var logo = $(movie_id + ' .project-main-image')[0];
+	            logo.style['z-index'] = 0;
 	
-	                        return false;
-	                }
-	        }, {
-	                key: 'nextMovieClick',
-	                value: function nextMovieClick(event) {
-	                        var _this3 = this;
+	            var tl = new TimelineLite();
 	
-	                        event.preventDefault();
+	            tl.to(cover, 1, { width: "100%" }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
 	
-	                        var m_id = this.props.movie.id;
-	                        var movie_id = "#Movie" + m_id;
+	            TransitionActions.fromMovieToMovie(true, tl, {
+	                next_movie: next_movie,
+	                callback: function callback() {
+	                    TweenLite.set(movie_title, { x: 0 });
+	                    cover.style['width'] = 0;
+	                    _this3.props.app.switchPagesAfterTransition();
+	                } });
 	
-	                        var movies = this.props.app.movies;
-	                        var next_movie = movies.filter(function (item) {
-	                                return item.id > m_id;
-	                        })[0];
-	                        console.log(next_movie);
+	            return false;
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var window_scroll = document.body.scrollTop;
 	
-	                        if (!next_movie) {
-	                                return false;
-	                        }
+	            var small_description = this.state.small_description || null;
+	            var full_description = _react2.default.createElement(_FullDescription2.default, { movie: this.props.movie });
 	
-	                        var $this = $(movie_id)[0];
+	            var project_name = this.props.movie.name;
+	            var project_year = this.props.movie.year;
+	            console.log(this.props);
 	
-	                        $this.style['z-index'] = 0;
+	            var id = "Movie" + this.props.movie.id;
 	
-	                        var cover = $(movie_id + " .movie-curtain")[0];
-	                        cover.style['width'] = 0;
-	                        cover.style['z-index'] = 99;
-	                        cover.style['right'] = 0;
-	                        cover.style['left'] = 'auto';
+	            return _react2.default.createElement(
+	                'div',
+	                { id: id, className: 'content' },
+	                _react2.default.createElement(
+	                    'section',
+	                    { className: 'project-title' },
+	                    _react2.default.createElement('div', { className: 'movie-curtain' }),
+	                    _react2.default.createElement('div', { className: 'project-main-image' }),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'default-side-padding movie-title-section' },
+	                        _react2.default.createElement(
+	                            'h1',
+	                            null,
+	                            project_name,
+	                            ' ',
+	                            _react2.default.createElement(
+	                                'span',
+	                                { className: 'project-year' },
+	                                project_year
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'movies-nav' },
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: 'http://ya.ru', onClick: this.prevMovieClick.bind(this), className: 'arrow right' },
+	                                '⟵'
+	                            ),
+	                            _react2.default.createElement(
+	                                'a',
+	                                { href: 'http://ya.ru', onClick: this.nextMovieClick.bind(this), className: 'arrow left' },
+	                                '⟶'
+	                            )
+	                        )
+	                    )
+	                ),
+	                small_description,
+	                full_description,
+	                _react2.default.createElement(
+	                    'footer',
+	                    { className: 'default-side-padding project-footer' },
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    ),
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: '#goTop' },
+	                        'Contact'
+	                    )
+	                )
+	            );
+	        }
+	    }]);
 	
-	                        var movie_title = $(movie_id + ' .project-title h1')[0];
-	
-	                        var logo = $(movie_id + ' .project-main-image')[0];
-	                        logo.style['z-index'] = 0;
-	
-	                        var tl = new TimelineLite();
-	
-	                        tl.to(cover, 1, { width: "100%" }).to(movie_title, 0.4, { delay: -1, x: "-200%" });
-	
-	                        TransitionActions.fromMovieToMovie(true, tl, {
-	                                next_movie: next_movie,
-	                                callback: function callback() {
-	                                        TweenLite.set(movie_title, { x: 0 });
-	                                        cover.style['width'] = 0;
-	                                        _this3.props.app.switchPagesAfterTransition();
-	                                } });
-	
-	                        return false;
-	                }
-	        }, {
-	                key: 'render',
-	                value: function render() {
-	                        var window_scroll = document.body.scrollTop;
-	
-	                        var small_description = null;
-	                        var full_description = null;
-	
-	                        var project_name = this.props.movie.name;
-	                        console.log(this.props);
-	
-	                        var id = "Movie" + this.props.movie.id;
-	
-	                        return _react2.default.createElement(
-	                                'div',
-	                                { id: id, className: 'content' },
-	                                _react2.default.createElement(
-	                                        'section',
-	                                        { className: 'project-title' },
-	                                        _react2.default.createElement('div', { className: 'movie-curtain' }),
-	                                        _react2.default.createElement('div', { className: 'project-main-image' }),
-	                                        _react2.default.createElement(
-	                                                'div',
-	                                                { className: 'default-side-padding movie-title-section' },
-	                                                _react2.default.createElement('h1', { dangerouslySetInnerHTML: { __html: project_name } }),
-	                                                _react2.default.createElement(
-	                                                        'div',
-	                                                        { className: 'movies-nav' },
-	                                                        _react2.default.createElement(
-	                                                                'a',
-	                                                                { href: 'http://ya.ru', onClick: this.prevMovieClick.bind(this), className: 'arrow right' },
-	                                                                '⟵'
-	                                                        ),
-	                                                        _react2.default.createElement(
-	                                                                'a',
-	                                                                { href: 'http://ya.ru', onClick: this.nextMovieClick.bind(this), className: 'arrow left' },
-	                                                                '⟶'
-	                                                        )
-	                                                )
-	                                        )
-	                                ),
-	                                small_description,
-	                                full_description,
-	                                _react2.default.createElement(
-	                                        'footer',
-	                                        { className: 'default-side-padding project-footer' },
-	                                        _react2.default.createElement(
-	                                                'a',
-	                                                { href: '#goTop' },
-	                                                'Contact'
-	                                        ),
-	                                        _react2.default.createElement(
-	                                                'a',
-	                                                { href: '#goTop' },
-	                                                'Contact'
-	                                        ),
-	                                        _react2.default.createElement(
-	                                                'a',
-	                                                { href: '#goTop' },
-	                                                'Contact'
-	                                        ),
-	                                        _react2.default.createElement(
-	                                                'a',
-	                                                { href: '#goTop' },
-	                                                'Contact'
-	                                        ),
-	                                        _react2.default.createElement(
-	                                                'a',
-	                                                { href: '#goTop' },
-	                                                'Contact'
-	                                        ),
-	                                        _react2.default.createElement(
-	                                                'a',
-	                                                { href: '#goTop' },
-	                                                'Contact'
-	                                        ),
-	                                        _react2.default.createElement(
-	                                                'a',
-	                                                { href: '#goTop' },
-	                                                'Contact'
-	                                        )
-	                                )
-	                        );
-	                }
-	        }]);
-	
-	        return MoviePage;
+	    return MoviePage;
 	}(_react2.default.Component);
 	
 	exports.default = MoviePage;
 
 /***/ },
-/* 169 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38262,13 +38637,56 @@
 	    function SmallDescription() {
 	        _classCallCheck(this, SmallDescription);
 	
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(SmallDescription).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SmallDescription).call(this));
+	
+	        _this.array = [{
+	            id: 1,
+	            preview: "",
+	            table: {
+	                "Agentur": "tsitrone medien GmbH & Co. KG",
+	                "Kamera": "Ingo Scheel",
+	                "Schnitt": "Ingo Scheel"
+	            }
+	        }, {
+	            id: 2,
+	            preview: "",
+	            table: {
+	                "Produktion": "Ingo Scheel",
+	                "DoP": "Ingo Scheel",
+	                "Schnitt": "Ingo Scheel"
+	            }
+	        }];
+	        return _this;
 	    }
 	
 	    _createClass(SmallDescription, [{
 	        key: "render",
 	        value: function render() {
-	            var name = this.props.projectName;
+	            var mov = this.props.movie;
+	
+	            var dsc = this.array.filter(function (item) {
+	                return item.id == mov.id;
+	            })[0];
+	            var data_table = dsc.table;
+	            var table = [];
+	
+	            for (var key in data_table) {
+	                table.push(_react2.default.createElement(
+	                    "tr",
+	                    null,
+	                    _react2.default.createElement(
+	                        "td",
+	                        null,
+	                        key,
+	                        ":"
+	                    ),
+	                    _react2.default.createElement(
+	                        "td",
+	                        null,
+	                        data_table[key]
+	                    )
+	                ));
+	            }
 	
 	            return _react2.default.createElement(
 	                "section",
@@ -38282,56 +38700,15 @@
 	                        _react2.default.createElement(
 	                            "th",
 	                            null,
-	                            "PROJECT:"
+	                            "Project:"
 	                        ),
 	                        _react2.default.createElement(
 	                            "th",
 	                            null,
-	                            "INSULINE MEDICAL - INSUPAD 2011 "
+	                            mov.name
 	                        )
 	                    ),
-	                    _react2.default.createElement(
-	                        "tr",
-	                        null,
-	                        _react2.default.createElement(
-	                            "td",
-	                            null,
-	                            "Agentur:"
-	                        ),
-	                        _react2.default.createElement(
-	                            "td",
-	                            null,
-	                            "tsitrone medien GmbH & Co. KG"
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "tr",
-	                        null,
-	                        _react2.default.createElement(
-	                            "td",
-	                            null,
-	                            "Kamera:"
-	                        ),
-	                        _react2.default.createElement(
-	                            "td",
-	                            null,
-	                            "Ingo Scheel"
-	                        )
-	                    ),
-	                    _react2.default.createElement(
-	                        "tr",
-	                        null,
-	                        _react2.default.createElement(
-	                            "td",
-	                            null,
-	                            "Schnitt:"
-	                        ),
-	                        _react2.default.createElement(
-	                            "td",
-	                            null,
-	                            "Ingo Scheel"
-	                        )
-	                    )
+	                    table
 	                ),
 	                _react2.default.createElement(
 	                    "div",
@@ -38357,7 +38734,7 @@
 	exports.default = SmallDescription;
 
 /***/ },
-/* 170 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38394,13 +38771,14 @@
 	        key: "render",
 	        value: function render() {
 	            var name = this.props.projectName;
+	            var style_description = { "background-color": this.props.movie.color };
 	
 	            return _react2.default.createElement(
 	                "div",
 	                null,
 	                _react2.default.createElement(
 	                    "section",
-	                    { className: "default-side-padding project-dsc" },
+	                    { className: "default-side-padding project-dsc", style: style_description },
 	                    _react2.default.createElement(
 	                        "div",
 	                        { className: "description-container" },
@@ -38495,354 +38873,6 @@
 	}(_react2.default.Component);
 	
 	exports.default = FullDescription;
-
-/***/ },
-/* 171 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.fromIndexToMovieTranstion = fromIndexToMovieTranstion;
-	exports.fromMovieToMovie = fromMovieToMovie;
-	
-	var _dispatcher = __webpack_require__(166);
-	
-	var _dispatcher2 = _interopRequireDefault(_dispatcher);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function fromIndexToMovieTranstion(shared_timeline) {
-	    var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	
-	    createTransition("INDEX-MOVIE", shared_timeline, params);
-	}
-	
-	function fromMovieToMovie(is_right, shared_timeline) {
-	    var params = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-	
-	    createTransition("MOVIE-MOVIE_" + (is_right ? "RIGHT" : "LEFT"), shared_timeline, params);
-	}
-	
-	function createTransition(type, shared_timeline, params) {
-	    params["shared_timeline"] = shared_timeline;
-	
-	    _dispatcher2.default.dispatch({
-	        type: "TRANSITION_TO",
-	        transition_type: type,
-	        params: params
-	    });
-	}
-
-/***/ },
-/* 172 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright (c) 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 */
-	
-	module.exports.Dispatcher = __webpack_require__(173);
-
-
-/***/ },
-/* 173 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright (c) 2014-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule Dispatcher
-	 * 
-	 * @preventMunge
-	 */
-	
-	'use strict';
-	
-	exports.__esModule = true;
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var invariant = __webpack_require__(174);
-	
-	var _prefix = 'ID_';
-	
-	/**
-	 * Dispatcher is used to broadcast payloads to registered callbacks. This is
-	 * different from generic pub-sub systems in two ways:
-	 *
-	 *   1) Callbacks are not subscribed to particular events. Every payload is
-	 *      dispatched to every registered callback.
-	 *   2) Callbacks can be deferred in whole or part until other callbacks have
-	 *      been executed.
-	 *
-	 * For example, consider this hypothetical flight destination form, which
-	 * selects a default city when a country is selected:
-	 *
-	 *   var flightDispatcher = new Dispatcher();
-	 *
-	 *   // Keeps track of which country is selected
-	 *   var CountryStore = {country: null};
-	 *
-	 *   // Keeps track of which city is selected
-	 *   var CityStore = {city: null};
-	 *
-	 *   // Keeps track of the base flight price of the selected city
-	 *   var FlightPriceStore = {price: null}
-	 *
-	 * When a user changes the selected city, we dispatch the payload:
-	 *
-	 *   flightDispatcher.dispatch({
-	 *     actionType: 'city-update',
-	 *     selectedCity: 'paris'
-	 *   });
-	 *
-	 * This payload is digested by `CityStore`:
-	 *
-	 *   flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'city-update') {
-	 *       CityStore.city = payload.selectedCity;
-	 *     }
-	 *   });
-	 *
-	 * When the user selects a country, we dispatch the payload:
-	 *
-	 *   flightDispatcher.dispatch({
-	 *     actionType: 'country-update',
-	 *     selectedCountry: 'australia'
-	 *   });
-	 *
-	 * This payload is digested by both stores:
-	 *
-	 *   CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'country-update') {
-	 *       CountryStore.country = payload.selectedCountry;
-	 *     }
-	 *   });
-	 *
-	 * When the callback to update `CountryStore` is registered, we save a reference
-	 * to the returned token. Using this token with `waitFor()`, we can guarantee
-	 * that `CountryStore` is updated before the callback that updates `CityStore`
-	 * needs to query its data.
-	 *
-	 *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
-	 *     if (payload.actionType === 'country-update') {
-	 *       // `CountryStore.country` may not be updated.
-	 *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
-	 *       // `CountryStore.country` is now guaranteed to be updated.
-	 *
-	 *       // Select the default city for the new country
-	 *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
-	 *     }
-	 *   });
-	 *
-	 * The usage of `waitFor()` can be chained, for example:
-	 *
-	 *   FlightPriceStore.dispatchToken =
-	 *     flightDispatcher.register(function(payload) {
-	 *       switch (payload.actionType) {
-	 *         case 'country-update':
-	 *         case 'city-update':
-	 *           flightDispatcher.waitFor([CityStore.dispatchToken]);
-	 *           FlightPriceStore.price =
-	 *             getFlightPriceStore(CountryStore.country, CityStore.city);
-	 *           break;
-	 *     }
-	 *   });
-	 *
-	 * The `country-update` payload will be guaranteed to invoke the stores'
-	 * registered callbacks in order: `CountryStore`, `CityStore`, then
-	 * `FlightPriceStore`.
-	 */
-	
-	var Dispatcher = (function () {
-	  function Dispatcher() {
-	    _classCallCheck(this, Dispatcher);
-	
-	    this._callbacks = {};
-	    this._isDispatching = false;
-	    this._isHandled = {};
-	    this._isPending = {};
-	    this._lastID = 1;
-	  }
-	
-	  /**
-	   * Registers a callback to be invoked with every dispatched payload. Returns
-	   * a token that can be used with `waitFor()`.
-	   */
-	
-	  Dispatcher.prototype.register = function register(callback) {
-	    var id = _prefix + this._lastID++;
-	    this._callbacks[id] = callback;
-	    return id;
-	  };
-	
-	  /**
-	   * Removes a callback based on its token.
-	   */
-	
-	  Dispatcher.prototype.unregister = function unregister(id) {
-	    !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.unregister(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
-	    delete this._callbacks[id];
-	  };
-	
-	  /**
-	   * Waits for the callbacks specified to be invoked before continuing execution
-	   * of the current callback. This method should only be used by a callback in
-	   * response to a dispatched payload.
-	   */
-	
-	  Dispatcher.prototype.waitFor = function waitFor(ids) {
-	    !this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Must be invoked while dispatching.') : invariant(false) : undefined;
-	    for (var ii = 0; ii < ids.length; ii++) {
-	      var id = ids[ii];
-	      if (this._isPending[id]) {
-	        !this._isHandled[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): Circular dependency detected while ' + 'waiting for `%s`.', id) : invariant(false) : undefined;
-	        continue;
-	      }
-	      !this._callbacks[id] ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatcher.waitFor(...): `%s` does not map to a registered callback.', id) : invariant(false) : undefined;
-	      this._invokeCallback(id);
-	    }
-	  };
-	
-	  /**
-	   * Dispatches a payload to all registered callbacks.
-	   */
-	
-	  Dispatcher.prototype.dispatch = function dispatch(payload) {
-	    !!this._isDispatching ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.') : invariant(false) : undefined;
-	    this._startDispatching(payload);
-	    try {
-	      for (var id in this._callbacks) {
-	        if (this._isPending[id]) {
-	          continue;
-	        }
-	        this._invokeCallback(id);
-	      }
-	    } finally {
-	      this._stopDispatching();
-	    }
-	  };
-	
-	  /**
-	   * Is this Dispatcher currently dispatching.
-	   */
-	
-	  Dispatcher.prototype.isDispatching = function isDispatching() {
-	    return this._isDispatching;
-	  };
-	
-	  /**
-	   * Call the callback stored with the given id. Also do some internal
-	   * bookkeeping.
-	   *
-	   * @internal
-	   */
-	
-	  Dispatcher.prototype._invokeCallback = function _invokeCallback(id) {
-	    this._isPending[id] = true;
-	    this._callbacks[id](this._pendingPayload);
-	    this._isHandled[id] = true;
-	  };
-	
-	  /**
-	   * Set up bookkeeping needed when dispatching.
-	   *
-	   * @internal
-	   */
-	
-	  Dispatcher.prototype._startDispatching = function _startDispatching(payload) {
-	    for (var id in this._callbacks) {
-	      this._isPending[id] = false;
-	      this._isHandled[id] = false;
-	    }
-	    this._pendingPayload = payload;
-	    this._isDispatching = true;
-	  };
-	
-	  /**
-	   * Clear bookkeeping used for dispatching.
-	   *
-	   * @internal
-	   */
-	
-	  Dispatcher.prototype._stopDispatching = function _stopDispatching() {
-	    delete this._pendingPayload;
-	    this._isDispatching = false;
-	  };
-	
-	  return Dispatcher;
-	})();
-	
-	module.exports = Dispatcher;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ },
-/* 174 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule invariant
-	 */
-	
-	"use strict";
-	
-	/**
-	 * Use invariant() to assert state which your program assumes to be true.
-	 *
-	 * Provide sprintf-style format (only %s is supported) and arguments
-	 * to provide information about what broke and what you were
-	 * expecting.
-	 *
-	 * The invariant message will be stripped in production, but the invariant
-	 * will remain to ensure logic does not differ in production.
-	 */
-	
-	var invariant = function (condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
-	    if (format === undefined) {
-	      throw new Error('invariant requires an error message argument');
-	    }
-	  }
-	
-	  if (!condition) {
-	    var error;
-	    if (format === undefined) {
-	      error = new Error('Minified exception occurred; use the non-minified dev environment ' + 'for the full error message and additional helpful warnings.');
-	    } else {
-	      var args = [a, b, c, d, e, f];
-	      var argIndex = 0;
-	      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
-	        return args[argIndex++];
-	      }));
-	    }
-	
-	    error.framesToPop = 1; // we don't care about invariant's own frame
-	    throw error;
-	  }
-	};
-	
-	module.exports = invariant;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }
 /******/ ]);

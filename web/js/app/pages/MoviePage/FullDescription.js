@@ -3,10 +3,11 @@ import React from "react";
 export default class FullDescription extends React.Component {
     render() {
         var name = this.props.projectName;
+        var style_description = {"background-color": this.props.movie.color};
 
         return (
             <div>
-            <section class="default-side-padding project-dsc">
+            <section class="default-side-padding project-dsc" style={style_description}>
                 <div class="description-container">
                     <div class="col-md-5">
                         <h1>ZUM PROJEKT:</h1>

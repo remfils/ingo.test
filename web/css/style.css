@@ -238,6 +238,7 @@ a.arrow:hover {
 
 .project-stats {
     margin-top: 30px;
+    font-size: 1.5em;
 }
 
 .project-stats th {
@@ -280,6 +281,7 @@ a.arrow:hover {
 }
 
 .description-container {
+    font-size: 1.5em;
     display: table;
     min-height: 50%;
     border-bottom: solid 1px #0f733e;
@@ -300,6 +302,7 @@ a.arrow:hover {
 
 .info-text {
     width: 30%;
+    font-size: 1.5em;
 }
 
 .info-img,
@@ -311,4 +314,5 @@ a.arrow:hover {
 
 .project-footer {
     background-color: #051e2a;
+    min-height: 20%;
 }
