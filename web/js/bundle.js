@@ -27651,10 +27651,16 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.default = {
+	var config = {
 	    DEBUG: false,
 	    ASSET_PATH: "http://ingo-test.tk/web/"
 	};
+	
+	if (config.DEBUG) {
+	    config.ASSET_PATH = "http://ingo.test/web/";
+	};
+	
+	exports.default = config;
 
 /***/ },
 /* 164 */

@@ -12,8 +12,11 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../templates/'
 ));
 
-//$app['asset_path'] = 'http://ingo.test/web/';
 $app['asset_path'] = 'http://ingo-test.tk/web/';
+
+if ( $app['debug'] == true ) {
+    $app['asset_path'] = 'http://ingo.test/web/';
+}
 
 $app->register(new Silex\Provider\SessionServiceProvider());
 
