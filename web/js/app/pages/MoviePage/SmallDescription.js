@@ -44,7 +44,7 @@ export default class SmallDescription extends React.Component {
 
         return (
             <section class="default-side-padding project-sm-dsc">
-                <table class="col-md-4 project-stats">
+                <table class="col-30p project-stats">
                     <tr>
                         <th>Project:</th>
                         <th>{ mov.name }</th>
@@ -52,7 +52,7 @@ export default class SmallDescription extends React.Component {
                     {table}
                 </table>
 
-                <div class="col-md-8 project-demo-video">
+                <div class="col-70p project-demo-video">
                     <iframe height="60%" src="https://player.vimeo.com/video/67123140?color=ffffff" frameBorder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                     <div class="btn-mehr-container">
                         <a class="btn-mehr">MEHR ERFAHREN</a>
