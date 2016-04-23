@@ -1,5 +1,5 @@
 var config = {
-    DEBUG: false,
+    DEBUG: true,
     ASSET_PATH: "http://ingo-test.tk/web/"
 };
 
