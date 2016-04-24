@@ -79,7 +79,7 @@ a, a:hover, a:focus, a:visited, a:active {
 
 .index-navigation a {
     position: relative;
-    line-height: 1em;
+    /*line-height: 1em;*/
 }
 
 .curtain {
@@ -261,6 +261,7 @@ a.arrow:hover {
 .project-stats th {
     font-weight: normal;
     padding-bottom: 10px;
+    text-align: left;
 }
 
 .project-demo-video {
@@ -294,17 +295,23 @@ a.arrow:hover {
 
 .project-dsc {
     background-color: #cbfdcb;
-    padding-top: 3%;
-    padding-bottom: 3%;
+    overflow: auto;
+    font-size: 1.5em;
+    font-weight: normal;
+}
+
+.project-dsc h1 {
+    font-size: inherit;
+    font-weight: inherit;
 }
 
 .description-container {
-    font-size: 1.5em;
-    display: table;
-    min-height: 50%;
+    overflow: auto;
     border-bottom: solid 1px #0f733e;
     border-top: solid 1px #0f733e;
+    margin: 3% 0 3% 0;
     padding-top: 3%;
+    padding-bottom: 12%;
 }
 
 /* more info */
@@ -320,6 +327,9 @@ a.arrow:hover {
 
 .info-text {
     font-size: 1.5em;
+}
+.info-text p {
+    padding-right: 20%;
 }
 
 .info-img img {
