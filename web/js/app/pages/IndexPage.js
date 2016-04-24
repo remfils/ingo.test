@@ -62,26 +62,28 @@ export default class IndexPage extends React.Component {
             .to(curtains, 1, {delay: -1, height: '1em'});
     }
 
-    leaveToMovies(event) {
+    moviesLinkClickListener(event) {
         event.preventDefault();
-
-        var index_section = $('#IndexPage')[0];
-        var curtains = $('.curtain');
 
         /*TransitionStore.makeTransition(
             TransitionStore.INDEX_PAGE,
             TransitionStore.MOVIE_PAGE,
             tl
         );*/
-        var tl = new TimelineLite();
-        TransitionActions.fromIndexToMovieTranstion(tl);
+        TransitionActions.fromIndexToMovieTranstion(this);
 
         if ( config.DEBUG ) {
+            var index_section = $('#IndexPage')[0];
             index_section.style['display'] = 'none'
             return;
         }
+    }
 
-        tl.to(curtains, 1, {height: '0'})
+    leaveToMovies(time_line) {
+        var index_section = $('#IndexPage')[0],
+            curtains = $('#IndexPage .curtain');
+
+        time_line.to(curtains, 1, {height: '0'})
             .to(index_section, 1, {y: '-100%', onComplete:()=>{index_section.style['display'] = 'none'}});
     }
 
@@ -106,7 +108,7 @@ export default class IndexPage extends React.Component {
             <section id='IndexPage' class='animated-content'>
                 <nav class="index-navigation">
                     <ul>
-                        <li><div className="curtain"><a href="http://google.com" onClick={this.leaveToMovies.bind(this)}>Films</a></div><span class='underline'></span></li>
+                        <li><div className="curtain"><a href="http://google.com" onClick={this.moviesLinkClickListener.bind(this)}>Films</a></div><span class='underline'></span></li>
                         <li><div className="curtain"><a href="http://google.com" onClick={this.leavePage.bind(this)}>About</a></div><span class='underline'></span></li>
                         <li><div className="curtain"><a href="http://google.com" onClick={this.leavePage.bind(this)}>Contacts</a></div><span class='underline'></span></li>
                     </ul>
