@@ -1,36 +1,62 @@
 import React from "react";
 
+import config from '../../config';
+
+var $ = require('jquery');
+
 export default class SmallDescription extends React.Component {
 
     constructor() {
         super();
-        this.array = [
-            {
-                id: 1,
-                preview: "",
-                table: {
-                    "Agentur": "tsitrone medien GmbH & Co. KG",
-                    "Kamera": "Ingo Scheel",
-                    "Schnitt": "Ingo Scheel"
-                }
+
+        this.state = {
+            project_info_table: [],
+            preview_url: ''
+        };
+
+        this.preview_iframe = null;
+    }
+
+    componentDidMount() {
+        console.log('start of downloading sm dsc');
+
+        this.preview_iframe = $('.project-demo-video > iframe')[0];
+
+        $(window).resize(this.resizePreviewIframe.bind(this));
+
+        this.resizePreviewIframe();
+
+        $.ajax({
+            url: config.SITE_NAME + 'api/movie/small/' + this.props.movie.id,
+            dataType: 'json',
+            success: (data) => {
+                console.log('finished of downloading sm dsc: ' + data.table);
+
+                this.setState({
+                    project_info_table: data.table,
+                    preview_url: data.preview
+                });
             },
-            {
-                id: 2,
-                preview: "",
-                table: {
-                    "Produktion": "Ingo Scheel",
-                    "DoP": "Ingo Scheel",
-                    "Schnitt": "Ingo Scheel"
-                }
+            error: (err) => {
+                console.log('error ' + err);
             }
-        ];
+        });
+    }
+
+    componentWillUnmount() {
+        $.off('resize', this.resizePreviewIframe);
+    }
+
+    resizePreviewIframe() {
+        if ( this.preview_iframe ) {
+            this.preview_iframe.height = 609 * this.preview_iframe.clientWidth / 1092;
+        }
     }
 
     render() {
         var mov = this.props.movie;
 
-        var dsc = this.array.filter((item)=>{return item.id == mov.id;})[0];
-        var data_table = dsc.table;
+        var data_table = this.state.project_info_table;
         var table = [];
 
         for ( var key in data_table ) {
