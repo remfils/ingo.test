@@ -79,7 +79,7 @@ a, a:hover, a:focus, a:visited, a:active {
 
 .index-navigation a {
     position: relative;
-    line-height: 1em;
+    /*line-height: 1em;*/
 }
 
 .curtain {
