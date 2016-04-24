@@ -49,8 +49,9 @@ export default class MoviePage extends React.Component {
                 logo.style['z-index'] = 99;
 
                 tl.from(movie_title, 1, {delay: -1, opacity: '0'})
-                    .to(cover, 1, {delay: -0.5, width: "100%"})
-                    .from(logo, 1, { delay: -0.5 ,x: '100%', onComplete: this.props.transition.callback});
+                    .to(cover, 1, {delay: -0.8, width: "100%", ease: Power2.easeIn})
+                    .from(logo, 1, { delay: -0.5 ,x: '100%', ease: Power2.easeInOut, onComplete: this.props.transition.callback});
+                /*asdfasdf*/
                 break;
             case "MOVIE-MOVIE_LEFT":
                 var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
@@ -158,9 +159,9 @@ export default class MoviePage extends React.Component {
 
         var tl = new TimelineLite();
 
-        tl.to(cover, 1, {width: "100%"})
-            .to(movie_title, 0.4, {delay: -1, x: "-200%"});
-
+        tl.to(movie_title, 0.4, { x: "-200%"})
+            .to(cover, 1, {delay: -0.3, width: "100%", ease: Power2.easeIn});
+/*asdfasdf*/
         TransitionActions.fromMovieToMovie(true, tl,  {
             next_movie,
             callback: ()=>{
