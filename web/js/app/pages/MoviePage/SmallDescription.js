@@ -44,7 +44,7 @@ export default class SmallDescription extends React.Component {
     }
 
     componentWillUnmount() {
-        $.off('resize', this.resizePreviewIframe);
+        $(window).off('resize', this.resizePreviewIframe);
     }
 
     resizePreviewIframe() {
