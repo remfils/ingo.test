@@ -15,7 +15,7 @@
             </div>
             <ul class="nav navbar-nav">
                 <li {% if active_page == 'admin' %} class="active" {% endif %}><a href="{{ path('admin') }}">Admin</a></li>
-                {#<li {% if active_page == 'new-project' %} class="active" {% endif %}><a href="{{ path('admin') }}">Add project</a></li>#}
+                <li {% if active_page == 'new-project' %} class="active" {% endif %}><a href="{{ 'admin/add/project' }}">Add project</a></li>
                 <li><a href="{{ path('admin_logout') }}">Logout</a></li>
             </ul>
         </div>
