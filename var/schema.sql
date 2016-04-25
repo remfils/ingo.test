@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 25 2016 г., 04:21
+-- Время создания: Апр 25 2016 г., 11:28
 -- Версия сервера: 5.5.48
 -- Версия PHP: 5.4.45
 
@@ -19,6 +19,28 @@ SET time_zone = "+00:00";
 --
 -- База данных: `ingo.test`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `projects`
+--
+
+CREATE TABLE IF NOT EXISTS `projects` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `color` varchar(255) NOT NULL,
+  `year` int(11) NOT NULL,
+  `logo` varchar(255) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `projects`
+--
+
+INSERT INTO `projects` (`id`, `name`, `color`, `year`, `logo`) VALUES
+(1, 'INSULINE MEDICAL - INSUPAD', '#cbfdcb', 2001, 'img/movies/InsuPad-6.png'),
+(2, 'Renault Twizzy Brand Campaign', '#ccf6e2', 2012, 'img/movies/Frame_Renault-5.png');
 
 -- --------------------------------------------------------
 
@@ -46,6 +68,12 @@ INSERT INTO `users` (`id`, `login`, `password`, `role`) VALUES
 --
 
 --
+-- Индексы таблицы `projects`
+--
+ALTER TABLE `projects`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
@@ -55,6 +83,11 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для сохранённых таблиц
 --
 
+--
+-- AUTO_INCREMENT для таблицы `projects`
+--
+ALTER TABLE `projects`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
