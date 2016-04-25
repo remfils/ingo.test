@@ -73,6 +73,7 @@ export default class MoviePage extends React.Component {
                     .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '100%', ease: this.SWITCH_EASE, onComplete: () => {
                         //this.setState({small_description: <SmallDescription movie={this.props.movie} />});
                         cover.classList.remove('right');
+                        cover.style['width'] = 0;
                         this.props.transition.callback();
                     }});
                 break;
@@ -90,8 +91,10 @@ export default class MoviePage extends React.Component {
 
                 time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
                     .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '-100%', ease: this.SWITCH_EASE, onComplete: () => {
-                        this.setState({small_description: <SmallDescription movie={this.props.movie} />});
-                        cover.classList.remove('right');
+                        // this.setState({small_description: <SmallDescription movie={this.props.movie} />});
+                        /*asdfsd*/
+                        cover.classList.remove('left');
+                        cover.style['width'] = 0;
                         this.props.transition.callback();
                     }});
 

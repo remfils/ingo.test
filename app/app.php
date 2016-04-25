@@ -6,6 +6,8 @@ use Silex\Application;
 
 $app = new Application();
 
+require 'config.php';
+
 $app['tmp_dir'] = __DIR__ . '/../var/tmp/';
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
@@ -22,9 +24,9 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver' => 'pdo_mysql',
         'dbhost' => 'localhost',
-        'dbname' => 'ingo.test',
-        'user' => 'root',
-        'password' => '',
+        'dbname' => $db_name,
+        'user' => $db_user,
+        'password' => $db_pass,
     ),
 ));
 

@@ -8,5 +8,5 @@ if ( config.DEBUG ) {
 };
 
 config['ASSET_PATH'] = config.SITE_NAME + 'web/';
-
+/*asdfasfd*/
 export default config;
