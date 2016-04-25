@@ -9,7 +9,11 @@ class AdminController
 {
     public function indexAction( Request $req, Application $app )
     {
-        return '<h1>This is admin page</h1>';
+        if ($app['security.authorization_checker']->isGranted('ROLE_USER')) {
+            return $app['twig']->render('admin/admin.html.twig');
+        }
+
+        return 'NOPE';
     }
 
     public function loginAction( Request $req, Application $app )
@@ -18,6 +22,8 @@ class AdminController
             'login' => 'login',
             'password' => 'pass'
         );
+
+        $pass = $app['security.encoder.digest']->encodePassword('admin', '');
 
         $login_form = $app['form.factory']->createBuilder('form', $default)
             ->add('login', 'text', array(
@@ -42,7 +48,8 @@ class AdminController
         }
 
         return $app['twig']->render('admin/login.html.twig', array(
-            'login_form' => $login_form->createView()
+            'login_form' => $login_form->createView(),
+            'pass' => $pass
         ));
     }
 }
