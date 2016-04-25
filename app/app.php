@@ -16,6 +16,33 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
+$app->register(new Silex\Provider\FormServiceProvider());
+
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+    'db.options' => array(
+        'driver' => 'pdo_mysql',
+        'dbhost' => 'localhost',
+        'dbname' => 'ingo.test',
+        'user' => 'root',
+        'password' => '',
+    ),
+));
+
+/* SECURITY */
+
+$app->register(new Silex\Provider\SecurityServiceProvider(), array(
+    'security.firewalls' => array(
+        'admin' => array(
+            'pattern' => '^/admin',
+            'http' => true,
+            'logout' => array('logout_path' => '/admin/logout', 'invalidate_session' => true),
+            'users' => $app->share(function() use ($app) {
+                return new App\Providers\UserProvider($app['db']);
+            }),
+        ),
+    )
+));
+
 /* LANGUAGE */
 
 $app->register(new Silex\Provider\TranslationServiceProvider(), array(
