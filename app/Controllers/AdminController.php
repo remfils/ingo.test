@@ -10,7 +10,13 @@ class AdminController
     public function indexAction( Request $req, Application $app )
     {
         if ($app['security.authorization_checker']->isGranted('ROLE_USER')) {
-            return $app['twig']->render('admin/admin.html.twig');
+            $q = $app['db']->query('select * from projects');
+            $q->execute();
+            $projects = $q->fetchAll();
+
+            return $app['twig']->render('admin/admin.html.twig', array(
+                'projects' => $projects
+            ));
         }
 
         return 'NOPE';

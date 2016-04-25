@@ -1,9 +1,50 @@
 {% extends 'base.twig' %}
+{% set active_page = 'admin' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ app.asset_path }}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ app.asset_path }}/css/admin.css">
+{% endblock %}
 
 {% block main %}
 
-    <a href="{{ path('admin_logout') }}">logout</a>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">INGO</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/" >Home</a></li>
+                <li {% if active_page == 'admin' %} class="active" {% endif %}><a href="{{ path('admin') }}">Admin</a></li>
+                <li {% if active_page == 'new-project' %} class="active" {% endif %}><a href="{{ path('admin') }}">Add project</a></li>
+                <li><a href="{{ path('admin_logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <h1>This is admin page</h1>
+    <h1>Current Projects:</h1>
+
+    <table class="table table-striped">
+        <tr>
+            <th>id</th>
+            <th>logo</th>
+            <th>Project name</th>
+            <th>Project Year</th>
+            <th>Action</th>
+        </tr>
+
+        {% for project in projects %}
+            <tr>
+                <td>{{ project.id }}</td>
+                <td class="td-logo"><img src="{{ app.asset_path }}{{ project.logo }}" alt="logo" width="100%"/></td>
+                <td>{{ project.name }}</td>
+                <td>{{ project.year }}</td>
+                <td>
+                    <a href="ya.ru" class="btn btn-warning">Edit</a>
+                    <a href="ya.ru" class="btn btn-danger">Remove</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
     
 {% endblock %}
