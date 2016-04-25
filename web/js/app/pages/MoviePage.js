@@ -49,9 +49,13 @@ export default class MoviePage extends React.Component {
                     this.props.app.switchPagesAfterTransition();
                     return;
                 }
-                /*adfasdf*/
                 TweenLite.set($this, {top: '100%'});
-                tl.to($this, 1, {delay:-0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app)});
+
+                var time_line = new TimelineLite();
+
+                this.props.transition.prev_page.leaveToMovies(time_line);
+
+                time_line.to($this, 1, {delay:-0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app)});
                 break;
             case "MOVIE-MOVIE_RIGHT":
                 var time_line = new TimelineLite();
@@ -67,7 +71,7 @@ export default class MoviePage extends React.Component {
 
                 time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
                     .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '100%', ease: this.SWITCH_EASE, onComplete: () => {
-                        this.setState({small_description: <SmallDescription movie={this.props.movie} />});
+                        //this.setState({small_description: <SmallDescription movie={this.props.movie} />});
                         cover.classList.remove('right');
                         this.props.transition.callback();
                     }});
