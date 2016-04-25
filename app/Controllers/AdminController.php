@@ -21,7 +21,7 @@ class AdminController
 
         return 'NOPE';
     }
-
+/*D!*/
     public function loginAction( Request $req, Application $app )
     {
         $default = array(
@@ -57,5 +57,35 @@ class AdminController
             'login_form' => $login_form->createView(),
             'pass' => $pass
         ));
+    }
+
+    public function editProjectAction( Request $req, Application $app ) {
+        $id = $req->attributes->get('id');
+
+        $q = $app['db']->prepare('select * from projects p join project_description pd on pd.movie_id = p.id where p.id = :id');
+        $q->bindValue(':id', $id);
+        $q->execute();
+        $movie = $q->fetch();
+
+        $q = $app['db']->prepare('select * from project_fields p where p.movie_id = :id');
+        $q->bindValue(':id', $id);
+        $q->execute();
+        $table = $q->fetchAll();
+
+        $form = $app['form.factory']->createBuilder('form', $movie)
+            ->add('name', 'text')
+            ->add('color', 'text')
+            ->add('year', 'text')
+            ->add('logo', 'text')
+            ->add('preview_url', 'text')
+            ->add('description', 'textarea', array(
+                'attr' => array('rows' => '10')
+            ))
+            ->add('submit', 'submit', array(
+                'attr' => array('class' => 'btn-submit')
+            ))
+            ->getForm();
+
+        return $app['twig']->render('admin/edit-project.html.twig', array('form'=>$form->createView()));
     }
 }

@@ -27,6 +27,19 @@ html, body {
     position: relative;
 }
 
+.edit-form {
+    margin: 0 auto;
+    height: 100%;
+    width: 50%;
+    overflow: auto;
+    position: relative;
+}
+
+.edit-form input,
+.edit-form textarea {
+    width: 100%;
+}
+
 label {
     display: block;
     margin-top: 20px;

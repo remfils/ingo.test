@@ -1,0 +1,9 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block main_title %}
+Editing Project:
+{% endblock %}
+
+{% block content %}
+    {{ form(form, {'method': 'POST', 'attr': {'class': 'edit-form'}}) }}
+{% endblock %}
