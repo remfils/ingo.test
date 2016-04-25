@@ -176,7 +176,7 @@ head, body {
     background-color: white;
 }
 
-.movie-curtain.right {
+.movie-curtain.left {
     width: 0;
     z-index: 99;
     right: auto;

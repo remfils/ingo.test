@@ -40,6 +40,13 @@ html, body {
     width: 100%;
 }
 
+.success-message {
+    background-color: #9feeae;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
 label {
     display: block;
     margin-top: 20px;

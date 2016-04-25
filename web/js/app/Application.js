@@ -23,23 +23,6 @@ export default class Application extends React.Component {
         this.state.pages.push(<IndexPage />);
 
         this.movies = [];
-
-        /*this.movies = [
-            {
-                id: 1,
-                name:"INSULINE MEDICAL - INSUPAD",
-                year: "2001",
-                logo: asset("img/movies/InsuPad-6.png"),
-                color: "#cbfdcb"
-            },
-            {
-                id: 2,
-                name:"Renault Twizzy Brand Campaign",
-                year: "2012",
-                logo: asset("img/movies/Frame_Renault-5.png"),
-                color: "#ccf6e2"
-            }
-        ]*/
     }
 
     componentWillMount() {
@@ -54,7 +37,7 @@ export default class Application extends React.Component {
                     item.logo = asset(item.logo);
                 });
 
-                console.log(data);
+                console.log('this is data: ', data);
 
                 this.movies = data;
             },

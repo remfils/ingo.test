@@ -86,6 +86,27 @@ class AdminController
             ))
             ->getForm();
 
-        return $app['twig']->render('admin/edit-project.html.twig', array('form'=>$form->createView()));
+        $form->handleRequest($req);
+
+        $success_message = '';
+
+        if ( $form->isValid() ) {
+            $data = $form->getData();
+
+            $q = $app['db']->prepare('update projects set name = :name, color = :color, year=:year, logo=:logo where movie_id = :movie_id');
+            $q->bindValue(':name', $data['name']);
+            $q->bindValue(':color', $data['color']);
+            $q->bindValue(':year', $data['year']);
+            $q->bindValue(':logo', $data['logo']);
+            $q->bindValue(':movie_id', $id);
+            $q->execute();
+
+            $success_message = 'project successfully edited!';
+        }
+
+        return $app['twig']->render('admin/edit-project.html.twig', array(
+            'form'=>$form->createView(),
+            'success_message' => $success_message
+        ));
     }
 }
