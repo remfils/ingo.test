@@ -1,0 +1,23 @@
+{% extends 'base.twig' %}
+
+{% block title %}
+Login Page
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ app.asset_path }}/css/admin.css">
+{% endblock %}
+
+{% block main %}
+
+    <pre>
+this is it:{{ pass }};
+    </pre>
+
+{{ form(login_form, {'action': path('login_check'), 'method': 'POST', 'attr': {'class': 'login-form'}}) }}
+
+{% if app.debug == true %}
+    <script type="text/javascript" src="http://livejs.com/live.js"></script>
+{% endif %}
+
+{% endblock %}

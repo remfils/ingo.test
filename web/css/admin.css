@@ -1,0 +1,87 @@
+@font-face {
+    font-family: HelveticaLTStd-Cond;
+    src: url(../fonts/HelveticaLTStd-Cond.otf);
+}
+
+* {
+    font-family: HelveticaLTStd-Cond;
+    /*line-height: 1.5em;*/
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    /*font-size: 1.5em;*/
+}
+
+.login-form {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    width: 50%;
+    overflow: auto;
+    position: relative;
+}
+
+.edit-form {
+    margin: 0 auto;
+    height: 100%;
+    width: 50%;
+    overflow: auto;
+    position: relative;
+}
+
+.edit-form input,
+.edit-form textarea {
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+}
+
+.txt-field {
+    font-size: inherit;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.btn-submit {
+    position: absolute;
+    right: 0px;
+    margin-top: 20px;
+    cursor: pointer;
+
+    font-size: inherit;
+    background-color: transparent;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 3px solid #1ECD97;
+    color: black;
+
+    -webkit-transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+    -moz-transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+    -ms-transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+    -o-transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+    transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+}
+
+.btn-submit:hover {
+    background-color: #1ECD97;
+    border: 3px solid white;
+    color: white;
+}
+
+/* INDEX */
+
+.td-logo {
+    width: 10%;
+}
