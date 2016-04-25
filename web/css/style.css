@@ -176,6 +176,20 @@ head, body {
     background-color: white;
 }
 
+.movie-curtain.right {
+    width: 0;
+    z-index: 99;
+    right: auto;
+    left: 0;
+}
+
+.movie-curtain.right {
+    width: 0;
+    z-index: 99;
+    right: 0;
+    left: auto;
+}
+
 /* PROJECT section: header */
 
 .project-title {
