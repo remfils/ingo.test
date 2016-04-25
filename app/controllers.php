@@ -22,3 +22,5 @@ $app->get('/admin', 'App\\Controllers\\AdminController::indexAction')
     ->bind('admin');
 
 $app->match('/admin/edit/project/{id}', 'App\\Controllers\\AdminController::editProjectAction', '(GET|POST)');
+
+$app->match('/admin/add/project', 'App\\Controllers\\AdminController::addProjectAction', '(GET|POST)');

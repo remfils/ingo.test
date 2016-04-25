@@ -31,7 +31,7 @@ html, body {
     margin: 0 auto;
     height: 100%;
     width: 50%;
-    overflow: auto;
+    padding-bottom: 50px;
     position: relative;
 }
 
@@ -91,4 +91,9 @@ label {
 
 .td-logo {
     width: 10%;
+}
+
+.no-float {
+    display: table-cell;
+    float: none;
 }

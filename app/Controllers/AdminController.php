@@ -59,6 +59,45 @@ class AdminController
         ));
     }
 
+    public function addProjectAction( Request $req, Application $app ) {
+        $form = $app['form.factory']->createBuilder('form', $movie)
+            ->add('name', 'text')
+            ->add('year', 'text')
+            ->add('logo', 'file')
+            ->add('preview_url', 'text')
+            ->add('color', 'text')
+            ->add('description', 'textarea', array(
+                'attr' => array('rows' => '10')
+            ))
+            ->add('submit', 'submit', array(
+                'attr' => array('class' => 'btn-submit')
+            ))
+            ->getForm();
+
+        $form->handleRequest($req);
+
+        $success_message = '';
+
+        if ( $form->isValid() ) {
+            $data = $form->getData();
+
+            $q = $app['db']->prepare('update projects set name = :name, color = :color, year=:year, logo=:logo where movie_id = :movie_id');
+            $q->bindValue(':name', $data['name']);
+            $q->bindValue(':color', $data['color']);
+            $q->bindValue(':year', $data['year']);
+            $q->bindValue(':logo', $data['logo']);
+            $q->bindValue(':movie_id', $id);
+            $q->execute();
+
+            $success_message = 'project successfully edited!';
+        }
+
+        return $app['twig']->render('admin/new-project.html.twig', array(
+            'form'=>$form->createView(),
+            'success_message' => $success_message
+        ));
+    }
+
     public function editProjectAction( Request $req, Application $app ) {
         $id = $req->attributes->get('id');
 
