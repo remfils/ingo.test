@@ -12,23 +12,11 @@ class ApiController
 
     }
 
-    public function allMoviesAction() {
-        $result = array(
-            array(
-                'id' => 1,
-                'name' =>'INSULINE MEDICAL - INSUPAD',
-                'year' => '2001',
-                'logo' => 'img/movies/InsuPad-6.png',
-                'color' => '#cbfdcb'
-            ),
-            array(
-                'id' => 2,
-                'name' =>'Renault Twizzy Brand Campaign',
-                'year' => '2012',
-                'logo' => 'img/movies/Frame_Renault-5.png',
-                'color' => '#ccf6e2'
-            )
-        );
+    public function allMoviesAction( Request $req, Application $app ) {
+        $q = $app['db']->query('select * from projects');
+        $q->execute();
+
+        $result = $q->fetchAll();
 
         return json_encode($result);
     }
