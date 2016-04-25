@@ -4,6 +4,7 @@ var $ = require('jquery');
 import TransitionStore from '../stores/TransitionStore';
 import SmallDescription from './MoviePage/SmallDescription';
 import FullDescription from './MoviePage/FullDescription';
+import Description from './MoviePage/Description';
 import * as TransitionActions from "../actions/TransitionActions";
 import config from '../config';
 
@@ -21,6 +22,10 @@ export default class MoviePage extends React.Component {
             full_description: null
 
         }
+    }
+
+    componentWillMount() {
+
     }
 
     componentDidMount() {
@@ -102,10 +107,6 @@ export default class MoviePage extends React.Component {
                     .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '-100%', ease: this.SWITCH_EASE, onComplete: this.props.transition.callback});*/
                 break;
         }
-    }
-
-    componentWillMount() {
-
     }
 
     componentWillUnmount() {
@@ -228,6 +229,8 @@ export default class MoviePage extends React.Component {
         var small_description = this.state.small_description || null;
         var full_description = <FullDescription movie={this.props.movie}/>;
 
+        var description = <Description movie={this.props.movie}/>
+
         var project_name = this.props.movie.name;
         var project_year = this.props.movie.year;
         console.log(this.props);
@@ -250,9 +253,7 @@ export default class MoviePage extends React.Component {
                     </div>
                 </section>
 
-                { small_description }
-
-                { full_description }
+                { description }
 
                 <footer class="default-side-padding project-footer">
                     <a href="#goTop">Contact</a>
