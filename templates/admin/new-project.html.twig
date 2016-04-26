@@ -2,7 +2,7 @@
 {% set active_page = 'new-project' %}
 
 {% block main_title %}
-    New Project:
+
 {% endblock %}
 
 {% block content %}
@@ -14,11 +14,13 @@
 
     <div class="container">
 
+        <h1>New Project:</h1>
+
         <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="logo" class="col-sm-2 control-label">Logo:</label>
                 <div class="col-sm-10">
-                    <input type="file" id="logo" name="logo" class="form-control" />
+                    <input type="file" id="logo" name="logo" />
                 </div>
             </div>
 
@@ -36,12 +38,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="preview_url" class="col-sm-2 control-label">Preview url:</label>
-                <div class="col-sm-10">
-                    <input type="text" id="preview_url" name="preview_url" class="form-control" />
-                </div>
-            </div>
+            <h2>Short Info:</h2>
 
             <div class="form-group">
                 <div class="col-md-2"></div>
@@ -62,9 +59,18 @@
                     </div>
                 </div>
                 <div class="col-md-1">
-                    <span id="AddButton" type="button" class="btn btn-success" value="add" style="margin-top: 25px">add</span>
+                    <span id="AddField" type="button" class="btn btn-success" style="margin-top: 25px">Add Field</span>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label for="preview_url" class="col-sm-2 control-label">Preview url:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="preview_url" name="preview_url" class="form-control" />
+                </div>
+            </div>
+
+            <h2>Description:</h2>
 
             <div class="form-group">
                 <label for="color" class="col-sm-2 control-label">Color:</label>
@@ -81,8 +87,32 @@
                 </div>
             </div>
 
+            <h2>Comments:</h2>
+
+            <div id="CommentBox">
+
+                <div id=comment_box_1" class="form-group">
+                    <div class="col-sm-2"></div>
+
+                    <div class="col-md-6">
+                        <label for="comment_text_1" class="col-sm-2 control-label">Text:</label>
+                        <div class="col-sm-10">
+                            <textarea name="comment_text_1" id="comment_text_1" class="form-control" ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="comment_img_1" class="col-sm-2 control-label">Image:</label>
+                        <div class="col-sm-10">
+                            <input type="file" name="comment_img_1" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <div class="form-group">
-                <input type="submit" class="pull-right btn btn-success" value="Input Button" / />
+                <input type="submit" class="pull-right btn btn-success" value="Input Button" />
             </div>
         </form>
 
@@ -91,78 +121,7 @@
 
 {% block scripts %}
 
-<script src="{{ app.asset_path }}/js/jquery-2.2.3.min.js"></script>
-<script>
-    var field_count = 1;
-
-    var createInfoRow = function(row_type) {
-        var field_container = document.createElement('div');
-        field_container.classList.add('col-md-4');
-        field_container.classList.add('no-float');
-
-        var field_id = ["field", row_type, field_count].join('-');
-
-        var label = document.createElement('label');
-        label.htmlFor = field_id;
-        label.innerHTML = "Field " + row_type + ":";
-
-        var input = document.createElement('input');
-        input.type = "text";
-        input.id = field_id;
-        input.name = ["field", row_type, field_count].join('_');
-        input.classList.add("form-control");
-
-        field_container.appendChild(label);
-        field_container.appendChild(input);
-
-        return field_container;
-    };
-
-
-
-    $('#AddButton').click(function(){
-        field_count ++;
-
-        var container = document.createElement('div');
-        container.classList.add('form-group');
-        container.id = "field-" + field_count;
-
-        var name_row = createInfoRow('name');
-        container.appendChild(name_row);
-
-        var value_row = createInfoRow('value');
-        container.appendChild(value_row);
-
-        var field_container = document.createElement('div');
-        field_container.classList.add('col-md-4');
-        field_container.classList.add('no-float');
-        field_container.style['vertical-align'] = "bottom";
-        var btn = document.createElement('span');
-        btn.id = "field-remove-" + field_count;
-        btn.innerHTML = "Remove";
-        btn.classList.add('btn');
-        btn.classList.add('btn-sm');
-        btn.classList.add('btn-danger');
-        btn.classList.add('remove');
-        field_container.appendChild(btn);
-        container.appendChild(field_container);
-
-        var table = $("#ProjectInfoTable")[0];
-        table.appendChild(container);
-    });
-
-    $("#ProjectInfoTable").on('click', ".remove", function(){
-        var id = this.id.split("-").pop();
-
-        var $field = $('#field-' + id);
-
-        if ( $field.parent().children().length > 1 ) {
-            $field.remove();
-        }
-        else {
-            alert('There has to be at least one field');
-        }
-    });
-</script>
+<script src="{{ app.asset_path }}/js/admin/jquery-2.2.3.min.js"></script>
+<script src="{{ app.asset_path }}/js/admin/addNewProject-functions.js"></script>
 
 {% endblock %}
