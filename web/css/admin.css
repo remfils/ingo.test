@@ -52,6 +52,11 @@ label {
     margin-top: 20px;
 }
 
+.field-add-image {
+    width: 100%;
+    text-align: center;
+}
+
 .txt-field {
     font-size: inherit;
     -webkit-border-radius: 5px;

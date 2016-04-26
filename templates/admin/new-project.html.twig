@@ -14,32 +14,37 @@
 
     {{ form_start(form, {'method': 'POST', 'attr': {'class': 'edit-form'}}) }}
 
-    {{ form_row(form.name) }}
-    {{ form_row(form.color) }}
-    {{ form_row(form.year) }}
-    {{ form_row(form.logo) }}
+        {{ form_row(form.logo, {'attr': {'class': 'field-add-image'}}) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.year) }}
 
-    <div class="row">
-        <div id="ProjectInfoTable" class="col-md-7">
-            <div id="field-1" class="row">
-                <div class="col-lg-4 no-float">
-                    <label for="field-name-1">Field name:</label>
-                    <input type="text" id="field-name-1" name="field-name-1">
-                </div>
-                <div class="col-lg-4 no-float">
-                    <label for="field-value-1">Field value:</label>
-                    <input type="text" id="field-value-1" name="field-value-1">
-                </div>
-                <div class="col-sm-4 no-float" style="vertical-align: bottom">
-                    <span id="field-remove-1" class="btn btn-sm btn-danger remove">Remove</span>
+        <div class="row">
+            <div id="ProjectInfoTable" class="col-md-7">
+                <div id="field-1" class="row">
+                    <div class="col-lg-4 no-float">
+                        <label for="field-name-1">Field name:</label>
+                        <input type="text" id="field-name-1" name="field-name-1">
+                    </div>
+                    <div class="col-lg-4 no-float">
+                        <label for="field-value-1">Field value:</label>
+                        <input type="text" id="field-value-1" name="field-value-1">
+                    </div>
+                    <div class="col-sm-4 no-float" style="vertical-align: bottom">
+                        <span id="field-remove-1" class="btn btn-sm btn-danger remove">Remove</span>
+                    </div>
                 </div>
             </div>
+            <div class="col-md-5">
+                <span id="AddButton" type="button" class="btn btn-success" value="add" style="margin-top: 25px">add</span>
+            </div>
         </div>
-        <div class="col-md-5">
-            <span id="AddButton" type="button" class="btn btn-success" value="add">add</span>
-        </div>
-    </div>
 
+    {{ form_row(form.preview_url) }}
+
+    <div class="field-add-description"></div>
+        {{ form_row(form.color, {'attr': {'value': '#ff0000'}}) }}
+        {{ form_row(form.description) }}
+    </div>
 
     {{ form_end(form) }}
 {% endblock %}
