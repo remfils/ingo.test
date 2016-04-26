@@ -11,7 +11,8 @@ export default class Description extends React.Component {
 
         this.state = {
             project_info_table: [],
-            preview_url: ''
+            preview_url: '',
+            comments: []
         };
 
         this.preview_iframe = null;
@@ -35,7 +36,8 @@ export default class Description extends React.Component {
                 this.setState({
                     project_info_table: data.table,
                     preview_url: data.preview_url,
-                    description: data.description
+                    description: data.description,
+                    comments: data.comments
                 });
             },
             error: (err) => {
@@ -67,6 +69,17 @@ export default class Description extends React.Component {
                 <td>{ item.field_name }:</td>
                 <td>{ item.field_value }</td>
             </tr>;
+        });
+
+        var comments = this.state.comments.map((item) => {
+            var text_html = {__html: item.text };
+
+            return <div class="info-block">
+                <div class="col-30p info-text" dangerouslySetInnerHTML={text_html} />
+                <div class="col-70p info-img">
+                    <img src={ asset(item.image_url) } alt="Girl"/>
+                </div>
+            </div>
         });
 
         return (
@@ -104,25 +117,7 @@ export default class Description extends React.Component {
 
                 <section className="default-side-padding more-info">
 
-                    <div class="info-block">
-                        <div class="col-30p info-text">
-                            <p>„Braun Olympia“ 2012</p>
-                            <p>Making of photo?s <br/> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</p>
-                        </div>
-                        <div class="col-70p info-img">
-                            <img src={ asset("img/movies/Ebene_136.png") } alt="Girl"/>
-                        </div>
-                    </div>
-
-                    <div class="info-block">
-                        <div class="col-30p info-text">
-                            <p>„Braun Olympia“ 2012</p>
-                            <p>Making of photo?s <br/> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</p>
-                        </div>
-                        <div class="col-70p info-img">
-                            <img src={ asset("img/movies/Ebene_136.png") } alt="Girl"/>
-                        </div>
-                    </div>
+                    { comments }
 
                 </section>
             </div>

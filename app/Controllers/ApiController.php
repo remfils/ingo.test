@@ -38,6 +38,13 @@ class ApiController
 
         $dsc['table'] = $fields;
 
+        $q = $app['db']->prepare('select * from project_comments pc where pc.movie_id = :movie_id');
+        $q->bindValue(':movie_id', $id);
+        $q->execute();
+        $comments = $q->fetchAll();
+
+        $dsc['comments'] = $comments;
+
         return json_encode($dsc);
     }
 
