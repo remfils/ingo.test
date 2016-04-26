@@ -15,9 +15,6 @@ $app->get('/api/movie/full/{id}', 'App\\Controllers\\ApiController::largeMovieDe
 
 /* ADMIN */
 
-$app->match('/login', 'App\\Controllers\\AdminController::loginAction', '(GET|POST)')
-    ->bind('login');
-
 $app->get('/admin', 'App\\Controllers\\AdminController::indexAction')
     ->bind('admin');
 

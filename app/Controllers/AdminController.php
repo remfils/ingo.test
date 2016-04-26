@@ -66,10 +66,19 @@ class AdminController
 
         if ( $req->isMethod('POST') ) {
             $data = array();
+
+            $img_dir = 'img/movies';
+            $upload_directory = dirname($_SERVER["SCRIPT_FILENAME"]) . '/' . $img_dir;
+            $logo_file_name = str_replace(' ', '_', $_FILES['logo']['name']);
+
+            var_dump($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
+
+            /*move_uploaded_file($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
+
             $data['name'] = $req->get('name');
             $data['color'] = $req->get('color');
             $data['year'] = $req->get('year');
-            $data['logo'] = $req->get('logo');
+            $data['logo'] = $img_dir . $logo_file_name;
             $data['preview_url'] = $req->get('preview_url');
             $data['description'] = $req->get('description');
 
@@ -107,7 +116,7 @@ class AdminController
                 $q->bindValue(':field_value', $field['value']);
                 $q->bindValue(':movie_id', $id);
                 $q->execute();
-            }
+            }*/
 
             $success_message = 'project successfully created! ';
         }
