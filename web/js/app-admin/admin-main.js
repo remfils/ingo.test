@@ -1,6 +1,6 @@
 var $ = require('jquery');
 
-import {addFieldButtonsClickListeners, addButtonsClickListeners} from './addPageScripts';
+import {addFieldButtonsClickListeners, addCommentClickListeners} from './addPageScripts';
 
 window.addFieldButtonsClickListeners = addFieldButtonsClickListeners;
-window.addButtonsClickListeners = addButtonsClickListeners;
+window.addCommentClickListeners = addCommentClickListeners;

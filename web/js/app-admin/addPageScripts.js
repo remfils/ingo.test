@@ -19,10 +19,10 @@ export function addFieldButtonsClickListeners() {
         var field_container = document.createElement('div');
         field_container.classList.add('col-md-4');
         field_container.classList.add('no-float');
-        field_container.style['vertical-align'] = "bottom";
+        field_container.style['vertical-align'] = "middle";
         var btn = document.createElement('span');
         btn.id = "field-remove-" + field_count;
-        btn.innerHTML = "Remove";
+        btn.innerHTML = "Remove Field";
         btn.classList.add('btn');
         btn.classList.add('btn-sm');
         btn.classList.add('btn-danger');
@@ -71,6 +71,101 @@ function createInfoRow (row_type) {
     return field_container;
 };
 
-export function addButtonsClickListeners() {
-    $("#CommentBox").on("click", "");
+var comment_count = 1;
+
+export function addCommentClickListeners() {
+    $("#AddComment").on("click", (e) => {
+        comment_count ++;
+
+        var container = createDiv("comment_" + comment_count, "form-group");
+        container.appendChild(createDiv(null, "col-sm-1"));
+
+        var comment_container = createDiv(null, "col-sm-9");
+
+        var id = ["comment", "img", comment_count].join("_");
+
+        var img_container = createDiv(null, "form-group");
+
+        var label = document.createElement("label");
+
+        label.htmlFor = id;
+        label.classList.add("col-sm-2");
+        label.classList.add("control-label");
+        label.innerHTML = "Image:";
+        img_container.appendChild(label);
+
+        var input_container = createDiv(null, "col-sm-10");
+
+        var input = document.createElement("input");
+        input.type = "file";
+        input.id = id;
+        input.name = id;
+        input_container.appendChild(input);
+
+        img_container.appendChild(input_container);
+
+        comment_container.appendChild(img_container);
+
+        var text_container = createDiv(null, "form-group");
+
+        var id = ["comment", "text", comment_count].join("_");
+
+        var text_container = createDiv(null, "form-group");
+
+        var label = document.createElement("label");
+
+        label.htmlFor = id;
+        label.classList.add("col-sm-2");
+        label.classList.add("control-label");
+        label.innerHTML = "Text:";
+        text_container.appendChild(label);
+
+        var input_container = createDiv(null, "col-sm-10");
+
+        var input = document.createElement("textarea");
+        input.id = id;
+        input.name = id;
+        input.classList.add("form-control");
+        input_container.appendChild(input);
+
+        text_container.appendChild(input_container);
+
+        comment_container.appendChild(text_container);
+
+        container.appendChild(comment_container);
+
+        var remove_container = createDiv(null, "col-sm-2");
+
+        var remove_button = document.createElement("span");
+        remove_button.id = ["comment", "remove", comment_container].join("_");
+        remove_button.classList.add("btn");
+        remove_button.classList.add("btn-sm");
+        remove_button.classList.add("btn-danger");
+        remove_button.classList.add("remove");
+        remove_button.innerHTML = "Remove Comment";
+        remove_container.appendChild(remove_button);
+
+        container.appendChild(remove_container);
+
+        $("#CommentBox")[0].appendChild(container);
+    });
+}
+
+function createDiv(id, classes) {
+    var div = document.createElement('div');
+
+    if ( classes instanceof Array ) {
+        classes.map((item) => {
+            div.classList.add(item);
+        });
+    }
+    else if ( classes ) {
+        div.classList.add(classes);
+    }
+
+    if ( id ) {
+        div.id = id;
+    }
+
+    return div;
 }

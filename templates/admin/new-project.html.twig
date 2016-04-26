@@ -53,8 +53,8 @@
                             <label for="field-value-1">Field value:</label>
                             <input type="text" id="field-value-1" name="field_value_1" class="form-control" />
                         </div>
-                        <div class="col-sm-4 no-float" style="vertical-align: bottom">
-                            <span id="field-remove-1" class="btn btn-sm btn-danger remove">Remove</span>
+                        <div class="col-sm-4 no-float" style="vertical-align: middle">
+                            <span id="field-remove-1" class="btn btn-sm btn-danger remove">Remove Field</span>
                         </div>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                     </div>
 
                     <div class="col-sm-2">
-                        <span class="btn btn-sm btn-danger remove">Remove</span>
+                        <span class="btn btn-sm btn-danger remove">Remove Comment</span>
                     </div>
                 </div>
 
@@ -136,5 +136,9 @@
 {% block scripts %}
 
     {{ parent() }}
+
+    <script>
+        addCommentClickListeners();
+    </script>
 
 {% endblock %}

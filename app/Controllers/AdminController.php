@@ -63,6 +63,7 @@ class AdminController
 
     public function addProjectAction( Request $req, Application $app ) {
         $success_message = '';
+        $error_message = '';
 
         if ( $req->isMethod('POST') ) {
             $data = array();
@@ -73,8 +74,6 @@ class AdminController
 
             var_dump($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
 
-            /*move_uploaded_file($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
-
             $data['name'] = $req->get('name');
             $data['color'] = $req->get('color');
             $data['year'] = $req->get('year');
@@ -82,22 +81,8 @@ class AdminController
             $data['preview_url'] = $req->get('preview_url');
             $data['description'] = $req->get('description');
 
-            $q = $app['db']->prepare('INSERT INTO projects (name, color, year, logo) VALUES (:name, :color, :year, :logo)');
-            $q->bindValue(':name', $data['name']);
-            $q->bindValue(':color', $data['color']);
-            $q->bindValue(':year', $data['year']);
-            $q->bindValue(':logo', $data['logo']);
-            $q->execute();
-
-            $id = $app['db']->lastInsertId();
-
-            $q = $app['db']->prepare('INSERT INTO project_description (preview_url, description, movie_id) VALUES (:preview_url, :description, :movie_id)');
-            $q->bindValue(':preview_url', $data['preview_url']);
-            $q->bindValue(':description', $data['description']);
-            $q->bindValue(':movie_id', $id);
-            $q->execute();
-
             $fields = array();
+            $comments = array();
 
             foreach ( $req->request->all() as $key => $value ) {
                 if ( preg_match('/^field_(?P<name>.+)_(?P<id>.+)/', $key, $matches ) ) {
@@ -108,21 +93,62 @@ class AdminController
                         $fields[$matches['id']] = array( $matches['name'] => $value);
                     }
                 }
+                else if ( preg_match('/^comment_(?P<name>.+)_(?P<id>.+)/', $key, $matches ) ) {
+                    $cid = $matches['id'];
+                    if ( isset($comments[$matches['id']]) ) {
+                        $comments[$cid][$matches['name']] = $value;
+                    }
+                    else {
+                        if ( $_FILES['comment_img_' . $cid]['size'] > 1 ) {
+                            $comments[$cid] = array( $matches['name'] => $value);
+                            $comments[$cid]['file'] = $_FILES['comment_img_' . $cid];
+                        }
+                    }
+                }
             }
 
-            foreach ( $fields as $key => $field ) {
-                $q = $app['db']->prepare('INSERT INTO project_fields (movie_id, field_name, field_value) VALUES (:movie_id, :field_name, :field_value)');
-                $q->bindValue(':field_name', $field['name']);
-                $q->bindValue(':field_value', $field['value']);
-                $q->bindValue(':movie_id', $id);
-                $q->execute();
-            }*/
+            if ( file_exists("$upload_directory/$logo_file_name") ) {
+                $error_message = "Logotype file: $logo_file_name already exists!";
+            }
 
-            $success_message = 'project successfully created! ';
+            if ( empty($error_message) ) {
+                /*$q = $app['db']->prepare('INSERT INTO projects (name, color, year, logo) VALUES (:name, :color, :year, :logo)');
+                $q->bindValue(':name', $data['name']);
+                $q->bindValue(':color', $data['color']);
+                $q->bindValue(':year', $data['year']);
+                $q->bindValue(':logo', $data['logo']);
+                $q->execute();*/
+
+                $id = $app['db']->lastInsertId();
+
+                // move_uploaded_file($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
+
+                /*foreach ( $comments as $key => $comment ) {
+                    $file_name = $id . '_' . str_replace(' ', '_', $comment['name']);
+                    move_uploaded_file($comment["tmp_name"], "$upload_directory/comments/$file_name");
+                }*/
+
+                /*$q = $app['db']->prepare('INSERT INTO project_description (preview_url, description, movie_id) VALUES (:preview_url, :description, :movie_id)');
+                $q->bindValue(':preview_url', $data['preview_url']);
+                $q->bindValue(':description', $data['description']);
+                $q->bindValue(':movie_id', $id);
+                $q->execute();*/
+
+                /*foreach ( $fields as $key => $field ) {
+                    $q = $app['db']->prepare('INSERT INTO project_fields (movie_id, field_name, field_value) VALUES (:movie_id, :field_name, :field_value)');
+                    $q->bindValue(':field_name', $field['name']);
+                    $q->bindValue(':field_value', $field['value']);
+                    $q->bindValue(':movie_id', $id);
+                    $q->execute();
+                }*/
+
+                $success_message = 'project successfully created! ';
+            }
         }
 
         return $app['twig']->render('admin/new-project.html.twig', array(
-            'success_message' => $success_message
+            'success_message' => $success_message,
+            'error_message' => $error_message
         ));
     }
 
