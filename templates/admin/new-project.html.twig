@@ -12,41 +12,81 @@
         </h2>
     {% endif %}
 
-    {{ form_start(form, {'method': 'POST', 'attr': {'class': 'edit-form'}}) }}
+    <div class="container">
 
-        {{ form_row(form.logo, {'attr': {'class': 'field-add-image'}}) }}
-        {{ form_row(form.name) }}
-        {{ form_row(form.year) }}
-
-        <div class="row">
-            <div id="ProjectInfoTable" class="col-md-7">
-                <div id="field-1" class="row">
-                    <div class="col-lg-4 no-float">
-                        <label for="field-name-1">Field name:</label>
-                        <input type="text" id="field-name-1" name="field-name-1">
-                    </div>
-                    <div class="col-lg-4 no-float">
-                        <label for="field-value-1">Field value:</label>
-                        <input type="text" id="field-value-1" name="field-value-1">
-                    </div>
-                    <div class="col-sm-4 no-float" style="vertical-align: bottom">
-                        <span id="field-remove-1" class="btn btn-sm btn-danger remove">Remove</span>
-                    </div>
+        <form action="" method="POST" class="form-horizontal">
+            <div class="form-group">
+                <label for="logo" class="col-sm-2 control-label">Logo:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="logo" name="logo" class="form-control" />
                 </div>
             </div>
-            <div class="col-md-5">
-                <span id="AddButton" type="button" class="btn btn-success" value="add" style="margin-top: 25px">add</span>
+
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Name:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="name" name="name" class="form-control" />
+                </div>
             </div>
-        </div>
 
-    {{ form_row(form.preview_url) }}
+            <div class="form-group">
+                <label for="year" class="col-sm-2 control-label">Year:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="year" name="year" class="form-control" />
+                </div>
+            </div>
 
-    <div class="field-add-description"></div>
-        {{ form_row(form.color, {'attr': {'value': '#ff0000'}}) }}
-        {{ form_row(form.description) }}
+            <div class="form-group">
+                <label for="preview_url" class="col-sm-2 control-label">Preview url:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="preview_url" name="preview_url" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2"></div>
+
+                <div id="ProjectInfoTable" class="col-md-9">
+                    <div id="field-1" class="form-group">
+                        <div class="col-lg-4 no-float">
+                            <label for="field-name-1">Field name:</label>
+                            <input type="text" id="field-name-1" name="field_name_1" class="form-control" />
+                        </div>
+                        <div class="col-lg-4 no-float">
+                            <label for="field-value-1">Field value:</label>
+                            <input type="text" id="field-value-1" name="field_value_1" class="form-control" />
+                        </div>
+                        <div class="col-sm-4 no-float" style="vertical-align: bottom">
+                            <span id="field-remove-1" class="btn btn-sm btn-danger remove">Remove</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <span id="AddButton" type="button" class="btn btn-success" value="add" style="margin-top: 25px">add</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="color" class="col-sm-2 control-label">Color:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="color" name="color" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">Description:</label>
+                <div class="col-sm-10">
+                    <textarea type="text" id="description" name="description" class="form-control">
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="pull-right btn btn-success" value="Input Button" / />
+            </div>
+        </form>
+
     </div>
-
-    {{ form_end(form) }}
 {% endblock %}
 
 {% block scripts %}
@@ -60,7 +100,7 @@
         field_container.classList.add('col-md-4');
         field_container.classList.add('no-float');
 
-        var field_id = "field-" + row_type + "-" + 1;
+        var field_id = ["field", row_type, field_count].join('-');
 
         var label = document.createElement('label');
         label.htmlFor = field_id;
@@ -69,6 +109,8 @@
         var input = document.createElement('input');
         input.type = "text";
         input.id = field_id;
+        input.name = ["field", row_type, field_count].join('_');
+        input.classList.add("form-control");
 
         field_container.appendChild(label);
         field_container.appendChild(input);
@@ -82,7 +124,7 @@
         field_count ++;
 
         var container = document.createElement('div');
-        container.classList.add('row');
+        container.classList.add('form-group');
         container.id = "field-" + field_count;
 
         var name_row = createInfoRow('name');
