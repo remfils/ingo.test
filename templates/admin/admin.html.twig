@@ -1,5 +1,6 @@
 {% extends 'base.twig' %}
-{% set active_page = 'admin' %}
+
+{% set active_page = app.request.getRequestUri() %}
 
 {% block styles %}
     <link rel="stylesheet" href="{{ app.asset_path }}/css/bootstrap.min.css">
@@ -14,14 +15,14 @@
                 <a class="navbar-brand" href="/">INGO</a>
             </div>
             <ul class="nav navbar-nav">
-                <li {% if active_page == 'admin' %} class="active" {% endif %}><a href="{{ path('admin') }}">Admin</a></li>
-                <li {% if active_page == 'new-project' %} class="active" {% endif %}><a href="{{ 'admin/add/project' }}">Add project</a></li>
+                <li {% if active_page == '/admin' %} class="active" {% endif %}><a href="{{ path('admin') }}">Admin</a></li>
+                <li {% if active_page == '/admin/add/project' %} class="active" {% endif %}><a href="{{ 'admin/add/project' }}">Add project</a></li>
                 <li><a href="{{ path('admin_logout') }}">Logout</a></li>
             </ul>
         </div>
     </nav>
 
-    <h1>{% block main_title %}Current Projects:{% endblock %}</h1>
+    <h1>{% block main_title %}Admin Page{% endblock %}</h1>
 
     {% block content %}
 
