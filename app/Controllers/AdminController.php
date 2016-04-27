@@ -209,4 +209,26 @@ class AdminController
             'success_message' => $success_message
         ));
     }
+
+    public function removeProjectAction( Request $req, Application $app ) {
+        $id = $req->attributes->get('id');
+
+        $q = $app['db']->prepare('DELETE FROM projects WHERE id=:id');
+        $q->bindValue(':id', $id);
+        $q->execute();
+
+        $remove_from = function($table) use ($app, $id) {
+            $q = $app['db']->prepare('DELETE FROM '. $table .' WHERE id=:movie_id');
+            $q->bindValue(':movie_id', $id);
+            $q->execute();
+        };
+
+        $remove_from('project_description');
+
+        $remove_from('project_fields');
+
+        $remove_from('project_comments');
+
+        return $app->redirect('/admin');
+    }
 }

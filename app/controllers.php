@@ -21,3 +21,5 @@ $app->get('/admin', 'App\\Controllers\\AdminController::indexAction')
 $app->match('/admin/edit/project/{id}', 'App\\Controllers\\AdminController::editProjectAction', '(GET|POST)');
 
 $app->match('/admin/add/project', 'App\\Controllers\\AdminController::addProjectAction', '(GET|POST)');
+
+$app->get('/admin/remove/project/{id}', 'App\\Controllers\\AdminController::removeProjectAction');

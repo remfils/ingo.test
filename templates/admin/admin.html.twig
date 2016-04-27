@@ -43,7 +43,7 @@
                 <td>{{ project.year }}</td>
                 <td>
                     <a href="/admin/edit/project/{{ project.id }}" class="btn btn-warning">Edit</a>
-                    {#<a href="ya.ru" class="btn btn-danger">Remove</a>#}
+                    <a href="/admin/remove/project/{{ project.id }}" class="btn btn-danger">Remove</a>
                 </td>
             </tr>
         {% endfor %}
