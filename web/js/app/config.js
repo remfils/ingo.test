@@ -1,5 +1,5 @@
 var config = {
-    DEBUG: false,
+    DEBUG: true,
     SITE_NAME: "http://ingo-test.tk/"
 };
 
@@ -8,5 +8,5 @@ if ( config.DEBUG ) {
 };
 
 config['ASSET_PATH'] = config.SITE_NAME + 'web/';
-/*asdfasfd*/
+
 export default config;

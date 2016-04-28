@@ -41,10 +41,10 @@ export default class Application extends React.Component {
 
                 this.movies = data;
 
-                for ( var movie in this.movies ) {
+                /*for ( var movie in this.movies ) {
                     var img = new Image();
                     img.src = movie.logo;
-                }
+                }*/
             },
             error: (err) => {
                 console.log('error ' + err);

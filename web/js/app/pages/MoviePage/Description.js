@@ -9,6 +9,8 @@ export default class Description extends React.Component {
     constructor() {
         super();
 
+        this.is_listening = false;
+
         this.state = {
             project_info_table: [],
             preview_url: '',
@@ -18,12 +20,25 @@ export default class Description extends React.Component {
         this.preview_iframe = null;
     }
 
+    addEventListeners() {
+        if ( !this.is_listening ) {
+            this.is_listening = true;
+            $(window).resize(this.resizePreviewIframe.bind(this));
+        }
+    }
+
+    removeEventListeners() {
+        $(window).off('resize', this.resizePreviewIframe);
+    }
+
+    componentWillUnmount() {
+        this.removeEventListeners();
+    }
+
     componentDidMount() {
         console.log('start of downloading sm dsc');
 
         this.preview_iframe = $('.project-demo-video > iframe')[0];
-
-        $(window).resize(this.resizePreviewIframe.bind(this));
 
         this.resizePreviewIframe();
 
@@ -46,9 +61,12 @@ export default class Description extends React.Component {
         });
     }
 
-    componentWillUnmount() {
-        $(window).off('resize', this.resizePreviewIframe);
+    componentDidUpdate() {
+        this.preview_iframe = $('.project-demo-video > iframe')[0];
+
+        this.resizePreviewIframe();
     }
+
 
     resizePreviewIframe() {
         if ( this.preview_iframe ) {
@@ -81,6 +99,10 @@ export default class Description extends React.Component {
                 </div>
             </div>
         });
+
+        this.addEventListeners();
+
+        this.resizePreviewIframe();
 
         return (
             <div>
