@@ -1,0 +1,15 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block main_title %}
+Editing Project:
+{% endblock %}
+
+{% block content %}
+    {% if success_message is not empty %}
+        <h2 class="success-message">
+            {{ success_message }}
+        </h2>
+    {% endif %}
+
+    {{ form(form, {'method': 'POST', 'attr': {'class': 'edit-form'}}) }}
+{% endblock %}

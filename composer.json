@@ -6,7 +6,12 @@
         "symfony/translation": "2.*",
         "symfony/twig-bridge": "^2.8",
         "symfony/yaml": "^2.8",
-        "symfony/config": "^2.8"
+        "symfony/config": "^2.8",
+        "symfony/validator": "^2.8",
+        "symfony/form": "^2.8",
+        "symfony/security-csrf": "^2.8",
+        "symfony/security": "^2.8",
+        "doctrine/dbal": "^2.5"
     },
     "authors": [
         {

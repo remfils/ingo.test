@@ -1,0 +1,58 @@
+{% extends 'base.twig' %}
+
+{% set active_page = app.request.getRequestUri() %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ app.asset_path }}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ app.asset_path }}/css/admin.css">
+{% endblock %}
+
+{% block main %}
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">INGO</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li {% if active_page == '/admin' %} class="active" {% endif %}><a href="{{ path('admin') }}">Admin</a></li>
+                <li {% if active_page == '/admin/add/project' %} class="active" {% endif %}><a href="{{ 'admin/add/project' }}">Add project</a></li>
+                <li><a href="{{ path('admin_logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1>{% block main_title %}Admin Page{% endblock %}</h1>
+
+    {% block content %}
+
+    <table class="table table-striped">
+        <tr>
+            <th>id</th>
+            <th>logo</th>
+            <th>Project name</th>
+            <th>Project Year</th>
+            <th>Action</th>
+        </tr>
+
+        {% for project in projects %}
+            <tr>
+                <td>{{ project.id }}</td>
+                <td class="td-logo"><img src="{{ app.asset_path }}{{ project.logo }}" alt="logo" width="100%"/></td>
+                <td>{{ project.name }}</td>
+                <td>{{ project.year }}</td>
+                <td>
+                    <a href="/admin/edit/project/{{ project.id }}" class="btn btn-warning">Edit</a>
+                    <a href="/admin/remove/project/{{ project.id }}" class="btn btn-danger">Remove</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% endblock %}
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ app.asset_path }}/js/admin.bundle.js"></script>
+{% endblock %}

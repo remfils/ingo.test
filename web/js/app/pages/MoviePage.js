@@ -4,12 +4,28 @@ var $ = require('jquery');
 import TransitionStore from '../stores/TransitionStore';
 import SmallDescription from './MoviePage/SmallDescription';
 import FullDescription from './MoviePage/FullDescription';
+import Description from './MoviePage/Description';
 import * as TransitionActions from "../actions/TransitionActions";
 import config from '../config';
 
 export default class MoviePage extends React.Component {
     constructor() {
         super();
+
+        this.SWITCH_DURATION = 1.2;
+        this.SWITCH_EASE = Expo.easeOut;
+        this.SWITCH_A_DELAY = -this.SWITCH_DURATION * 2.8 / 3;
+        this.SWITCH_B_DELAY = -this.SWITCH_DURATION * 2.3 / 3;
+
+        this.state = {
+            small_description: null,
+            full_description: null
+
+        }
+    }
+
+    componentWillMount() {
+
     }
 
     componentDidMount() {
@@ -25,11 +41,6 @@ export default class MoviePage extends React.Component {
 
         var movie_title = $(movie_id + ' .project-title h1')[0];
 
-        this.state = {
-            small_description: null,
-            large_description: null
-        };
-
         var $this = $(movie_id)[0];
 
         switch ( this.props.transition.type ) {
@@ -39,39 +50,70 @@ export default class MoviePage extends React.Component {
                     return;
                 }
                 TweenLite.set($this, {top: '100%'});
-                tl.to($this, 1, {delay:-0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app)});
+
+                var time_line = new TimelineLite();
+
+                this.props.transition.prev_page.leaveToMovies(time_line);
+
+                time_line.to($this, 1, {delay:-0.5, top: '0', onComplete: this.props.app.switchPagesAfterTransition.bind(this.props.app)});
                 break;
             case "MOVIE-MOVIE_RIGHT":
+                var time_line = new TimelineLite();
+
                 var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
                 var cover = $("#Movie" + this.props.movie.id + " .movie-curtain")[0];
-                cover.style['z-index'] = 0;
-                cover.style['right'] = 0;
-                logo.style['z-index'] = 99;
+                cover.classList.add('right');
+                logo.style['z-index'] = 100;
 
-                tl.from(movie_title, 1, {delay: -1, opacity: '0'})
-                    .to(cover, 1, {delay: -0.5, width: "100%"})
-                    .from(logo, 1, { delay: -0.5 ,x: '100%', onComplete: this.props.transition.callback});
+                this.props.transition.prev_page.leaveToMovie(time_line, true);
+
+                TweenLite.from(movie_title, 1, {delay: 0.1, opacity: '0'});
+
+                time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
+                    .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '100%', ease: this.SWITCH_EASE, onComplete: () => {
+                        //this.setState({small_description: <SmallDescription movie={this.props.movie} />});
+                        cover.classList.remove('right');
+                        cover.style['width'] = 0;
+                        this.props.transition.callback();
+                    }});
                 break;
             case "MOVIE-MOVIE_LEFT":
+                var time_line = new TimelineLite();
+
+                var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
+                var cover = $("#Movie" + this.props.movie.id + " .movie-curtain")[0];
+                cover.classList.add('left');
+                logo.style['z-index'] = 100;
+
+                this.props.transition.prev_page.leaveToMovie(time_line, false);
+
+                TweenLite.from(movie_title, 1, {delay: 0.1, opacity: '0'});
+
+                time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
+                    .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '-100%', ease: this.SWITCH_EASE, onComplete: () => {
+                        // this.setState({small_description: <SmallDescription movie={this.props.movie} />});
+                        /*asdfsd*/
+                        cover.classList.remove('left');
+                        cover.style['width'] = 0;
+                        this.props.transition.callback();
+                    }});
+
+                /*var time_line = new TimelineLite();
+
                 var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
                 var cover = $("#Movie" + this.props.movie.id + " .movie-curtain")[0];
                 cover.style['z-index'] = 0;
                 cover.style['left'] = 0;
                 logo.style['z-index'] = 99;
 
-                tl.from(movie_title, 1, {delay: -1, opacity: '0'})
-                    .to(cover, 1, {delay: -0.5, width: "100%"})
-                    .from(logo, 1, { delay: -0.5 ,x: '-100%', onComplete: this.props.transition.callback});
+                this.props.transition.prev_page.leaveToRightMovie(time_line);
+
+                TweenLite.from(movie_title, 1, {delay: 0.1, opacity: '0'});
+
+                time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
+                    .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '-100%', ease: this.SWITCH_EASE, onComplete: this.props.transition.callback});*/
                 break;
         }
-
-        $('main').scroll((e)=>{
-            console.log(e);
-        });
-    }
-
-    componentWillMount() {
-        this.setState({small_description: <SmallDescription movie={this.props.movie} />});
     }
 
     componentWillUnmount() {
@@ -116,13 +158,21 @@ export default class MoviePage extends React.Component {
         tl.to(cover, 1, {width: "100%"})
             .to(movie_title, 0.4, {delay: -1, x: "-200%"});
 
-        TransitionActions.fromMovieToMovie(false, tl,  {
+        TransitionActions.fromMovieToMovie(false, this,  {
             next_movie,
             callback: ()=>{
                 TweenLite.set(movie_title, {x: 0});
                 cover.style['width'] = 0;
                 this.props.app.switchPagesAfterTransition();
             }});
+
+        /*TransitionActions.fromMovieToMovie(false, tl,  {
+            next_movie,
+            callback: ()=>{
+                TweenLite.set(movie_title, {x: 0});
+                cover.style['width'] = 0;
+                this.props.app.switchPagesAfterTransition();
+            }});*/
 
         return false;
     }
@@ -146,10 +196,6 @@ export default class MoviePage extends React.Component {
         $this.style['z-index'] = 0;
 
         var cover = $(movie_id + " .movie-curtain")[0];
-        cover.style['width'] = 0;
-        cover.style['z-index'] = 99;
-        cover.style['right'] = 0;
-        cover.style['left'] = 'auto';
 
         var movie_title = $(movie_id + ' .project-title h1')[0];
 
@@ -158,10 +204,7 @@ export default class MoviePage extends React.Component {
 
         var tl = new TimelineLite();
 
-        tl.to(cover, 1, {width: "100%"})
-            .to(movie_title, 0.4, {delay: -1, x: "-200%"});
-
-        TransitionActions.fromMovieToMovie(true, tl,  {
+        TransitionActions.fromMovieToMovie(true, this,  {
             next_movie,
             callback: ()=>{
                 TweenLite.set(movie_title, {x: 0});
@@ -172,11 +215,28 @@ export default class MoviePage extends React.Component {
         return false;
     }
 
+    leaveToMovie(time_line, is_right) {
+        var m_id = this.props.movie.id,
+            movie_id = "#Movie" + m_id,
+            movie_title = $(movie_id + ' .project-title h1')[0],
+            cover = $(movie_id + " .movie-curtain")[0];
+
+        cover.classList.add( is_right ? 'right' : 'left');
+
+        TweenLite.to(movie_title, 0.4, {x: "-200%"});
+
+        time_line.to(cover, this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE});
+
+        return time_line;
+    }
+
     render() {
         var window_scroll = document.body.scrollTop;
 
         var small_description = this.state.small_description || null;
         var full_description = <FullDescription movie={this.props.movie}/>;
+
+        var description = <Description movie={this.props.movie}/>
 
         var project_name = this.props.movie.name;
         var project_year = this.props.movie.year;
@@ -200,9 +260,7 @@ export default class MoviePage extends React.Component {
                     </div>
                 </section>
 
-                { small_description }
-
-                { full_description }
+                { description }
 
                 <footer class="default-side-padding project-footer">
                     <a href="#goTop">Contact</a>

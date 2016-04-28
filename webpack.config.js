@@ -2,10 +2,13 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './web/js/app/main.js',
+    entry: {
+        main: './web/js/app/main.js',
+        admin: './web/js/app-admin/admin-main.js'
+    },
     output: {
         path: './web/js/',
-        filename: 'bundle.js'
+        filename: '[name].bundle.js'
     },
     devtool: 'source-map',
     module: {

@@ -4,6 +4,9 @@ import IndexPage from './pages/IndexPage';
 import MoviePage from './pages/MoviePage';
 import TransitionStore from './stores/TransitionStore';
 import { asset } from './funcitons';
+import config from './config';
+
+var $ = require('jquery');
 
 export default class Application extends React.Component {
     constructor() {
@@ -19,26 +22,29 @@ export default class Application extends React.Component {
         this.state.pages = [];
         this.state.pages.push(<IndexPage />);
 
-        this.movies = [
-            {
-                id: 1,
-                name:"INSULINE MEDICAL - INSUPAD",
-                year: "2001",
-                logo: asset("img/movies/InsuPad-6.png"),
-                color: "#cbfdcb"
-            },
-            {
-                id: 2,
-                name:"Renault Twizzy Brand Campaign",
-                year: "2012",
-                logo: asset("img/movies/Frame_Renault-5.png"),
-                color: "#ccf6e2"
-            }
-        ]
+        this.movies = [];
     }
 
     componentWillMount() {
         TransitionStore.on("leave", this.leavePageListener.bind(this));
+
+        $.ajax({
+            url: config.SITE_NAME + 'api/all-movies',
+            dataType: 'json',
+            success: (data) => {
+                console.log('finished of downloading movies: ' + data.table);
+                data.forEach((item) => {
+                    item.logo = asset(item.logo);
+                });
+
+                console.log('this is data: ', data);
+
+                this.movies = data;
+            },
+            error: (err) => {
+                console.log('error ' + err);
+            }
+        });
     }
 
     gotoMovie(from, shared_timeline) {
