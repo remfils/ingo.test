@@ -79,7 +79,7 @@ class AdminController
             $data['year'] = $req->get('year');
             $data['logo'] = $img_dir . '/' . $logo_file_name;
             $data['preview_url'] = $req->get('preview_url');
-            $data['description'] = $req->get('description');
+            $data['description'] = $comment["text"] = str_replace("\n", '<br/>', trim($req->get('description')));;
 
             $fields = array();
             $comments = array();
@@ -138,6 +138,8 @@ class AdminController
                 }
 
                 foreach ( $comments as $key => $comment ) {
+                    $comment["text"] = str_replace("\n", '<br/>', trim($comment["text"]));
+
                     $file_name = $id . '_' . str_replace(' ', '_', $comment['file'][name]);
                     var_dump("$upload_directory/comments/$file_name");
                     move_uploaded_file($comment['file']["tmp_name"], "$upload_directory/comments/$file_name");

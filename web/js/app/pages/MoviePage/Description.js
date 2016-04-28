@@ -62,7 +62,7 @@ export default class Description extends React.Component {
         var name = mov.name;
         var style_description = {"background-color": mov.color};
 
-        console.log("test:::");
+        var description_html = {__html: this.state.description };
 
         var table = this.state.project_info_table.map((item) => {
             return <tr>
@@ -109,9 +109,8 @@ export default class Description extends React.Component {
                             <h1>ZUM PROJEKT:</h1>
                             <h1><strong>{mov.name} {mov.year}</strong></h1>
                         </div>
-                        <div class="col-70p">
-                            <p>{this.state.description}</p>
-                        </div>
+                        
+                        <div class="col-70p" dangerouslySetInnerHTML={description_html}></div>
                     </div>
                 </section>
 
