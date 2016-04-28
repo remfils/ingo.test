@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 27 2016 г., 01:25
+-- Время создания: Апр 28 2016 г., 17:03
 -- Версия сервера: 5.5.48
 -- Версия PHP: 5.4.45
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `year` int(11) NOT NULL,
   `logo` varchar(255) NOT NULL,
   `movie_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
 
 --
 -- Дамп данных таблицы `projects`
@@ -51,17 +51,18 @@ INSERT INTO `projects` (`id`, `name`, `color`, `year`, `logo`, `movie_id`) VALUE
 
 CREATE TABLE IF NOT EXISTS `project_comments` (
   `id` int(11) NOT NULL,
-  `movie_id` int(11) DEFAULT NULL,
-  `image_url` varchar(255) DEFAULT NULL,
-  `text` text
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `movie_id` int(11) NOT NULL,
+  `image_url` varchar(255) NOT NULL,
+  `text` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `project_comments`
 --
 
 INSERT INTO `project_comments` (`id`, `movie_id`, `image_url`, `text`) VALUES
-(1, 1, 'img/movies/comments/Ebene_136.png', '„Braun Olympia“ 2012<br/>\r\n<br/>\r\nMaking of photo´s<br/>\r\nLorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.');
+(1, 1, 'img/movies/comments/5_comment.png', '„Braun Olympia“ 2012<br/><br/>Making of photo´s<br/>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.'),
+(2, 1, 'img/movies/comments/5_comment.png', '„Braun Olympia“ 2012<br/><br/>Making of photo´s<br/>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.');
 
 -- --------------------------------------------------------
 
@@ -74,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `project_description` (
   `preview_url` varchar(255) DEFAULT NULL,
   `description` text,
   `movie_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
 
 --
 -- Дамп данных таблицы `project_description`
@@ -95,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `project_fields` (
   `movie_id` int(11) DEFAULT NULL,
   `field_name` varchar(255) DEFAULT NULL,
   `field_value` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=2730;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=2730;
 
 --
 -- Дамп данных таблицы `project_fields`
@@ -104,10 +105,20 @@ CREATE TABLE IF NOT EXISTS `project_fields` (
 INSERT INTO `project_fields` (`id`, `movie_id`, `field_name`, `field_value`) VALUES
 (1, 1, 'Agentur', 'tsitrone medien GmbH & Co. KG'),
 (2, 1, 'Kamera', 'Ingo Scheel'),
-(3, 1, 'Schnitt', 'Ingo Scheel'),
-(4, 2, 'Produktion', 'Ingo Scheel'),
-(5, 2, 'DoP', 'Ingo Scheel'),
-(6, 2, 'Schnitt', 'Ingo Scheel');
+(8, 3, 'Camera', 'username'),
+(9, 3, 'Field', 'username'),
+(10, 4, '1', '1'),
+(11, 4, '1', '1'),
+(12, 4, '1', '1'),
+(13, 5, 'Actor', 'username'),
+(14, 5, 'Camera', 'username'),
+(15, 5, 'Name', 'username'),
+(16, 6, 'Agentur', 'This'),
+(17, 6, 'Kamera', 'Name'),
+(18, 6, 'Schnitt', 'teset'),
+(19, 7, 'Agentur', 'asdf'),
+(20, 7, 'Kamera', 'asfd'),
+(21, 7, 'Schnitt', 'asdf');
 
 -- --------------------------------------------------------
 
@@ -172,22 +183,22 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT для таблицы `project_comments`
 --
 ALTER TABLE `project_comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT для таблицы `project_description`
 --
 ALTER TABLE `project_description`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT для таблицы `project_fields`
 --
 ALTER TABLE `project_fields`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
