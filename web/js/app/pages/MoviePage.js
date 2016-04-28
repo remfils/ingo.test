@@ -19,8 +19,8 @@ export default class MoviePage extends React.Component {
 
         this.state = {
             small_description: null,
-            full_description: null
-
+            full_description: null,
+            description: null
         }
     }
 
@@ -71,7 +71,8 @@ export default class MoviePage extends React.Component {
 
                 time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
                     .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '100%', ease: this.SWITCH_EASE, onComplete: () => {
-                        //this.setState({small_description: <SmallDescription movie={this.props.movie} />});
+                        console.log("dscription is set");
+                        this.setState({description: <Description movie={this.props.movie}/>});
                         cover.classList.remove('right');
                         cover.style['width'] = 0;
                         this.props.transition.callback();
@@ -91,8 +92,7 @@ export default class MoviePage extends React.Component {
 
                 time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
                     .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '-100%', ease: this.SWITCH_EASE, onComplete: () => {
-                        // this.setState({small_description: <SmallDescription movie={this.props.movie} />});
-                        /*asdfsd*/
+                        this.setState({description: <Description movie={this.props.movie}/>});
                         cover.classList.remove('left');
                         cover.style['width'] = 0;
                         this.props.transition.callback();
@@ -236,7 +236,7 @@ export default class MoviePage extends React.Component {
         var small_description = this.state.small_description || null;
         var full_description = <FullDescription movie={this.props.movie}/>;
 
-        var description = <Description movie={this.props.movie}/>
+        var description = this.state.description;
 
         var project_name = this.props.movie.name;
         var project_year = this.props.movie.year;
