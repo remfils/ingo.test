@@ -53,7 +53,7 @@ Editing Project:
                     <div id="field-{{ field.id }}" class="form-group">
                         <div class="col-lg-4 no-float">
                             <label for="field-name-{{ field.id }}">Field name:</label>
-                            <input type="text" id="field-name-{{ field.id }}" name="field_name_1" class="form-control"  value="{{ field.field_name }}"/>
+                            <input type="text" id="field-name-{{ field.id }}" name="field_name_{{ field.id }}" class="form-control"  value="{{ field.field_name }}"/>
                         </div>
                         <div class="col-lg-4 no-float">
                             <label for="field-value-{{ field.id }}">Field value:</label>
@@ -112,14 +112,14 @@ Editing Project:
                                 <img src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image" width="100%">
                             </div>
                             <div class="col-sm-6">
-                                <input type="file" name="comment_img_1" />
+                                <input type="file" name="comment_img_{{ comment.id }}" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="comment_text_1" class="col-sm-2 control-label">Text:</label>
+                            <label for="comment_text_{{ comment.id }}" class="col-sm-2 control-label">Text:</label>
                             <div class="col-sm-10">
-                                <textarea name="comment_text_1" id="comment_text_1" class="form-control" >{{ comment.text }}</textarea>
+                                <textarea name="comment_text_{{ comment.id }}" id="comment_text_{{ comment.id }}" class="form-control" >{{ comment.text }}</textarea>
                             </div>
                         </div>
                     </div>

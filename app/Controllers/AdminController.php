@@ -72,7 +72,7 @@ class AdminController
             $upload_directory = dirname($_SERVER["SCRIPT_FILENAME"]) . '/' . $img_dir;
             $logo_file_name = str_replace(' ', '_', $_FILES['logo']['name']);
 
-            var_dump($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
+            // var_dump($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
 
             $data['name'] = $req->get('name');
             $data['color'] = $req->get('color');
@@ -81,31 +81,9 @@ class AdminController
             $data['preview_url'] = $req->get('preview_url');
             $data['description'] = $comment["text"] = str_replace("\n", '<br/>', trim($req->get('description')));;
 
-            $fields = array();
-            $comments = array();
-
-            foreach ( $req->request->all() as $key => $value ) {
-                if ( preg_match('/^field_(?P<name>.+)_(?P<id>.+)/', $key, $matches ) ) {
-                    if ( isset($fields[$matches['id']]) ) {
-                        $fields[$matches['id']][$matches['name']] = $value;
-                    }
-                    else {
-                        $fields[$matches['id']] = array( $matches['name'] => $value);
-                    }
-                }
-                else if ( preg_match('/^comment_(?P<name>.+)_(?P<id>.+)/', $key, $matches ) ) {
-                    $cid = $matches['id'];
-                    if ( isset($comments[$matches['id']]) ) {
-                        $comments[$cid][$matches['name']] = $value;
-                    }
-                    else {
-                        if ( $_FILES['comment_img_' . $cid]['size'] > 1 ) {
-                            $comments[$cid] = array( $matches['name'] => $value);
-                            $comments[$cid]['file'] = $_FILES['comment_img_' . $cid];
-                        }
-                    }
-                }
-            }
+            $data = $this->getFieldsAndCommentsFromArray($req->request->all());
+            $fields = $data['fields'];
+            $comments = $data['comments'];
 
             /*if ( file_exists("$upload_directory/$logo_file_name") ) {
                 $error_message = "Logotype file: $logo_file_name already exists!";
@@ -161,6 +139,39 @@ class AdminController
         ));
     }
 
+    private function getFieldsAndCommentsFromArray( $data, $images_required = true ) {
+        $fields = array();
+        $comments = array();
+
+        foreach ( $data as $key => $value ) {
+            if ( preg_match('/^field_(?P<name>.+)_(?P<id>.+)/', $key, $matches ) ) {
+                if ( isset($fields[$matches['id']]) ) {
+                    $fields[$matches['id']][$matches['name']] = $value;
+                }
+                else {
+                    $fields[$matches['id']] = array( $matches['name'] => $value);
+                }
+            }
+            else if ( preg_match('/^comment_(?P<name>.+)_(?P<id>.+)/', $key, $matches ) ) {
+                $cid = $matches['id'];
+                if ( isset($comments[$matches['id']]) ) {
+                    $comments[$cid][$matches['name']] = $value;
+                }
+                else {
+                    if ( !$images_required or $_FILES['comment_img_' . $cid]['size'] > 1 ) {
+                        $comments[$cid] = array( $matches['name'] => $value);
+                        $comments[$cid]['file'] = $_FILES['comment_img_' . $cid];
+                    }
+                }
+            }
+        }
+
+        return array(
+            'fields' => $fields,
+            'comments' => $comments
+        );
+    }
+
     public function editProjectAction( Request $req, Application $app ) {
         $id = $req->attributes->get('id');
 
@@ -193,9 +204,56 @@ class AdminController
     }
 
     public function editProjectPostAction( Request $req, Application $app ) {
-        
+        $id = $req->attributes->get('id');
+        $data = $req->request->all();
 
-        return 'Edited';
+        $is_logo_changed = false;
+
+        if ( isset($data['logo']) ) {
+            // move uploaded image
+            $is_logo_changed = true;
+            var_dump($is_logo_changed);
+        }
+
+        $fields = $this->getFieldsAndCommentsFromArray($data, false);
+        $data['fields'] = $fields['fields'];
+        $data['comments'] = $fields['comments'];
+
+        $r = 'update projects set name=:name, color=:color, year=:year' . ($is_logo_changed ? ', logo=:logo' : '') . ' where id=:movie_id;';
+        $q = $app['db']->prepare($r);
+        $q->bindValue(':name', $data['name']);
+        $q->bindValue(':color', $data['color']);
+        $q->bindValue(':year', $data['year']);
+        $q->bindValue(':movie_id', $id);
+        if ( $is_logo_changed ) {
+            $q->bindValue(':logo', $data['logo']);
+        }
+
+        $q->execute();
+
+        var_dump($fields);
+
+        foreach ( $data['fields'] as $key => $field ) {
+            $q = $app['db']->prepare('update project_fields set field_name=:field_name, field_value=:field_value where id=:id');
+            $q->bindValue(':field_name', $field['name']);
+            $q->bindValue(':field_value', $field['value']);
+            $q->bindValue(':id', $key);
+            $q->execute();
+        }
+
+
+        foreach ( $data['comments'] as $key => $comment ) {
+            $q = $app['db']->prepare('update project_comments set text=:text where id=:id');
+
+            $text = str_replace("\n", '<br/>', trim($comment['text']));
+
+            $q->bindValue(':text', $text);
+            $q->bindValue(':id', $key);
+            $q->execute();
+        }
+
+
+        return $app->redirect('admin');
     }
 
     public function removeProjectAction( Request $req, Application $app ) {

@@ -18,8 +18,10 @@ $app->get('/api/movie/full/{id}', 'App\\Controllers\\ApiController::largeMovieDe
 $app->get('/admin', 'App\\Controllers\\AdminController::indexAction')
     ->bind('admin');
 
-$app->match('/admin/edit/project/{id}', 'App\\Controllers\\AdminController::editProjectAction', '(GET|POST)');
+$app->get('/admin/edit/project/{id}', 'App\\Controllers\\AdminController::editProjectAction');
+$app->post('/admin/edit/project/{id}', 'App\\Controllers\\AdminController::editProjectPostAction');
 
-$app->match('/admin/add/project', 'App\\Controllers\\AdminController::addProjectAction', '(GET|POST)');
+$app->match('/admin/add/project', 'App\\Controllers\\AdminController::addProjectAction', '(GET|POST)')
+    ->bind('admin-add_project');
 
 $app->get('/admin/remove/project/{id}', 'App\\Controllers\\AdminController::removeProjectAction');
