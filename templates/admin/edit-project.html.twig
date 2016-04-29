@@ -50,17 +50,17 @@ Editing Project:
 
                     {% for field in movie.fields %}
 
-                    <div id="field-1" class="form-group">
+                    <div id="field-{{ field.id }}" class="form-group">
                         <div class="col-lg-4 no-float">
-                            <label for="field-name-1">Field name:</label>
-                            <input type="text" id="field-name-1" name="field_name_1" class="form-control"  value="{{ field.field_name }}"/>
+                            <label for="field-name-{{ field.id }}">Field name:</label>
+                            <input type="text" id="field-name-{{ field.id }}" name="field_name_1" class="form-control"  value="{{ field.field_name }}"/>
                         </div>
                         <div class="col-lg-4 no-float">
-                            <label for="field-value-1">Field value:</label>
-                            <input type="text" id="field-value-1" name="field_value_1" class="form-control" value="{{ field.field_value }}"/>
+                            <label for="field-value-{{ field.id }}">Field value:</label>
+                            <input type="text" id="field-value-{{ field.id }}" name="field_value_{{ field.id }}" class="form-control" value="{{ field.field_value }}"/>
                         </div>
                         <div class="col-sm-4 no-float" style="vertical-align: middle">
-                            <span id="field-remove-1" class="btn btn-sm btn-danger remove">Remove Field</span>
+                            <span id="field-remove-{{ field.id }}" class="btn btn-sm btn-danger remove">Remove Field</span>
                         </div>
                     </div>
 
@@ -107,11 +107,11 @@ Editing Project:
 
                     <div class="col-sm-9">
                         <div class="form-group">
-                            <label for="comment_img_1" class="col-sm-2 control-label">Image:</label>
-                            <div class="col-sm-8">
-                                <img src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image">
+                            <label for="comment_img_{{ comment.id }}" class="col-sm-2 control-label">Image:</label>
+                            <div class="col-sm-4">
+                                <img src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image" width="100%">
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-6">
                                 <input type="file" name="comment_img_1" />
                             </div>
                         </div>
@@ -125,7 +125,7 @@ Editing Project:
                     </div>
 
                     <div class="col-sm-2">
-                        <span class="btn btn-sm btn-danger remove">Remove Comment</span>
+                        <span id="remove_comment_{{ comment.id }}" class="btn btn-sm btn-danger remove">Remove Comment</span>
                     </div>
                 </div>
 

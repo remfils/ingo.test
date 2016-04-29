@@ -168,6 +168,7 @@ class AdminController
         $q->bindValue(':id', $id);
         $q->execute();
         $movie = $q->fetch();
+        $movie['description'] = str_replace('<br/>', "\n", $movie['description']);
 
         $q = $app['db']->prepare('select * from project_fields p where p.movie_id = :id');
         $q->bindValue(':id', $id);
@@ -179,6 +180,9 @@ class AdminController
         $q->bindValue(':id', $id);
         $q->execute();
         $comments = $q->fetchAll();
+        foreach ( $comments as $key => $comment ) {
+            $comments[$key]['text'] = str_replace('<br/>', "\n", $comment['text']);
+        }
         $movie['comments'] = $comments;
 
         return $app['twig']->render('admin/edit-project.html.twig', array(
@@ -189,7 +193,9 @@ class AdminController
     }
 
     public function editProjectPostAction( Request $req, Application $app ) {
-        return 'Hello';
+        
+
+        return 'Edited';
     }
 
     public function removeProjectAction( Request $req, Application $app ) {
