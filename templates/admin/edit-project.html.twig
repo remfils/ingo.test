@@ -5,11 +5,147 @@ Editing Project:
 {% endblock %}
 
 {% block content %}
-    {% if success_message is not empty %}
+
+    {% if success_msg is not empty %}
         <h2 class="success-message">
-            {{ success_message }}
+            {{ success_msg }}
         </h2>
     {% endif %}
 
-    {{ form(form, {'method': 'POST', 'attr': {'class': 'edit-form'}}) }}
+    <div class="container">
+
+        <h1>New Project:</h1>
+
+        <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="logo" class="col-sm-2 control-label">Logo:</label>
+                <div class="col-sm-8">
+                    <img src="{{ app.asset_path }}/{{ movie.logo }}" alt="Movie Logo" width="100%">
+                </div>
+                <div class="col-sm-2">
+                    <input type="file" id="logo" name="logo" value="{{ movie.logo }}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Name:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="name" name="name" class="form-control" value="{{ movie.name }}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="year" class="col-sm-2 control-label">Year:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="year" name="year" class="form-control" value="{{ movie.year }}"/>
+                </div>
+            </div>
+
+            <h2>Short Info:</h2>
+
+            <div class="form-group">
+                <div class="col-md-2"></div>
+
+                <div id="ProjectInfoTable" class="col-md-9">
+
+                    {% for field in movie.fields %}
+
+                    <div id="field-1" class="form-group">
+                        <div class="col-lg-4 no-float">
+                            <label for="field-name-1">Field name:</label>
+                            <input type="text" id="field-name-1" name="field_name_1" class="form-control"  value="{{ field.field_name }}"/>
+                        </div>
+                        <div class="col-lg-4 no-float">
+                            <label for="field-value-1">Field value:</label>
+                            <input type="text" id="field-value-1" name="field_value_1" class="form-control" value="{{ field.field_value }}"/>
+                        </div>
+                        <div class="col-sm-4 no-float" style="vertical-align: middle">
+                            <span id="field-remove-1" class="btn btn-sm btn-danger remove">Remove Field</span>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+
+                </div>
+                <div class="col-md-1">
+                    <span id="AddField" type="button" class="btn btn-success" style="margin-top: 25px">Add Field</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="preview_url" class="col-sm-2 control-label">Preview url:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="preview_url" name="preview_url" class="form-control" value="{{ movie.preview_url }}"/>
+                </div>
+            </div>
+
+            <h2>Description:</h2>
+
+            <div class="form-group">
+                <label for="color" class="col-sm-2 control-label">Color:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="color" name="color" class="form-control" value="{{ movie.color }}" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">Description:</label>
+                <div class="col-sm-10">
+                    <textarea type="text" id="description" name="description" class="form-control">{{ movie.description }}</textarea>
+                </div>
+            </div>
+
+            <h2>Comments:</h2>
+
+            <div id="CommentBox">
+
+                {% for comment in movie.comments %}
+
+                <div id="comment_1" class="form-group">
+                    <div class="col-sm-1"></div>
+
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label for="comment_img_1" class="col-sm-2 control-label">Image:</label>
+                            <div class="col-sm-8">
+                                <img src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image">
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="file" name="comment_img_1" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comment_text_1" class="col-sm-2 control-label">Text:</label>
+                            <div class="col-sm-10">
+                                <textarea name="comment_text_1" id="comment_text_1" class="form-control" >{{ comment.text }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <span class="btn btn-sm btn-danger remove">Remove Comment</span>
+                    </div>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <span id="AddComment" class="btn btn-block btn-success">Add Comment</span>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="pull-right btn btn-success" value="Input Button" />
+            </div>
+        </form>
+
+    </div>
+
 {% endblock %}

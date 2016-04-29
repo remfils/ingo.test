@@ -173,43 +173,23 @@ class AdminController
         $q->bindValue(':id', $id);
         $q->execute();
         $table = $q->fetchAll();
+        $movie['fields'] = $table;
 
-        $form = $app['form.factory']->createBuilder('form', $movie)
-            ->add('name', 'text')
-            ->add('color', 'text')
-            ->add('year', 'text')
-            ->add('logo', 'text')
-            ->add('preview_url', 'text')
-            ->add('description', 'textarea', array(
-                'attr' => array('rows' => '10')
-            ))
-            ->add('submit', 'submit', array(
-                'attr' => array('class' => 'btn-submit')
-            ))
-            ->getForm();
-
-        $form->handleRequest($req);
-
-        $success_message = '';
-
-        if ( $form->isValid() ) {
-            $data = $form->getData();
-
-            $q = $app['db']->prepare('update projects set name = :name, color = :color, year=:year, logo=:logo where movie_id = :movie_id');
-            $q->bindValue(':name', $data['name']);
-            $q->bindValue(':color', $data['color']);
-            $q->bindValue(':year', $data['year']);
-            $q->bindValue(':logo', $data['logo']);
-            $q->bindValue(':movie_id', $id);
-            $q->execute();
-
-            $success_message = 'project successfully edited!';
-        }
+        $q = $app['db']->prepare('select * from project_comments where movie_id = :id');
+        $q->bindValue(':id', $id);
+        $q->execute();
+        $comments = $q->fetchAll();
+        $movie['comments'] = $comments;
 
         return $app['twig']->render('admin/edit-project.html.twig', array(
-            'form'=>$form->createView(),
-            'success_message' => $success_message
+            'error_msg' => '',
+            'success_msg' => '',
+            'movie' => $movie
         ));
+    }
+
+    public function editProjectPostAction( Request $req, Application $app ) {
+        return 'Hello';
     }
 
     public function removeProjectAction( Request $req, Application $app ) {
