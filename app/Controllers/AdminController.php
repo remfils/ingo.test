@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+use App\Models\Project;
+
 class AdminController
 {
     public function indexAction( Request $req, Application $app )
@@ -178,23 +180,10 @@ class AdminController
         $q = $app['db']->prepare('select * from projects p join project_description pd on pd.movie_id = p.id where p.id = :id');
         $q->bindValue(':id', $id);
         $q->execute();
-        $movie = $q->fetch();
-        $movie['description'] = str_replace('<br/>', "\n", $movie['description']);
+        $movie = $q->fetchAll(\PDO::FETCH_CLASS, 'App\\Models\\Project')[0];
+        $movie->description = str_replace('<br/>', "\n", $movie->description);
 
-        $q = $app['db']->prepare('select * from project_fields p where p.movie_id = :id');
-        $q->bindValue(':id', $id);
-        $q->execute();
-        $table = $q->fetchAll();
-        $movie['fields'] = $table;
-
-        $q = $app['db']->prepare('select * from project_comments where movie_id = :id');
-        $q->bindValue(':id', $id);
-        $q->execute();
-        $comments = $q->fetchAll();
-        foreach ( $comments as $key => $comment ) {
-            $comments[$key]['text'] = str_replace('<br/>', "\n", $comment['text']);
-        }
-        $movie['comments'] = $comments;
+        $movie->loadProjectData($app);
 
         return $app['twig']->render('admin/edit-project.html.twig', array(
             'error_msg' => '',
@@ -206,6 +195,10 @@ class AdminController
     public function editProjectPostAction( Request $req, Application $app ) {
         $id = $req->attributes->get('id');
         $data = $req->request->all();
+        $pr = new Project();
+        $pr->id = $req->attributes->get('id');
+
+        $pr->setProjectFromPost($req->request->all());
 
         $is_logo_changed = false;
 
@@ -219,7 +212,7 @@ class AdminController
         $data['fields'] = $fields['fields'];
         $data['comments'] = $fields['comments'];
 
-        $r = 'update projects set name=:name, color=:color, year=:year' . ($is_logo_changed ? ', logo=:logo' : '') . ' where id=:movie_id;';
+        /*$r = 'update projects set name=:name, color=:color, year=:year' . ($is_logo_changed ? ', logo=:logo' : '') . ' where id=:movie_id;';
         $q = $app['db']->prepare($r);
         $q->bindValue(':name', $data['name']);
         $q->bindValue(':color', $data['color']);
@@ -229,20 +222,51 @@ class AdminController
             $q->bindValue(':logo', $data['logo']);
         }
 
-        $q->execute();
+        $q->execute();*/
 
-        var_dump($fields);
+        $q = $app['db']->prepare('select id from project_fields where movie_id=:id');
+        $q->bindValue(':id', $id);
+        $q->execute();
+        $fields_id = $q->fetchAll();
+
+        $fields_id = array_map(function($row){
+            return $row['id'];
+        }, $fields_id);
+
+        $new_fields = 0;
 
         foreach ( $data['fields'] as $key => $field ) {
-            $q = $app['db']->prepare('update project_fields set field_name=:field_name, field_value=:field_value where id=:id');
-            $q->bindValue(':field_name', $field['name']);
+            $id_index = array_search($key, $fields_id);
+
+            if ( $id_index ) {
+                /*$r = 'UPDATE project_fields SET field_name=:field_name, field_value=:field_value WHERE id=:id';
+                $q = $app['db']->prepare($r);
+                $q->bindValue(':id', $key);*/
+                unset($fields_id[$id_index]);
+            }
+            else {
+                /*$r = 'INSERT INTO project_fields (field_name, field_value) VALUES (:field_name, :field_value)';
+                $q = $app['db']->prepare($r);*/
+                $new_fields++;
+            }
+
+            /*$q->bindValue(':field_name', $field['name']);
             $q->bindValue(':field_value', $field['value']);
-            $q->bindValue(':id', $key);
-            $q->execute();
+            $q->execute();*/
         }
 
+        var_dump($fields_id,$data['fields']);
 
-        foreach ( $data['comments'] as $key => $comment ) {
+        return $new_fields;
+
+        /*foreach ( $fields_id as $key => $id ) {
+            $q = $app['db']->prepare('DELETE FROM project_fields WHERE id=:id');
+            $q->bindValue(':id', $id);
+            $q->execute();
+        }*/
+
+
+        /*foreach ( $data['comments'] as $key => $comment ) {
             $q = $app['db']->prepare('update project_comments set text=:text where id=:id');
 
             $text = str_replace("\n", '<br/>', trim($comment['text']));
@@ -250,7 +274,7 @@ class AdminController
             $q->bindValue(':text', $text);
             $q->bindValue(':id', $key);
             $q->execute();
-        }
+        }*/
 
 
         return $app->redirect('admin');
@@ -263,17 +287,17 @@ class AdminController
         $q->bindValue(':id', $id);
         $q->execute();
 
-        $remove_from = function($table) use ($app, $id) {
+        $remove_project_from = function($table) use ($app, $id) {
             $q = $app['db']->prepare('DELETE FROM '. $table .' WHERE id=:movie_id');
             $q->bindValue(':movie_id', $id);
             $q->execute();
         };
 
-        $remove_from('project_description');
+        $remove_project_from('project_description');
 
-        $remove_from('project_fields');
+        $remove_project_from('project_fields');
 
-        $remove_from('project_comments');
+        $remove_project_from('project_comments');
 
         return $app->redirect('/admin');
     }

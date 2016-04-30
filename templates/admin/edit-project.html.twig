@@ -149,3 +149,15 @@ Editing Project:
     </div>
 
 {% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+
+    <script>
+        setFieldCounter({{ movie.fields|last.id }});
+        setCommentCounter({{ movie.comments|last.id }});
+
+        addFieldButtonsClickListeners();
+        addCommentClickListeners();
+    </script>
+{% endblock %}

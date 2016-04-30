@@ -8,6 +8,10 @@ export function initAddPage() {
 
 var field_count = 1;
 
+export function setFieldCounter(counter) {
+    field_count = counter;
+}
+
 export function addFieldButtonsClickListeners() {
     $('#AddField').click(function(){
         createField();
@@ -83,6 +87,10 @@ function createInfoRow (row_type, row_text="") {
 };
 
 var comment_count = 1;
+
+export function setCommentCounter(counter) {
+    comment_count = counter;
+}
 
 export function addCommentClickListeners() {
     $("#AddComment").on("click", (e) => {

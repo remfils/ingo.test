@@ -1,7 +1,7 @@
 var $ = require('jquery');
 
-import {addFieldButtonsClickListeners, addCommentClickListeners, initAddPage} from './addPageScripts';
+import * as AddPageScripts from './addPageScripts';
 
-window.addFieldButtonsClickListeners = addFieldButtonsClickListeners;
-window.addCommentClickListeners = addCommentClickListeners;
-window.initAddPage = initAddPage;
+for ( var script_name in AddPageScripts ) {
+    window[script_name] = AddPageScripts[script_name];
+}
