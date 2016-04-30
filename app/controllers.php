@@ -18,7 +18,8 @@ $app->get('/api/movie/full/{id}', 'App\\Controllers\\ApiController::largeMovieDe
 $app->get('/admin', 'App\\Controllers\\AdminController::indexAction')
     ->bind('admin');
 
-$app->get('/admin/edit/project/{id}', 'App\\Controllers\\AdminController::editProjectAction');
+$app->get('/admin/edit/project/{id}', 'App\\Controllers\\AdminController::editProjectAction')
+    ->bind('admin_edit_project');
 $app->post('/admin/edit/project/{id}', 'App\\Controllers\\AdminController::editProjectPostAction');
 
 $app->match('/admin/add/project', 'App\\Controllers\\AdminController::addProjectAction', '(GET|POST)')

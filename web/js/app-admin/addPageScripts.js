@@ -147,12 +147,11 @@ export function addCommentClickListeners() {
 
         var remove_container = createDiv(null, "col-sm-2");
 
-        var remove_button = document.createElement("span");
-        remove_button.id = ["comment", "remove", comment_container].join("_");
-        remove_button.classList.add("btn");
-        remove_button.classList.add("btn-sm");
-        remove_button.classList.add("btn-danger");
-        remove_button.classList.add("remove");
+        var remove_button = createElement(
+            'span',
+            ["comment", "remove", comment_container].join("_"),
+            ["btn", "btn-sm", "btn-danger", "remove"]
+        );
         remove_button.innerHTML = "Remove Comment";
         remove_container.appendChild(remove_button);
 
@@ -163,7 +162,11 @@ export function addCommentClickListeners() {
 }
 
 function createDiv(id, classes) {
-    var div = document.createElement('div');
+    return createElement('div', id, classes);
+}
+
+function createElement(elem, id, classes) {
+    var div = document.createElement(elem);
 
     if ( classes instanceof Array ) {
         classes.map((item) => {
