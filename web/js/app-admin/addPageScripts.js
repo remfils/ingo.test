@@ -167,6 +167,14 @@ export function addCommentClickListeners() {
 
         $("#CommentBox")[0].appendChild(container);
     });
+
+    $("#CommentBox").on('click', ".remove", function(){
+        var id = this.id.split("_").pop();
+
+        var $field = $('#comment_' + id);
+
+        $field.remove();
+    });
 }
 
 function createDiv(id, classes) {

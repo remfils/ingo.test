@@ -193,91 +193,13 @@ class AdminController
     }
 
     public function editProjectPostAction( Request $req, Application $app ) {
-        $id = $req->attributes->get('id');
-        $data = $req->request->all();
-
         $pr = new Project();
         $pr->id = $req->attributes->get('id');
+
         $pr->setProjectFromPost($req->request->all());
+
         $pr->saveToDB($app);
 
-        /*$is_logo_changed = false;
-
-        if ( isset($data['logo']) ) {
-            // move uploaded image
-            $is_logo_changed = true;
-            var_dump($is_logo_changed);
-        }
-
-        $fields = $this->getFieldsAndCommentsFromArray($data, false);
-        $data['fields'] = $fields['fields'];
-        $data['comments'] = $fields['comments'];
-
-        $r = 'update projects set name=:name, color=:color, year=:year' . ($is_logo_changed ? ', logo=:logo' : '') . ' where id=:movie_id;';
-        $q = $app['db']->prepare($r);
-        $q->bindValue(':name', $data['name']);
-        $q->bindValue(':color', $data['color']);
-        $q->bindValue(':year', $data['year']);
-        $q->bindValue(':movie_id', $id);
-        if ( $is_logo_changed ) {
-            $q->bindValue(':logo', $data['logo']);
-        }
-
-        $q->execute();
-
-        $q = $app['db']->prepare('select id from project_fields where movie_id=:id');
-        $q->bindValue(':id', $id);
-        $q->execute();
-        $fields_id = $q->fetchAll();
-
-        $fields_id = array_map(function($row){
-            return $row['id'];
-        }, $fields_id);
-
-        $new_fields = 0;
-
-        foreach ( $data['fields'] as $key => $field ) {
-            $id_index = array_search($key, $fields_id);
-
-            if ( $id_index ) {
-                $r = 'UPDATE project_fields SET field_name=:field_name, field_value=:field_value WHERE id=:id';
-                $q = $app['db']->prepare($r);
-                $q->bindValue(':id', $key);
-                unset($fields_id[$id_index]);
-            }
-            else {
-                $r = 'INSERT INTO project_fields (field_name, field_value) VALUES (:field_name, :field_value)';
-                $q = $app['db']->prepare($r);
-                $new_fields++;
-            }
-
-            $q->bindValue(':field_name', $field['name']);
-            $q->bindValue(':field_value', $field['value']);
-            $q->execute();
-        }
-
-        var_dump($fields_id,$data['fields']);
-
-        return $new_fields;
-
-        foreach ( $fields_id as $key => $id ) {
-            $q = $app['db']->prepare('DELETE FROM project_fields WHERE id=:id');
-            $q->bindValue(':id', $id);
-            $q->execute();
-        }
-
-
-        foreach ( $data['comments'] as $key => $comment ) {
-            $q = $app['db']->prepare('update project_comments set text=:text where id=:id');
-
-            $text = str_replace("\n", '<br/>', trim($comment['text']));
-
-            $q->bindValue(':text', $text);
-            $q->bindValue(':id', $key);
-            $q->execute();
-        }*/
-
-        return '';
         return $app->redirect($app["url_generator"]->generate('admin_edit_project', array('id'=>$pr->id)));
     }
 

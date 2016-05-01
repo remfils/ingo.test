@@ -22,7 +22,8 @@ class Project
 
     private $is_logo_uploaded = false;
 
-    public function setProjectFromPost( $data ) {
+    public function setProjectFromPost( $data )
+    {
         $this->name = $data['name'];
         $this->color = $data['color'];
         $this->year = $data['year'];
@@ -39,7 +40,8 @@ class Project
 
     }
 
-    private function isImageUploaded( $image_id ) {
+    private function isImageUploaded( $image_id )
+    {
         if ( !isset($_FILES[$image_id]) ) {
             return false;
         }
@@ -52,7 +54,8 @@ class Project
         return true;
     }
 
-    private function moveUploadedImageToImagesDir ( $image, $sub_dir ) {
+    private function moveUploadedImageToImagesDir ( $image, $sub_dir )
+    {
         $img_dir = "img/$sub_dir";
         $upload_directory = dirname($_SERVER["SCRIPT_FILENAME"]) . '/' . $img_dir;
         $image_file_name = str_replace(' ', '_', $_FILES[$image]['name']);
@@ -61,7 +64,8 @@ class Project
         return "$img_dir/$image_file_name";
     }
 
-    public function setFieldsAndCommentsFromPostArray( $data, $images_required = true ) {
+    public function setFieldsAndCommentsFromPostArray( $data, $images_required = true )
+    {
         $fields = array();
         $comments = array();
 
@@ -93,7 +97,8 @@ class Project
         $this->comments = $comments;
     }
 
-    public function loadProjectData( Application $app ) {
+    public function loadProjectData( Application $app )
+    {
         $q = $app['db']->prepare('select * from project_fields p where p.movie_id = :id');
         $q->bindValue(':id', $this->id);
         $q->execute();
@@ -109,18 +114,19 @@ class Project
         $this->comments = $comments;
     }
 
-    public function saveToDB( Application $app ) {
+    public function saveToDB( Application $app )
+    {
         $is_new = !isset($this->id);
 
-        // $this->saveProject($app, $is_new);
+        $this->saveProject($app, $is_new);
 
         if ( $is_new ) {
             $this->id = $app['db']->lastInsertId();
         }
 
-        // $this->saveDescription($app, $is_new);
+        $this->saveDescription($app, $is_new);
 
-        // $this->updateFieldsInDB($app, $is_new);
+        $this->updateFieldsInDB($app, $is_new);
 
         $this->updateCommentsInDB($app, $is_new);
     }
