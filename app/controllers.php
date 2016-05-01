@@ -8,11 +8,6 @@ $app->get('/api/all-movies', 'App\\Controllers\\ApiController::allMoviesAction')
 
 $app->get('/api/movie/{id}', 'App\\Controllers\\ApiController::movieDescriptionAction');
 
-/*D!*/
-$app->get('/api/movie/small/{id}', 'App\\Controllers\\ApiController::smallMovieDescription');
-/*D!*/
-$app->get('/api/movie/full/{id}', 'App\\Controllers\\ApiController::largeMovieDescription');
-
 /* ADMIN */
 
 $app->get('/admin', 'App\\Controllers\\AdminController::indexAction')
