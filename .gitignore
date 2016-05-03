@@ -1,5 +1,4 @@
 node_modules
 .idea
 vendor
-bundle.js
-bundle.js.map
+*bundle*

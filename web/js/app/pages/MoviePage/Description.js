@@ -9,20 +9,36 @@ export default class Description extends React.Component {
     constructor() {
         super();
 
+        this.is_listening = false;
+
         this.state = {
             project_info_table: [],
-            preview_url: ''
+            preview_url: '',
+            comments: []
         };
 
         this.preview_iframe = null;
+    }
+
+    addEventListeners() {
+        if ( !this.is_listening ) {
+            this.is_listening = true;
+            $(window).resize(this.resizePreviewIframe.bind(this));
+        }
+    }
+
+    removeEventListeners() {
+        $(window).off('resize', this.resizePreviewIframe);
+    }
+
+    componentWillUnmount() {
+        this.removeEventListeners();
     }
 
     componentDidMount() {
         console.log('start of downloading sm dsc');
 
         this.preview_iframe = $('.project-demo-video > iframe')[0];
-
-        $(window).resize(this.resizePreviewIframe.bind(this));
 
         this.resizePreviewIframe();
 
@@ -35,7 +51,8 @@ export default class Description extends React.Component {
                 this.setState({
                     project_info_table: data.table,
                     preview_url: data.preview_url,
-                    description: data.description
+                    description: data.description,
+                    comments: data.comments
                 });
             },
             error: (err) => {
@@ -44,9 +61,12 @@ export default class Description extends React.Component {
         });
     }
 
-    componentWillUnmount() {
-        $(window).off('resize', this.resizePreviewIframe);
+    componentDidUpdate() {
+        this.preview_iframe = $('.project-demo-video > iframe')[0];
+
+        this.resizePreviewIframe();
     }
+
 
     resizePreviewIframe() {
         if ( this.preview_iframe ) {
@@ -60,7 +80,7 @@ export default class Description extends React.Component {
         var name = mov.name;
         var style_description = {"background-color": mov.color};
 
-        console.log("test:::");
+        var description_html = {__html: this.state.description };
 
         var table = this.state.project_info_table.map((item) => {
             return <tr>
@@ -68,6 +88,21 @@ export default class Description extends React.Component {
                 <td>{ item.field_value }</td>
             </tr>;
         });
+
+        var comments = this.state.comments.map((item) => {
+            var text_html = {__html: item.text };
+
+            return <div class="info-block">
+                <div class="col-30p info-text" dangerouslySetInnerHTML={text_html} />
+                <div class="col-70p info-img">
+                    <img src={ asset(item.image_url) } alt="Girl"/>
+                </div>
+            </div>
+        });
+
+        this.addEventListeners();
+
+        this.resizePreviewIframe();
 
         return (
             <div>
@@ -96,33 +131,14 @@ export default class Description extends React.Component {
                             <h1>ZUM PROJEKT:</h1>
                             <h1><strong>{mov.name} {mov.year}</strong></h1>
                         </div>
-                        <div class="col-70p">
-                            <p>{this.state.description}</p>
-                        </div>
+                        
+                        <div class="col-70p" dangerouslySetInnerHTML={description_html}></div>
                     </div>
                 </section>
 
                 <section className="default-side-padding more-info">
 
-                    <div class="info-block">
-                        <div class="col-30p info-text">
-                            <p>„Braun Olympia“ 2012</p>
-                            <p>Making of photo?s <br/> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</p>
-                        </div>
-                        <div class="col-70p info-img">
-                            <img src={ asset("img/movies/Ebene_136.png") } alt="Girl"/>
-                        </div>
-                    </div>
-
-                    <div class="info-block">
-                        <div class="col-30p info-text">
-                            <p>„Braun Olympia“ 2012</p>
-                            <p>Making of photo?s <br/> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</p>
-                        </div>
-                        <div class="col-70p info-img">
-                            <img src={ asset("img/movies/Ebene_136.png") } alt="Girl"/>
-                        </div>
-                    </div>
+                    { comments }
 
                 </section>
             </div>
