@@ -68,15 +68,20 @@ class AdminController
         $error_message = '';
 
         if ( $req->isMethod('POST') ) {
-            $data = array();
+            $project = new Project();
+            $project->setProjectFromPost($req->request->all());
+
+            $project->saveToDB($app);
+
+            /*$data = array();
 
             $img_dir = 'img/movies';
             $upload_directory = dirname($_SERVER["SCRIPT_FILENAME"]) . '/' . $img_dir;
-            $logo_file_name = str_replace(' ', '_', $_FILES['logo']['name']);
+            $logo_file_name = str_replace(' ', '_', $_FILES['logo']['name']);*/
 
             // var_dump($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
 
-            $data['name'] = $req->get('name');
+            /*$data['name'] = $req->get('name');
             $data['color'] = $req->get('color');
             $data['year'] = $req->get('year');
             $data['logo'] = $img_dir . '/' . $logo_file_name;
@@ -85,13 +90,13 @@ class AdminController
 
             $data = $this->getFieldsAndCommentsFromArray($req->request->all());
             $fields = $data['fields'];
-            $comments = $data['comments'];
+            $comments = $data['comments'];*/
 
             /*if ( file_exists("$upload_directory/$logo_file_name") ) {
                 $error_message = "Logotype file: $logo_file_name already exists!";
             }*/
 
-            if ( empty($error_message) ) {
+            /*if ( empty($error_message) ) {
                 move_uploaded_file($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
 
                 $q = $app['db']->prepare('INSERT INTO projects (name, color, year, logo) VALUES (:name, :color, :year, :logo)');
@@ -132,7 +137,7 @@ class AdminController
                 }
 
                 $success_message = 'project successfully created! ';
-            }
+            }*/
         }
 
         return $app['twig']->render('admin/new-project.html.twig', array(
