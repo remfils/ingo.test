@@ -51,6 +51,7 @@ export default class MoviePage extends React.Component {
                 if ( config.DEBUG ) {
                     this.props.app.switchPagesAfterTransition();
                     this.setState({description: <Description movie={this.props.movie}/>});
+                    TweenLite.to(movie_id + ' .movie-title-section', 0, { backgroundColor: this.props.movie.color });
                     return;
                 }
                 TweenLite.set($this, {top: '100%'});
@@ -76,7 +77,16 @@ export default class MoviePage extends React.Component {
 
                 TweenLite.from(movie_title, 1, {delay: 0.1, opacity: '0'});
 
+                TweenLite.set(movie_id + ' .movie-title-section', {
+                    backgroundColor: this.props.transition.prev_page.props.movie.color
+                });
+
+                TweenLite.to(movie_id + ' .movie-title-section', 1, { backgroundColor: this.props.movie.color });
+
+                // TweenLite.to(movie_id + ' .movie-title-section', 0.5, { delay: 0.5, backgroundColor: this.props.movie.color });
+
                 time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
+                    .to('.movie-title-section', 1, { delay: -this.SWITCH_DURATION, backgroundColor: this.props.movie.color })
                     .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '100%', ease: this.SWITCH_EASE, onComplete: () => {
                         console.log("dscription is set");
                         this.setState({description: <Description movie={this.props.movie} />});
@@ -96,6 +106,10 @@ export default class MoviePage extends React.Component {
                 this.props.transition.prev_page.leaveToMovie(time_line, false);
 
                 TweenLite.from(movie_title, 1, {delay: 0.1, opacity: '0'});
+                TweenLite.set(movie_id + ' .movie-title-section', {
+                    backgroundColor: this.props.transition.prev_page.props.movie.color
+                });
+                TweenLite.to(movie_id + ' .movie-title-section', 0.5, { delay: 0.5, backgroundColor: this.props.movie.color });
 
                 time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
                     .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '-100%', ease: this.SWITCH_EASE, onComplete: () => {
@@ -217,7 +231,10 @@ export default class MoviePage extends React.Component {
 
         TweenLite.to(movie_title, 0.4, {x: "-200%"});
 
-        time_line.to(cover, this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE});
+        TweenLite.to(movie_id + ' .movie-title-section', 0.5, { backgroundColor: "rgba(255,255,255,0)" });
+
+        time_line
+            .to(cover, this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE});
 
         return time_line;
     }

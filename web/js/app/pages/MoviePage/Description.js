@@ -106,7 +106,7 @@ export default class Description extends React.Component {
 
         return (
             <div>
-                <section class="default-side-padding project-sm-dsc">
+                <section class="default-side-padding project-sm-dsc" style={style_description}>
                     <table class="col-30p project-stats">
                         <tr>
                             <th>Project:</th>
@@ -125,7 +125,7 @@ export default class Description extends React.Component {
                     </div>
                 </section>
 
-                <section class="default-side-padding project-dsc" style={style_description}>
+                <section class="default-side-padding project-dsc">
                     <div class="description-container">
                         <div class="col-30p">
                             <h1>ZUM PROJEKT:</h1>
