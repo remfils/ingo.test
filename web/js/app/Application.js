@@ -8,6 +8,8 @@ import config from './config';
 
 var $ = require('jquery');
 
+/*asdf*/
+
 export default class Application extends React.Component {
     constructor() {
         super();
