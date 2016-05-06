@@ -133,7 +133,8 @@ class Project
 
     public function saveProject( Application $app, $is_new = false) {
         if ( $is_new ) {
-            $r = 'INSERT projects ...';
+            $r = 'INSERT INTO projects (name, color, year, logo) VALUES (:name, :color, :year, :logo)';
+            var_dump($r);
             $q = $app['db']->prepare($r);
         }
         else {
@@ -155,7 +156,7 @@ class Project
     public function saveDescription ( Application $app, $is_new = false )
     {
         if ( $is_new ) {
-            $q = $app['db']->prepare('INSERT STATEMENT');
+            $q = $app['db']->prepare('INSERT INTO project_description (preview_url, description, movie_id) VALUES (:preview_url, :description, :id)');
 
         }
         else {

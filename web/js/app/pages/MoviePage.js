@@ -59,6 +59,7 @@ export default class MoviePage extends React.Component {
                 var time_line = new TimelineLite();
 
                 this.props.transition.prev_page.leaveToMovies(time_line);
+                TweenLite.set(movie_id + ' .movie-title-section', { backgroundColor: this.props.movie.color });
 
                 time_line.to($this, 1, {delay:-0.5, top: '0', onComplete: () => {
                     this.props.app.switchPagesAfterTransition();

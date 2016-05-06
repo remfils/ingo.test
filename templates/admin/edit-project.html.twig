@@ -154,8 +154,13 @@ Editing Project:
     {{ parent() }}
 
     <script>
-        setFieldCounter({{ movie.fields|last.id }});
-        setCommentCounter({{ movie.comments|last.id }});
+        {% if movie.fields|length > 0 %}
+            setFieldCounter({{ movie.fields|last.id }});
+        {% endif %}
+
+        {% if movie.comments|length > 0 %}
+            setCommentCounter({{ movie.comments|last.id }});;
+        {% endif %}
 
         addFieldButtonsClickListeners();
         addCommentClickListeners();
