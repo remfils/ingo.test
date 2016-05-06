@@ -218,6 +218,8 @@ head, body {
     align-items: center;
     height: 30%;
     position: relative;
+
+    background-color: rgba(255,255,255,0);
 }
 
 .project-title h1 {
@@ -308,7 +310,7 @@ a.arrow:hover {
 /* */
 
 .project-dsc {
-    background-color: #cbfdcb;
+    background-color: white;
     overflow: auto;
     font-size: 1.5em;
     font-weight: normal;
