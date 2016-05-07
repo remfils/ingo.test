@@ -78,7 +78,6 @@ export default class Description extends React.Component {
         var mov = this.props.movie;
 
         var name = mov.name;
-        var style_description = {"background-color": mov.color};
 
         var description_html = {__html: this.state.description };
 
@@ -106,25 +105,6 @@ export default class Description extends React.Component {
 
         return (
             <div>
-                <section class="default-side-padding project-sm-dsc" style={style_description}>
-                    <table class="col-30p project-stats">
-                        <tr>
-                            <th>Project:</th>
-                            <th>{ mov.name }</th>
-                        </tr>
-
-                        {table}
-
-                    </table>
-
-                    <div class="col-70p project-demo-video">
-                        <iframe height="60%" src="https://player.vimeo.com/video/67123140?color=ffffff" frameBorder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                        <div class="btn-mehr-container">
-                            <a class="btn-mehr">MEHR ERFAHREN</a>
-                        </div>
-                    </div>
-                </section>
-
                 <section class="default-side-padding project-dsc">
                     <div class="description-container">
                         <div class="col-30p">
