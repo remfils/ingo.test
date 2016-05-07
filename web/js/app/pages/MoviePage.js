@@ -14,6 +14,8 @@ export default class MoviePage extends React.Component {
         super();
 
         this.is_transition = false;
+        this.is_movie_loaded = true;
+        this.current_movie_index = 0;
 
         this.SWITCH_DURATION = 1.2;
         this.SWITCH_EASE = Expo.easeOut;
@@ -21,6 +23,8 @@ export default class MoviePage extends React.Component {
         this.SWITCH_B_DELAY = -this.SWITCH_DURATION * 2.3 / 3;
 
         this.state = {
+            project_name: "",
+            project_year: "",
             current_movie: null,
             description: null
         }
@@ -31,17 +35,15 @@ export default class MoviePage extends React.Component {
             url: config.SITE_NAME + 'api/all-movies',
             dataType: 'json',
             success: (data) => {
-                data.forEach((item) => {
-                    item.logo = asset(item.logo);
-                });
-
-                this.movies = data.map((item)=>{
-                    return new Movie(item);
+                this.movies = data.map((item) => {
+                    var movie = new Movie(item);
+                    movie.logo = asset(movie.logo);
+                    return movie;
                 });
 
                 console.log(this.movies);
 
-                this.loadMovieFromAPI(this.movies[0]);
+                this.loadMovieFromAPI(this.movies[this.current_movie_index]);
             },
             error: (err) => {
                 console.log('error ' + err);
@@ -49,9 +51,25 @@ export default class MoviePage extends React.Component {
         });
     }
 
-    loadMovieFromAPI ( movie ) {
+    loadMovieFromAPI ( movie, callback ) {
+        this.is_movie_loaded = false;
+
+        this.setState({project_name: movie.name, project_year: movie.year});
+
         movie.getMoreData(() => {
-            this.setState({current_movie: movie});
+            this.is_movie_loaded = true;
+
+            if ( this.is_transition ) {
+                this.next_movie = movie;
+            }
+            else {
+                this.setState({current_movie: movie});
+                this.showMovieParts();
+            }
+
+            if ( callback ) {
+                callback();
+            }
         });
     }
 
@@ -78,18 +96,68 @@ export default class MoviePage extends React.Component {
     nextMovieClick(event) {
         event.preventDefault();
 
-        this.leaveToNextMovie();
+        var current_movie = this.movies[this.current_movie_index];
+
+        this.current_movie_index++;
+        var next_movie = this.movies[this.current_movie_index];
+
+        $('.movie-curtain').addClass('right');
+        $('.next-image').addClass('right');
+
+        $('.current-image').css('z-index', 1);
+        $('#cover1').css('background', current_movie.color);
+        $('#cover2').css('background', next_movie.color);
+        $('.next-image').css({
+            "background-image": "url(" + next_movie.logo + ")",
+            "z-index": 10});
+
+        this.transitionToNextMovie();
 
         return false;
     }
 
-    leaveToNextMovie() {
-        TweenLite.to('.project-title', 1, {opacity: 0});
+    transitionToNextMovie( callback ) {
+        this.is_transition = true;
+
+        var title_tl = new TimelineLite();
+        title_tl.to('.project-title', 1, {
+            opacity: 0,
+            onComplete: () => {
+                this.loadMovieFromAPI(this.movies[this.current_movie_index]);
+            }
+        });
+        title_tl.to('.project-title', 1, {
+            opacity: 1,
+            onComplete: () => {
+                this.is_transition = false;
+                if ( this.is_movie_loaded ) {
+                    this.setState({current_movie: this.next_movie});
+                    this.showMovieParts();
+                }
+            }
+        });
+
 
         var tl = new TimelineLite();
-        $('.project-stats tr').each((i, item) => {
+        tl.to('#cover1', 0.4, {width: "100%"})
+            .to("#cover2", 0.4, {width: "100%"})
+            .from(".next-image", 0.4, {x: "100%"});
+
+        var tl = new TimelineLite();
+        $($('.project-stats tr').get().reverse()).each((i, item) => {
             var interval = 0.7 / 4;
-            tl.to(item, interval, {delay: interval * (i-1), opacity: 0});
+            tl.to(item, interval, { delay: - interval / 5, opacity: 0, x: "-100%", ease: Power3.easeIn});
+        });
+        tl.to(window, 0, {onComplete: () => {
+            TweenLite.set('.project-stats tr', {x: "+=100%"});
+        }});
+    }
+
+    showMovieParts() {
+        var tl = new TimelineLite();
+        $($('.project-stats tr').get().reverse()).each((i, item) => {
+            var interval = 0.7 / 4;
+            tl.to(item, interval, { delay: - interval / 5, opacity: 1, ease: Power3.easeIn});
         });
     }
 
@@ -113,9 +181,15 @@ export default class MoviePage extends React.Component {
 
     render() {
         var movie = this.state.current_movie;
+        var current_logo_style = {backgroundImage: ''};
+        var next_logo_style = {backgroundImage: ''};
         var movie_table;
 
         if ( movie ) {
+            current_logo_style.backgroundImage = "url(" + movie.logo + ")";
+
+            console.log(movie.logo);
+
             movie_table = movie.project_info_table.map((item) => {
                 return <tr>
                     <td>{ item.field_name }:</td>
@@ -133,11 +207,16 @@ export default class MoviePage extends React.Component {
             <div id={id} class="content">
 
                 <section class="project-title-section">
-                    <div className="movie-curtain"></div>
-                    <div class="project-main-image"></div>
+                    <div class="movie-curtain"></div>
+                    <div class="project-main-image">
+                        <div class="current-image" style={current_logo_style}></div>
+                        <div id="cover1" class="movie-curtain"></div>
+                        <div id="cover2" class="movie-curtain"></div>
+                        <div class="next-image" style={next_logo_style}></div>
+                    </div>
 
                     <div class="default-side-padding movie-title-section">
-                        <h1 class="project-title">{ movie.name } <span class="project-year">{ movie.year }</span></h1>
+                        <h1 class="project-title">{this.state.project_name}<span class="project-year">{ this.state.project_year }</span></h1>
                         <div class="movies-nav">
                             <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
                             <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
