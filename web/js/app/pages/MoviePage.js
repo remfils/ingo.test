@@ -16,6 +16,7 @@ export default class MoviePage extends React.Component {
         this.is_transition = false;
         this.is_movie_loaded = true;
         this.current_movie_index = 0;
+        this.next_movie = null;
 
         this.SWITCH_DURATION = 1.2;
         this.SWITCH_EASE = Expo.easeOut;
@@ -42,8 +43,11 @@ export default class MoviePage extends React.Component {
                 });
 
                 console.log(this.movies);
+                var movie = this.movies[this.current_movie_index];
+                TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
+                TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
 
-                this.loadMovieFromAPI(this.movies[this.current_movie_index]);
+                this.loadMovieFromAPI(movie);
             },
             error: (err) => {
                 console.log('error ' + err);
@@ -59,10 +63,7 @@ export default class MoviePage extends React.Component {
         movie.getMoreData(() => {
             this.is_movie_loaded = true;
 
-            if ( this.is_transition ) {
-                this.next_movie = movie;
-            }
-            else {
+            if ( !this.is_transition ) {
                 this.setState({current_movie: movie});
                 this.showMovieParts();
             }
@@ -88,7 +89,22 @@ export default class MoviePage extends React.Component {
     prevMovieClick(event) {
         event.preventDefault();
 
+        var current_movie = this.movies[this.current_movie_index];
 
+        this.current_movie_index--;
+        var next_movie = this.next_movie = this.movies[this.current_movie_index];
+
+        $('.movie-curtain').addClass('left');
+        $('.next-image').addClass('left');
+
+        $('.current-image').css('z-index', 1);
+        $('#cover1').css('background', current_movie.color);
+        $('#cover2').css('background', next_movie.color);
+        $('.next-image').css({
+            "background-image": "url(" + next_movie.logo + ")",
+            "z-index": 10});
+
+        this.transitionToNextMovie(true);
 
         return false;
     }
@@ -99,10 +115,9 @@ export default class MoviePage extends React.Component {
         var current_movie = this.movies[this.current_movie_index];
 
         this.current_movie_index++;
-        var next_movie = this.movies[this.current_movie_index];
+        var next_movie = this.next_movie = this.movies[this.current_movie_index];
 
         $('.movie-curtain').addClass('right');
-        $('.next-image').addClass('right');
 
         $('.current-image').css('z-index', 1);
         $('#cover1').css('background', current_movie.color);
@@ -111,22 +126,22 @@ export default class MoviePage extends React.Component {
             "background-image": "url(" + next_movie.logo + ")",
             "z-index": 10});
 
-        this.transitionToNextMovie();
+        this.transitionToNextMovie(false);
 
         return false;
     }
 
-    transitionToNextMovie( callback ) {
+    transitionToNextMovie( is_left, callback ) {
         this.is_transition = true;
 
         var title_tl = new TimelineLite();
-        title_tl.to('.project-title', 1, {
+        title_tl.to('.project-title', 0.5, {
             opacity: 0,
             onComplete: () => {
                 this.loadMovieFromAPI(this.movies[this.current_movie_index]);
             }
         });
-        title_tl.to('.project-title', 1, {
+        title_tl.to('.project-title', 0.5, {
             opacity: 1,
             onComplete: () => {
                 this.is_transition = false;
@@ -137,11 +152,34 @@ export default class MoviePage extends React.Component {
             }
         });
 
+        TweenLite.to('.movie-title-section', 1, {backgroundColor: this.next_movie.color });
+        TweenLite.to('.project-sm-dsc', 1, {backgroundColor: this.next_movie.color });
 
         var tl = new TimelineLite();
         tl.to('#cover1', 0.4, {width: "100%"})
             .to("#cover2", 0.4, {width: "100%"})
-            .from(".next-image", 0.4, {x: "100%"});
+            .from(".next-image", 0.4, {
+                x: (is_left ? "-" : "") + "100%",
+                onComplete: () => {
+                    $('.movie-curtain').removeClass('left')
+                        .removeClass('right');
+
+                    var $next_image = $('.next-image');
+                    var $current_image = $('.current-image');
+
+                    $next_image.removeClass('left')
+                        .removeClass('right');
+
+                    var bgi = $next_image.css('background-image');
+                    $next_image.css('background-image', $current_image.css('background-image'));
+                    $current_image.css('background-image', bgi);
+
+                    $current_image.css('z-index', 10);
+                    $next_image.css('z-index', 1);
+                }
+            })
+            .set('#cover1', {width: "0"})
+            .set('#cover2', {width: "0"});
 
         var tl = new TimelineLite();
         $($('.project-stats tr').get().reverse()).each((i, item) => {
@@ -155,9 +193,10 @@ export default class MoviePage extends React.Component {
 
     showMovieParts() {
         var tl = new TimelineLite();
-        $($('.project-stats tr').get().reverse()).each((i, item) => {
+        $('.project-stats tr').each((i, item) => {
             var interval = 0.7 / 4;
-            tl.to(item, interval, { delay: - interval / 5, opacity: 1, ease: Power3.easeIn});
+            TweenLite.set(item, {opacity: 1});
+            tl.from(item, interval, { delay: - interval / 5, opacity: 0, x: "100%", ease: Power3.easeOut });
         });
     }
 
@@ -182,13 +221,10 @@ export default class MoviePage extends React.Component {
     render() {
         var movie = this.state.current_movie;
         var current_logo_style = {backgroundImage: ''};
-        var next_logo_style = {backgroundImage: ''};
         var movie_table;
 
         if ( movie ) {
             current_logo_style.backgroundImage = "url(" + movie.logo + ")";
-
-            console.log(movie.logo);
 
             movie_table = movie.project_info_table.map((item) => {
                 return <tr>
@@ -212,7 +248,7 @@ export default class MoviePage extends React.Component {
                         <div class="current-image" style={current_logo_style}></div>
                         <div id="cover1" class="movie-curtain"></div>
                         <div id="cover2" class="movie-curtain"></div>
-                        <div class="next-image" style={next_logo_style}></div>
+                        <div class="next-image"></div>
                     </div>
 
                     <div class="default-side-padding movie-title-section">
