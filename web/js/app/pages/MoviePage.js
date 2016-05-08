@@ -13,6 +13,8 @@ export default class MoviePage extends React.Component {
     constructor() {
         super();
 
+        this.previewWindow = null;
+
         this.is_transition = false;
         this.is_movie_loaded = true;
         this.current_movie_index = 0;
@@ -75,11 +77,21 @@ export default class MoviePage extends React.Component {
     }
 
     componentDidMount() {
+        this.preview_iframe = $('.project-demo-video > iframe')[0];
 
+        this.resizePreviewIframe();
+
+        $(window).resize(this.resizePreviewIframe.bind(this));
     }
 
     componentWillUnmount() {
+        $(window).off('resize', this.resizePreviewIframe);
+    }
 
+    resizePreviewIframe(event) {
+        if ( this.preview_iframe ) {
+            this.preview_iframe.height = 609 * this.preview_iframe.clientWidth / 1092;
+        }
     }
 
     prevMovieClick(event) {
@@ -252,14 +264,14 @@ export default class MoviePage extends React.Component {
                     </table>
 
                     <div class="col-70p project-demo-video">
-                        <iframe height="60%" src="https://player.vimeo.com/video/67123140?color=ffffff" frameBorder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <iframe height="60%" src={movie.preview_url} frameBorder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                         <div class="btn-mehr-container">
                             <a class="btn-mehr">MEHR ERFAHREN</a>
                         </div>
                     </div>
                 </section>
 
-                
+                <Description movie={movie} />
 
                 <footer class="default-side-padding project-footer">
                     <a href="#goTop">Contact</a>
@@ -284,6 +296,11 @@ class Movie {
         this.year = movie_data.year;
         this.logo = movie_data.logo;
         this.color = movie_data.color;
+
+        this.project_info_table = null;
+        this.preview_url = null;
+        this.description = null;
+        this.comments = null;
     }
 
     getMoreData(callback) {
