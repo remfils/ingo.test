@@ -66,7 +66,10 @@ export default class MoviePage extends React.Component {
             this.is_movie_loaded = true;
 
             if ( !this.is_transition ) {
-                this.setState({current_movie: movie});
+                this.setState({
+                    current_movie: movie,
+                    description: <Description movie={movie} />
+                });
                 this.showMovieParts();
             }
 
@@ -154,7 +157,10 @@ export default class MoviePage extends React.Component {
             onComplete: () => {
                 this.is_transition = false;
                 if ( this.is_movie_loaded ) {
-                    this.setState({current_movie: this.next_movie});
+                    this.setState({
+                        current_movie: this.next_movie,
+                        description: <Description movie={this.next_movie} />
+                    });
                     this.showMovieParts();
                 }
             }
@@ -271,7 +277,7 @@ export default class MoviePage extends React.Component {
                     </div>
                 </section>
 
-                <Description movie={movie} />
+                { this.state.description }
 
                 <footer class="default-side-padding project-footer">
                     <a href="#goTop">Contact</a>
