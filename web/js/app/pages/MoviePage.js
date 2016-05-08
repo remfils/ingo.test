@@ -79,11 +79,7 @@ export default class MoviePage extends React.Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.scrollListener.bind(this));
-    }
 
-    scrollListener(e) {
-        console.log(e);
     }
 
     prevMovieClick(event) {
@@ -156,10 +152,12 @@ export default class MoviePage extends React.Component {
         TweenLite.to('.project-sm-dsc', 1, {backgroundColor: this.next_movie.color });
 
         var tl = new TimelineLite();
-        tl.to('#cover1', 0.4, {width: "100%"})
-            .to("#cover2", 0.4, {width: "100%"})
-            .from(".next-image", 0.4, {
+        tl.to('#cover1', this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE})
+            .to("#cover2", this.SWITCH_DURATION, {delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
+            .from(".next-image", this.SWITCH_DURATION, {
+                delay: this.SWITCH_B_DELAY,
                 x: (is_left ? "-" : "") + "100%",
+                ease: this.SWITCH_EASE,
                 onComplete: () => {
                     $('.movie-curtain').removeClass('left')
                         .removeClass('right');
@@ -200,24 +198,6 @@ export default class MoviePage extends React.Component {
         });
     }
 
-    leaveToMovie(time_line, is_right) {
-        var m_id = this.props.movie.id,
-            movie_id = "#Movie" + m_id,
-            movie_title = $(movie_id + ' .project-title h1')[0],
-            cover = $(movie_id + " .movie-curtain")[0];
-
-        cover.classList.add( is_right ? 'right' : 'left');
-
-        TweenLite.to(movie_title, 0.4, {x: "-200%"});
-
-        TweenLite.to(movie_id + ' .movie-title-section', 0.5, { backgroundColor: "rgba(255,255,255,0)" });
-
-        time_line
-            .to(cover, this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE});
-
-        return time_line;
-    }
-
     render() {
         var movie = this.state.current_movie;
         var current_logo_style = {backgroundImage: ''};
@@ -252,7 +232,7 @@ export default class MoviePage extends React.Component {
                     </div>
 
                     <div class="default-side-padding movie-title-section">
-                        <h1 class="project-title">{this.state.project_name}<span class="project-year">{ this.state.project_year }</span></h1>
+                        <h1 class="project-title">{this.state.project_name}<span class="project-year"> { this.state.project_year }</span></h1>
                         <div class="movies-nav">
                             <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
                             <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
@@ -279,7 +259,7 @@ export default class MoviePage extends React.Component {
                     </div>
                 </section>
 
-
+                
 
                 <footer class="default-side-padding project-footer">
                     <a href="#goTop">Contact</a>
