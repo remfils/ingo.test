@@ -47,10 +47,13 @@ export default class MoviePage extends React.Component {
                     return movie;
                 });
 
-                console.log(this.movies);
                 var movie = this.movies[this.current_movie_index];
                 TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
                 TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
+
+                if ( this.props.transition ) {
+                    this.arrangeTransition(this.props.transition);
+                }
 
                 this.loadMovieFromAPI(movie);
             },
@@ -82,6 +85,10 @@ export default class MoviePage extends React.Component {
         });
     }
 
+    componentWillUnmount() {
+        $(window).off('resize', this.resizePreviewIframe);
+    }
+
     componentDidMount() {
         this.preview_iframe = $('.project-demo-video > iframe')[0];
 
@@ -90,8 +97,20 @@ export default class MoviePage extends React.Component {
         $(window).resize(this.resizePreviewIframe.bind(this));
     }
 
-    componentWillUnmount() {
-        $(window).off('resize', this.resizePreviewIframe);
+    arrangeTransition( transition ) {
+        var time_line = new TimelineLite();
+
+        switch ( transition.type ) {
+            case "INDEX-MOVIE":
+                transition.prev_page.leaveToMovies(time_line);
+                this.enterFromIndex(time_line);
+                break;
+        }
+    }
+
+    enterFromIndex(time_line) {
+        TweenLite.set("#MoviePage", {y: "100%"});
+        time_line.to("#MoviePage", 1, {delay: -1, y: "-=100%"});
     }
 
     resizePreviewIframe(event) {
@@ -286,7 +305,7 @@ export default class MoviePage extends React.Component {
         var id = "Movie" + 0;
 
         return (
-            <div id={id} class="content">
+            <div id="MoviePage" class="content">
 
                 <section class="project-title-section">
                     <div class="movie-curtain"></div>

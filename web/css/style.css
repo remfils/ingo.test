@@ -229,6 +229,13 @@ head, body {
     overflow: hidden;
 }
 
+#IndexPage,
+#MoviePage {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
 .movie-title-section {
     display: flex;
     -ms-align-items: center;
