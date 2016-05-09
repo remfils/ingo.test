@@ -1,4 +1,6 @@
 import React from 'react';
+import ScrollMagic from 'scrollmagic';
+import 'imports?define=>false!scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap';
 var $ = require('jquery');
 
 import TransitionStore from '../stores/TransitionStore';
@@ -14,6 +16,7 @@ export default class MoviePage extends React.Component {
         super();
 
         this.previewWindow = null;
+        this.scroll_magic_scene = null;
 
         this.is_transition = false;
         this.is_movie_loaded = true;
@@ -100,6 +103,10 @@ export default class MoviePage extends React.Component {
     prevMovieClick(event) {
         event.preventDefault();
 
+        if ( this.isTransitionLocked() || (this.current_movie_index - 1 < 0) ) {
+            return false;
+        }
+
         var current_movie = this.movies[this.current_movie_index];
 
         this.current_movie_index--;
@@ -121,7 +128,11 @@ export default class MoviePage extends React.Component {
     }
 
     nextMovieClick(event) {
-        event.preventDefault();
+        event.preventDefault()
+
+        if ( this.isTransitionLocked() || (this.current_movie_index + 1 >= this.movies.length) ) {
+            return false;
+        }
 
         var current_movie = this.movies[this.current_movie_index];
 
@@ -140,6 +151,11 @@ export default class MoviePage extends React.Component {
         this.transitionToNextMovie(false);
 
         return false;
+    }
+
+    isTransitionLocked() {
+        return this.is_transition
+            || !this.is_movie_loaded;
     }
 
     transitionToNextMovie( is_left, callback ) {
@@ -166,8 +182,13 @@ export default class MoviePage extends React.Component {
             }
         });
 
-        TweenLite.to('.movie-title-section', 1, {backgroundColor: this.next_movie.color });
-        TweenLite.to('.project-sm-dsc', 1, {backgroundColor: this.next_movie.color });
+        var col = this.movies[this.current_movie_index].color;
+        var $movie_title = $('.movie-title-section');
+
+        var color_obj = {bgc: this.state.current_movie.color};
+        TweenMax.to(color_obj, 1, {bgc: this.next_movie.color, onUpdate: (co) => {
+            this.setScrollmagicScene(co.bgc);
+        }, onUpdateParams: [color_obj]});
 
         var tl = new TimelineLite();
         tl.to('#cover1', this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE})
@@ -214,6 +235,33 @@ export default class MoviePage extends React.Component {
             TweenLite.set(item, {opacity: 1});
             tl.from(item, interval, { delay: - interval / 5, opacity: 0, x: "100%", ease: Power3.easeOut });
         });
+    }
+
+    componentWillUpdate() {
+        if ( !this.isTransitionLocked() ) {
+            console.log("ScrollMagic happened!");
+            this.setScrollmagicScene();
+        }
+    }
+
+    setScrollmagicScene(bg_color) {
+        if ( !bg_color ) {
+            bg_color = this.movies[this.current_movie_index].color;
+        }
+
+        if ( !this.scroll_magic_scene ) {
+            var controller = new ScrollMagic.Controller();
+
+            this.scroll_magic_scene = new ScrollMagic.Scene({
+                triggerElement: ".movie-title-section",
+                duration: 1000
+            });
+
+            this.scroll_magic_scene.addTo(controller);
+        }
+
+        var tween = new TweenMax.allFromTo(['.movie-title-section', '.project-sm-dsc'], 1, {backgroundColor: bg_color}, {backgroundColor: "#ffffff"});
+        this.scroll_magic_scene.setTween(tween);
     }
 
     render() {
