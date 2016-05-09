@@ -109,7 +109,7 @@ export default class MoviePage extends React.Component {
     }
 
     enterFromIndex(time_line) {
-        TweenLite.set("#MoviePage", {y: "100%"});
+        TweenLite.set("#MoviePage", {y: "100%'"});
         time_line.to("#MoviePage", 1, {delay: -1, y: "-=100%"});
     }
 
