@@ -1,4 +1,6 @@
 import React from 'react';
+import ScrollMagic from 'scrollmagic';
+import 'imports?define=>false!scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap';
 var $ = require('jquery');
 
 import TransitionStore from '../stores/TransitionStore';
@@ -6,11 +8,20 @@ import SmallDescription from './MoviePage/SmallDescription';
 import FullDescription from './MoviePage/FullDescription';
 import Description from './MoviePage/Description';
 import * as TransitionActions from "../actions/TransitionActions";
+import { asset } from '../funcitons';
 import config from '../config';
 
 export default class MoviePage extends React.Component {
     constructor() {
         super();
+
+        this.previewWindow = null;
+        this.scroll_magic_scene = null;
+
+        this.is_transition = false;
+        this.is_movie_loaded = true;
+        this.current_movie_index = 0;
+        this.next_movie = null;
 
         this.SWITCH_DURATION = 1.2;
         this.SWITCH_EASE = Expo.easeOut;
@@ -18,251 +29,295 @@ export default class MoviePage extends React.Component {
         this.SWITCH_B_DELAY = -this.SWITCH_DURATION * 2.3 / 3;
 
         this.state = {
-            small_description: null,
-            full_description: null,
+            project_name: "",
+            project_year: "",
+            current_movie: null,
             description: null
         }
     }
 
     componentWillMount() {
+        $.ajax({
+            url: config.SITE_NAME + 'api/all-movies',
+            dataType: 'json',
+            success: (data) => {
+                this.movies = data.map((item) => {
+                    var movie = new Movie(item);
+                    movie.logo = asset(movie.logo);
+                    return movie;
+                });
 
+                var movie = this.movies[this.current_movie_index];
+                TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
+                TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
+
+                if ( this.props.transition ) {
+                    this.arrangeTransition(this.props.transition);
+                }
+
+                this.loadMovieFromAPI(movie);
+            },
+            error: (err) => {
+                console.log('error ' + err);
+            }
+        });
+    }
+
+    loadMovieFromAPI ( movie, callback ) {
+        this.is_movie_loaded = false;
+
+        this.setState({project_name: movie.name, project_year: movie.year});
+
+        movie.getMoreData(() => {
+            this.is_movie_loaded = true;
+
+            if ( !this.is_transition ) {
+                this.setState({
+                    current_movie: movie,
+                    description: <Description movie={movie} />
+                });
+                this.showMovieParts();
+            }
+
+            if ( callback ) {
+                callback();
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        $(window).off('resize', this.resizePreviewIframe);
     }
 
     componentDidMount() {
-        var tl = this.props.transition.shared_timeline;
+        this.preview_iframe = $('.project-demo-video > iframe')[0];
 
-        var movie_id = "#Movie" + this.props.movie.id;
+        this.resizePreviewIframe();
 
-        var cover = $(movie_id + " .movie-curtain")[0];
-        cover.style['background-color'] = this.props.movie.color;
+        $(window).resize(this.resizePreviewIframe.bind(this));
+    }
 
-        var logo = $( movie_id + ' .project-main-image')[0];
-        logo.style['background'] = 'url(' + this.props.movie.logo + ')';
+    arrangeTransition( transition ) {
+        var time_line = new TimelineLite();
 
-        var movie_title = $(movie_id + ' .project-title h1')[0];
-
-        var $this = $(movie_id)[0];
-
-        var img = new Image();
-        img.src = this.props.logo;
-
-        switch ( this.props.transition.type ) {
+        switch ( transition.type ) {
             case "INDEX-MOVIE":
-                if ( config.DEBUG ) {
-                    this.props.app.switchPagesAfterTransition();
-                    this.setState({description: <Description movie={this.props.movie}/>});
-                    TweenLite.to(movie_id + ' .movie-title-section', 0, { backgroundColor: this.props.movie.color });
-                    return;
-                }
-                TweenLite.set($this, {top: '100%'});
-
-                var time_line = new TimelineLite();
-
-                this.props.transition.prev_page.leaveToMovies(time_line);
-                TweenLite.set(movie_id + ' .movie-title-section', { backgroundColor: this.props.movie.color });
-
-                time_line.to($this, 1, {delay:-0.5, top: '0', onComplete: () => {
-                    this.props.app.switchPagesAfterTransition();
-                    this.setState({description: <Description movie={this.props.movie}/>});
-                }});
-                break;
-            case "MOVIE-MOVIE_RIGHT":
-                var time_line = new TimelineLite();
-
-                var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
-                var cover = $("#Movie" + this.props.movie.id + " .movie-curtain")[0];
-                cover.classList.add('right');
-                logo.style['z-index'] = 100;
-
-                this.props.transition.prev_page.leaveToMovie(time_line, true);
-
-                TweenLite.from(movie_title, 1, {delay: 0.1, opacity: '0'});
-
-                TweenLite.set(movie_id + ' .movie-title-section', {
-                    backgroundColor: this.props.transition.prev_page.props.movie.color
-                });
-
-                TweenLite.to(movie_id + ' .movie-title-section', 1, { backgroundColor: this.props.movie.color });
-
-                // TweenLite.to(movie_id + ' .movie-title-section', 0.5, { delay: 0.5, backgroundColor: this.props.movie.color });
-
-                time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
-                    .to('.movie-title-section', 1, { delay: -this.SWITCH_DURATION, backgroundColor: this.props.movie.color })
-                    .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '100%', ease: this.SWITCH_EASE, onComplete: () => {
-                        console.log("dscription is set");
-                        this.setState({description: <Description movie={this.props.movie} />});
-                        cover.classList.remove('right');
-                        cover.style['width'] = 0;
-                        this.props.transition.callback();
-                    }});
-                break;
-            case "MOVIE-MOVIE_LEFT":
-                var time_line = new TimelineLite();
-
-                var logo = $("#Movie" + this.props.movie.id + " .project-main-image")[0];
-                var cover = $("#Movie" + this.props.movie.id + " .movie-curtain")[0];
-                cover.classList.add('left');
-                logo.style['z-index'] = 100;
-
-                this.props.transition.prev_page.leaveToMovie(time_line, false);
-
-                TweenLite.from(movie_title, 1, {delay: 0.1, opacity: '0'});
-                TweenLite.set(movie_id + ' .movie-title-section', {
-                    backgroundColor: this.props.transition.prev_page.props.movie.color
-                });
-                TweenLite.to(movie_id + ' .movie-title-section', 0.5, { delay: 0.5, backgroundColor: this.props.movie.color });
-
-                time_line.to(cover, this.SWITCH_DURATION, { delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
-                    .from(logo, this.SWITCH_DURATION, { delay: this.SWITCH_B_DELAY , x: '-100%', ease: this.SWITCH_EASE, onComplete: () => {
-                        this.setState({description: <Description movie={this.props.movie}/>});
-                        cover.classList.remove('left');
-                        cover.style['width'] = 0;
-                        this.props.transition.callback();
-                    }});
+                transition.prev_page.leaveToMovies(time_line);
+                this.enterFromIndex(time_line);
                 break;
         }
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.scrollListener.bind(this));
+    enterFromIndex(time_line) {
+        TweenLite.set("#MoviePage", {y: "100%"});
+        time_line.to("#MoviePage", 1, {delay: -1, y: "-=100%"});
     }
 
-    scrollListener(e) {
-        console.log(e);
+    resizePreviewIframe(event) {
+        if ( this.preview_iframe ) {
+            this.preview_iframe.height = 609 * this.preview_iframe.clientWidth / 1092;
+        }
     }
 
     prevMovieClick(event) {
         event.preventDefault();
 
-        var m_id = this.props.movie.id;
-        var movie_id = "#Movie" + m_id;
-
-        var movies = this.props.app.movies;
-        var next_movie =  movies.filter((item) => {return item.id < m_id}).pop();
-        console.log(next_movie);
-
-        if ( !next_movie ) {
+        if ( this.isTransitionLocked() || (this.current_movie_index - 1 < 0) ) {
             return false;
         }
 
-        var $this = $(movie_id)[0];
+        var current_movie = this.movies[this.current_movie_index];
 
-        $this.style['z-index'] = 0;
+        this.current_movie_index--;
+        var next_movie = this.next_movie = this.movies[this.current_movie_index];
 
-        var cover = $(movie_id + " .movie-curtain")[0];
-        cover.style['width'] = 0;
-        cover.style['z-index'] = 99;
-        cover.style['left'] = 0;
-        cover.style['right'] = 'auto';
+        $('.movie-curtain').addClass('left');
+        $('.next-image').addClass('left');
 
-        var movie_title = $(movie_id + ' .project-title h1')[0];
+        $('.current-image').css('z-index', 1);
+        $('#cover1').css('background', current_movie.color);
+        $('#cover2').css('background', next_movie.color);
+        $('.next-image').css({
+            "background-image": "url(" + next_movie.logo + ")",
+            "z-index": 10});
 
-        var logo = $(movie_id + ' .project-main-image')[0];
-        logo.style['z-index'] = 0;
-
-        var tl = new TimelineLite();
-
-        tl.to(cover, 1, {width: "100%"})
-            .to(movie_title, 0.4, {delay: -1, x: "-200%"});
-
-        TransitionActions.fromMovieToMovie(false, this,  {
-            next_movie,
-            callback: ()=>{
-                TweenLite.set(movie_title, {x: 0});
-                cover.style['width'] = 0;
-                this.props.app.switchPagesAfterTransition();
-            }});
-
-        /*TransitionActions.fromMovieToMovie(false, tl,  {
-            next_movie,
-            callback: ()=>{
-                TweenLite.set(movie_title, {x: 0});
-                cover.style['width'] = 0;
-                this.props.app.switchPagesAfterTransition();
-            }});*/
+        this.transitionToNextMovie(true);
 
         return false;
     }
 
     nextMovieClick(event) {
-        event.preventDefault();
+        event.preventDefault()
 
-        var m_id = this.props.movie.id;
-        var movie_id = "#Movie" + m_id;
-
-        var movies = this.props.app.movies;
-        var next_movie =  movies.filter((item) => {return item.id > m_id})[0];
-        console.log(next_movie);
-
-        if ( !next_movie ) {
+        if ( this.isTransitionLocked() || (this.current_movie_index + 1 >= this.movies.length) ) {
             return false;
         }
 
-        var $this = $(movie_id)[0];
+        var current_movie = this.movies[this.current_movie_index];
 
-        $this.style['z-index'] = 0;
+        this.current_movie_index++;
+        var next_movie = this.next_movie = this.movies[this.current_movie_index];
 
-        var cover = $(movie_id + " .movie-curtain")[0];
+        $('.movie-curtain').addClass('right');
 
-        var movie_title = $(movie_id + ' .project-title h1')[0];
+        $('.current-image').css('z-index', 1);
+        $('#cover1').css('background', current_movie.color);
+        $('#cover2').css('background', next_movie.color);
+        $('.next-image').css({
+            "background-image": "url(" + next_movie.logo + ")",
+            "z-index": 10});
 
-        var logo = $(movie_id + ' .project-main-image')[0];
-        logo.style['z-index'] = 0;
-
-        var tl = new TimelineLite();
-
-        TransitionActions.fromMovieToMovie(true, this,  {
-            next_movie,
-            callback: ()=>{
-                TweenLite.set(movie_title, {x: 0});
-                cover.style['width'] = 0;
-                this.props.app.switchPagesAfterTransition();
-            }});
+        this.transitionToNextMovie(false);
 
         return false;
     }
 
-    leaveToMovie(time_line, is_right) {
-        var m_id = this.props.movie.id,
-            movie_id = "#Movie" + m_id,
-            movie_title = $(movie_id + ' .project-title h1')[0],
-            cover = $(movie_id + " .movie-curtain")[0];
+    isTransitionLocked() {
+        return this.is_transition
+            || !this.is_movie_loaded;
+    }
 
-        cover.classList.add( is_right ? 'right' : 'left');
+    transitionToNextMovie( is_left, callback ) {
+        this.is_transition = true;
 
-        TweenLite.to(movie_title, 0.4, {x: "-200%"});
+        var title_tl = new TimelineLite();
+        title_tl.to('.project-title', 0.5, {
+            opacity: 0,
+            onComplete: () => {
+                this.loadMovieFromAPI(this.movies[this.current_movie_index]);
+            }
+        });
+        title_tl.to('.project-title', 0.5, {
+            opacity: 1,
+            onComplete: () => {
+                this.is_transition = false;
+                if ( this.is_movie_loaded ) {
+                    this.setState({
+                        current_movie: this.next_movie,
+                        description: <Description movie={this.next_movie} />
+                    });
+                    this.showMovieParts();
+                }
+            }
+        });
 
-        TweenLite.to(movie_id + ' .movie-title-section', 0.5, { backgroundColor: "rgba(255,255,255,0)" });
+        var col = this.movies[this.current_movie_index].color;
+        var $movie_title = $('.movie-title-section');
 
-        time_line
-            .to(cover, this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE});
+        var color_obj = {bgc: this.state.current_movie.color};
+        TweenMax.to(color_obj, 1, {bgc: this.next_movie.color, onUpdate: (co) => {
+            this.setScrollmagicScene(co.bgc);
+        }, onUpdateParams: [color_obj]});
 
-        return time_line;
+        var tl = new TimelineLite();
+        tl.to('#cover1', this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE})
+            .to("#cover2", this.SWITCH_DURATION, {delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
+            .from(".next-image", this.SWITCH_DURATION, {
+                delay: this.SWITCH_B_DELAY,
+                x: (is_left ? "-" : "") + "100%",
+                ease: this.SWITCH_EASE,
+                onComplete: () => {
+                    $('.movie-curtain').removeClass('left')
+                        .removeClass('right');
+
+                    var $next_image = $('.next-image');
+                    var $current_image = $('.current-image');
+
+                    $next_image.removeClass('left')
+                        .removeClass('right');
+
+                    var bgi = $next_image.css('background-image');
+                    $next_image.css('background-image', $current_image.css('background-image'));
+                    $current_image.css('background-image', bgi);
+
+                    $current_image.css('z-index', 10);
+                    $next_image.css('z-index', 1);
+                }
+            })
+            .set('#cover1', {width: "0"})
+            .set('#cover2', {width: "0"});
+
+        var tl = new TimelineLite();
+        $($('.project-stats tr').get().reverse()).each((i, item) => {
+            var interval = 0.7 / 4;
+            tl.to(item, interval, { delay: - interval / 5, opacity: 0, x: "-100%", ease: Power3.easeIn});
+        });
+        tl.to(window, 0, {onComplete: () => {
+            TweenLite.set('.project-stats tr', {x: "+=100%"});
+        }});
+    }
+
+    showMovieParts() {
+        var tl = new TimelineLite();
+        $('.project-stats tr').each((i, item) => {
+            var interval = 0.7 / 4;
+            TweenLite.set(item, {opacity: 1});
+            tl.from(item, interval, { delay: - interval / 5, opacity: 0, x: "100%", ease: Power3.easeOut });
+        });
+    }
+
+    componentWillUpdate() {
+        if ( !this.isTransitionLocked() ) {
+            console.log("ScrollMagic happened!");
+            this.setScrollmagicScene();
+        }
+    }
+
+    setScrollmagicScene(bg_color) {
+        if ( !bg_color ) {
+            bg_color = this.movies[this.current_movie_index].color;
+        }
+
+        if ( !this.scroll_magic_scene ) {
+            var controller = new ScrollMagic.Controller();
+
+            this.scroll_magic_scene = new ScrollMagic.Scene({
+                triggerElement: ".movie-title-section",
+                duration: 1000
+            });
+
+            this.scroll_magic_scene.addTo(controller);
+        }
+
+        var tween = new TweenMax.allFromTo(['.movie-title-section', '.project-sm-dsc'], 1, {backgroundColor: bg_color}, {backgroundColor: "#ffffff"});
+        this.scroll_magic_scene.setTween(tween);
     }
 
     render() {
-        var window_scroll = document.body.scrollTop;
+        var movie = this.state.current_movie;
+        var current_logo_style = {backgroundImage: ''};
+        var movie_table;
 
-        var small_description = this.state.small_description || null;
-        var full_description = <FullDescription movie={this.props.movie}/>;
+        if ( movie ) {
+            current_logo_style.backgroundImage = "url(" + movie.logo + ")";
 
-        var description = this.state.description;
+            movie_table = movie.project_info_table.map((item) => {
+                return <tr>
+                    <td>{ item.field_name }:</td>
+                    <td>{ item.field_value }</td>
+                </tr>;
+            });
+        }
+        else {
+            movie = new Movie({id: '',name:'',year:"",logo:""});
+        }
 
-        var project_name = this.props.movie.name;
-        var project_year = this.props.movie.year;
-        console.log(this.props);
-
-        var id = "Movie" + this.props.movie.id;
+        var id = "Movie" + 0;
 
         return (
-            <div id={id} class="content">
+            <div id="MoviePage" class="content">
 
-                <section class="project-title">
-                    <div className="movie-curtain"></div>
-                    <div class="project-main-image"></div>
+                <section class="project-title-section">
+                    <div class="movie-curtain"></div>
+                    <div class="project-main-image">
+                        <div class="current-image" style={current_logo_style}></div>
+                        <div id="cover1" class="movie-curtain"></div>
+                        <div id="cover2" class="movie-curtain"></div>
+                        <div class="next-image"></div>
+                    </div>
 
                     <div class="default-side-padding movie-title-section">
-                        <h1>{ project_name } <span class="project-year">{project_year}</span></h1>
+                        <h1 class="project-title">{this.state.project_name}<span class="project-year"> { this.state.project_year }</span></h1>
                         <div class="movies-nav">
                             <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
                             <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
@@ -270,7 +325,26 @@ export default class MoviePage extends React.Component {
                     </div>
                 </section>
 
-                { description }
+                <section class="default-side-padding project-sm-dsc">
+                    <table class="col-30p project-stats">
+                        <tr>
+                            <th>Project:</th>
+                            <th>{ movie.name }</th>
+                        </tr>
+
+                        {movie_table}
+
+                    </table>
+
+                    <div class="col-70p project-demo-video">
+                        <iframe height="60%" src={movie.preview_url} frameBorder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <div class="btn-mehr-container">
+                            <a class="btn-mehr">MEHR ERFAHREN</a>
+                        </div>
+                    </div>
+                </section>
+
+                { this.state.description }
 
                 <footer class="default-side-padding project-footer">
                     <a href="#goTop">Contact</a>
@@ -284,5 +358,41 @@ export default class MoviePage extends React.Component {
 
             </div>
             );
+    }
+}
+
+class Movie {
+
+    constructor(movie_data) {
+        this.id = movie_data.id;
+        this.name = movie_data.name;
+        this.year = movie_data.year;
+        this.logo = movie_data.logo;
+        this.color = movie_data.color;
+
+        this.project_info_table = null;
+        this.preview_url = null;
+        this.description = null;
+        this.comments = null;
+    }
+
+    getMoreData(callback) {
+        $.ajax({
+            url: config.SITE_NAME + 'api/movie/' + this.id,
+            dataType: 'json',
+            success: (data) => {
+                this.project_info_table = data.table;
+                this.preview_url = data.preview_url;
+                this.description = data.description;
+                this.comments = data.comments;
+
+                if ( callback ) {
+                    callback();
+                }
+            },
+            error: (err) => {
+                console.log('error ' + err);
+            }
+        });
     }
 }
