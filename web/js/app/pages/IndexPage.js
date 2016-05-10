@@ -65,11 +65,6 @@ export default class IndexPage extends React.Component {
     moviesLinkClickListener(event) {
         event.preventDefault();
 
-        /*TransitionStore.makeTransition(
-            TransitionStore.INDEX_PAGE,
-            TransitionStore.MOVIE_PAGE,
-            tl
-        );*/
         TransitionActions.fromIndexToMovieTranstion(this);
 
         if ( config.DEBUG ) {
@@ -80,6 +75,8 @@ export default class IndexPage extends React.Component {
     }
 
     leaveToMovies(time_line) {
+        console.log("LEAVE INDEX");
+
         var index_section = $('#IndexPage')[0],
             curtains = $('#IndexPage .curtain');
 

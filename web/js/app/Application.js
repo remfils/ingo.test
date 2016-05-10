@@ -29,29 +29,6 @@ export default class Application extends React.Component {
 
     componentWillMount() {
         TransitionStore.on("leave", this.leavePageListener.bind(this));
-
-        $.ajax({
-            url: config.SITE_NAME + 'api/all-movies',
-            dataType: 'json',
-            success: (data) => {
-                console.log('finished of downloading movies: ' + data.table);
-                data.forEach((item) => {
-                    item.logo = asset(item.logo);
-                });
-
-                console.log('this is data: ', data);
-
-                this.movies = data;
-
-                /*for ( var movie in this.movies ) {
-                    var img = new Image();
-                    img.src = movie.logo;
-                }*/
-            },
-            error: (err) => {
-                console.log('error ' + err);
-            }
-        });
     }
 
     gotoMovie(from, shared_timeline) {
@@ -102,10 +79,6 @@ export default class Application extends React.Component {
         }
 
         this.prepareNextPageForTransition(page);
-
-        /*this.state.pages.push(page);
-
-        this.setState({pages: this.state.pages});*/
     }
 
     render() {
