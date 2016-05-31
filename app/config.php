@@ -1,6 +1,6 @@
 <?php
 
-$app['debug'] = true;
+$app['debug'] = false;
 
 /* assets */
 $app['asset_path'] = 'http://ingo-test.tk/web/';
