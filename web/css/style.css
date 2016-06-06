@@ -382,3 +382,122 @@ a.arrow:hover {
     background-color: #051e2a;
     min-height: 20%;
 }
+
+/* NEW INDEX */
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+a,
+a:hover,
+a:visited,
+a:active {
+    color: #3c3c3b;
+    text-decoration: none;
+}
+
+.title-container {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.title-project-dsc,
+.background-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* navigation */
+
+.title-navigation {
+    font-size: 24px;
+    padding-left: 100px;
+}
+
+.title-navigation ul {
+    padding: 0;
+}
+
+.title-navigation li {
+    display: inline;
+}
+
+.title-navigation li:not(:last-child):after {
+    content: " // ";
+    color: #3c3c3b;
+}
+
+.title-project-dsc {
+    width: 40%;
+    background-color: #cce1ee;
+    height: 100%;
+    left: 120px;
+    padding: 3em 10px 3em 100px;
+}
+
+.title-content {
+    height: 100%;
+    vertical-align: bottom;
+    padding-bottom: 5em;
+}
+
+/* movie title */
+
+.page-name {
+    position: relative;
+    top: -100px;
+    left: -100px;
+    color: #3c3c3b;
+    font-weight: bold;
+    font-size: 21.9pt;
+}
+
+.title-header {
+    position: absolute;
+    left: 320px;
+    bottom: 50%;
+}
+
+.movie-title {
+    font-size: 100px;
+}
+
+.movie-title:after {
+    content: " ";
+}
+
+.movie-genre {
+    font-size: 50px;
+}
+
+.movie-short-description {
+    font-size: 18px;
+    width: 50%;
+    color: #3c3c3b;
+}
+
+/* footer */
+.title-footer {
+    font-size: 16px;
+    color: #3c3c3b;
+}
+
+/* images */
+.background-image {
+    height: 100%;
+}
+
+.scroll-message {
+    position: absolute;
+    bottom: 3em;
+    left: 55%;
+}

@@ -6,129 +6,140 @@ import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
 import { asset } from "../funcitons";
+import AlphaTextBox from "./components/AlphaTextBox";
 
 export default class IndexPage extends React.Component {
+    constructor() {
+        super();
+        this.state = {};
+    }
+
     componentDidMount() {
         var animated_bar = $('.animated-bar');
         var loading_msg = $('.index-loading-message');
-        var logo = $('.index-logo');
-        var video = $('.video-container');
-
-        $('.video-container > video').on('click', this.showNavigationBar.bind(this));
-
-        if ( config.DEBUG ) {
-            TweenLite.set(video, {opacity: 1});
-            this.showNavigationBar();
-            return;
-        }
-
-        var tl = new TimelineLite();
-        tl.to(animated_bar, 1, {width: '100%'})
-            .to(loading_msg, 1, {width: '60%', delay: -0.5})
-            .to(logo, 1, {opacity: 1})
-            .to(loading_msg, 0.5, {opacity: 0, delay: -0.5})
-            .to(animated_bar, 1, {height: '100%'})
-            .to(video, 0, {opacity: 1})
-            .to(animated_bar, 1, {opacity: 0})
-            .to(logo, 1, {delay: -1, opacity: 0})
-            .to(video, 0, {delay: -1, onComplete: (e) => {
-                var vid = $('.video-container > video')[0];
-                vid.play();
-            }})
-            .to(video, 0, {onComplete: function() {
-                var vid = $('.video-container > video')[0];
-                vid.style['z-index'] = 999;
-            }});
     }
 
-    showNavigationBar() {
-        var navigation = $('.index-navigation');
-        var video = $('.video-container > video')[0];
-        var curtains = $('.curtain');
-        var underlines = $('.underline');
+    componentWillMount() {
+        console.log(config.SITE_NAME + 'api/all-movies');
+        var movie_counter = 1;
 
-        if ( config.DEBUG ) {
-            TweenLite.set(navigation, {height: '30%'});
-            TweenLite.set(navigation, {y: '30%'});
-            TweenLite.set(underlines, {top: '100%'});
-            TweenLite.set(curtains, {height: '1em'});
-        }
+        $.ajax({
+            url: config.SITE_NAME + 'api/all-movies',
+            dataType: 'json',
+            success: (data) => {
+                this.content = data.map((item) => {
+                    item.movie_count = movie_counter++;
 
-        var tl = new TimelineLite();
+                    var movie = new IndexContent();
+                    movie.parseAllMoviesData(item);
+                    return movie;
+                });
 
-        tl.to(navigation, 1, {height: '30%'})
-            .to(video, 1, {delay: -1, y: '30%'})
-            .to(underlines, 1, {top: '100%'})
-            .to(curtains, 1, {delay: -1, height: '1em'});
-    }
+                console.log(this.content);
 
-    moviesLinkClickListener(event) {
-        event.preventDefault();
-
-        TransitionActions.fromIndexToMovieTranstion(this);
-
-        if ( config.DEBUG ) {
-            var index_section = $('#IndexPage')[0];
-            index_section.style['display'] = 'none'
-            return;
-        }
-    }
-
-    leaveToMovies(time_line) {
-        console.log("LEAVE INDEX");
-
-        var index_section = $('#IndexPage')[0],
-            curtains = $('#IndexPage .curtain');
-
-        time_line.to(curtains, 1, {height: '0'})
-            .to(index_section, 1, {y: '-100%', onComplete:()=>{index_section.style['display'] = 'none'}});
-    }
-
-    leavePage(event) {
-        return false;
-    }
-
-    transitionToMovies(event) {
-        event.preventDefault();
-        console.log('Leaving index to movies');
-
-        var index_section = $('#IndexPage');
-        var curtains = $('.curtain');
-
-        var tl = new TimelineLite();
-        tl.to(curtains, 1, {height: '0'})
-            .to(index_section, 1, {y: '-100%'});
+                /*this.setState({
+                    current_content: this.content[0]
+                });*/
+            },
+            error: (err) => {
+                console.log('error ' + err);
+            }
+        });
     }
 
     render() {
+        var content = /*this.state.current_content |*/ new IndexContent();
+
+        if ( !this.state.current_content ) {
+            content.page_name = "test";
+            content.description = "Bürstner war ein besonderes Projekt."
+                + "Die Aufgabe: Einen emotionalen Imagefilm für das Reisemobilunternehmen herzustellen."
+                + "Dafür sind wir nach Südfrankreich gefahren und haben dort vor einer großartigen Landschaft eine anstrengende aber auch (...)";
+
+            content.large_name = "The Large Name";
+            content.small_name = "Something Smaller";
+            content.img_back = "img/movies/Frame_Poldi-4.png";
+            content.img_front = "img/movies/Frame_Poldi-4.png";
+            content.color = "#ffffff";
+        }
+
+        var img_1_url = content.img_back,
+            img_2_url = content.img_front,
+            img_3_url = "img/movies/Frame_Poldi-4.png";
+
+        var page_name = content.page_name;
+        var large_name = content.large_name;
+        var small_name = content.small_name;
+
+        var description_text = content.description;
+
         return (
-            <section id='IndexPage' class='animated-content'>
-                <nav class="index-navigation">
-                    <ul>
-                        <li><div className="curtain"><a href="http://google.com" onClick={this.moviesLinkClickListener.bind(this)}>Films</a></div><span class='underline'></span></li>
-                        <li><div className="curtain"><a href="http://google.com" onClick={this.leavePage.bind(this)}>About</a></div><span class='underline'></span></li>
-                        <li><div className="curtain"><a href="http://google.com" onClick={this.leavePage.bind(this)}>Contacts</a></div><span class='underline'></span></li>
-                    </ul>
-                </nav>
+            <section id='IndexPage' class='title-container'>
+                <img id="TitleBackgroundImage1" class="background-image" src={img_1_url} alt="alt image text" />
 
-                <div class="content">
-                    <div className="video-container">
-                        <video src={ asset("res/Reel_Teil.mp4") }></video>
-                    </div>
+                <img id="TitleBackgroundImage2" class="background-image" src={img_2_url} alt="alt image text" />
 
-                    <div className="animated-bar">
-                    </div>
+                <img id="TitleBackgroundImage3" class="background-image" src={img_3_url} alt="alt image text" />
 
-                    <div className="index-logo-container">
-                        <span class='index-logo'></span>
-                    </div>
+                <table class="title-project-dsc">
+                    <tr>
+                        <td class="title-navigation">
+                            <ul>
+                                <li><a href="#" onClick="alert('about')">about</a></li>
+                                <li><a href="#" onClick="alert('work')">work</a></li>
+                                <li><a href="#" onClick="alert('contacts')">contacts</a></li>
+                                <li><a href="#" onClick="alert('impressum')">impressum</a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title-content">
+                            <AlphaTextBox class="movie-short-description" text={description_text} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title-footer">
+                            ++ Ingo Scheel Kameramann I DOP für:  Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
+                        </td>
+                    </tr>
+                </table>
 
-                    <div className="index-loading-message">
-                        <h1>Loading page...</h1>
-                    </div>
+                <div class="title-header">
+                    <span class="page-name">[{page_name}]</span>
+                    <span class="movie-title">{large_name}</span>
+                    <span class="movie-genre">{small_name}</span>
+                </div>
+
+                <div className="scroll-message">
+                    +++ Scroll and click to discover +++
                 </div>
 
             </section>
         );
+    }
+}
+
+class IndexContent {
+    constructor() {
+        this.page_name = "";
+        this.description = "";
+        this.large_name = "";
+        this.small_name = "";
+        this.img_back = "";
+        this.img_front = "";
+        this.color = "#ffffff";
+    }
+
+    parseAllMoviesData(data) {
+        this.page_name = this.padIntegerWithZeros(data.movie_count, 2);
+        this.large_name = data.name;
+        this.small_name = data.genre;
+        this.img_front = asset(data.logo);
+        this.color = data.color;
+    }
+
+    padIntegerWithZeros(num, places) {
+        var zero = places - num.toString().length + 1;
+        return Array(+(zero > 0 && zero)).join("0") + num;
     }
 }
