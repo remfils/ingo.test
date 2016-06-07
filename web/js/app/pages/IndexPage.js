@@ -11,7 +11,11 @@ import AlphaTextBox from "./components/AlphaTextBox";
 export default class IndexPage extends React.Component {
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            current_content: null
+        };
+
+        this.current_content = {};
     }
 
     componentDidMount() {
@@ -35,11 +39,11 @@ export default class IndexPage extends React.Component {
                     return movie;
                 });
 
-                console.log(this.content);
+                console.log(data, this.content);
 
-                /*this.setState({
+                this.setState({
                     current_content: this.content[0]
-                });*/
+                });
             },
             error: (err) => {
                 console.log('error ' + err);
@@ -48,7 +52,9 @@ export default class IndexPage extends React.Component {
     }
 
     render() {
-        var content = /*this.state.current_content |*/ new IndexContent();
+        console.log(this.state.current_content);
+
+        var content = this.state.current_content || new IndexContent();
 
         if ( !this.state.current_content ) {
             content.page_name = "test";
@@ -122,7 +128,7 @@ export default class IndexPage extends React.Component {
 class IndexContent {
     constructor() {
         this.page_name = "";
-        this.description = "";
+        this.description = "THIS IS DSC";
         this.large_name = "";
         this.small_name = "";
         this.img_back = "";
