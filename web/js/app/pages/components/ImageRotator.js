@@ -16,7 +16,7 @@ export default class ImageRotator extends React.Component {
         this.id = "ImageRotator" + ImageRotator.box_counter;
 
         this.state = {
-            is_transition: false
+            is_transition_finished: true
         };
     }
 
@@ -29,42 +29,35 @@ export default class ImageRotator extends React.Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        /*this.image_front = this.props.image;
-        this.image_next = nextProps.image;*/
+        if ( nextState.is_transition_finished ) {
+            nextState.is_transition_finished = false;
+            return;
+        }
 
-        /*var $img_back = $(this.id + " > .img-back");
+        if ( this.props.img_front ) {
+            console.log("componentWillUpdate");
+            this.image_next = nextProps.img_front;
 
-        TweenLite.to($bracket_text, 1, {width: 0, onComplete: () => {
-            this.text_before = "";
-
-            this.setState({
-                is_transition: true
-            });
-
-            TweenLite.set($bracket_text, {width: "auto"});
-
-            TweenLite.from($bracket_text, 1, {width: 0, onComplete: () => {console.log("all completed")}})
-        }});*/
+            TweenLite.to($(this.id + " > .background-image"), 2, {x: "-=100%", onComplete: () => {
+                this.image_next = "";
+                TweenLite.set($(this.id + " > .background-image"), {clearProps: "all"});
+                this.setState({is_transition_finished: true})
+            }});
+        }
     }
 
     render() {
         console.log("ImageRotator rendered");
 
-        var images = [];
-
-        var img_front_url = this.props.img_front;
-        var img_back_url = this.props.img_back;
-
-        if ( img_back_url ) {
-            images.push(<img id="TitleBackgroundImage1" class="background-image img-back" src={img_back_url} alt="alt image text" />);
-        }
-
-        if ( img_front_url ) {
-            images.push(<img id="TitleBackgroundImage2" class="background-image img-front" src={img_front_url} alt="alt image text" />);
+        if ( !this.image_next ) {
+            this.image_front = this.props.img_front;
+            this.image_back = this.props.img_back;
         }
 
         return <div id={this._id} className={this.props.className} >
-            {images}
+            <img id="TitleBackgroundImage1" class="background-image img-back" src={this.image_back} alt="alt image text" />
+            <img id="TitleBackgroundImage2" class="background-image img-front" src={this.image_front} alt="alt image text" onClick={this.props.onClick}/>
+            <img id="TitleBackgroundImage3" class="background-image img-next" src={this.image_next} alt="alt image text" />
         </div>;
     }
 }

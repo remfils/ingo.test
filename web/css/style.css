@@ -506,3 +506,19 @@ a:active {
     bottom: 3em;
     left: 55%;
 }
+
+/* ImageRotator */
+.img-back {
+    right: 80%;
+    left: auto;
+}
+
+.img-front {
+    left: 20%;
+    right: auto;
+}
+
+.img-next {
+    left: 120%;
+    right: auto;
+}

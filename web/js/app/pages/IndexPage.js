@@ -41,6 +41,20 @@ export default class IndexPage extends React.Component {
         }
     }
 
+    getContent( index ) {
+        var l = this.content.length;
+        if ( l == 0 ) {
+            return null;
+        }
+        if ( index < 0 ) {
+            index = l + index % l;
+        }
+        else if ( index >= l ) {
+            index = index % l;
+        }
+        return this.content[index];
+    }
+
     componentWillMount() {
         console.log(config.SITE_NAME + 'api/all-movies');
         var movie_counter = 1;
@@ -125,10 +139,13 @@ export default class IndexPage extends React.Component {
         }, 2000);
     }
 
-    render() {
-        console.log(this.state.current_content);
+    leaveToCurrentMovie() {
+        console.log("leaveToCurrentMovie: ", this.current_content_index);
+    }
 
+    render() {
         var content = this.state.current_content || new IndexContent();
+        var prev_content = this.getContent(this.current_content_index - 1) || new IndexContent();
 
         if ( !this.state.current_content ) {
             content.page_name = "test";
@@ -143,8 +160,10 @@ export default class IndexPage extends React.Component {
             content.color = "#ffffff";
         }
 
-        var img_1_url = content.img_back,
-            img_2_url = content.img_front,
+        console.log("PREV:", prev_content);
+
+        var img_1_url = prev_content.logo || "",
+            img_2_url = content.logo,
             img_3_url = "img/movies/Frame_Poldi-4.png";
 
         var color = content.color;
@@ -158,7 +177,7 @@ export default class IndexPage extends React.Component {
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator img_front={img_1_url} img_back={img_2_url} />
+                <ImageRotator img_front={img_2_url} img_back={img_1_url} onClick={this.leaveToCurrentMovie.bind(this)} />
 
                 <TitleColoredTable className="title-project-dsc" color={color}>
                     <tr>
@@ -207,6 +226,7 @@ class IndexContent {
         this.small_name = "";
         this.img_back = "";
         this.img_front = "";
+        this.logo = "";
         this.color = "#ffffff";
     }
 
@@ -214,7 +234,8 @@ class IndexContent {
         this.page_name = this.padIntegerWithZeros(data.movie_count, 2);
         this.large_name = data.name;
         this.small_name = data.genre;
-        this.img_front = asset(data.logo);
+        //this.img_front = asset(data.logo);
+        this.logo = asset(data.logo);
         this.color = data.color;
     }
 
