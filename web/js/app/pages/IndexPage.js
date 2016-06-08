@@ -8,6 +8,7 @@ import * as TransitionActions from '../actions/TransitionActions';
 import { asset } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import BracketTextBox from "./components/BracketTextBox";
+import ImageRotator from "./components/ImageRotator";
 
 export default class IndexPage extends React.Component {
     constructor() {
@@ -16,12 +17,10 @@ export default class IndexPage extends React.Component {
             current_content: null
         };
 
-        this.current_content = {};
-    }
+        this.is_transition = false;
 
-    componentDidMount() {
-        var animated_bar = $('.animated-bar');
-        var loading_msg = $('.index-loading-message');
+        this.current_content = {};
+        this.current_content_index = 0;
     }
 
     componentWillMount() {
@@ -43,13 +42,77 @@ export default class IndexPage extends React.Component {
                 console.log(data, this.content);
 
                 this.setState({
-                    current_content: this.content[0]
+                    current_content: this.content[this.current_content_index]
                 });
             },
             error: (err) => {
                 console.log('error ' + err);
             }
         });
+
+        $(window).on('mousewheel DOMMouseScroll', this.scrollListener.bind(this));
+    }
+
+    componentWillUnmount() {
+        $(window).off('mousewheel DOMMouseScroll', this.scrollListener.bind(this));
+    }
+
+    scrollListener(e) {
+        var direction = function () {
+
+            var delta = (e.type === 'DOMMouseScroll' ?
+            e.originalEvent.detail * -40 :
+                e.originalEvent.wheelDelta);
+
+            return delta > 0 ? 0 : 1;
+        };
+
+        if ( this.is_transition ) {
+            return;
+        }
+
+        if(direction() === 1) {
+            this.nextMovie();
+        }
+        if(direction() === 0) {
+            this.prevMovie();
+        }
+    }
+
+    nextMovie() {
+        if ( this.current_content_index >= this.content.length ) {
+            return;
+        }
+
+        this.is_transition = true;
+
+        this.current_content_index++;
+
+        this.setState({
+            current_content: this.content[this.current_content_index]
+        });
+
+        setTimeout(()=>{
+            this.is_transition = false;
+        }, 1000);
+    }
+
+    prevMovie() {
+        if ( this.current_content_index <= 0 ) {
+            return;
+        }
+
+        this.is_transition = true;
+
+        this.current_content_index--;
+
+        this.setState({
+            current_content: this.content[this.current_content_index]
+        });
+
+        setTimeout(()=>{
+            this.is_transition = false;
+        }, 2000);
     }
 
     render() {
@@ -82,11 +145,8 @@ export default class IndexPage extends React.Component {
 
         return (
             <section id='IndexPage' class='title-container'>
-                <img id="TitleBackgroundImage1" class="background-image" src={img_1_url} alt="alt image text" />
 
-                <img id="TitleBackgroundImage2" class="background-image" src={img_2_url} alt="alt image text" />
-
-                <img id="TitleBackgroundImage3" class="background-image" src={img_3_url} alt="alt image text" />
+                <ImageRotator img_front={img_1_url} img_back={img_2_url} />
 
                 <table class="title-project-dsc">
                     <tr>
