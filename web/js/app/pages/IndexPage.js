@@ -9,6 +9,7 @@ import { asset } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import BracketTextBox from "./components/BracketTextBox";
 import ImageRotator from "./components/ImageRotator";
+import TitleColoredTable from "./IndexPage/TitleColoredTable";
 
 export default class IndexPage extends React.Component {
     constructor() {
@@ -137,6 +138,8 @@ export default class IndexPage extends React.Component {
             img_2_url = content.img_front,
             img_3_url = "img/movies/Frame_Poldi-4.png";
 
+        var color = content.color;
+
         var page_name = content.page_name;
         var large_name = content.large_name;
         var small_name = content.small_name;
@@ -148,7 +151,7 @@ export default class IndexPage extends React.Component {
 
                 <ImageRotator img_front={img_1_url} img_back={img_2_url} />
 
-                <table class="title-project-dsc">
+                <TitleColoredTable className="title-project-dsc" color={color}>
                     <tr>
                         <td class="title-navigation">
                             <ul>
@@ -169,7 +172,8 @@ export default class IndexPage extends React.Component {
                             ++ Ingo Scheel Kameramann I DOP fГјr:  Imagefilm I Werbung I Spielfilm I Dokumentarfilm I KГ¶ln ++
                         </td>
                     </tr>
-                </table>
+                </TitleColoredTable>
+
 
                 <div class="title-header">
                     <BracketTextBox className="page-name" text={page_name} />
