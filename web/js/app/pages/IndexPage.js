@@ -10,6 +10,7 @@ import AlphaTextBox from "./components/AlphaTextBox";
 import BracketTextBox from "./components/BracketTextBox";
 import ImageRotator from "./components/ImageRotator";
 import TitleColoredTable from "./IndexPage/TitleColoredTable";
+import MovieModel from "../models/MovieModel";
 
 export default class IndexPage extends React.Component {
     constructor() {
@@ -59,16 +60,22 @@ export default class IndexPage extends React.Component {
         console.log(config.SITE_NAME + 'api/all-movies');
         var movie_counter = 1;
 
+        var padIntegerWithZeros = function (num, places) {
+            var zero = places - num.toString().length + 1;
+            return Array(+(zero > 0 && zero)).join("0") + num;
+        }
+
         $.ajax({
             url: config.SITE_NAME + 'api/all-movies',
             dataType: 'json',
             success: (data) => {
                 this.content = data.map((item) => {
-                    item.movie_count = movie_counter++;
+                    var movie = new MovieModel(item);
 
-                    var movie = new IndexContent();
-                    movie.parseAllMoviesData(item);
-                    return movie;
+                    var content = new IndexContent();
+                    content.page_name = padIntegerWithZeros(movie_counter++, 2);
+                    content.setFromMovieModel(movie);
+                    return content;
                 });
 
                 console.log(data, this.content);
@@ -139,8 +146,20 @@ export default class IndexPage extends React.Component {
         }, 2000);
     }
 
-    leaveToCurrentMovie() {
-        console.log("leaveToCurrentMovie: ", this.current_content_index);
+    currentMovieClickListener() {
+        event.preventDefault();
+
+        console.log("currentMovieClickListener: ", this.current_content_index);
+
+        var movies = [];
+        this.content.forEach((item, index, array)=>{
+            if ( item.content_type == "movie" ) {
+                movies.push(item.model);
+
+            }
+        });
+
+        TransitionActions.fromIndexToMovieTranstion(this, {movies: movies});
     }
 
     render() {
@@ -162,22 +181,22 @@ export default class IndexPage extends React.Component {
 
         console.log("PREV:", prev_content);
 
-        var img_1_url = prev_content.logo || "",
-            img_2_url = content.logo,
+        var img_1_url = prev_content.getLogo() || "",
+            img_2_url = content.getLogo(),
             img_3_url = "img/movies/Frame_Poldi-4.png";
 
-        var color = content.color;
+        var color = content.getColor();
 
         var page_name = content.page_name;
-        var large_name = content.large_name;
-        var small_name = content.small_name;
+        var large_name = content.getLargeName();
+        var small_name = content.getSmallName();
 
-        var description_text = content.description;
+        var description_text = content.getDescription();
 
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator img_front={img_2_url} img_back={img_1_url} onClick={this.leaveToCurrentMovie.bind(this)} />
+                <ImageRotator img_front={img_2_url} img_back={img_1_url} onClick={this.currentMovieClickListener.bind(this)} />
 
                 <TitleColoredTable className="title-project-dsc" color={color}>
                     <tr>
@@ -228,19 +247,72 @@ class IndexContent {
         this.img_front = "";
         this.logo = "";
         this.color = "#ffffff";
+        this.content_type = "raw";
+        this.model = null;
+    }
+
+    setFromMovieModel(model) {
+        this.model = model;
+        this.content_type = "movie";
+    }
+
+    getLargeName() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.name;
+                break;
+            default:
+                return this.large_name;
+        }
+    }
+
+    getSmallName() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.genre;
+                break;
+            default:
+                return this.small_name;
+        }
+    }
+
+    getColor() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.color;
+                break;
+            default:
+                return this.color;
+        }
+    }
+
+    getDescription() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.description;
+                break;
+            default:
+                return this.description;
+        }
+    }
+
+    getLogo() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.logo;
+                break;
+            default:
+                return this.logo;
+        }
     }
 
     parseAllMoviesData(data) {
-        this.page_name = this.padIntegerWithZeros(data.movie_count, 2);
+        //this.page_name = this.padIntegerWithZeros(data.movie_count, 2);
         this.large_name = data.name;
         this.small_name = data.genre;
         //this.img_front = asset(data.logo);
         this.logo = asset(data.logo);
         this.color = data.color;
-    }
-
-    padIntegerWithZeros(num, places) {
-        var zero = places - num.toString().length + 1;
-        return Array(+(zero > 0 && zero)).join("0") + num;
+        this.content_type = "movie";
     }
 }
