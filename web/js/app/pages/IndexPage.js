@@ -7,6 +7,7 @@ import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
 import { asset } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
+import BracketTextBox from "./components/BracketTextBox";
 
 export default class IndexPage extends React.Component {
     constructor() {
@@ -58,9 +59,9 @@ export default class IndexPage extends React.Component {
 
         if ( !this.state.current_content ) {
             content.page_name = "test";
-            content.description = "Bürstner war ein besonderes Projekt."
-                + "Die Aufgabe: Einen emotionalen Imagefilm für das Reisemobilunternehmen herzustellen."
-                + "Dafür sind wir nach Südfrankreich gefahren und haben dort vor einer großartigen Landschaft eine anstrengende aber auch (...)";
+            content.description = "BГјrstner war ein besonderes Projekt."
+                + "Die Aufgabe: Einen emotionalen Imagefilm fГјr das Reisemobilunternehmen herzustellen."
+                + "DafГјr sind wir nach SГјdfrankreich gefahren und haben dort vor einer groГџartigen Landschaft eine anstrengende aber auch (...)";
 
             content.large_name = "The Large Name";
             content.small_name = "Something Smaller";
@@ -105,13 +106,13 @@ export default class IndexPage extends React.Component {
                     </tr>
                     <tr>
                         <td class="title-footer">
-                            ++ Ingo Scheel Kameramann I DOP für:  Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
+                            ++ Ingo Scheel Kameramann I DOP fГјr:  Imagefilm I Werbung I Spielfilm I Dokumentarfilm I KГ¶ln ++
                         </td>
                     </tr>
                 </table>
 
                 <div class="title-header">
-                    <span class="page-name">[{page_name}]</span>
+                    <BracketTextBox className="page-name" text={page_name} />
                     <span class="movie-title">{large_name}</span>
                     <span class="movie-genre">{small_name}</span>
                 </div>
