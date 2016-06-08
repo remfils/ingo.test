@@ -20,8 +20,25 @@ export default class IndexPage extends React.Component {
 
         this.is_transition = false;
 
+        this.content = [];
         this.current_content = {};
         this.current_content_index = 0;
+    }
+
+    get current_content_index() {
+        return this._cci;
+    }
+
+    set current_content_index(val) {
+        if ( val < 0 ) {
+            this._cci = this.content.length;
+        }
+        else if ( val >= this.content.length ) {
+            this._cci = 0;
+        }
+        else {
+            this._cci = val;
+        }
     }
 
     componentWillMount() {
@@ -81,10 +98,6 @@ export default class IndexPage extends React.Component {
     }
 
     nextMovie() {
-        if ( this.current_content_index >= this.content.length ) {
-            return;
-        }
-
         this.is_transition = true;
 
         this.current_content_index++;
@@ -99,10 +112,6 @@ export default class IndexPage extends React.Component {
     }
 
     prevMovie() {
-        if ( this.current_content_index <= 0 ) {
-            return;
-        }
-
         this.is_transition = true;
 
         this.current_content_index--;
