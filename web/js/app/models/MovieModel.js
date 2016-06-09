@@ -7,10 +7,10 @@ export default class MovieModel {
         this.logo = movie_data.logo;
         this.color = movie_data.color;
         this.genre = movie_data.genre;
+        this.description = movie_data.description;
 
         this.project_info_table = null;
         this.preview_url = null;
-        this.description = null;
         this.comments = null;
     }
 
