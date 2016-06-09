@@ -37,31 +37,58 @@ export default class MoviePage extends React.Component {
         }
     }
 
+    hadleTransitionAnimations() {
+        var transition = this.props.transition;
+
+        $("#MoviePage").css({"z-index": 99});
+        
+        transition.prev_page.leaveToMoviePage();
+
+        switch ( transition.type ) {
+            case "INDEX-MOVIE":
+                this.enterFromIndexPage();
+                break;
+        }
+    }
+
+    enterFromIndexPage() {
+        TweenLite.from($(".movie-title-section"), 1, {y: "-=100%"});
+    }
+
     componentWillMount() {
-        /*$.ajax({
-            url: config.SITE_NAME + 'api/all-movies',
-            dataType: 'json',
-            success: (data) => {
-                this.movies = data.map((item) => {
-                    var movie = new MovieModel(item);
-                    movie.logo = asset(movie.logo);
-                    return movie;
-                });
+        if ( this.props.movies ) {
+            this.movies = this.props.movies;
 
-                var movie = this.movies[this.current_movie_index];
-                TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
-                TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
+            var movie = this.movies[this.current_movie_index];
+            TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
+            TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
+        }
+        else {
+            $.ajax({
+                url: config.SITE_NAME + 'api/all-movies',
+                dataType: 'json',
+                success: (data) => {
+                    this.movies = data.map((item) => {
+                        var movie = new MovieModel(item);
+                        movie.logo = asset(movie.logo);
+                        return movie;
+                    });
 
-                if ( this.props.transition ) {
-                    this.arrangeTransition(this.props.transition);
+                    var movie = this.movies[this.current_movie_index];
+                    TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
+                    TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
+
+                    if ( this.props.transition ) {
+                        this.arrangeTransition(this.props.transition);
+                    }
+
+                    this.loadMovieFromAPI(movie);
+                },
+                error: (err) => {
+                    console.log('error ' + err);
                 }
-
-                this.loadMovieFromAPI(movie);
-            },
-            error: (err) => {
-                console.log('error ' + err);
-            }
-        });*/
+            });
+        }
     }
 
     loadMovieFromAPI ( movie, callback ) {
@@ -91,6 +118,8 @@ export default class MoviePage extends React.Component {
     }
 
     componentDidMount() {
+        this.hadleTransitionAnimations();
+
         this.preview_iframe = $('.project-demo-video > iframe')[0];
 
         this.resizePreviewIframe();
@@ -107,11 +136,6 @@ export default class MoviePage extends React.Component {
                 this.enterFromIndex(time_line);
                 break;
         }
-    }
-
-    enterFromIndex(time_line) {
-        TweenLite.set("#MoviePage", {y: "100%'"});
-        time_line.to("#MoviePage", 1, {delay: -1, y: "-=100%"});
     }
 
     resizePreviewIframe(event) {

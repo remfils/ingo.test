@@ -8,8 +8,6 @@ import config from './config';
 
 var $ = require('jquery');
 
-/*asdf*/
-
 export default class Application extends React.Component {
     constructor() {
         super();
@@ -20,9 +18,6 @@ export default class Application extends React.Component {
             first_page: <IndexPage />,
             second_page: null
         };
-
-        this.state.pages = [];
-        this.state.pages.push(<IndexPage />);
 
         this.movies = [];
     }
@@ -63,19 +58,33 @@ export default class Application extends React.Component {
 
         console.log(transition);
 
+        var page = <div></div>;
+
         switch ( transition.type ) {
             case "INDEX-MOVIE":
-            case "MOVIE-MOVIE_LEFT":
-            case "MOVIE-MOVIE_RIGHT":
-                var movie = transition.next_movie || this.movies[0];
+                var prev_page = transition.prev_page;
+                var content = prev_page.content;
+                var movies = [];
 
-                var page = <MoviePage
+                console.log("leavePageListener:", content);
+
+                for ( var c in content ) {
+                    if ( content[c].content_type == "movie" ) {
+                        movies.push(content[c].model);
+                    }
+                }
+
+                console.log("leavePageListener:", movies);
+
+                var movie = prev_page.current_content.model;
+
+                page = <MoviePage
                     app={this}
                     movie={movie}
+                    movies={movies}
                     transition={transition}/>;
-                break;
-                break;
 
+                break;
         }
 
         this.prepareNextPageForTransition(page);

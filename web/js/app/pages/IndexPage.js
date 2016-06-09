@@ -162,6 +162,13 @@ export default class IndexPage extends React.Component {
         TransitionActions.fromIndexToMovieTranstion(this, {movies: movies});
     }
 
+    leaveToMoviePage() {
+        console.log("leaveToMoviePage: leaving to movie page");
+        TweenLite.to( $(".title-project-dsc"), 1, {left: "-=60%"} );
+        TweenLite.to( $(".img-front"), 1, {left: "0"} );
+        TweenLite.set($("#IndexPage"), {"z-index": 0});
+    }
+
     render() {
         var content = this.state.current_content || new IndexContent();
         var prev_content = this.getContent(this.current_content_index - 1) || new IndexContent();
