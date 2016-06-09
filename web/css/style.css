@@ -456,7 +456,7 @@ a:active {
     overflow: hidden;
 }
 
-.page-name {
+.title-page-name {
     display: flex;
     position: relative;
     top: -100px;

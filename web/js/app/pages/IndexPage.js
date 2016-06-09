@@ -165,7 +165,10 @@ export default class IndexPage extends React.Component {
     leaveToMoviePage() {
         console.log("leaveToMoviePage: leaving to movie page");
         TweenLite.to( $(".title-project-dsc"), 1, {left: "-=60%"} );
-        TweenLite.to( $(".img-front"), 1, {left: "0"} );
+        TweenLite.to( $(".img-front"), 1, {left: "0", height: "70%"} );
+        TweenLite.to( $(".title-header"), 1, {opacity: 0, onComplete: () => {
+            $("#IndexPage").css("display", "none");
+        }} );
         TweenLite.set($("#IndexPage"), {"z-index": 0});
     }
 
@@ -230,7 +233,7 @@ export default class IndexPage extends React.Component {
 
 
                 <div class="title-header">
-                    <BracketTextBox className="page-name" text={page_name} />
+                    <BracketTextBox className="title-page-name" text={page_name} />
                     <span class="movie-title">{large_name}</span>
                     <span class="movie-genre">{small_name}</span>
                 </div>

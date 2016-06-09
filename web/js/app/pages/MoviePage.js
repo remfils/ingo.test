@@ -52,16 +52,18 @@ export default class MoviePage extends React.Component {
     }
 
     enterFromIndexPage() {
-        TweenLite.from($(".movie-title-section"), 1, {y: "-=100%"});
+        TweenLite.from($(".movie-title-section"), 1, {y: "+=100%", onComplete: () => {
+            $("#MoviePage .current-image").css("display", "block");
+        }});
+
+        $("#MoviePage .current-image").css("display", "none");
     }
 
     componentWillMount() {
         if ( this.props.movies ) {
             this.movies = this.props.movies;
 
-            var movie = this.movies[this.current_movie_index];
-            TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
-            TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
+            // this.loadMovieFromAPI(movie);
         }
         else {
             $.ajax({
@@ -119,6 +121,10 @@ export default class MoviePage extends React.Component {
 
     componentDidMount() {
         this.hadleTransitionAnimations();
+
+        var movie = this.movies[this.current_movie_index];
+        TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
+        TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
 
         this.preview_iframe = $('.project-demo-video > iframe')[0];
 
@@ -309,19 +315,26 @@ export default class MoviePage extends React.Component {
     }
 
     render() {
-        var movie = this.state.current_movie;
-        var current_logo_style = {backgroundImage: ''};
         var movie_table;
+        var movie = this.state.current_movie || this.props.movie;
+
+        console.log(this.props);
+
+        var movie_name = movie.name;
+        var movie_year = movie.year;
+        
+        var current_logo_style = {backgroundImage: "url(" + movie.logo + ")"};
 
         if ( movie ) {
-            current_logo_style.backgroundImage = "url(" + movie.logo + ")";
 
-            movie_table = movie.project_info_table.map((item) => {
-                return <tr>
-                    <td>{ item.field_name }:</td>
-                    <td>{ item.field_value }</td>
-                </tr>;
-            });
+            if ( movie.project_info_table ) {
+                movie_table = movie.project_info_table.map((item) => {
+                    return <tr>
+                        <td>{ item.field_name }:</td>
+                        <td>{ item.field_value }</td>
+                    </tr>;
+                });
+            }
         }
         else {
             movie = new MovieModel({id: '',name:'',year:"",logo:""});
@@ -342,7 +355,7 @@ export default class MoviePage extends React.Component {
                     </div>
 
                     <div class="default-side-padding movie-title-section">
-                        <h1 class="project-title">{this.state.project_name}<span class="project-year"> { this.state.project_year }</span></h1>
+                        <h1 class="project-title">{ movie_name }<span class="project-year"> { movie_year }</span></h1>
                         <div class="movies-nav">
                             <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
                             <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>

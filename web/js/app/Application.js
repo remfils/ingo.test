@@ -76,11 +76,11 @@ export default class Application extends React.Component {
 
                 console.log("leavePageListener:", movies);
 
-                var movie = prev_page.current_content.model;
+                var movie = movies[0];
 
                 page = <MoviePage
                     app={this}
-                    movie={movie}
+                    movie={movies[0]}
                     movies={movies}
                     transition={transition}/>;
 
