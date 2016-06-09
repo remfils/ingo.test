@@ -54,10 +54,20 @@ export default class ImageRotator extends React.Component {
             this.image_back = this.props.img_back;
         }
 
+        var packUrl = function( url ) {
+            return "url(" + url + ")";
+        }
+
+        var style_img_back = {backgroundImage: packUrl(this.image_back) };
+        var style_img_front = {backgroundImage: packUrl(this.image_front) };
+        var style_img_next = {backgroundImage: packUrl(this.image_next) };
+
+        console.log("ImageRotator: ", style_img_next, style_img_back, style_img_front);
+
         return <div id={this._id} className={this.props.className} >
-            <img id="TitleBackgroundImage1" class="background-image img-back" src={this.image_back} alt="alt image text" />
-            <img id="TitleBackgroundImage2" class="background-image img-front" src={this.image_front} alt="alt image text" onClick={this.props.onClick}/>
-            <img id="TitleBackgroundImage3" class="background-image img-next" src={this.image_next} alt="alt image text" />
+            <div id="TitleBackgroundImage1" class="background-image img-back" style={style_img_back} ></div>
+            <div id="TitleBackgroundImage2" class="background-image img-front" style={style_img_front} onClick={this.props.onClick}></div>
+            <div id="TitleBackgroundImage3" class="background-image img-next" style={style_img_next} ></div>
         </div>;
     }
 }
