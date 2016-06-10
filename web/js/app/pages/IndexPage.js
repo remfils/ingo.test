@@ -234,8 +234,7 @@ export default class IndexPage extends React.Component {
 
                 <div class="title-header">
                     <BracketTextBox className="title-page-name" text={page_name} />
-                    <span class="movie-title">{large_name}</span>
-                    <span class="movie-genre">{small_name}</span>
+                    <AlphaTextBox class="movie-title" text={[<span >{large_name} </span>, <span class="movie-genre">{small_name}</span>]} />
                 </div>
 
                 <div className="scroll-message">
