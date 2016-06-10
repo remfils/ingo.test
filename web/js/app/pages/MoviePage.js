@@ -10,6 +10,7 @@ import Description from './MoviePage/Description';
 import * as TransitionActions from "../actions/TransitionActions";
 import { asset } from '../funcitons';
 import config from '../config';
+import MovieModel from '../models/MovieModel';
 
 export default class MoviePage extends React.Component {
     constructor() {
@@ -36,31 +37,67 @@ export default class MoviePage extends React.Component {
         }
     }
 
+    hadleTransitionAnimations() {
+        var transition = this.props.transition;
+
+        $("#MoviePage").css({"z-index": 99});
+        
+        transition.prev_page.leaveToMoviePage();
+
+        switch ( transition.type ) {
+            case "INDEX-MOVIE":
+                this.enterFromIndexPage();
+                break;
+        }
+    }
+
+    enterFromIndexPage() {
+        TweenLite.from($(".movie-title-section"), 1, {y: "+=100%", onComplete: () => {
+            $("#MoviePage .current-image").css("display", "block");
+        }});
+
+        $("#MoviePage .current-image").css("display", "none");
+    }
+
     componentWillMount() {
-        $.ajax({
-            url: config.SITE_NAME + 'api/all-movies',
-            dataType: 'json',
-            success: (data) => {
-                this.movies = data.map((item) => {
-                    var movie = new Movie(item);
-                    movie.logo = asset(movie.logo);
-                    return movie;
+        if ( this.props.movies ) {
+            this.movies = this.props.movies;
+            this.current_movie_index = this.props.current_movie_index;
+
+            var movie = this.movies[this.current_movie_index];
+            movie.getMoreData( () => {
+                console.log("componentWillMount: current Movie Loaded");
+                this.setState({
+                    current_movie: movie
                 });
+            } );
+        }
+        else {
+            $.ajax({
+                url: config.SITE_NAME + 'api/all-movies',
+                dataType: 'json',
+                success: (data) => {
+                    this.movies = data.map((item) => {
+                        var movie = new MovieModel(item);
+                        movie.logo = asset(movie.logo);
+                        return movie;
+                    });
 
-                var movie = this.movies[this.current_movie_index];
-                TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
-                TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
+                    var movie = this.movies[this.current_movie_index];
+                    TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
+                    TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
 
-                if ( this.props.transition ) {
-                    this.arrangeTransition(this.props.transition);
+                    if ( this.props.transition ) {
+                        this.arrangeTransition(this.props.transition);
+                    }
+
+                    this.loadMovieFromAPI(movie);
+                },
+                error: (err) => {
+                    console.log('error ' + err);
                 }
-
-                this.loadMovieFromAPI(movie);
-            },
-            error: (err) => {
-                console.log('error ' + err);
-            }
-        });
+            });
+        }
     }
 
     loadMovieFromAPI ( movie, callback ) {
@@ -90,6 +127,12 @@ export default class MoviePage extends React.Component {
     }
 
     componentDidMount() {
+        this.hadleTransitionAnimations();
+
+        var movie = this.movies[this.current_movie_index];
+        TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
+        TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
+
         this.preview_iframe = $('.project-demo-video > iframe')[0];
 
         this.resizePreviewIframe();
@@ -106,11 +149,6 @@ export default class MoviePage extends React.Component {
                 this.enterFromIndex(time_line);
                 break;
         }
-    }
-
-    enterFromIndex(time_line) {
-        TweenLite.set("#MoviePage", {y: "100%'"});
-        time_line.to("#MoviePage", 1, {delay: -1, y: "-=100%"});
     }
 
     resizePreviewIframe(event) {
@@ -284,22 +322,33 @@ export default class MoviePage extends React.Component {
     }
 
     render() {
-        var movie = this.state.current_movie;
-        var current_logo_style = {backgroundImage: ''};
         var movie_table;
+        var movie = this.state.current_movie || this.movies[this.current_movie_index];
+
+        var movie_name = movie.name;
+        var movie_year = movie.year;
+        
+        var current_logo_style = {backgroundImage: "url(" + movie.logo + ")"};
+
+        var description = "";
 
         if ( movie ) {
-            current_logo_style.backgroundImage = "url(" + movie.logo + ")";
 
-            movie_table = movie.project_info_table.map((item) => {
-                return <tr>
-                    <td>{ item.field_name }:</td>
-                    <td>{ item.field_value }</td>
-                </tr>;
-            });
+            if ( movie.project_info_table ) {
+                movie_table = movie.project_info_table.map((item) => {
+                    return <tr>
+                        <td>{ item.field_name }:</td>
+                        <td>{ item.field_value }</td>
+                    </tr>;
+                });
+            }
+
+            if ( movie.description && movie.comments ) {
+                description = <Description movie={movie} />;
+            }
         }
         else {
-            movie = new Movie({id: '',name:'',year:"",logo:""});
+            movie = new MovieModel({id: '',name:'',year:"",logo:""});
         }
 
         var id = "Movie" + 0;
@@ -317,7 +366,7 @@ export default class MoviePage extends React.Component {
                     </div>
 
                     <div class="default-side-padding movie-title-section">
-                        <h1 class="project-title">{this.state.project_name}<span class="project-year"> { this.state.project_year }</span></h1>
+                        <h1 class="project-title">{ movie_name }<span class="project-year"> { movie_year }</span></h1>
                         <div class="movies-nav">
                             <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
                             <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
@@ -344,7 +393,7 @@ export default class MoviePage extends React.Component {
                     </div>
                 </section>
 
-                { this.state.description }
+                { description }
 
                 <footer class="default-side-padding project-footer">
                     <a href="#goTop">Contact</a>
@@ -358,41 +407,5 @@ export default class MoviePage extends React.Component {
 
             </div>
             );
-    }
-}
-
-class Movie {
-
-    constructor(movie_data) {
-        this.id = movie_data.id;
-        this.name = movie_data.name;
-        this.year = movie_data.year;
-        this.logo = movie_data.logo;
-        this.color = movie_data.color;
-
-        this.project_info_table = null;
-        this.preview_url = null;
-        this.description = null;
-        this.comments = null;
-    }
-
-    getMoreData(callback) {
-        $.ajax({
-            url: config.SITE_NAME + 'api/movie/' + this.id,
-            dataType: 'json',
-            success: (data) => {
-                this.project_info_table = data.table;
-                this.preview_url = data.preview_url;
-                this.description = data.description;
-                this.comments = data.comments;
-
-                if ( callback ) {
-                    callback();
-                }
-            },
-            error: (err) => {
-                console.log('error ' + err);
-            }
-        });
     }
 }

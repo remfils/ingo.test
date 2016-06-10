@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 06 2016 г., 16:30
+-- Время создания: Июн 06 2016 г., 15:56
 -- Версия сервера: 5.5.48
 -- Версия PHP: 5.4.45
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `projects` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `genre` tinytext NOT NULL,
   `color` varchar(255) NOT NULL,
   `year` int(11) NOT NULL,
   `logo` varchar(255) NOT NULL,
@@ -39,10 +40,10 @@ CREATE TABLE IF NOT EXISTS `projects` (
 -- Дамп данных таблицы `projects`
 --
 
-INSERT INTO `projects` (`id`, `name`, `color`, `year`, `logo`, `movie_id`) VALUES
-(1, 'Test Base', '#cbfdcb', 2001, 'img/movies/InsuPad-6.png', 1),
-(2, 'Renault Twizzy Brand Campaign', '#ccf6e2', 2012, 'img/movies/Frame_Renault-5.png', 2),
-(7, 'asdf', '#ff0000', 0, 'img/movies/Frame_Poldi-4.png', NULL);
+INSERT INTO `projects` (`id`, `name`, `genre`, `color`, `year`, `logo`, `movie_id`) VALUES
+(1, 'Insupad', 'Imagefilm', '#B5D6B6', 2001, 'img/movies/InsuPad-6.png', 1),
+(2, 'Renault Twizzy', 'Werbung', '#D3EEDA', 2012, 'img/movies/Frame_Renault-5.png', 2),
+(7, 'Bürstner Elegance', 'Imagefilm', '#CCE1EE', 0, 'img/movies/Frame_Poldi-4.png', NULL);
 
 -- --------------------------------------------------------
 

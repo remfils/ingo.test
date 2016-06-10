@@ -13,7 +13,7 @@ class ApiController
     }
 
     public function allMoviesAction( Request $req, Application $app ) {
-        $q = $app['db']->query('select * from projects');
+        $q = $app['db']->query('select * from projects as p join project_description as pd on p.id = pd.movie_id');
         $q->execute();
         $result = $q->fetchAll();
 
