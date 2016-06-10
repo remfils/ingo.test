@@ -168,12 +168,43 @@ head, body {
     padding: 0;
 }
 
+/* PROJECT section: header */
+
+.project-title-section {
+    width: 100%;
+    height: 100%;
+}
+
+.project-main-image {
+    height: 70%;
+    overflow: hidden;
+    position: relative;
+}
+
+.project-main-image .current-image,
+.project-main-image .next-image {
+    -webkit-background-size: cover;
+    background-size: cover;
+
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
 .movie-curtain {
     width: 0;
-    height: 70%;
+    height: 100%;
     position: absolute;
     top: 0;
     background-color: white;
+}
+
+#cover1 {
+    z-index: 2;
+}
+
+#cover2 {
+    z-index: 3;
 }
 
 .movie-curtain.left {
@@ -190,26 +221,25 @@ head, body {
     left: auto;
 }
 
-/* PROJECT section: header */
-
-.project-title {
-    width: 100%;
-    height: 100%;
-}
-
-.project-main-image {
-    background: url(../img/movies/InsuPad-6.png);
-    height: 70%;
-    background-size: cover !important;
-    position: relative;
-}
-
 .default-side-padding {
     padding: 0 9%;
 }
 
 #IndexPage {
     overflow: hidden;
+}
+
+#IndexPage,
+#MoviePage {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#MoviePage,
+#MoviePage th,
+#MoviePage td {
+    color: #3C3B3A;
 }
 
 .movie-title-section {
@@ -222,7 +252,7 @@ head, body {
     background-color: rgba(255,255,255,0);
 }
 
-.project-title h1 {
+.project-title-section h1 {
     font-size: 36pt;
     margin: 0;
     font-weight: normal;
@@ -231,7 +261,7 @@ head, body {
     overflow: hidden;
 }
 
-.project-title .project-year {
+.project-title-section .project-year {
     font-size: 0.7em;
 }
 
@@ -357,4 +387,146 @@ a.arrow:hover {
 .project-footer {
     background-color: #051e2a;
     min-height: 20%;
+}
+
+/* NEW INDEX */
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+a,
+a:hover,
+a:visited,
+a:active {
+    color: #3c3c3b;
+    text-decoration: none;
+}
+
+.title-container {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.title-project-dsc,
+.background-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* navigation */
+
+.title-navigation {
+    font-size: 24px;
+    padding-left: 100px;
+}
+
+.title-navigation ul {
+    padding: 0;
+}
+
+.title-navigation li {
+    display: inline;
+}
+
+.title-navigation li:not(:last-child):after {
+    content: " // ";
+    color: #3c3c3b;
+}
+
+.title-project-dsc {
+    width: 40%;
+    background-color: #cce1ee;
+    height: 100%;
+    left: 120px;
+    padding: 3em 10px 3em 100px;
+}
+
+.title-content {
+    height: 100%;
+    vertical-align: bottom;
+    padding-bottom: 5em;
+}
+
+/* movie title */
+
+.in-bracket-text {
+    overflow: hidden;
+}
+
+.title-page-name {
+    display: flex;
+    position: relative;
+    top: -100px;
+    left: -100px;
+    color: #3c3c3b;
+    font-weight: bold;
+    font-size: 21.9pt;
+}
+
+.title-header {
+    position: absolute;
+    left: 320px;
+    bottom: 50%;
+}
+
+.movie-title {
+    font-size: 100px;
+}
+
+.movie-title:after {
+    content: " ";
+}
+
+.movie-genre {
+    font-size: 50px;
+}
+
+.movie-short-description {
+    font-size: 18px;
+    width: 50%;
+    color: #3c3c3b;
+}
+
+/* footer */
+.title-footer {
+    font-size: 16px;
+    color: #3c3c3b;
+}
+
+/* images */
+.background-image {
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+}
+
+.scroll-message {
+    position: absolute;
+    bottom: 3em;
+    left: 55%;
+}
+
+/* ImageRotator */
+.img-back {
+    right: 80%;
+    left: auto;
+}
+
+.img-front {
+    left: 20%;
+    right: auto;
+}
+
+.img-next {
+    left: 120%;
+    right: auto;
 }

@@ -1,13 +1,13 @@
 var config = {
-    DEBUG: true,
+    DEBUG: false,
+    HOME: false,
     SITE_NAME: "http://ingo-test.tk/"
 };
 
-if ( config.DEBUG ) {
-     config.SITE_NAME = "http://ingo.test/";
+if ( config.HOME ) {
+     config.SITE_NAME = "http://ingo.test/web/";
 };
 
-config['ASSET_PATH'] = config.SITE_NAME + 'web/';
+config['ASSET_PATH'] = config.SITE_NAME;
 
-//asdfadsf
 export default config;

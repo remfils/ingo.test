@@ -6,132 +6,322 @@ import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
 import { asset } from "../funcitons";
+import AlphaTextBox from "./components/AlphaTextBox";
+import BracketTextBox from "./components/BracketTextBox";
+import ImageRotator from "./components/ImageRotator";
+import TitleColoredTable from "./IndexPage/TitleColoredTable";
+import MovieModel from "../models/MovieModel";
 
 export default class IndexPage extends React.Component {
-    componentDidMount() {
-        var animated_bar = $('.animated-bar');
-        var loading_msg = $('.index-loading-message');
-        var logo = $('.index-logo');
-        var video = $('.video-container');
+    constructor() {
+        super();
+        this.state = {
+            current_content: null
+        };
 
-        $('.video-container > video').on('click', this.showNavigationBar.bind(this));
+        this.is_transition = false;
 
-        if ( config.DEBUG ) {
-            TweenLite.set(video, {opacity: 1});
-            this.showNavigationBar();
+        this.content = [];
+        this.current_content = {};
+        this.current_content_index = 0;
+    }
+
+    get current_content_index() {
+        return this._cci;
+    }
+
+    set current_content_index(val) {
+        if ( val < 0 ) {
+            this._cci = this.content.length;
+        }
+        else if ( val >= this.content.length ) {
+            this._cci = 0;
+        }
+        else {
+            this._cci = val;
+        }
+    }
+
+    getContent( index ) {
+        var l = this.content.length;
+        if ( l == 0 ) {
+            return null;
+        }
+        if ( index < 0 ) {
+            index = l + index % l;
+        }
+        else if ( index >= l ) {
+            index = index % l;
+        }
+        return this.content[index];
+    }
+
+    componentWillMount() {
+        console.log(config.SITE_NAME + 'api/all-movies');
+        var movie_counter = 1;
+
+        var padIntegerWithZeros = function (num, places) {
+            var zero = places - num.toString().length + 1;
+            return Array(+(zero > 0 && zero)).join("0") + num;
+        }
+
+        $.ajax({
+            url: config.SITE_NAME + 'api/all-movies',
+            dataType: 'json',
+            success: (data) => {
+                this.content = data.map((item) => {
+                    var movie = new MovieModel(item);
+
+                    var content = new IndexContent();
+                    content.page_name = padIntegerWithZeros(movie_counter++, 2);
+                    content.setFromMovieModel(movie);
+                    return content;
+                });
+
+                console.log(data, this.content);
+
+                this.setState({
+                    current_content: this.content[this.current_content_index]
+                });
+            },
+            error: (err) => {
+                console.log('error ' + err);
+            }
+        });
+
+        $(window).on('mousewheel DOMMouseScroll', this.scrollListener.bind(this));
+    }
+
+    componentWillUnmount() {
+        $(window).off('mousewheel DOMMouseScroll', this.scrollListener.bind(this));
+    }
+
+    scrollListener(e) {
+        var direction = function () {
+
+            var delta = (e.type === 'DOMMouseScroll' ?
+            e.originalEvent.detail * -40 :
+                e.originalEvent.wheelDelta);
+
+            return delta > 0 ? 0 : 1;
+        };
+
+        if ( this.is_transition ) {
             return;
         }
 
-        var tl = new TimelineLite();
-        tl.to(animated_bar, 1, {width: '100%'})
-            .to(loading_msg, 1, {width: '60%', delay: -0.5})
-            .to(logo, 1, {opacity: 1})
-            .to(loading_msg, 0.5, {opacity: 0, delay: -0.5})
-            .to(animated_bar, 1, {height: '100%'})
-            .to(video, 0, {opacity: 1})
-            .to(animated_bar, 1, {opacity: 0})
-            .to(logo, 1, {delay: -1, opacity: 0})
-            .to(video, 0, {delay: -1, onComplete: (e) => {
-                var vid = $('.video-container > video')[0];
-                vid.play();
-            }})
-            .to(video, 0, {onComplete: function() {
-                var vid = $('.video-container > video')[0];
-                vid.style['z-index'] = 999;
-            }});
-    }
-
-    showNavigationBar() {
-        var navigation = $('.index-navigation');
-        var video = $('.video-container > video')[0];
-        var curtains = $('.curtain');
-        var underlines = $('.underline');
-
-        if ( config.DEBUG ) {
-            TweenLite.set(navigation, {height: '30%'});
-            TweenLite.set(navigation, {y: '30%'});
-            TweenLite.set(underlines, {top: '100%'});
-            TweenLite.set(curtains, {height: '1em'});
+        if(direction() === 1) {
+            this.nextMovie();
         }
-
-        var tl = new TimelineLite();
-
-        tl.to(navigation, 1, {height: '30%'})
-            .to(video, 1, {delay: -1, y: '30%'})
-            .to(underlines, 1, {top: '100%'})
-            .to(curtains, 1, {delay: -1, height: '1em'});
-    }
-
-    moviesLinkClickListener(event) {
-        event.preventDefault();
-
-        /*TransitionStore.makeTransition(
-            TransitionStore.INDEX_PAGE,
-            TransitionStore.MOVIE_PAGE,
-            tl
-        );*/
-        TransitionActions.fromIndexToMovieTranstion(this);
-
-        if ( config.DEBUG ) {
-            var index_section = $('#IndexPage')[0];
-            index_section.style['display'] = 'none'
-            return;
+        if(direction() === 0) {
+            this.prevMovie();
         }
     }
 
-    leaveToMovies(time_line) {
-        var index_section = $('#IndexPage')[0],
-            curtains = $('#IndexPage .curtain');
+    nextMovie() {
+        this.is_transition = true;
 
-        time_line.to(curtains, 1, {height: '0'})
-            .to(index_section, 1, {y: '-100%', onComplete:()=>{index_section.style['display'] = 'none'}});
+        this.current_content_index++;
+
+        this.setState({
+            current_content: this.content[this.current_content_index]
+        });
+
+        setTimeout(()=>{
+            this.is_transition = false;
+        }, 1000);
     }
 
-    leavePage(event) {
-        return false;
+    prevMovie() {
+        this.is_transition = true;
+
+        this.current_content_index--;
+
+        this.setState({
+            current_content: this.content[this.current_content_index]
+        });
+
+        setTimeout(()=>{
+            this.is_transition = false;
+        }, 2000);
     }
 
-    transitionToMovies(event) {
+    currentMovieClickListener() {
         event.preventDefault();
-        console.log('Leaving index to movies');
 
-        var index_section = $('#IndexPage');
-        var curtains = $('.curtain');
+        console.log("currentMovieClickListener: ", this.current_content_index);
 
-        var tl = new TimelineLite();
-        tl.to(curtains, 1, {height: '0'})
-            .to(index_section, 1, {y: '-100%'});
+        var movies = [];
+        this.content.forEach((item, index, array)=>{
+            if ( item.content_type == "movie" ) {
+                movies.push(item.model);
+
+            }
+        });
+
+        TransitionActions.fromIndexToMovieTranstion(this, {movies: movies});
+    }
+
+    leaveToMoviePage() {
+        console.log("leaveToMoviePage: leaving to movie page");
+        TweenLite.to( $(".title-project-dsc"), 1, {left: "-=60%"} );
+        TweenLite.to( $(".img-front"), 1, {left: "0", height: "70%"} );
+        TweenLite.to( $(".title-header"), 1, {opacity: 0, onComplete: () => {
+            $("#IndexPage").css("display", "none");
+        }} );
+        TweenLite.set($("#IndexPage"), {"z-index": 0});
     }
 
     render() {
+        var content = this.state.current_content || new IndexContent();
+        var prev_content = this.getContent(this.current_content_index - 1) || new IndexContent();
+
+        if ( !this.state.current_content ) {
+            content.page_name = "test";
+            content.description = "BГјrstner war ein besonderes Projekt."
+                + "Die Aufgabe: Einen emotionalen Imagefilm fГјr das Reisemobilunternehmen herzustellen."
+                + "DafГјr sind wir nach SГјdfrankreich gefahren und haben dort vor einer groГџartigen Landschaft eine anstrengende aber auch (...)";
+
+            content.large_name = "The Large Name";
+            content.small_name = "Something Smaller";
+            content.img_back = "img/movies/Frame_Poldi-4.png";
+            content.img_front = "img/movies/Frame_Poldi-4.png";
+            content.color = "#ffffff";
+        }
+
+        console.log("PREV:", prev_content);
+
+        var img_1_url = prev_content.getLogo() || "",
+            img_2_url = content.getLogo(),
+            img_3_url = "img/movies/Frame_Poldi-4.png";
+
+        var color = content.getColor();
+
+        var page_name = content.page_name;
+        var large_name = content.getLargeName();
+        var small_name = content.getSmallName();
+
+        var description_text = content.getDescription();
+
         return (
-            <section id='IndexPage' class='animated-content'>
-                <nav class="index-navigation">
-                    <ul>
-                        <li><div className="curtain"><a href="http://google.com" onClick={this.moviesLinkClickListener.bind(this)}>Films</a></div><span class='underline'></span></li>
-                        <li><div className="curtain"><a href="http://google.com" onClick={this.leavePage.bind(this)}>About</a></div><span class='underline'></span></li>
-                        <li><div className="curtain"><a href="http://google.com" onClick={this.leavePage.bind(this)}>Contacts</a></div><span class='underline'></span></li>
-                    </ul>
-                </nav>
+            <section id='IndexPage' class='title-container'>
 
-                <div class="content">
-                    <div className="video-container">
-                        <video src={ asset("res/Reel_Teil.mp4") }></video>
-                    </div>
+                <ImageRotator img_front={img_2_url} img_back={img_1_url} onClick={this.currentMovieClickListener.bind(this)} />
 
-                    <div className="animated-bar">
-                    </div>
+                <TitleColoredTable className="title-project-dsc" color={color}>
+                    <tr>
+                        <td class="title-navigation">
+                            <ul>
+                                <li><a href="#" onClick="alert('about')">about</a></li>
+                                <li><a href="#" onClick="alert('work')">work</a></li>
+                                <li><a href="#" onClick="alert('contacts')">contacts</a></li>
+                                <li><a href="#" onClick="alert('impressum')">impressum</a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title-content">
+                            <AlphaTextBox class="movie-short-description" text={description_text} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title-footer">
+                            ++ Ingo Scheel Kameramann I DOP fГјr:  Imagefilm I Werbung I Spielfilm I Dokumentarfilm I KГ¶ln ++
+                        </td>
+                    </tr>
+                </TitleColoredTable>
 
-                    <div className="index-logo-container">
-                        <span class='index-logo'></span>
-                    </div>
 
-                    <div className="index-loading-message">
-                        <h1>Loading page...</h1>
-                    </div>
+                <div class="title-header">
+                    <BracketTextBox className="title-page-name" text={page_name} />
+                    <AlphaTextBox class="movie-title" text={[<span >{large_name} </span>, <span class="movie-genre">{small_name}</span>]} />
+                </div>
+
+                <div className="scroll-message">
+                    +++ Scroll and click to discover +++
                 </div>
 
             </section>
         );
+    }
+}
+
+class IndexContent {
+    constructor() {
+        this.page_name = "";
+        this.description = "THIS IS DSC";
+        this.large_name = "";
+        this.small_name = "";
+        this.img_back = "";
+        this.img_front = "";
+        this.logo = "";
+        this.color = "#ffffff";
+        this.content_type = "raw";
+        this.model = null;
+    }
+
+    setFromMovieModel(model) {
+        this.model = model;
+        this.content_type = "movie";
+    }
+
+    getLargeName() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.name;
+                break;
+            default:
+                return this.large_name;
+        }
+    }
+
+    getSmallName() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.genre;
+                break;
+            default:
+                return this.small_name;
+        }
+    }
+
+    getColor() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.color;
+                break;
+            default:
+                return this.color;
+        }
+    }
+
+    getDescription() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.description;
+                break;
+            default:
+                return this.description;
+        }
+    }
+
+    getLogo() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.logo;
+                break;
+            default:
+                return this.logo;
+        }
+    }
+
+    parseAllMoviesData(data) {
+        //this.page_name = this.padIntegerWithZeros(data.movie_count, 2);
+        this.large_name = data.name;
+        this.small_name = data.genre;
+        //this.img_front = asset(data.logo);
+        this.logo = asset(data.logo);
+        this.color = data.color;
+        this.content_type = "movie";
     }
 }
