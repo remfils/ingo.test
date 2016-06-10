@@ -236,6 +236,12 @@ head, body {
     top: 0;
 }
 
+#MoviePage,
+#MoviePage th,
+#MoviePage td {
+    color: #3C3B3A;
+}
+
 .movie-title-section {
     display: flex;
     -ms-align-items: center;

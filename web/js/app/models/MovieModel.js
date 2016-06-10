@@ -1,3 +1,7 @@
+import config from '../config';
+
+var $ = require('jquery');
+
 export default class MovieModel {
 
     constructor(movie_data) {

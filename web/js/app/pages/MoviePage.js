@@ -63,6 +63,14 @@ export default class MoviePage extends React.Component {
         if ( this.props.movies ) {
             this.movies = this.props.movies;
             this.current_movie_index = this.props.current_movie_index;
+
+            var movie = this.movies[this.current_movie_index];
+            movie.getMoreData( () => {
+                console.log("componentWillMount: current Movie Loaded");
+                this.setState({
+                    current_movie: movie
+                });
+            } );
         }
         else {
             $.ajax({
@@ -317,12 +325,12 @@ export default class MoviePage extends React.Component {
         var movie_table;
         var movie = this.state.current_movie || this.movies[this.current_movie_index];
 
-        console.log(this.props);
-
         var movie_name = movie.name;
         var movie_year = movie.year;
         
         var current_logo_style = {backgroundImage: "url(" + movie.logo + ")"};
+
+        var description = "";
 
         if ( movie ) {
 
@@ -333,6 +341,10 @@ export default class MoviePage extends React.Component {
                         <td>{ item.field_value }</td>
                     </tr>;
                 });
+            }
+
+            if ( movie.description && movie.comments ) {
+                description = <Description movie={movie} />;
             }
         }
         else {
@@ -381,7 +393,7 @@ export default class MoviePage extends React.Component {
                     </div>
                 </section>
 
-                { this.state.description }
+                { description }
 
                 <footer class="default-side-padding project-footer">
                     <a href="#goTop">Contact</a>
