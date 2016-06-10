@@ -62,8 +62,7 @@ export default class MoviePage extends React.Component {
     componentWillMount() {
         if ( this.props.movies ) {
             this.movies = this.props.movies;
-
-            // this.loadMovieFromAPI(movie);
+            this.current_movie_index = this.props.current_movie_index;
         }
         else {
             $.ajax({
@@ -316,7 +315,7 @@ export default class MoviePage extends React.Component {
 
     render() {
         var movie_table;
-        var movie = this.state.current_movie || this.props.movie;
+        var movie = this.state.current_movie || this.movies[this.current_movie_index];
 
         console.log(this.props);
 

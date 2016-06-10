@@ -64,14 +64,22 @@ export default class Application extends React.Component {
             case "INDEX-MOVIE":
                 var prev_page = transition.prev_page;
                 var content = prev_page.content;
+                var current_content = prev_page.state.current_content;
+
                 var movies = [];
+                var current_movie_index = 0;
 
                 console.log("leavePageListener:", content);
 
-                for ( var c in content ) {
-                    if ( content[c].content_type == "movie" ) {
-                        movies.push(content[c].model);
+                for ( var i in content ) {
+                    var c = content[i];
+                    if ( c.content_type == "movie" ) {
+                        if ( c == current_content ) {
+                            current_movie_index = movies.length;
+                        }
+                        movies.push(c.model);
                     }
+
                 }
 
                 console.log("leavePageListener:", movies);
@@ -80,7 +88,7 @@ export default class Application extends React.Component {
 
                 page = <MoviePage
                     app={this}
-                    movie={movies[0]}
+                    current_movie_index={current_movie_index}
                     movies={movies}
                     transition={transition}/>;
 
