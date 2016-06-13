@@ -184,30 +184,29 @@ export default class IndexPage extends React.Component {
     }
 
     render() {
-        var content = this.getContent(this.current_content_index) || new IndexContent();
-        var prev_content = this.getContent(this.current_content_index + 1) || new IndexContent();
-        var super_next_content = this.getContent(this.current_content_index + 2) || new IndexContent();
-
-        if ( !this.state.current_content ) {
-            content.page_name = "test";
-            content.description = "BГјrstner war ein besonderes Projekt."
-                + "Die Aufgabe: Einen emotionalen Imagefilm fГјr das Reisemobilunternehmen herzustellen."
-                + "DafГјr sind wir nach SГјdfrankreich gefahren und haben dort vor einer groГџartigen Landschaft eine anstrengende aber auch (...)";
-
-            content.large_name = "The Large Name";
-            content.small_name = "Something Smaller";
-            content.img_back = "img/movies/Frame_Poldi-4.png";
-            content.img_front = "img/movies/Frame_Poldi-4.png";
-            content.color = "#ffffff";
+        var content = this.getContent(this.current_content_index);
+        var prev_content = this.getContent(this.current_content_index - 1);
+        var next_content = this.getContent(this.current_content_index + 1);
+        var next2_content = this.getContent(this.current_content_index + 2);
+        
+        if ( !content ) {
+            return <div>Loading...</div>;
         }
 
-        console.log("PREV:", prev_content);
+        /*console.log("PREV:", next_content);
 
-        var img_back_url = prev_content.getLogo() || "",
+        var img_back_url = next_content.getLogo() || "",
             img_current_url = content.getLogo(),
-            img_next = super_next_content.getLogo();
+            img_next = next2_content.getLogo();*/
+        
+        var images = [
+            next2_content.getLogo(),
+            next_content.getLogo(),
+            content.getLogo(),
+            prev_content.getLogo()
+        ];
 
-        console.log("render: ", prev_content, content, super_next_content);
+        console.log("render: ", next_content, content, next2_content);
 
         var color = content.getColor();
 
@@ -220,7 +219,7 @@ export default class IndexPage extends React.Component {
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator img_front={img_current_url} img_back={img_back_url} img_next={img_next} onClick={this.currentMovieClickListener.bind(this)} />
+                <ImageRotator images={images} onClick={this.currentMovieClickListener.bind(this)} />
 
                 <TitleColoredTable className="title-project-dsc" color={color}>
                     <tr>

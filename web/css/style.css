@@ -528,17 +528,22 @@ a:active {
 }
 
 /* ImageRotator */
-.img-back {
+.img-next {
     right: 80%;
     left: auto;
 }
 
-.img-front {
+.img-next2 {
+    left: -180%;
+    right: auto;
+}
+
+.img-current {
     left: 20%;
     right: auto;
 }
 
-.img-next {
-    left: -180%;
+.img-prev {
+    left: 100%;
     right: auto;
 }

@@ -100,6 +100,7 @@ export default class MoviePage extends React.Component {
         }
     }
 
+    /* DEPRECATED */
     loadMovieFromAPI ( movie, callback ) {
         this.is_movie_loaded = false;
 

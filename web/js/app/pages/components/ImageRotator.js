@@ -11,13 +11,15 @@ export default class ImageRotator extends React.Component {
         this.image_front = "";
         this.image_back = "";
         this.image_next = "";
-        this.image_prev = "";
+        
+        this.next_images = [];
+        this.current_images = [];
 
         ImageRotator.box_counter ++;
         this.id = "ImageRotator" + ImageRotator.box_counter;
 
         this.state = {
-            is_transition_finished: true
+            is_transition: false
         };
     }
 
@@ -30,8 +32,26 @@ export default class ImageRotator extends React.Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        if ( nextState.is_transition_finished ) {
-            nextState.is_transition_finished = false;
+        if ( this.current_images.length < 0 ) {
+            this.current_images = nextProps.images;
+        }
+        else if ( this.state.is_transition ) {
+            console.log("AYYYYYYYYYYYYYYYEEEEEEEEEEEEEE");
+            return;
+        }
+        else {
+            console.log("componentWillUpdate: next_images are set");
+            this.next_images = nextProps.images.slice();
+            nextState.is_transition = true;
+            
+            TweenLite.to($(this.id + " > .background-image"), 2, {x: "+=100%", onComplete: () => {
+                this.current_images = this.next_images.slice();
+                TweenLite.set($(this.id + " > .background-image"), {clearProps: "all"});
+                this.setState({is_transition: false})
+            }});
+        }
+        /*if ( nextState.is_transition ) {
+            nextState.is_transition = false;
             return;
         }
 
@@ -42,34 +62,38 @@ export default class ImageRotator extends React.Component {
             TweenLite.to($(this.id + " > .background-image"), 2, {x: "+=100%", onComplete: () => {
                 this.image_next = "";
                 TweenLite.set($(this.id + " > .background-image"), {clearProps: "all"});
-                this.setState({is_transition_finished: true})
+                this.setState({is_transition: true})
             }});
-        }
+        }*/
     }
 
     render() {
-        console.log("ImageRotator rendered");
-
-        if ( !this.image_next ) {
-            this.image_front = this.props.img_front;
-            this.image_back = this.props.img_back;
-            this.image_next = this.props.img_next;
-        }
+        var images_class_list = ["img-next2", "img-next", "img-current", "img-prev"];
 
         var packUrl = function( url ) {
             return "url(" + url + ")";
         }
-
-        var style_img_back = { backgroundImage: packUrl(this.image_back) };
-        var style_img_front = { backgroundImage: packUrl(this.image_front) };
-        var style_img_next = { backgroundImage: packUrl(this.image_next) };
-
-        console.log("ImageRotator: ", style_img_next, style_img_back, style_img_front);
+        
+        if ( !this.current_images.length ) {
+            this.current_images = this.props.images;
+        }
+        
+        if ( !this.state.is_transition ) {
+            while ( this.next_images.length )
+                this.next_images.pop();   
+        }
+        
+        var image_divs = this.current_images.map((item, index) => {
+            var div_style = {backgroundImage: packUrl(item)}
+            return <div
+                id={"TitleBackgroundImage" + this._id + "_" + index}
+                class={"background-image " + images_class_list[index]}
+                style={div_style}
+            />;
+        });
 
         return <div id={this._id} className={this.props.className} >
-            <div id="TitleBackgroundImage1" class="background-image img-back" style={style_img_back} ></div>
-            <div id="TitleBackgroundImage2" class="background-image img-front" style={style_img_front} onClick={this.props.onClick}></div>
-            <div id="TitleBackgroundImage3" class="background-image img-next" style={style_img_next} ></div>
+            { image_divs }
         </div>;
     }
 }
