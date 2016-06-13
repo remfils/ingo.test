@@ -60,7 +60,7 @@ export default class Description extends React.Component {
                             <h1><strong>{movie.name} {movie.year}</strong></h1>
                         </div>
                         
-                        <div class="col-70p" dangerouslySetInnerHTML={description_html}></div>
+                        <div class="col-70p project-desctription-text" dangerouslySetInnerHTML={description_html}></div>
                     </div>
                 </section>
 

@@ -19,6 +19,8 @@ export default class IndexPage extends React.Component {
             current_content: null
         };
 
+        this.is_scroll_message_shown = true;
+
         this.is_transition = false;
 
         this.content = [];
@@ -53,6 +55,7 @@ export default class IndexPage extends React.Component {
         else if ( index >= l ) {
             index = index % l;
         }
+        console.log("getContent: ", l,  index);
         return this.content[index];
     }
 
@@ -93,7 +96,7 @@ export default class IndexPage extends React.Component {
     }
 
     componentWillUnmount() {
-        $(window).off('mousewheel DOMMouseScroll', this.scrollListener.bind(this));
+        $(window).off('mousewheel DOMMouseScroll', this.scrollListener);
     }
 
     scrollListener(e) {
@@ -105,6 +108,16 @@ export default class IndexPage extends React.Component {
 
             return delta > 0 ? 0 : 1;
         };
+
+        if ( this.is_scroll_message_shown ) {
+            this.is_scroll_message_shown = false;
+
+            var $scrl_msg = $(".scroll-message");
+
+            TweenLite.to($scrl_msg, 1, {bottom: "-3em", opacity: 0, onComplete: () => {
+                $scrl_msg.hide();
+            }});
+        }
 
         if ( this.is_transition ) {
             return;
@@ -147,8 +160,6 @@ export default class IndexPage extends React.Component {
     }
 
     currentMovieClickListener() {
-        event.preventDefault();
-
         console.log("currentMovieClickListener: ", this.current_content_index);
 
         var movies = [];
@@ -173,8 +184,9 @@ export default class IndexPage extends React.Component {
     }
 
     render() {
-        var content = this.state.current_content || new IndexContent();
-        var prev_content = this.getContent(this.current_content_index - 1) || new IndexContent();
+        var content = this.getContent(this.current_content_index) || new IndexContent();
+        var prev_content = this.getContent(this.current_content_index + 1) || new IndexContent();
+        var super_next_content = this.getContent(this.current_content_index + 2) || new IndexContent();
 
         if ( !this.state.current_content ) {
             content.page_name = "test";
@@ -191,9 +203,11 @@ export default class IndexPage extends React.Component {
 
         console.log("PREV:", prev_content);
 
-        var img_1_url = prev_content.getLogo() || "",
-            img_2_url = content.getLogo(),
-            img_3_url = "img/movies/Frame_Poldi-4.png";
+        var img_back_url = prev_content.getLogo() || "",
+            img_current_url = content.getLogo(),
+            img_next = super_next_content.getLogo();
+
+        console.log("render: ", prev_content, content, super_next_content);
 
         var color = content.getColor();
 
@@ -206,16 +220,16 @@ export default class IndexPage extends React.Component {
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator img_front={img_2_url} img_back={img_1_url} onClick={this.currentMovieClickListener.bind(this)} />
+                <ImageRotator img_front={img_current_url} img_back={img_back_url} img_next={img_next} onClick={this.currentMovieClickListener.bind(this)} />
 
                 <TitleColoredTable className="title-project-dsc" color={color}>
                     <tr>
                         <td class="title-navigation">
                             <ul>
-                                <li><a href="#" onClick="alert('about')">about</a></li>
-                                <li><a href="#" onClick="alert('work')">work</a></li>
-                                <li><a href="#" onClick="alert('contacts')">contacts</a></li>
-                                <li><a href="#" onClick="alert('impressum')">impressum</a></li>
+                                <li><a href="#">about</a></li>
+                                <li><a href="#">work</a></li>
+                                <li><a href="#">contacts</a></li>
+                                <li><a href="#">impressum</a></li>
                             </ul>
                         </td>
                     </tr>
@@ -226,7 +240,7 @@ export default class IndexPage extends React.Component {
                     </tr>
                     <tr>
                         <td class="title-footer">
-                            ++ Ingo Scheel Kameramann I DOP fГјr:  Imagefilm I Werbung I Spielfilm I Dokumentarfilm I KГ¶ln ++
+                            ++ Ingo Scheel Kameramann I DOP für:  Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
                         </td>
                     </tr>
                 </TitleColoredTable>
@@ -234,7 +248,7 @@ export default class IndexPage extends React.Component {
 
                 <div class="title-header">
                     <BracketTextBox className="title-page-name" text={page_name} />
-                    <AlphaTextBox class="movie-title" text={[<span >{large_name} </span>, <span class="movie-genre">{small_name}</span>]} />
+                    <AlphaTextBox text={[<span class="movie-title">{large_name} </span>, <span class="movie-genre">{small_name}</span>]} />
                 </div>
 
                 <div className="scroll-message">
