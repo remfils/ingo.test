@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Silex\Application;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ApiController
@@ -12,9 +13,20 @@ class ApiController
 
     }
 
+    public function changeLanguage(Request $req, Application $app)
+    {
+        $lang = $req->attributes->get('language');
+
+        $referer = $req->headers->get('referer');
+        return $app['translator']->getLocale();
+
+    }
+
     public function allMoviesAction( Request $req, Application $app ) {
-        $q = $app['db']->query('select * from projects as p join project_description as pd on p.id = pd.movie_id');
-        $q->execute();
+		$lang = $app['translator']->getLocale(); 
+        $q = $app['db']->prepare('select p.id, p.color , p.logo , p.year ,p.preview_url  , pl.name, pl.genre, pl.description from projects as p join project_lang as pl on p.id = pl.project_id join lang as lng on pl.lang_id = lng.id where p.active = true AND  lng.name =:language');
+        $q->bindValue(':language', $lang);
+		$q->execute();
         $result = $q->fetchAll();
 
         return json_encode($result);
@@ -22,7 +34,7 @@ class ApiController
 
     public function movieDescriptionAction( Request $req, Application $app ) {
         $id = $req->attributes->get('id');
-
+		
         $q = $app['db']->prepare('select * from project_description pd where pd.movie_id = :movie_id');
         $q->bindValue(':movie_id', $id);
         $q->execute();
