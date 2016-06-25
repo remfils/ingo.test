@@ -8,6 +8,8 @@ $app->get('/api/all-movies', 'App\\Controllers\\ApiController::allMoviesAction')
 
 $app->get('/api/movie/{id}', 'App\\Controllers\\ApiController::movieDescriptionAction');
 
+$app->get('/api/change-language/{language}', 'App\\Controllers\\ApiController::changeLanguage');
+
 /* ADMIN */
 
 $app->get('/admin', 'App\\Controllers\\AdminController::indexAction')
