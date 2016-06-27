@@ -31,6 +31,10 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
+if ( $app['session']->get('lang') === null ) {
+	$app['session']->set('lang', 'de');
+}
+
 /* SECURITY */
 
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
