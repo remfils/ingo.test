@@ -539,6 +539,11 @@ a:active {
 }
 
 .img-next {
-    left: -180%;
+    left: 120%;
     right: auto;
+}
+
+.img-last {
+    right: 180%;
+    left: auto;
 }

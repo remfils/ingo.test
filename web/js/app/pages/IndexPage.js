@@ -16,7 +16,8 @@ export default class IndexPage extends React.Component {
     constructor() {
         super();
         this.state = {
-            current_content: null
+            current_content: null,
+            movement_direction: ""
         };
 
         this.is_scroll_message_shown = true;
@@ -34,7 +35,7 @@ export default class IndexPage extends React.Component {
 
     set current_content_index(val) {
         if ( val < 0 ) {
-            this._cci = this.content.length;
+            this._cci = this.content.length - 1;
         }
         else if ( val >= this.content.length ) {
             this._cci = 0;
@@ -51,6 +52,7 @@ export default class IndexPage extends React.Component {
         }
         if ( index < 0 ) {
             index = l + index % l;
+            console.log(index);
         }
         else if ( index >= l ) {
             index = index % l;
@@ -137,7 +139,8 @@ export default class IndexPage extends React.Component {
         this.current_content_index++;
 
         this.setState({
-            current_content: this.content[this.current_content_index]
+            current_content: this.content[this.current_content_index],
+            movement_direction: "right"
         });
 
         setTimeout(()=>{
@@ -151,7 +154,8 @@ export default class IndexPage extends React.Component {
         this.current_content_index--;
 
         this.setState({
-            current_content: this.content[this.current_content_index]
+            current_content: this.content[this.current_content_index],
+            movement_direction: "left"
         });
 
         setTimeout(()=>{
@@ -185,8 +189,9 @@ export default class IndexPage extends React.Component {
 
     render() {
         var content = this.getContent(this.current_content_index) || new IndexContent();
-        var prev_content = this.getContent(this.current_content_index + 1) || new IndexContent();
-        var super_next_content = this.getContent(this.current_content_index + 2) || new IndexContent();
+        var next_content = this.getContent(this.current_content_index + 1) || new IndexContent();
+        var last_content = this.getContent(this.current_content_index + 2) || new IndexContent();
+        var prev_content = this.getContent(this.current_content_index - 1) || new IndexContent();
 
         if ( !this.state.current_content ) {
             content.page_name = "test";
@@ -203,11 +208,12 @@ export default class IndexPage extends React.Component {
 
         console.log("PREV:", prev_content);
 
-        var img_back_url = prev_content.getLogo() || "",
+        var img_back_url = next_content.getLogo() || "",
             img_current_url = content.getLogo(),
-            img_next = super_next_content.getLogo();
+            img_next = prev_content.getLogo(),
+            img_last = last_content.getLogo();
 
-        console.log("render: ", prev_content, content, super_next_content);
+        console.log("render: ", prev_content, content);
 
         var color = content.getColor();
 
@@ -220,7 +226,7 @@ export default class IndexPage extends React.Component {
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator img_front={img_current_url} img_back={img_back_url} img_next={img_next} onClick={this.currentMovieClickListener.bind(this)} />
+                <ImageRotator img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} onClick={this.currentMovieClickListener.bind(this)} />
 
                 <TitleColoredTable className="title-project-dsc" color={color}>
                     <tr>
