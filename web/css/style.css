@@ -222,6 +222,16 @@ a, a:hover, a:focus, a:visited, a:active {
     z-index: 3;
 }
 
+.left {
+    left: 0 !important;
+    right: auto !important;
+}
+
+.right {
+    right: 0 !important;
+    left: auto !important;
+}
+
 .movie-curtain.left {
     width: 0;
     z-index: 99;
@@ -455,16 +465,36 @@ a:active {
 
 .title-project-dsc {
     width: 750px;
-    background-color: #cce1ee;
     height: 100%;
     left: 120px;
     padding: 3em 10px 3em 100px;
 }
 
 .title-content {
-    height: 100%;
+    height: 50%;
     vertical-align: bottom;
     padding-bottom: 5em;
+}
+
+/* INDEX PAGE: TitleColoredTable */
+
+#TableBackgroundColor,
+#TableForegroundColor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#TableBackgroundColor {  z-index: 1; }
+#TableForegroundColor {  z-index: 2; }
+.title-project-dsc table {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
 }
 
 /* movie title */
@@ -487,6 +517,7 @@ a:active {
     position: absolute;
     left: 320px;
     bottom: 50%;
+    z-index: 10;
 }
 
 .movie-title span, .movie-genre {
