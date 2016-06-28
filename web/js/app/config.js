@@ -1,5 +1,5 @@
 var config = {
-    DEBUG: false,
+    DEBUG: true,
     HOME: true,
     SITE_NAME: "http://ingo-test.tk/"
 };

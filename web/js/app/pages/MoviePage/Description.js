@@ -41,6 +41,7 @@ export default class Description extends React.Component {
         var description_html = {__html: movie.description };
 
         var comments = movie.comments.map((item) => {
+            console.log("DESCRIPTION RENDER: ", item);
             var text_html = {__html: item.text };
 
             return <div class="info-block">

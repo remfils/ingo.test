@@ -35,15 +35,14 @@ export default class ImageRotator extends React.Component {
         if  ( this.are_components_set ) {
             var coordinate_change = nextProps.direction == "right" ? "+=100%" : "-=100%";
             TweenLite.to($(this.id + " > .background-image"), 2, {x: coordinate_change, onComplete: () => {
-                this.image_next = "";
-                TweenLite.set($(this.id + " > .background-image"), {clearProps: "all"});
-
                 this.are_components_set = false;
 
                 this.setState({current_image: this.image_front});
             }});
         }
         else {
+            TweenLite.set($(this.id + " > .background-image"), {clearProps: "all"});
+
             this.image_front = nextProps.img_front;
             this.image_back = nextProps.img_back;
             this.image_next = nextProps.img_next;
@@ -60,12 +59,12 @@ export default class ImageRotator extends React.Component {
             return "url(" + url + ")";
         }
 
-        var style_img_last = { backgroundImage: packUrl(this.image_last) };
-        var style_img_back = { backgroundImage: packUrl(this.image_back) };
-        var style_img_front = { backgroundImage: packUrl(this.image_front) };
-        var style_img_next = { backgroundImage: packUrl(this.image_next) };
+        var style_img_last = { "background-image": packUrl(this.image_last) };
+        var style_img_back = { "background-image": packUrl(this.image_back) };
+        var style_img_front = { "background-image": packUrl(this.image_front) };
+        var style_img_next = { "background-image": packUrl(this.image_next) };
 
-        console.log("ImageRotator: ", style_img_next, style_img_back, style_img_front);
+        console.log("ImageRotator: ", style_img_last, style_img_next, style_img_back, style_img_front);
 
         return <div id={this._id} className={this.props.className} >
             <div id="TitleBackgroundImage1" class="background-image img-last" style={style_img_last} ></div>

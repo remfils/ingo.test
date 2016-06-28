@@ -454,7 +454,7 @@ a:active {
 }
 
 .title-project-dsc {
-    width: 40%;
+    width: 750px;
     background-color: #cce1ee;
     height: 100%;
     left: 120px;
@@ -518,7 +518,8 @@ a:active {
 .background-image {
     height: 100%;
     width: 100%;
-    background-size: cover;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
 }
 
 .scroll-message {
