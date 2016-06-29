@@ -22,7 +22,9 @@ export default class ImageRotator extends React.Component {
             is_transition_finished: true
         };
 
-        this.image_offset = -1 * (window.innerHeight * 989 / 904 * 2 + ( window.innerWidth - 970 ));
+        this.animation_tween = Expo.easeInOut;
+
+        this.image_offset = -1 * (window.innerHeight * 989 / 904 * 2 + ( window.innerWidth - 870 ));
     }
 
     get id() {
@@ -39,7 +41,7 @@ export default class ImageRotator extends React.Component {
             var coordinate_change = this.image_offset;
             coordinate_change += (nextProps.direction == "right" ? 1 : -1) * $(this.id + "> .background-image").innerWidth();
 
-            TweenLite.to($(this.id), 2, {x: coordinate_change, onComplete: () => {
+            TweenLite.to($(this.id), 1.5, {x: coordinate_change, ease: this.animation_tween, onComplete: () => {
                 this.are_components_set = false;
 
                 this.setState({current_image: this.image_front});

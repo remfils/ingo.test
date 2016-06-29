@@ -102,13 +102,9 @@ export default class IndexPage extends React.Component {
     }
 
     componentDidMount() {
-        var $img_rot = $(".index-page-image-rotator");
+        /*var $img_rot = $(".index-page-image-rotator");
         // TweenLite.set(, {left: "100%"});
-        $img_rot.css("left", "100%")
-
-        // 870 is position of right border of title page
-        var offset = window.innerHeight * 989 / 904 * 2 + ( window.innerWidth - 970 );
-        TweenLite.to($img_rot, 2, {x: -offset})
+        $img_rot.css("left", "100%");*/
     }
 
     scrollListener(e) {
@@ -238,7 +234,7 @@ export default class IndexPage extends React.Component {
 
                 <ImageRotator class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} onClick={this.currentMovieClickListener.bind(this)} />
 
-                <TitleColoredTable className="title-project-dsc" color={color}>
+                <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>
                         <td class="title-navigation">
                             <ul>

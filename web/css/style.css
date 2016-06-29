@@ -445,8 +445,10 @@ a:active {
 /* navigation */
 
 .title-navigation {
+    text-align: center;
     font-size: 24px;
-    padding-left: 100px;
+    vertical-align: top;
+    padding-top: 35px;
 }
 
 .title-navigation ul {
@@ -463,16 +465,16 @@ a:active {
 }
 
 .title-project-dsc {
-    width: 750px;
+    width: 770px;
     height: 100%;
     left: 120px;
-    padding: 3em 10px 3em 100px;
 }
 
 .title-content {
-    height: 50%;
+    height: 100%;
     vertical-align: bottom;
     padding-bottom: 5em;
+    padding-left: 100px;
 }
 
 /* INDEX PAGE: TitleColoredTable */
@@ -542,6 +544,9 @@ a:active {
 .title-footer {
     font-size: 16px;
     color: #3c3c3b;
+    text-align: center;
+    vertical-align: bottom;
+    padding-bottom: 35px;
 }
 
 /* images */

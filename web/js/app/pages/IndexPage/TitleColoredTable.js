@@ -39,10 +39,17 @@ export default class TitleColoredTable extends React.Component {
         else if ( this.current_color != next_color ) {
             this.next_color = next_color;
 
-            $("#TableForegroundColor")
-                .css("width", "100%")
-                .removeClass("left")
-                .addClass("right");
+            var $curtain = $("#TableForegroundColor");
+            $curtain.css("width", "100%");
+
+            if ( nextProps.direction == "right" ) {
+                $curtain.removeClass("left")
+                    .addClass("right");
+            }
+            else {
+                $curtain.removeClass("right")
+                    .addClass("left");
+            }
 
             TweenLite.to($("#TableForegroundColor"), 1, {width: 0, onComplete: () => {
                 this.current_color = next_color;
