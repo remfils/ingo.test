@@ -21,6 +21,8 @@ export default class ImageRotator extends React.Component {
         this.state = {
             is_transition_finished: true
         };
+
+        this.image_offset = -1 * (window.innerHeight * 989 / 904 * 2 + ( window.innerWidth - 970 ));
     }
 
     get id() {
@@ -33,15 +35,18 @@ export default class ImageRotator extends React.Component {
 
     componentWillUpdate(nextProps, nextState) {
         if  ( this.are_components_set ) {
-            var coordinate_change = nextProps.direction == "right" ? "+=100%" : "-=100%";
-            TweenLite.to($(this.id + " > .background-image"), 2, {x: coordinate_change, onComplete: () => {
+            // var coordinate_change = nextProps.direction == "right" ? "+=100%" : "-=100%";
+            var coordinate_change = this.image_offset;
+            coordinate_change += (nextProps.direction == "right" ? 1 : -1) * $(this.id + "> .background-image").innerWidth();
+
+            TweenLite.to($(this.id), 2, {x: coordinate_change, onComplete: () => {
                 this.are_components_set = false;
 
                 this.setState({current_image: this.image_front});
             }});
         }
         else {
-            TweenLite.set($(this.id + " > .background-image"), {clearProps: "all"});
+            TweenLite.set($(this.id), {x: this.image_offset});
 
             this.image_front = nextProps.img_front;
             this.image_back = nextProps.img_back;
@@ -55,22 +60,16 @@ export default class ImageRotator extends React.Component {
     render() {
         console.log("ImageRotator rendered");
 
-        var packUrl = function( url ) {
-            return "url(" + url + ")";
-        }
+        var src_img_last = this.image_last;
+        var src_img_back = this.image_back;
+        var src_img_front = this.image_front;
+        var src_img_next = this.image_next;
 
-        var style_img_last = { "background-image": packUrl(this.image_last) };
-        var style_img_back = { "background-image": packUrl(this.image_back) };
-        var style_img_front = { "background-image": packUrl(this.image_front) };
-        var style_img_next = { "background-image": packUrl(this.image_next) };
-
-        console.log("ImageRotator: ", style_img_last, style_img_next, style_img_back, style_img_front);
-
-        return <div id={this._id} className={this.props.className} >
-            <div id="TitleBackgroundImage1" class="background-image img-last" style={style_img_last} ></div>
-            <div id="TitleBackgroundImage2" class="background-image img-back" style={style_img_back} ></div>
-            <div id="TitleBackgroundImage3" class="background-image img-front" style={style_img_front} onClick={this.props.onClick}></div>
-            <div id="TitleBackgroundImage4" class="background-image img-next" style={style_img_next} ></div>
+        return <div id={this._id} className={this.props.className + " image-rotator"} >
+            <img id="TitleBackgroundImage1" class="background-image img-last" src={src_img_last} ></img>
+            <img id="TitleBackgroundImage2" class="background-image img-back" src={src_img_back} ></img>
+            <img id="TitleBackgroundImage3" class="background-image img-front" src={src_img_front} onClick={this.props.onClick}></img>
+            <img id="TitleBackgroundImage4" class="background-image img-next" src={src_img_next} ></img>
         </div>;
     }
 }

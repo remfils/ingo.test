@@ -101,6 +101,16 @@ export default class IndexPage extends React.Component {
         $(window).off('mousewheel DOMMouseScroll', this.scrollListener);
     }
 
+    componentDidMount() {
+        var $img_rot = $(".index-page-image-rotator");
+        // TweenLite.set(, {left: "100%"});
+        $img_rot.css("left", "100%")
+
+        // 870 is position of right border of title page
+        var offset = window.innerHeight * 989 / 904 * 2 + ( window.innerWidth - 970 );
+        TweenLite.to($img_rot, 2, {x: -offset})
+    }
+
     scrollListener(e) {
         var direction = function () {
 
@@ -208,10 +218,10 @@ export default class IndexPage extends React.Component {
 
         console.log("PREV:", prev_content);
 
-        var img_back_url = next_content.getLogo() || "",
-            img_current_url = content.getLogo(),
-            img_next = prev_content.getLogo(),
-            img_last = last_content.getLogo();
+        var img_back_url = next_content.getShortLogo() || "",
+            img_current_url = content.getShortLogo(),
+            img_next = prev_content.getShortLogo(),
+            img_last = last_content.getShortLogo();
 
         console.log("render: ", prev_content, content);
 
@@ -226,7 +236,7 @@ export default class IndexPage extends React.Component {
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} onClick={this.currentMovieClickListener.bind(this)} />
+                <ImageRotator class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} onClick={this.currentMovieClickListener.bind(this)} />
 
                 <TitleColoredTable className="title-project-dsc" color={color}>
                     <tr>
@@ -275,6 +285,7 @@ class IndexContent {
         this.img_back = "";
         this.img_front = "";
         this.logo = "";
+        this.logo_short = "";
         this.color = "#ffffff";
         this.content_type = "raw";
         this.model = null;
@@ -332,6 +343,16 @@ class IndexContent {
                 break;
             default:
                 return this.logo;
+        }
+    }
+
+    getShortLogo() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.logo_short;
+                break;
+            default:
+                return this.logo_short;
         }
     }
 

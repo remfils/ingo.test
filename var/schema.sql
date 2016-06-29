@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июн 06 2016 г., 15:56
+-- Время создания: Июн 28 2016 г., 16:36
 -- Версия сервера: 5.5.48
 -- Версия PHP: 5.4.45
 
@@ -33,17 +33,27 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `color` varchar(255) NOT NULL,
   `year` int(11) NOT NULL,
   `logo` varchar(255) NOT NULL,
+  `logo_short` varchar(255) NOT NULL,
   `movie_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
 
 --
 -- Дамп данных таблицы `projects`
 --
 
-INSERT INTO `projects` (`id`, `name`, `genre`, `color`, `year`, `logo`, `movie_id`) VALUES
-(1, 'Insupad', 'Imagefilm', '#B5D6B6', 2001, 'img/movies/InsuPad-6.png', 1),
-(2, 'Renault Twizzy', 'Werbung', '#D3EEDA', 2012, 'img/movies/Frame_Renault-5.png', 2),
-(7, 'Bürstner Elegance', 'Imagefilm', '#CCE1EE', 0, 'img/movies/Frame_Poldi-4.png', NULL);
+INSERT INTO `projects` (`id`, `name`, `genre`, `color`, `year`, `logo`, `logo_short`, `movie_id`) VALUES
+(1, 'Bürstner Elegance', 'Imagefilm', '#CCE1EE', 2001, 'img/movies/1_Ebene-181.jpg', 'img/movies/images_small/1_ebene_small_181.jpg', NULL),
+(2, 'Jack Wolfskin', 'Werbung', '#D7E3FF', 2001, 'img/movies/2_Ebene-156.jpg', 'img/movies/images_small/2_ebene_small_156.jpg', NULL),
+(3, 'Insupad', 'Imagefilm', '#B5D6B6', 2001, 'img/movies/3_Ebene-158.jpg', 'img/movies/images_small/3_ebene_small_158.jpg', NULL),
+(4, 'Renault Twizzy', 'Werbung', '#D3EEDA', 2001, 'img/movies/4_Ebene-159.jpg', 'img/movies/images_small/4_ebene_small_159.jpg', NULL),
+(5, 'Braun Olympia', 'Werbung', '#A28665', 2001, 'img/movies/5_Ebene-157.jpg', 'img/movies/images_small/5_ebene_small_157.jpg', NULL),
+(6, 'Loose Connection', 'Kurzfilm', '#A0996A', 2001, 'img/movies/6_Ebene-164.jpg', 'img/movies/images_small/6_ebene_small_164.jpg', NULL),
+(7, 'Lukas Podolski', 'Online Testimonial', '#C5CDCD', 2001, 'img/movies/7_Ebene-160.jpg', 'img/movies/images_small/7_ebene_small_160.jpg', NULL),
+(8, 'Rosia Montana', 'Dokumentarfilm', '#9BAA9D', 2001, 'img/movies/8_Ebene-180.jpg', 'img/movies/images_small/8_ebene_small_180.jpg', NULL),
+(9, 'Lilith', 'Kurzfilm', '#86AFB1', 2001, 'img/movies/9_Ebene-165.jpg', 'img/movies/images_small/9_ebene_small_165.jpg', NULL),
+(10, 'Fußball ist unser Bier', 'Veltins', '#86AFB1', 2001, 'img/movies/10_Ebene-177.jpg', 'img/movies/images_small/10_ebene_small_177.jpg', NULL),
+(11, 'Der Liebhaber', 'Testimonial', '#A1A67D', 2001, 'img/movies/11_Ebene-162.jpg', 'img/movies/images_small/11_ebene_small_162.jpg', NULL),
+(12, 'man stirbt.', 'Experimenteller Dokumentarfilm', '#C2C37D', 2001, 'img/movies/12_Ebene-182.jpg', 'img/movies/images_small/12_ebene_small_182.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -79,16 +89,25 @@ CREATE TABLE IF NOT EXISTS `project_description` (
   `preview_url` varchar(255) DEFAULT NULL,
   `description` text,
   `movie_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
 
 --
 -- Дамп данных таблицы `project_description`
 --
 
 INSERT INTO `project_description` (`id`, `preview_url`, `description`, `movie_id`) VALUES
-(1, 'https://player.vimeo.com/video/67123140?color=ffffff', 'Wieder ein gemeinsames Projekt mit dem langjahrigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts fur das Fachpublikum zu ubernehmen. In diesem Rahmen haben wir dieses Video produziert. Hier kommen sowohl Patienten als auch Arzte zu Wort.', 1),
-(2, 'https://player.vimeo.com/video/67123140?color=ffffff', 'Wieder ein gemeinsames Projekt mit dem langjahrigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts fur das Fachpublikum zu ubernehmen. In diesem Rahmen haben wir dieses Video produziert. Hier kommen sowohl Patienten als auch Arzte zu Wort.', 2),
-(3, '', 'asdf', 7);
+(1, 'https://player.vimeo.com/video/67123140?color=ffffff', 'Bürstner war ein besonderes Projekt. Die Aufgabe: Einen emotionalen Imagefilm für das Reisemobilunternehmen herzustellen. Dafür sind wir nach Südfrankreich gefahren und haben dort vor einer großartigen Landschaft eine anstrengende aber auch (...)', 1),
+(2, 'https://player.vimeo.com/video/67123140?color=ffffff', 'Für Jack Wolfskin in den Dolomiten. Ich wurde als „Kletterkameramann“ engagiert. Das Konzept bestand aus einem losen rotem Faden (3 abenteuerlustige Kletterer ziehen durch die Dolomiten) und viel Improvisation in und an den wunderschönen Motiven. (...)', 2),
+(3, 'https://www.youtube.com/embed/JL3HeSxWJuY', 'Wieder ein gemeinsames Projekt mit dem langjährigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts für das (...)', 3),
+(4, 'https://player.vimeo.com/video/67123140?color=ffffff', '10 Renault Twizzy Clips in 5 verschiedenen Städten. Ein enger Zeitplan und Drehen nach dem Motto „run and gun“ - das waren die Zutaten für die Renault Twizzy Spots, konzipiert im Rahmen einer Guerilla Marketing Kampagne für den Elektro – Funflitzer von Renault. (...)', 4),
+(5, 'https://player.vimeo.com/video/39619408', 'Hier existierte ein bereits fertig geschnittener Spot, der dem Kunden Braun so gut gefallen hatte, dass ich im Auftrag von congaz Düsseldorf nicht - lizensiertes Material im Studio so nachdrehen sollte dass sich die Aufnahmen von Getty mit den von mir nachträglich (...)', 5),
+(6, 'https://player.vimeo.com/video/61895862', '„Loose Connection“ war mein Diplomfilm als Abschlussarbeit an der Fachhochschule Dortmund, Fachbereich Kamera. Mit diesem Film konnte ich im Jahre 2009 den Deutschen Kamerapreis als Förderpreis gewinnen. (...)', 6),
+(7, 'https://www.youtube.com/embed/U3doC7qQ350', 'Für diesen kurzen „Social Spot“ hat mich Lukas Podolski beauftragt, wobei Lukas zusammen mit Per Mertesacker dieses Projekt ins Leben gerufen hat, um mit zahlreichen Prominenten ein Benefiz Fußballturnier zu veranstalten. Die Erlöse kommen der Lukas Podolski Stiftung (...)', 7),
+(8, 'https://player.vimeo.com/video/67123140?color=ffffff', 'Die Gold- und Silberminen von Rosia Montana, einer kleinen Stadt am Rande der Karpaten sollen wieder in Betrieb genommen werden. Den Gewinn teilen sich die kanadische Rohstofffirma und eine rumänische Staatsgesellschaft im Verhältnis 4:1. Schäden an der (...)', 8),
+(9, 'https://player.vimeo.com/video/54154392', 'In diesem Kurzspielfilm, ausgezeichnet mit dem Prädikat „Besonders Wertvoll“ macht eine Frau im fortgeschrittenen Alter eine unerwartete Entdeckung. Durch intensive Vorbereitungen und viel Einsatz vom ganzen Team ist es uns gelungen, einen Film zu erzählen, der (...)', 9),
+(10, 'https://www.youtube.com/embed/FFF5vsMjtBM', 'Web – Spot mit Gerald Asamoah in der Hauptrolle. Die Brauerei Veltins hat für diesen Dreh 4 Trickfußballer engagiert, die sich auf dem Brauereigelände austoben durften. Dies wurde in einem dokumentarischen Stil mit zwei eher roughen Handkameras langbrennweitig (...)', 10),
+(11, 'https://player.vimeo.com/video/67123140?color=ffffff', 'Mit wenig Budget in einer Privatwohnung auf 16 mm gedreht, war hier das Licht-Setup nicht ganz unspannend. Mittels frei hängender Rohrkonstruktion über dem Bett konnten wir das weiche Top-Light über den Darstellern realisieren. (...)', 11),
+(12, 'https://player.vimeo.com/video/67123140?color=ffffff', 'Experimenteller Dokumentarfilm über ein häufig tabuisiertes Thema. Zahlreiche Preise und Auszeichnungen: „Bester Deutscher Film“ beim Kurzfilmfestival Hamburg, 2009;  Lobende Erwähnung der Jury, Kategorie „Bestes Drehbuch“, Internationales Festival (...) 1. Preis der Jury beim Kurzfilmfestival „unlimited“, Köln 2009 (...)', 12);
 
 -- --------------------------------------------------------
 
@@ -101,30 +120,49 @@ CREATE TABLE IF NOT EXISTS `project_fields` (
   `movie_id` int(11) DEFAULT NULL,
   `field_name` varchar(255) DEFAULT NULL,
   `field_value` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=2730;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=2730;
 
 --
 -- Дамп данных таблицы `project_fields`
 --
 
 INSERT INTO `project_fields` (`id`, `movie_id`, `field_name`, `field_value`) VALUES
-(1, 1, 'Kamera', 'tsitrone medien GmbH & Co. KG'),
-(2, 1, 'Kamera', 'Ingo Scheel 2'),
-(8, 3, 'Camera', 'username'),
-(9, 3, 'Field', 'username'),
-(10, 4, '1', '1'),
-(11, 4, '1', '1'),
-(12, 4, '1', '1'),
-(13, 5, 'Actor', 'username'),
-(14, 5, 'Camera', 'username'),
-(15, 5, 'Name', 'username'),
-(16, 6, 'Agentur', 'This'),
-(17, 6, 'Kamera', 'Name'),
-(18, 6, 'Schnitt', 'teset'),
-(22, 7, 'Agentur', 'asdf'),
-(23, 7, 'Kamera', 'asdf'),
-(24, 7, 'Schnitt', 'asdf'),
-(25, 2, 'field', 'name');
+(1, 1, 'Kamera', 'Ingo Scheel 1'),
+(2, 1, 'Camera', 'Ingo Scheel 2'),
+(3, 1, 'Test', 'Test'),
+(4, 2, 'Kamera', 'Ingo Scheel 1'),
+(5, 2, 'Camera', 'Ingo Scheel 2'),
+(6, 2, 'Test', 'Test'),
+(7, 3, 'Kamera', 'Ingo Scheel 1'),
+(8, 3, 'Camera', 'Ingo Scheel 2'),
+(9, 3, 'Test', 'Test'),
+(10, 4, 'Kamera', 'Ingo Scheel 1'),
+(11, 4, 'Camera', 'Ingo Scheel 2'),
+(12, 4, 'Test', 'Test'),
+(13, 5, 'Kamera', 'Ingo Scheel 1'),
+(14, 5, 'Camera', 'Ingo Scheel 2'),
+(15, 5, 'Test', 'Test'),
+(16, 6, 'Kamera', 'Ingo Scheel 1'),
+(17, 6, 'Camera', 'Ingo Scheel 2'),
+(18, 6, 'Test', 'Test'),
+(19, 7, 'Kamera', 'Ingo Scheel 1'),
+(20, 7, 'Camera', 'Ingo Scheel 2'),
+(21, 7, 'Test', 'Test'),
+(22, 8, 'Kamera', 'Ingo Scheel 1'),
+(23, 8, 'Camera', 'Ingo Scheel 2'),
+(24, 8, 'Test', 'Test'),
+(25, 9, 'Kamera', 'Ingo Scheel 1'),
+(26, 9, 'Camera', 'Ingo Scheel 2'),
+(27, 9, 'Test', 'Test'),
+(28, 10, 'Kamera', 'Ingo Scheel 1'),
+(29, 10, 'Camera', 'Ingo Scheel 2'),
+(30, 10, 'Test', 'Test'),
+(31, 11, 'Kamera', 'Ingo Scheel 1'),
+(32, 11, 'Camera', 'Ingo Scheel 2'),
+(33, 11, 'Test', 'Test'),
+(34, 12, 'Kamera', 'Ingo Scheel 1'),
+(35, 12, 'Camera', 'Ingo Scheel 2'),
+(36, 12, 'Test', 'Test');
 
 -- --------------------------------------------------------
 
@@ -189,7 +227,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT для таблицы `project_comments`
 --
@@ -199,12 +237,12 @@ ALTER TABLE `project_comments`
 -- AUTO_INCREMENT для таблицы `project_description`
 --
 ALTER TABLE `project_description`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT для таблицы `project_fields`
 --
 ALTER TABLE `project_fields`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT для таблицы `users`
 --

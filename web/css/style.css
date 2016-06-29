@@ -436,8 +436,7 @@ a:active {
     position: relative;
 }
 
-.title-project-dsc,
-.background-image {
+.title-project-dsc {
     position: absolute;
     left: 0;
     top: 0;
@@ -548,9 +547,7 @@ a:active {
 /* images */
 .background-image {
     height: 100%;
-    width: 100%;
-    background-size: auto 100%;
-    background-repeat: no-repeat;
+    width: auto;
 }
 
 .scroll-message {
@@ -560,22 +557,30 @@ a:active {
 }
 
 /* ImageRotator */
+
+.image-rotator {
+    position: absolute;
+    left: 100%;
+    width: 100%;
+    white-space: nowrap;
+}
+/*
 .img-back {
     right: 80%;
     left: auto;
 }
 
 .img-front {
-    left: 20%;
+    left: 870px;
     right: auto;
 }
 
 .img-next {
-    left: 120%;
+    left: 100%;
     right: auto;
 }
 
 .img-last {
     right: 180%;
     left: auto;
-}
+}*/
