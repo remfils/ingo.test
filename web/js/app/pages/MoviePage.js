@@ -52,11 +52,12 @@ export default class MoviePage extends React.Component {
     }
 
     enterFromIndexPage() {
-        TweenLite.from($(".movie-title-section"), 1, {y: "+=100%", onComplete: () => {
+        TweenLite.from($("#MoviePage"), 1, {y: "+=100%"});
+        /*TweenLite.from($(".movie-title-section"), 1, {y: "+=100%", onComplete: () => {
             $("#MoviePage .current-image").css("display", "block");
         }});
 
-        $("#MoviePage .current-image").css("display", "none");
+        TweenLite.from($("#MoviePage .current-image"), 1, {y: "+=100%"});*/
     }
 
     componentWillMount() {

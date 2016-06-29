@@ -184,9 +184,10 @@ export default class IndexPage extends React.Component {
     }
 
     leaveToMoviePage() {
+        $(window).off('mousewheel DOMMouseScroll', this.scrollListener);
+
         console.log("leaveToMoviePage: leaving to movie page");
         TweenLite.to( $(".title-project-dsc"), 1, {left: "-=60%"} );
-        TweenLite.to( $(".img-front"), 1, {left: "0", height: "70%"} );
         TweenLite.to( $(".title-header"), 1, {opacity: 0, onComplete: () => {
             $("#IndexPage").css("display", "none");
         }} );

@@ -51,7 +51,7 @@ export default class TitleColoredTable extends React.Component {
                     .addClass("left");
             }
 
-            TweenLite.to($("#TableForegroundColor"), 1, {width: 0, onComplete: () => {
+            TweenLite.to($("#TableForegroundColor"), 1, {width: 0, ease: Power3.easeInOut, onComplete: () => {
                 this.current_color = next_color;
                 this.setState(current_color, next_color);
                 this.next_color = "";
