@@ -68,10 +68,10 @@ export default class ImageRotator extends React.Component {
         var src_img_next = this.image_next;
 
         return <div id={this._id} className={this.props.className + " image-rotator"} >
-            <img id="TitleBackgroundImage1" class="background-image img-last" src={src_img_last} ></img>
-            <img id="TitleBackgroundImage2" class="background-image img-back" src={src_img_back} ></img>
-            <img id="TitleBackgroundImage3" class="background-image img-front" src={src_img_front} onClick={this.props.onClick}></img>
-            <img id="TitleBackgroundImage4" class="background-image img-next" src={src_img_next} ></img>
+            <img id="TitleBackgroundImage1" class="background-image" src={src_img_last} ></img>
+            <img id="TitleBackgroundImage2" class="background-image" src={src_img_back} ></img>
+            <img id="TitleBackgroundImage3" class="background-image" src={src_img_front} onClick={this.props.onClick}></img>
+            <img id="TitleBackgroundImage4" class="background-image" src={src_img_next} ></img>
         </div>;
     }
 }
