@@ -1,5 +1,7 @@
 import React from "react";
 
+import * as ResizeActions from '../../actions/ResizeActions';
+
 var $ = require('jquery');
 
 const HEADER_MIN_WIDTH = 770;
@@ -50,6 +52,8 @@ export default class TitleColoredTable extends React.Component {
             var delta = window.innerWidth - HEADER_MIN_WIDTH - HEADER_LEFT_MARGIN - image_width;
 
             $("#TableHeader").width(HEADER_MIN_WIDTH + delta);
+
+            ResizeActions.resizeTableHeaderAction(HEADER_MIN_WIDTH + delta);
         }
     }
 
