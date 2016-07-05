@@ -2,6 +2,11 @@ import React from "react";
 
 var $ = require('jquery');
 
+const HEADER_MIN_WIDTH = 770;
+const HEADER_LEFT_MARGIN = 120;
+const BG_IMAGE_WIDTH = 989;
+const BG_IMAGE_HEIGHT = 904;
+
 export default class TitleColoredTable extends React.Component {
     static box_counter = 0;
 
@@ -29,6 +34,27 @@ export default class TitleColoredTable extends React.Component {
 
     set id(val) {
         this._id = val;
+    }
+
+
+    componentWillMount() {
+        $(window).on("resize", this.updateTableWidth.bind(this));
+    }
+
+    updateTableWidth() {
+        var image_width = window.innerHeight * BG_IMAGE_WIDTH / BG_IMAGE_HEIGHT;
+
+        console.log("updateTableWidth: happened! ", image_width, window.innerWidth - HEADER_MIN_WIDTH - HEADER_LEFT_MARGIN);
+
+        if ( image_width < window.innerWidth - HEADER_MIN_WIDTH - HEADER_LEFT_MARGIN) {
+            var delta = window.innerWidth - HEADER_MIN_WIDTH - HEADER_LEFT_MARGIN - image_width;
+
+            $("#TableHeader").width(HEADER_MIN_WIDTH + delta);
+        }
+    }
+
+    componentDidMount() {
+        this.updateTableWidth();
     }
 
     componentWillUpdate( nextProps, nextState ) {
@@ -69,7 +95,7 @@ export default class TitleColoredTable extends React.Component {
             next_bg_color = { backgroundColor: this.next_color };
         }
 
-        return <div className={this.props.className}>
+        return <div id="TableHeader" className={this.props.className}>
             <div id="TableBackgroundColor" style={next_bg_color}></div>
             <div id="TableForegroundColor" style={current_bg_color}></div>
             <table id={this._id} >
