@@ -85,7 +85,7 @@ export default class ImageRotator extends React.Component {
                 TweenLite.to($("#TitleBackgroundImage2"), 0.3, {left: HEADER_LEFT_MARGIN + this.table_width - image_width, ease: Power2.easeIn, onComplete: () => {
                     TweenLite.to($("#TitleBackgroundImage2"), 1, {left: HEADER_LEFT_MARGIN + this.table_width, ease: Power2.easeOut});
 
-                    TweenLite.to($("#TitleBackgroundImage3"), 1, {left: HEADER_LEFT_MARGIN + this.table_width + image_width, ease: Power2.easeOut, onComplete: () => {
+                    TweenLite.to($("#TitleBackgroundImage3"), 1, {left: HEADER_LEFT_MARGIN + this.table_width + image_width, ease: Power2.easeOut, delay: 0.1, onComplete: () => {
                         this.are_components_set = false;
 
                         this.setState({current_image: this.image_front});
@@ -95,7 +95,7 @@ export default class ImageRotator extends React.Component {
             else {
                 /* MOVING LEFT */
 
-                TweenLite.to($("#TitleBackgroundImage3"), 0.5, {left: HEADER_LEFT_MARGIN + this.table_width - image_width, ease: Power2.easeInOut });
+                TweenLite.to($("#TitleBackgroundImage3"), 0.5, {left: HEADER_LEFT_MARGIN + this.table_width - image_width, ease: Power2.easeInOut, delay: 0.1, });
                 TweenLite.to($("#TitleBackgroundImage4"), 0.5, {left: HEADER_LEFT_MARGIN + this.table_width, ease: Power2.easeInOut, onComplete: () => {
                     TweenLite.to($("#TitleBackgroundImage2"), 0.2, {left: -image_width, delay: 0.5, ease: Power2.easeOut});
 
