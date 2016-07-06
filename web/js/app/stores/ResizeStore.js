@@ -2,14 +2,16 @@ import EventEmmiter from 'events';
 import dispatcher from '../dispatcher';
 
 class ResizeStore extends EventEmmiter {
-
     constructor() {
+        super();
         this.current_action = null;
+        this.data = null;
     }
 
     handleActions(action) {
         this.current_action = action;
-        this.emit("resize");
+        this.data = action.params;
+        this.emit("RESIZE_TABLE_HEADER");
     }
 }
 

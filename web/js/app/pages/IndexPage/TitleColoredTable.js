@@ -40,7 +40,9 @@ export default class TitleColoredTable extends React.Component {
 
 
     componentWillMount() {
-        $(window).on("resize", this.updateTableWidth.bind(this));
+        $(window).resize(() => {
+            setTimeout(this.updateTableWidth.bind(this),10);
+        });
     }
 
     updateTableWidth() {
@@ -54,6 +56,13 @@ export default class TitleColoredTable extends React.Component {
             $("#TableHeader").width(HEADER_MIN_WIDTH + delta);
 
             ResizeActions.resizeTableHeaderAction(HEADER_MIN_WIDTH + delta);
+        }
+        else {
+            if ( $("#TableHeader").width() > HEADER_MIN_WIDTH ) {
+                $("#TableHeader").width(HEADER_MIN_WIDTH);
+
+                ResizeActions.resizeTableHeaderAction(HEADER_MIN_WIDTH);
+            }
         }
     }
 
