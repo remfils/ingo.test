@@ -44,12 +44,12 @@ export default class Description extends React.Component {
             console.log("DESCRIPTION RENDER: ", item);
             var text_html = {__html: item.text };
 
-            return <div class="info-block">
-                <div class="col-30p info-text" dangerouslySetInnerHTML={text_html} />
-                <div class="col-70p info-img">
+            return <tr class="info-block">
+                <td class="info-text" dangerouslySetInnerHTML={text_html} />
+                <td class="info-img">
                     <img src={ asset(item.image_url) } alt="Girl"/>
-                </div>
-            </div>
+                </td>
+            </tr>
         });
 
         return (
@@ -66,9 +66,9 @@ export default class Description extends React.Component {
                 </section>
 
                 <section className="default-side-padding more-info">
-
-                    { comments }
-
+                    <table className="movie-comments">
+                        { comments }
+                    </table>
                 </section>
             </div>
         );
