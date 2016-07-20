@@ -358,9 +358,11 @@ a.arrow:hover {
 
 .btn-mehr {
     background-color: #080808;
+    border: 1px solid white;
     color: white;
-    padding: 5px;margin-top: 50px;
-    border: solid 3px gray;
+    font-size: 21px;
+    margin-top: 50px;
+    padding: 15px 24px;
 }
 
 /* */
@@ -388,6 +390,7 @@ a.arrow:hover {
 
 .project-desctription-text {
     font-family: MyriadPro-Regular_2;
+    line-height: 1.5em;
 }
 
 /* more info */

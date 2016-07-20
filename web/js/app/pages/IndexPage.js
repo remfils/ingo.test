@@ -228,7 +228,7 @@ export default class IndexPage extends React.Component {
         var large_name = content.getLargeName();
         var small_name = content.getSmallName();
 
-        var description_text = content.getDescription();
+        var description_text = content.getShortDescription();
 
         return (
             <section id='IndexPage' class='title-container'>
@@ -320,6 +320,16 @@ class IndexContent {
                 break;
             default:
                 return this.color;
+        }
+    }
+
+    getShortDescription() {
+        switch(this.content_type) {
+            case "movie":
+                return this.model.short_description;
+                break;
+            default:
+                return this.short_description;
         }
     }
 

@@ -13,6 +13,7 @@ export default class MovieModel {
         this.logo_short = asset(movie_data.logo_short);
         this.color = movie_data.color;
         this.genre = movie_data.genre;
+        this.short_description = movie_data.short_description;
         this.description = movie_data.description;
 
         this.project_info_table = null;
@@ -27,6 +28,7 @@ export default class MovieModel {
             success: (data) => {
                 this.project_info_table = data.table;
                 this.preview_url = data.preview_url;
+                this.short_description = data.short_description;
                 this.description = data.description;
                 this.comments = data.comments;
 

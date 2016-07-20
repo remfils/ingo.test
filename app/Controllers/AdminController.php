@@ -186,6 +186,7 @@ class AdminController
         $q->bindValue(':id', $id);
         $q->execute();
         $movie = $q->fetchAll(\PDO::FETCH_CLASS, 'App\\Models\\Project')[0];
+        $movie->short_description = str_replace('<br/>', "\n", $movie->short_description);
         $movie->description = str_replace('<br/>', "\n", $movie->description);
 
         $movie->loadProjectData($app);

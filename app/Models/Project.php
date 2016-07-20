@@ -15,6 +15,7 @@ class Project
 
     public $preview_url;
     public $description;
+    public $short_description;
 
     public $fields;
 
@@ -29,7 +30,8 @@ class Project
         $this->year = $data['year'];
 
         $this->preview_url = $data['preview_url'];
-        $this->description = str_replace("\n", '<br/>', trim($data['description']));;
+        $this->short_description = str_replace("\n", '<br/>', trim($data['short_description']));
+        $this->description = str_replace("\n", '<br/>', trim($data['description']));
 
         if ( $this->isImageUploaded('logo') ) {
             $this->is_logo_uploaded = true;
@@ -156,14 +158,15 @@ class Project
     public function saveDescription ( Application $app, $is_new = false )
     {
         if ( $is_new ) {
-            $q = $app['db']->prepare('INSERT INTO project_description (preview_url, description, movie_id) VALUES (:preview_url, :description, :id)');
+            $q = $app['db']->prepare('INSERT INTO project_description (preview_url, description, movie_id, short_description) VALUES (:preview_url, :description, :short_description, :id)');
 
         }
         else {
-            $q = $app['db']->prepare('UPDATE project_description set preview_url=:preview_url, description=:description where movie_id=:id');
+            $q = $app['db']->prepare('UPDATE project_description set preview_url=:preview_url, description=:description, short_description=:short_description where movie_id=:id');
         }
         $q->bindValue(':preview_url', $this->preview_url);
         $q->bindValue(':description', $this->description);
+        $q->bindValue(':short_description', $this->short_description);
         $q->bindValue(':id', $this->id);
         $q->execute();
     }
