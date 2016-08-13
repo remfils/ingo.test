@@ -25,7 +25,7 @@ class ApiController
     public function allMoviesAction( Request $req, Application $app ) {
         $lang = $app['session']->get('lang');
 
-        $q = $app['db']->prepare('select p.id, p.color , p.logo , p.logo_short, p.year ,p.preview_url  , pl.name, pl.genre, pl.description from projects as p join project_lang as pl on p.id = pl.project_id join lang as lng on pl.lang_id = lng.id where p.active = true AND  lng.name =:language');
+        $q = $app['db']->prepare('select p.id, p.color , p.logo , p.logo_short, p.preview_url, p.year ,p.preview_url  , pl.name, pl.genre, pl.description from projects as p join project_lang as pl on p.id = pl.project_id join lang as lng on pl.lang_id = lng.id where p.active = true AND  lng.name =:language');
         $q->bindValue(':language', $lang);
         $q->execute();
         $result = $q->fetchAll();

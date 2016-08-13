@@ -16,7 +16,7 @@ export default class MovieModel {
         this.description = movie_data.description;
 
         this.project_info_table = null;
-        this.preview_url = null;
+        this.preview_url = movie_data.preview_url;
         this.comments = null;
     }
 
