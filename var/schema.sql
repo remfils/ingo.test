@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.15.5
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- Хост: 127.0.0.1:3306
--- Время создания: Июн 06 2016 г., 15:56
--- Версия сервера: 5.5.48
--- Версия PHP: 5.4.45
+-- Хост: 127.0.0.1
+-- Время создания: Июн 27 2016 г., 14:08
+-- Версия сервера: 10.1.13-MariaDB
+-- Версия PHP: 5.6.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,108 +23,127 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `lang`
+--
+
+CREATE TABLE `lang` (
+  `id` int(11) NOT NULL,
+  `name` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Дамп данных таблицы `lang`
+--
+
+INSERT INTO `lang` (`id`, `name`) VALUES
+(1, 'de'),
+(2, 'en');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `projects`
 --
 
-CREATE TABLE IF NOT EXISTS `projects` (
+CREATE TABLE `projects` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `genre` tinytext NOT NULL,
-  `color` varchar(255) NOT NULL,
-  `year` int(11) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `color` varchar(20) NOT NULL,
   `logo` varchar(255) NOT NULL,
-  `movie_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
+  `year` int(11) NOT NULL,
+  `preview_url` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `projects`
 --
 
-INSERT INTO `projects` (`id`, `name`, `genre`, `color`, `year`, `logo`, `movie_id`) VALUES
-(1, 'Insupad', 'Imagefilm', '#B5D6B6', 2001, 'img/movies/InsuPad-6.png', 1),
-(2, 'Renault Twizzy', 'Werbung', '#D3EEDA', 2012, 'img/movies/Frame_Renault-5.png', 2),
-(7, 'Bürstner Elegance', 'Imagefilm', '#CCE1EE', 0, 'img/movies/Frame_Poldi-4.png', NULL);
+INSERT INTO `projects` (`id`, `active`, `color`, `logo`, `year`, `preview_url`) VALUES
+(1, 1, '#B5D6B6', 'img/movies/InsuPad-6.png', 2001, 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(2, 1, '#D3EEDA', 'img/movies/Frame_Renault-5.png\r\n', 2012, 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(3, 0, '#CCE1EE', 'img/movies/Frame_Poldi-4.png\r\n', 1928, 'https://player.vimeo.com/video/67123140?color=ffffff');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `project_comments`
+-- Структура таблицы `project_comment_lang`
 --
 
-CREATE TABLE IF NOT EXISTS `project_comments` (
+CREATE TABLE `project_comment_lang` (
   `id` int(11) NOT NULL,
-  `movie_id` int(11) NOT NULL,
-  `image_url` varchar(255) NOT NULL,
-  `text` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  `project_id` int(11) NOT NULL,
+  `lang_id` int(11) NOT NULL,
+  `text` text NOT NULL,
+  `image_url` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Дамп данных таблицы `project_comments`
+-- Дамп данных таблицы `project_comment_lang`
 --
 
-INSERT INTO `project_comments` (`id`, `movie_id`, `image_url`, `text`) VALUES
-(1, 1, 'img/movies/comments/5_comment.png', '„Braun Olympia“ 2012\r<br/>\r<br/>Making of photo´s\r<br/>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.\r<br/>\r<br/>Making of photo´s\r<br/>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.'),
-(2, 1, 'img/movies/comments/5_comment.png', '„Braun Olympia“ 2012\r<br/>\r<br/>Making of photo´s\r<br/>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.'),
-(3, 7, 'img/movies/comments/Ebene_136.png', 'adsf'),
-(4, 2, 'img/movies/comments/Ebene_136.png', '');
+INSERT INTO `project_comment_lang` (`id`, `project_id`, `lang_id`, `text`, `image_url`) VALUES
+(1, 1, 1, '(de)„Braun Olympia“ 2012\r\n<br/>\r\n<br/>Making of photo´s\r\n<br/>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.\r\n<br/>\r\n<br/>Making of photo´s\r\n<br/>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.', 'img/movies/comments/5_comment.png\r\n'),
+(2, 1, 2, '(en)„Braun Olympia“ 2012\r\n<br/>\r\n<br/>Making of photo´s\r\n<br/>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.\r\n<br/>\r\n<br/>Making of photo´s\r\n<br/>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.', 'img/movies/comments/5_comment.png'),
+(3, 1, 1, 'de', 'img/movies/comments/5_comment.png'),
+(4, 1, 2, 'en', 'img/movies/comments/5_comment.png'),
+(5, 1, 1, 'de dede dede dede dede dede dede dede de', 'img/movies/comments/Ebene_136.png'),
+(6, 2, 2, 'en enen enen enen enen enen enen enen enen enen en', 'img/movies/comments/Ebene_136.png'),
+(7, 3, 1, '', 'img/movies/comments/Ebene_136.png'),
+(8, 3, 2, '', 'img/movies/comments/Ebene_136.png');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `project_description`
+-- Структура таблицы `project_field_lang`
 --
 
-CREATE TABLE IF NOT EXISTS `project_description` (
+CREATE TABLE `project_field_lang` (
   `id` int(11) NOT NULL,
-  `preview_url` varchar(255) DEFAULT NULL,
-  `description` text,
-  `movie_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
+  `project_id` int(11) NOT NULL,
+  `lang_id` int(11) NOT NULL,
+  `field_name` varchar(255) NOT NULL,
+  `field_value` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Дамп данных таблицы `project_description`
+-- Дамп данных таблицы `project_field_lang`
 --
 
-INSERT INTO `project_description` (`id`, `preview_url`, `description`, `movie_id`) VALUES
-(1, 'https://player.vimeo.com/video/67123140?color=ffffff', 'Wieder ein gemeinsames Projekt mit dem langjahrigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts fur das Fachpublikum zu ubernehmen. In diesem Rahmen haben wir dieses Video produziert. Hier kommen sowohl Patienten als auch Arzte zu Wort.', 1),
-(2, 'https://player.vimeo.com/video/67123140?color=ffffff', 'Wieder ein gemeinsames Projekt mit dem langjahrigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts fur das Fachpublikum zu ubernehmen. In diesem Rahmen haben wir dieses Video produziert. Hier kommen sowohl Patienten als auch Arzte zu Wort.', 2),
-(3, '', 'asdf', 7);
+INSERT INTO `project_field_lang` (`id`, `project_id`, `lang_id`, `field_name`, `field_value`) VALUES
+(1, 1, 1, 'field de', 'value de'),
+(2, 1, 2, 'field en', 'value en'),
+(3, 2, 1, 'field de', 'value de'),
+(4, 2, 2, 'field en', 'value en'),
+(5, 3, 1, 'field de', 'value de'),
+(6, 3, 2, 'field en', 'value en'),
+(7, 1, 1, 'field de', 'value en'),
+(8, 1, 2, 'field en', 'value en');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `project_fields`
+-- Структура таблицы `project_lang`
 --
 
-CREATE TABLE IF NOT EXISTS `project_fields` (
-  `id` int(11) NOT NULL,
-  `movie_id` int(11) DEFAULT NULL,
-  `field_name` varchar(255) DEFAULT NULL,
-  `field_value` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=2730;
+CREATE TABLE `project_lang` (
+  `project_id` int(11) NOT NULL,
+  `lang_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `genre` varchar(255) NOT NULL,
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Дамп данных таблицы `project_fields`
+-- Дамп данных таблицы `project_lang`
 --
 
-INSERT INTO `project_fields` (`id`, `movie_id`, `field_name`, `field_value`) VALUES
-(1, 1, 'Kamera', 'tsitrone medien GmbH & Co. KG'),
-(2, 1, 'Kamera', 'Ingo Scheel 2'),
-(8, 3, 'Camera', 'username'),
-(9, 3, 'Field', 'username'),
-(10, 4, '1', '1'),
-(11, 4, '1', '1'),
-(12, 4, '1', '1'),
-(13, 5, 'Actor', 'username'),
-(14, 5, 'Camera', 'username'),
-(15, 5, 'Name', 'username'),
-(16, 6, 'Agentur', 'This'),
-(17, 6, 'Kamera', 'Name'),
-(18, 6, 'Schnitt', 'teset'),
-(22, 7, 'Agentur', 'asdf'),
-(23, 7, 'Kamera', 'asdf'),
-(24, 7, 'Schnitt', 'asdf'),
-(25, 2, 'field', 'name');
+INSERT INTO `project_lang` (`project_id`, `lang_id`, `name`, `genre`, `description`) VALUES
+(1, 1, 'Insupad', 'Imagefilm', 'Wieder ein gemeinsames Projekt mit dem langjahrigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts fur das Fachpublikum zu ubernehmen. In diesem Rahmen haben wir dieses Video produziert. Hier kommen sowohl Patienten als auch Arzte zu Wort.'),
+(1, 2, 'Insupad(eng)', 'Imagefilm', '\r\nAnother joint project with the long-standing partner tsitrone advertising agency . Oliver Horst , owner of tsitrone media GmbH and Co. KG , had been given the task to take over the complete development of the corporate design and production of the product for the professional audience . In this context, we have produced this video. Here both patients and doctors to speak.'),
+(2, 1, 'Renault Twizzy', 'Werbun', 'Wieder ein gemeinsames Projekt mit dem langjahrigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts fur das Fachpublikum zu ubernehmen. In diesem Rahmen haben wir dieses Video produziert. Hier kommen sowohl Patienten als auch Arzte zu Wort.'),
+(2, 2, 'Renault Twizy(eng)', '\r\nadverti', 'Another joint project with the long-standing partner tsitrone advertising agency . Oliver Horst , owner of tsitrone media GmbH and Co. KG , had been given the task to take over the complete development of the corporate design and production of the product for the professional audience . In this context, we have produced this video. Here both patients and doctors to speak.'),
+(3, 1, 'Bürstner Elegance', 'Imagefilm', 'Description (de)'),
+(3, 2, 'Burstner elegance', 'Imagefilm', 'Description (en)');
 
 -- --------------------------------------------------------
 
@@ -132,24 +151,23 @@ INSERT INTO `project_fields` (`id`, `movie_id`, `field_name`, `field_value`) VAL
 -- Структура таблицы `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` mediumint(9) NOT NULL,
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
   `login` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 AVG_ROW_LENGTH=8192;
-
---
--- Дамп данных таблицы `users`
---
-
-INSERT INTO `users` (`id`, `login`, `password`, `role`) VALUES
-(1, 'user', 'user', 'ROLE_USER'),
-(2, 'test', 'nhDr7OyKlXQju+Ge/WKGrPQ9lPBSUFfpK+B1xqx/+8zLZqRNX0+5G1zBQklXUFy86lCpkAofsExlXiorUcKSNQ==', 'ROLE_USER');
+  `role` varchar(255) NOT NULL,
+  `active` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `lang`
+--
+ALTER TABLE `lang`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `projects`
@@ -158,22 +176,27 @@ ALTER TABLE `projects`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `project_comments`
+-- Индексы таблицы `project_comment_lang`
 --
-ALTER TABLE `project_comments`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `project_comment_lang`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `projectid` (`project_id`,`lang_id`),
+  ADD KEY `languageid` (`lang_id`);
 
 --
--- Индексы таблицы `project_description`
+-- Индексы таблицы `project_field_lang`
 --
-ALTER TABLE `project_description`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `project_field_lang`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `projectId` (`project_id`,`lang_id`),
+  ADD KEY `languageId` (`lang_id`);
 
 --
--- Индексы таблицы `project_fields`
+-- Индексы таблицы `project_lang`
 --
-ALTER TABLE `project_fields`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `project_lang`
+  ADD KEY `projectId` (`project_id`,`lang_id`),
+  ADD KEY `langId` (`lang_id`);
 
 --
 -- Индексы таблицы `users`
@@ -186,30 +209,55 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `lang`
+--
+ALTER TABLE `lang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT для таблицы `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT для таблицы `project_comments`
+-- AUTO_INCREMENT для таблицы `project_comment_lang`
 --
-ALTER TABLE `project_comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+ALTER TABLE `project_comment_lang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
--- AUTO_INCREMENT для таблицы `project_description`
+-- AUTO_INCREMENT для таблицы `project_field_lang`
 --
-ALTER TABLE `project_description`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT для таблицы `project_fields`
---
-ALTER TABLE `project_fields`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
+ALTER TABLE `project_field_lang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `project_comment_lang`
+--
+ALTER TABLE `project_comment_lang`
+  ADD CONSTRAINT `project_comment_lang_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`),
+  ADD CONSTRAINT `project_comment_lang_ibfk_2` FOREIGN KEY (`lang_id`) REFERENCES `lang` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `project_field_lang`
+--
+ALTER TABLE `project_field_lang`
+  ADD CONSTRAINT `project_field_lang_ibfk_2` FOREIGN KEY (`lang_id`) REFERENCES `lang` (`id`),
+  ADD CONSTRAINT `project_field_lang_ibfk_3` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `project_lang`
+--
+ALTER TABLE `project_lang`
+  ADD CONSTRAINT `project_lang_ibfk_1` FOREIGN KEY (`lang_id`) REFERENCES `lang` (`id`),
+  ADD CONSTRAINT `project_lang_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
