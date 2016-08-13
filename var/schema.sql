@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.4.15.5
 -- http://www.phpmyadmin.net
 --
--- Хост: 127.0.0.1
--- Время создания: Июн 27 2016 г., 14:08
--- Версия сервера: 10.1.13-MariaDB
--- Версия PHP: 5.6.21
+-- Хост: 127.0.0.1:3306
+-- Время создания: Авг 13 2016 г., 13:44
+-- Версия сервера: 5.5.48
+-- Версия PHP: 5.4.45
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -26,10 +26,10 @@ SET time_zone = "+00:00";
 -- Структура таблицы `lang`
 --
 
-CREATE TABLE `lang` (
+CREATE TABLE IF NOT EXISTS `lang` (
   `id` int(11) NOT NULL,
   `name` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `lang`
@@ -45,23 +45,24 @@ INSERT INTO `lang` (`id`, `name`) VALUES
 -- Структура таблицы `projects`
 --
 
-CREATE TABLE `projects` (
+CREATE TABLE IF NOT EXISTS `projects` (
   `id` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `color` varchar(20) NOT NULL,
   `logo` varchar(255) NOT NULL,
+  `logo_short` varchar(255) NOT NULL,
   `year` int(11) NOT NULL,
   `preview_url` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `projects`
 --
 
-INSERT INTO `projects` (`id`, `active`, `color`, `logo`, `year`, `preview_url`) VALUES
-(1, 1, '#B5D6B6', 'img/movies/InsuPad-6.png', 2001, 'https://player.vimeo.com/video/67123140?color=ffffff'),
-(2, 1, '#D3EEDA', 'img/movies/Frame_Renault-5.png\r\n', 2012, 'https://player.vimeo.com/video/67123140?color=ffffff'),
-(3, 0, '#CCE1EE', 'img/movies/Frame_Poldi-4.png\r\n', 1928, 'https://player.vimeo.com/video/67123140?color=ffffff');
+INSERT INTO `projects` (`id`, `active`, `color`, `logo`, `logo_short`, `year`, `preview_url`) VALUES
+(1, 1, '#B5D6B6', 'img/movies/InsuPad-6.png', '', 2001, 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(2, 1, '#D3EEDA', 'img/movies/Frame_Renault-5.png\r\n', '', 2012, 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(3, 0, '#CCE1EE', 'img/movies/Frame_Poldi-4.png\r\n', '', 1928, 'https://player.vimeo.com/video/67123140?color=ffffff');
 
 -- --------------------------------------------------------
 
@@ -69,13 +70,13 @@ INSERT INTO `projects` (`id`, `active`, `color`, `logo`, `year`, `preview_url`) 
 -- Структура таблицы `project_comment_lang`
 --
 
-CREATE TABLE `project_comment_lang` (
+CREATE TABLE IF NOT EXISTS `project_comment_lang` (
   `id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   `lang_id` int(11) NOT NULL,
   `text` text NOT NULL,
   `image_url` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `project_comment_lang`
@@ -97,13 +98,13 @@ INSERT INTO `project_comment_lang` (`id`, `project_id`, `lang_id`, `text`, `imag
 -- Структура таблицы `project_field_lang`
 --
 
-CREATE TABLE `project_field_lang` (
+CREATE TABLE IF NOT EXISTS `project_field_lang` (
   `id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   `lang_id` int(11) NOT NULL,
   `field_name` varchar(255) NOT NULL,
   `field_value` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `project_field_lang`
@@ -125,7 +126,7 @@ INSERT INTO `project_field_lang` (`id`, `project_id`, `lang_id`, `field_name`, `
 -- Структура таблицы `project_lang`
 --
 
-CREATE TABLE `project_lang` (
+CREATE TABLE IF NOT EXISTS `project_lang` (
   `project_id` int(11) NOT NULL,
   `lang_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -151,7 +152,7 @@ INSERT INTO `project_lang` (`project_id`, `lang_id`, `name`, `genre`, `descripti
 -- Структура таблицы `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL,
   `login` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -212,22 +213,22 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `lang`
 --
 ALTER TABLE `lang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT для таблицы `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT для таблицы `project_comment_lang`
 --
 ALTER TABLE `project_comment_lang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT для таблицы `project_field_lang`
 --
 ALTER TABLE `project_field_lang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
