@@ -4,9 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8b4c00a5d8a2852e314d4d6b4ec5cd66",
-    "content-hash": "605b5efbbf436070837b05aaca8f9bbb",
+    "hash": "c95a57b7c12b8c8f4a8f7d601129cf93",
+    "content-hash": "688ccc81e7b294d9dfc1f005727c0b13",
     "packages": [
+        {
+            "name": "arseniew/silex-idiorm-provider",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/arseniew/silex-idiorm-provider.git",
+                "reference": "5f6951b3675b018c3f5dc38f809d69b06d947161"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arseniew/silex-idiorm-provider/zipball/5f6951b3675b018c3f5dc38f809d69b06d947161",
+                "reference": "5f6951b3675b018c3f5dc38f809d69b06d947161",
+                "shasum": ""
+            },
+            "require": {
+                "j4mie/idiorm": "1.4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Arseniew\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marcin Batkowski",
+                    "email": "arseniew@gmail.com"
+                }
+            ],
+            "description": "Silex service provider for Idiorm",
+            "homepage": "http://github.com/arseniew/silex-idiorm-provider",
+            "keywords": [
+                "idiorm",
+                "service provider",
+                "silex"
+            ],
+            "time": "2014-09-19 21:02:34"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.7",
@@ -517,6 +559,64 @@
                 "password"
             ],
             "time": "2014-11-20 16:49:30"
+        },
+        {
+            "name": "j4mie/idiorm",
+            "version": "v1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/j4mie/idiorm.git",
+                "reference": "11e964157a6a2c6128a0546673ad5e99ac1a62cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/j4mie/idiorm/zipball/11e964157a6a2c6128a0546673ad5e99ac1a62cd",
+                "reference": "11e964157a6a2c6128a0546673ad5e99ac1a62cd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "idiorm.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause",
+                "BSD-3-Clause",
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Holywell",
+                    "email": "treffynnon@php.net",
+                    "homepage": "http://simonholywell.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Jamie Matthews",
+                    "email": "jamie.matthews@gmail.com",
+                    "homepage": "http://j4mie.org",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Durham Hale",
+                    "email": "me@durhamhale.com",
+                    "homepage": "http://durhamhale.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A lightweight nearly-zero-configuration object-relational mapper and fluent query builder for PHP5",
+            "homepage": "http://j4mie.github.com/idiormandparis",
+            "keywords": [
+                "idiorm",
+                "orm",
+                "query builder"
+            ],
+            "time": "2013-12-12 10:25:27"
         },
         {
             "name": "paragonie/random_compat",

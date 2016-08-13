@@ -31,6 +31,14 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
+$app->register(new Arseniew\Silex\Provider\IdiormServiceProvider(), array(
+    'idiorm.db.options' => array(
+        'connection_string' => 'mysql:host=localhost;dbname=' . $db_name,
+        'username' => $db_user,
+        'password' => $db_pass
+    )
+));
+
 /* SECURITY */
 
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(

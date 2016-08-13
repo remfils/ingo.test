@@ -25,38 +25,92 @@ class ApiController
     public function allMoviesAction( Request $req, Application $app ) {
         $lang = $app['session']->get('lang');
 
-        $q = $app['db']->prepare('select p.id, p.color , p.logo , p.logo_short, p.preview_url, p.year ,p.preview_url  , pl.name, pl.genre, pl.description from projects as p join project_lang as pl on p.id = pl.project_id join lang as lng on pl.lang_id = lng.id where p.active = true AND  lng.name =:language');
-        $q->bindValue(':language', $lang);
-        $q->execute();
-        $result = $q->fetchAll();
+        $result = $app['idiorm.db']
+            ->for_table('projects')
+            ->table_alias('p')
+            ->select_many(
+                'p.id',
+                'p.color',
+                'p.logo',
+                'p.logo_short',
+                'p.preview_url',
+                'pl.name',
+                'pl.genre',
+                'pl.description'
+            )
+            ->join('project_lang', array('p.id', '=', 'pl.project_id'), 'pl')
+            ->join('lang', array('pl.lang_id', '=', 'lang.id'), 'lang')
+            ->where('p.active', true)
+            ->where('lang.name', $lang)
+            ->find_array();
 
         return json_encode($result);
     }
 
     public function movieDescriptionAction( Request $req, Application $app ) {
+        $lang_id = $app['idiorm.db']
+            ->for_table('lang')
+            ->select('id')
+            ->where('name', $app['session']->get('lang'))
+            ->find_one()['id'];
+
         $id = $req->attributes->get('id');
 
-        $q = $app['db']->prepare('select * from project_description pd where pd.movie_id = :movie_id');
+        $result = $app['idiorm.db']
+            ->for_table('projects')
+            ->table_alias('p')
+            ->select_many(
+                'p.id',
+                'p.color',
+                'p.logo',
+                'p.logo_short',
+                'p.preview_url',
+                'pl.name',
+                'pl.genre',
+                'pl.description'
+            )
+            ->join('project_lang', array('p.id', '=', 'pl.project_id'), 'pl')
+            ->where('p.id', $id)
+            ->where('p.active', true)
+            ->where('pl.lang_id', $lang_id)
+            ->find_one()
+            ->as_array();
+
+        /*$q = $app['db']->prepare('select * from project_description pd where pd.movie_id = :movie_id');
         $q->bindValue(':movie_id', $id);
         $q->execute();
 
-        $dsc = $q->fetch();
+        $dsc = $q->fetch();*/
 
-        $q = $app['db']->prepare('select * from project_fields pf where pf.movie_id = :movie_id');
+        $result['table'] = $app['idiorm.db']
+            ->for_table('project_field_lang')
+            ->where('project_id', $id)
+            ->where('lang_id', $lang_id)
+            ->find_one()
+            ->as_array();
+
+        /*$q = $app['db']->prepare('select * from project_fields pf where pf.movie_id = :movie_id');
         $q->bindValue(':movie_id', $id);
         $q->execute();
 
         $fields = $q->fetchAll();
 
-        $dsc['table'] = $fields;
+        $dsc['table'] = $fields;*/
 
-        $q = $app['db']->prepare('select * from project_comments pc where pc.movie_id = :movie_id');
+        $result['comments'] = $app['idiorm.db']
+            ->for_table('project_comment_lang')
+            ->where('project_id', $id)
+            ->where('lang_id', $lang_id)
+            ->find_one()
+            ->as_array();
+
+        /*$q = $app['db']->prepare('select * from project_comments pc where pc.movie_id = :movie_id');
         $q->bindValue(':movie_id', $id);
         $q->execute();
         $comments = $q->fetchAll();
 
-        $dsc['comments'] = $comments;
+        $dsc['comments'] = $comments;*/
 
-        return json_encode($dsc);
+        return json_encode($result);
     }
 }
