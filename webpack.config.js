@@ -1,6 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var WebpackNotifierPlugin = require('webpack-notifier');
+
 module.exports = {
     entry: {
         main: './web/js/app/main.js',
@@ -23,5 +25,8 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    plugins: [
+        new WebpackNotifierPlugin(),
+    ]
 };
