@@ -52,11 +52,7 @@ export default class MoviePage extends React.Component {
     }
 
     enterFromIndexPage() {
-        TweenLite.from($(".movie-title-section"), 1, {y: "+=100%", onComplete: () => {
-            $("#MoviePage .current-image").css("display", "block");
-        }});
-
-        $("#MoviePage .current-image").css("display", "none");
+        TweenLite.from($("#MoviePage"), 1, {y: "+=100%"});
     }
 
     componentWillMount() {
@@ -366,11 +362,17 @@ export default class MoviePage extends React.Component {
                     </div>
 
                     <div class="default-side-padding movie-title-section">
-                        <h1 class="project-title">{ movie_name }<span class="project-year"> { movie_year }</span></h1>
-                        <div class="movies-nav">
-                            <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
-                            <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
-                        </div>
+                        <table class="movie-navigation">
+                            <tr>
+                                <td><h1 class="project-title">{ movie_name }<span class="project-year"> { movie_year }</span></h1></td>
+                                <td class="cell-movies-nav">
+                                    <div class="movies-nav">
+                                        <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
+                                        <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </section>
 
