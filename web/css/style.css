@@ -1,8 +1,39 @@
-html, body, main, #App {
-    height: 100%;
+* {
+
+}
+
+@font-face {
+    font-family: HelveticaLTStd-Cond;
+    src: url(../fonts/HelveticaLTStd-Cond.otf);
+}
+
+@font-face {
+    font-family: MyriadPro-Cond_3;
+    src: url(../fonts/MyriadPro-Cond.otf);
+}
+
+@font-face {
+    font-family: MyriadPro-BoldCond_1;
+    src: url(../fonts/MyriadPro-BoldCond.otf);
+}
+
+@font-face {
+    font-family: MyriadPro-Regular_2;
+    src: url(../fonts/MyriadPro-Regular.otf);
+}
+
+@font-face {
+    font-family: pt-zerif_4;
+    src: url(../fonts/pt-zerif/PTZ55F.ttf);
+}
+
+html, body, main {
     width: 100%;
-    padding: 0;
+    height: 100%;
+    color: white;
     margin: 0;
+    padding: 0;
+    font-family: MyriadPro-Cond_3;
 }
 
 main {
@@ -152,27 +183,22 @@ a, a:hover, a:focus, a:visited, a:active {
 
 /* MOVIE PROJECT PAGE */
 
-* {
-    font-family: HelveticaLTStd-Cond;
-}
-
-@font-face {
-    font-family: HelveticaLTStd-Cond;
-    src: url(../fonts/HelveticaLTStd-Cond.otf);
-}
-
-head, body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
 /* PROJECT section: header */
 
+
+.movie-navigation,
 .project-title-section {
     width: 100%;
     height: 100%;
+}
+
+.movie-navigation td {
+    vertical-align: middle;
+}
+
+.movie-navigation .cell-movies-nav {
+    text-align: right;
+    width: 100%;
 }
 
 .project-main-image {
@@ -205,6 +231,16 @@ head, body {
 
 #cover2 {
     z-index: 3;
+}
+
+.left {
+    left: 0 !important;
+    right: auto !important;
+}
+
+.right {
+    right: 0 !important;
+    left: auto !important;
 }
 
 .movie-curtain.left {
@@ -243,16 +279,13 @@ head, body {
 }
 
 .movie-title-section {
-    display: flex;
-    -ms-align-items: center;
-    align-items: center;
+    background-color: rgba(255,255,255,0);
     height: 30%;
     position: relative;
-
-    background-color: rgba(255,255,255,0);
 }
 
 .project-title-section h1 {
+    font-family: pt-zerif_4;
     font-size: 36pt;
     margin: 0;
     font-weight: normal;
@@ -332,9 +365,11 @@ a.arrow:hover {
 
 .btn-mehr {
     background-color: #080808;
+    border: 1px solid white;
     color: white;
-    padding: 5px;margin-top: 50px;
-    border: solid 3px gray;
+    font-size: 21px;
+    margin-top: 50px;
+    padding: 15px 24px;
 }
 
 /* */
@@ -360,6 +395,11 @@ a.arrow:hover {
     padding-bottom: 12%;
 }
 
+.project-desctription-text {
+    font-family: MyriadPro-Regular_2;
+    line-height: 1.5em;
+}
+
 /* more info */
 .info-block {
     display: -webkit-flex;
@@ -373,11 +413,14 @@ a.arrow:hover {
 
 .info-text {
     font-size: 1.5em;
+    padding-right: 160px;
+    width: 20%;
 }
 .info-text p {
     padding-right: 20%;
 }
 
+.info-img,
 .info-img img {
     width: 100%;
 }
@@ -390,15 +433,6 @@ a.arrow:hover {
 }
 
 /* NEW INDEX */
-
-html,
-body {
-    height: 100%;
-    width: 100%;
-    color: white;
-    margin: 0;
-    padding: 0;
-}
 
 a,
 a:hover,
@@ -415,8 +449,7 @@ a:active {
     position: relative;
 }
 
-.title-project-dsc,
-.background-image {
+.title-project-dsc {
     position: absolute;
     left: 0;
     top: 0;
@@ -425,8 +458,10 @@ a:active {
 /* navigation */
 
 .title-navigation {
+    text-align: center;
     font-size: 24px;
-    padding-left: 100px;
+    vertical-align: top;
+    padding-top: 35px;
 }
 
 .title-navigation ul {
@@ -443,17 +478,37 @@ a:active {
 }
 
 .title-project-dsc {
-    width: 40%;
-    background-color: #cce1ee;
+    width: 770px;
     height: 100%;
     left: 120px;
-    padding: 3em 10px 3em 100px;
 }
 
 .title-content {
     height: 100%;
     vertical-align: bottom;
     padding-bottom: 5em;
+    padding-left: 100px;
+}
+
+/* INDEX PAGE: TitleColoredTable */
+
+#TableBackgroundColor,
+#TableForegroundColor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#TableBackgroundColor {  z-index: 1; }
+#TableForegroundColor {  z-index: 2; }
+.title-project-dsc table {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
 }
 
 /* movie title */
@@ -476,10 +531,12 @@ a:active {
     position: absolute;
     left: 320px;
     bottom: 50%;
+    z-index: 10;
 }
 
-.movie-title {
+.movie-title span, .movie-genre {
     font-size: 100px;
+    font-family: pt-zerif_4;
 }
 
 .movie-title:after {
@@ -500,13 +557,16 @@ a:active {
 .title-footer {
     font-size: 16px;
     color: #3c3c3b;
+    text-align: center;
+    vertical-align: bottom;
+    padding-bottom: 35px;
 }
 
 /* images */
 .background-image {
     height: 100%;
-    width: 100%;
-    background-size: cover;
+    width: auto;
+    position: absolute;
 }
 
 .scroll-message {
@@ -516,17 +576,30 @@ a:active {
 }
 
 /* ImageRotator */
+
+.image-rotator {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+}
+/*
 .img-back {
     right: 80%;
     left: auto;
 }
 
 .img-front {
-    left: 20%;
+    left: 870px;
     right: auto;
 }
 
 .img-next {
-    left: 120%;
+    left: 100%;
     right: auto;
 }
+
+.img-last {
+    right: 180%;
+    left: auto;
+}*/
