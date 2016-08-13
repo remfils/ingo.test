@@ -5,6 +5,6 @@ var config = {
 
 console.log(config.SITE_NAME);
 
-config['ASSET_PATH'] = config.SITE_NAME;
+config['ASSET_PATH'] = config.SITE_NAME + "web/";
 
 export default config;

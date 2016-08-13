@@ -59,10 +59,20 @@ CREATE TABLE IF NOT EXISTS `projects` (
 -- Дамп данных таблицы `projects`
 --
 
-INSERT INTO `projects` (`id`, `active`, `color`, `logo`, `logo_short`, `year`, `preview_url`) VALUES
-(1, 1, '#B5D6B6', 'img/movies/InsuPad-6.png', '', 2001, 'https://player.vimeo.com/video/67123140?color=ffffff'),
-(2, 1, '#D3EEDA', 'img/movies/Frame_Renault-5.png\r\n', '', 2012, 'https://player.vimeo.com/video/67123140?color=ffffff'),
-(3, 0, '#CCE1EE', 'img/movies/Frame_Poldi-4.png\r\n', '', 1928, 'https://player.vimeo.com/video/67123140?color=ffffff');
+INSERT INTO `projects` (`id`, `active`, `color`, `year`, `logo`, `logo_short`, `preview_url`) VALUES
+(1, 1, '#CCE1EE', 2001, 'img/movies/1_Ebene-181.jpg', 'img/movies/images_small/1_ebene_small_181.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(2, 1, '#D7E3FF', 2001, 'img/movies/2_Ebene-156.jpg', 'img/movies/images_small/2_ebene_small_156.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(3, 1, '#B5D6B6', 2001, 'img/movies/3_Ebene-158.jpg', 'img/movies/images_small/3_ebene_small_158.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(4, 1, '#D3EEDA', 2001, 'img/movies/4_Ebene-159.jpg', 'img/movies/images_small/4_ebene_small_159.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(5, 1, '#A28665', 2001, 'img/movies/5_Ebene-157.jpg', 'img/movies/images_small/5_ebene_small_157.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(6, 1, '#A0996A', 2001, 'img/movies/6_Ebene-164.jpg', 'img/movies/images_small/6_ebene_small_164.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(7, 1, '#C5CDCD', 2001, 'img/movies/7_Ebene-160.jpg', 'img/movies/images_small/7_ebene_small_160.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(8, 1, '#9BAA9D', 2001, 'img/movies/8_Ebene-180.jpg', 'img/movies/images_small/8_ebene_small_180.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(9, 1, '#86AFB1', 2001, 'img/movies/9_Ebene-165.jpg', 'img/movies/images_small/9_ebene_small_165.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(10, 1, '#86AFB1', 2001, 'img/movies/10_Ebene-177.jpg', 'img/movies/images_small/10_ebene_small_177.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(11, 1, '#A1A67D', 2001, 'img/movies/11_Ebene-162.jpg', 'img/movies/images_small/11_ebene_small_162.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff'),
+(12, 1, '#C2C37D', 2001, 'img/movies/12_Ebene-182.jpg', 'img/movies/images_small/12_ebene_small_182.jpg', 'https://player.vimeo.com/video/67123140?color=ffffff');
+
 
 -- --------------------------------------------------------
 
@@ -139,13 +149,30 @@ CREATE TABLE IF NOT EXISTS `project_lang` (
 --
 
 INSERT INTO `project_lang` (`project_id`, `lang_id`, `name`, `genre`, `description`) VALUES
-(1, 1, 'Insupad', 'Imagefilm', 'Wieder ein gemeinsames Projekt mit dem langjahrigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts fur das Fachpublikum zu ubernehmen. In diesem Rahmen haben wir dieses Video produziert. Hier kommen sowohl Patienten als auch Arzte zu Wort.'),
-(1, 2, 'Insupad(eng)', 'Imagefilm', '\r\nAnother joint project with the long-standing partner tsitrone advertising agency . Oliver Horst , owner of tsitrone media GmbH and Co. KG , had been given the task to take over the complete development of the corporate design and production of the product for the professional audience . In this context, we have produced this video. Here both patients and doctors to speak.'),
-(2, 1, 'Renault Twizzy', 'Werbun', 'Wieder ein gemeinsames Projekt mit dem langjahrigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts fur das Fachpublikum zu ubernehmen. In diesem Rahmen haben wir dieses Video produziert. Hier kommen sowohl Patienten als auch Arzte zu Wort.'),
-(2, 2, 'Renault Twizy(eng)', '\r\nadverti', 'Another joint project with the long-standing partner tsitrone advertising agency . Oliver Horst , owner of tsitrone media GmbH and Co. KG , had been given the task to take over the complete development of the corporate design and production of the product for the professional audience . In this context, we have produced this video. Here both patients and doctors to speak.'),
-(3, 1, 'Bürstner Elegance', 'Imagefilm', 'Description (de)'),
-(3, 2, 'Burstner elegance', 'Imagefilm', 'Description (en)');
-
+(1, 1, 'Bürstner Elegance', 'Imagefilm', 'Bürstner war ein besonderes Projekt. Die Aufgabe: Einen emotionalen Imagefilm für das Reisemobilunternehmen herzustellen. Dafür sind wir nach Südfrankreich gefahren und haben dort vor einer großartigen Landschaft eine anstrengende aber auch (...)'),
+(1, 2, 'Bürstner Elegance_ENG', 'Imagefilm_ENG', 'Bürstner war ein besonderes Projekt. Die Aufgabe: Einen emotionalen Imagefilm für das Reisemobilunternehmen herzustellen. Dafür sind wir nach Südfrankreich gefahren und haben dort vor einer großartigen Landschaft eine anstrengende aber auch (...)'),
+(2, 1, 'Jack Wolfskin', 'Werbung', 'Für Jack Wolfskin in den Dolomiten. Ich wurde als „Kletterkameramann“ engagiert. Das Konzept bestand aus einem losen rotem Faden (3 abenteuerlustige Kletterer ziehen durch die Dolomiten) und viel Improvisation in und an den wunderschönen Motiven. (...)'),
+(2, 2, 'Jack Wolfskin_ENG', 'Werbung_ENG', 'Für Jack Wolfskin in den Dolomiten. Ich wurde als „Kletterkameramann“ engagiert. Das Konzept bestand aus einem losen rotem Faden (3 abenteuerlustige Kletterer ziehen durch die Dolomiten) und viel Improvisation in und an den wunderschönen Motiven. (...)'),
+(3, 1, 'Insupad', 'Imagefilm', 'Wieder ein gemeinsames Projekt mit dem langjährigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts für das (...)'),
+(3, 2, 'Insupad_ENG', 'Imagefilm_ENG', 'Wieder ein gemeinsames Projekt mit dem langjährigen Partner tsitrone Werbeagentur. Oliver Horst, Inhaber von tsitrone medien GmbH und Co. KG, hatte den Auftrag bekommen, die komplette Entwicklung des Corporate Designs und Inszenierung des Produkts für das (...)'),
+(4, 1, 'Renault Twizzy', 'Werbung', '10 Renault Twizzy Clips in 5 verschiedenen Städten. Ein enger Zeitplan und Drehen nach dem Motto „run and gun“ - das waren die Zutaten für die Renault Twizzy Spots, konzipiert im Rahmen einer Guerilla Marketing Kampagne für den Elektro – Funflitzer von Renault. (...)'),
+(4, 2, 'Renault Twizzy_ENG', 'Werbung_ENG', '10 Renault Twizzy Clips in 5 verschiedenen Städten. Ein enger Zeitplan und Drehen nach dem Motto „run and gun“ - das waren die Zutaten für die Renault Twizzy Spots, konzipiert im Rahmen einer Guerilla Marketing Kampagne für den Elektro – Funflitzer von Renault. (...)'),
+(5, 1, 'Braun Olympia', 'Werbung', 'Hier existierte ein bereits fertig geschnittener Spot, der dem Kunden Braun so gut gefallen hatte, dass ich im Auftrag von congaz Düsseldorf nicht - lizensiertes Material im Studio so nachdrehen sollte dass sich die Aufnahmen von Getty mit den von mir nachträglich (...)'),
+(5, 2, 'Braun Olympia_ENG', 'Werbung_ENG', 'Hier existierte ein bereits fertig geschnittener Spot, der dem Kunden Braun so gut gefallen hatte, dass ich im Auftrag von congaz Düsseldorf nicht - lizensiertes Material im Studio so nachdrehen sollte dass sich die Aufnahmen von Getty mit den von mir nachträglich (...)'),
+(6, 1, 'Loose Connection', 'Kurzfilm', '„Loose Connection“ war mein Diplomfilm als Abschlussarbeit an der Fachhochschule Dortmund, Fachbereich Kamera. Mit diesem Film konnte ich im Jahre 2009 den Deutschen Kamerapreis als Förderpreis gewinnen. (...)'),
+(6, 2, 'Loose Connection_ENG', 'Kurzfilm_ENG', '„Loose Connection“ war mein Diplomfilm als Abschlussarbeit an der Fachhochschule Dortmund, Fachbereich Kamera. Mit diesem Film konnte ich im Jahre 2009 den Deutschen Kamerapreis als Förderpreis gewinnen. (...)'),
+(7, 1, 'Lukas Podolski', 'Online Testimonial', 'Für diesen kurzen „Social Spot“ hat mich Lukas Podolski beauftragt, wobei Lukas zusammen mit Per Mertesacker dieses Projekt ins Leben gerufen hat, um mit zahlreichen Prominenten ein Benefiz Fußballturnier zu veranstalten. Die Erlöse kommen der Lukas Podolski Stiftung (...)'),
+(7, 2, 'Lukas Podolski_ENG', 'Online Testimonial_ENG', 'Für diesen kurzen „Social Spot“ hat mich Lukas Podolski beauftragt, wobei Lukas zusammen mit Per Mertesacker dieses Projekt ins Leben gerufen hat, um mit zahlreichen Prominenten ein Benefiz Fußballturnier zu veranstalten. Die Erlöse kommen der Lukas Podolski Stiftung (...)'),
+(8, 1, 'Rosia Montana', 'Dokumentarfilm', 'Die Gold- und Silberminen von Rosia Montana, einer kleinen Stadt am Rande der Karpaten sollen wieder in Betrieb genommen werden. Den Gewinn teilen sich die kanadische Rohstofffirma und eine rumänische Staatsgesellschaft im Verhältnis 4:1. Schäden an der (...)'),
+(8, 2, 'Rosia Montana_ENG', 'Dokumentarfilm_ENG', 'Die Gold- und Silberminen von Rosia Montana, einer kleinen Stadt am Rande der Karpaten sollen wieder in Betrieb genommen werden. Den Gewinn teilen sich die kanadische Rohstofffirma und eine rumänische Staatsgesellschaft im Verhältnis 4:1. Schäden an der (...)'),
+(9, 1, 'Lilith', 'Kurzfilm', 'In diesem Kurzspielfilm, ausgezeichnet mit dem Prädikat „Besonders Wertvoll“ macht eine Frau im fortgeschrittenen Alter eine unerwartete Entdeckung. Durch intensive Vorbereitungen und viel Einsatz vom ganzen Team ist es uns gelungen, einen Film zu erzählen, der (...)'),
+(9, 2, 'Lilith_ENG', 'Kurzfilm_ENG', 'In diesem Kurzspielfilm, ausgezeichnet mit dem Prädikat „Besonders Wertvoll“ macht eine Frau im fortgeschrittenen Alter eine unerwartete Entdeckung. Durch intensive Vorbereitungen und viel Einsatz vom ganzen Team ist es uns gelungen, einen Film zu erzählen, der (...)'),
+(10, 1, 'Fußball ist unser Bier', 'Veltins', 'Web – Spot mit Gerald Asamoah in der Hauptrolle. Die Brauerei Veltins hat für diesen Dreh 4 Trickfußballer engagiert, die sich auf dem Brauereigelände austoben durften. Dies wurde in einem dokumentarischen Stil mit zwei eher roughen Handkameras langbrennweitig (...)'),
+(10, 2, 'Fußball ist unser Bier_ENG', 'Veltins_ENG', 'Web – Spot mit Gerald Asamoah in der Hauptrolle. Die Brauerei Veltins hat für diesen Dreh 4 Trickfußballer engagiert, die sich auf dem Brauereigelände austoben durften. Dies wurde in einem dokumentarischen Stil mit zwei eher roughen Handkameras langbrennweitig (...)'),
+(11, 1, 'Der Liebhaber', 'Testimonial', 'Mit wenig Budget in einer Privatwohnung auf 16 mm gedreht, war hier das Licht-Setup nicht ganz unspannend. Mittels frei hängender Rohrkonstruktion über dem Bett konnten wir das weiche Top-Light über den Darstellern realisieren. (...)'),
+(11, 2, 'Der Liebhaber_ENG', 'Testimonial_ENG', 'Mit wenig Budget in einer Privatwohnung auf 16 mm gedreht, war hier das Licht-Setup nicht ganz unspannend. Mittels frei hängender Rohrkonstruktion über dem Bett konnten wir das weiche Top-Light über den Darstellern realisieren. (...)'),
+(12, 1, 'man stirbt.', 'Experimenteller Dokumentarfilm', 'Experimenteller Dokumentarfilm über ein häufig tabuisiertes Thema. Zahlreiche Preise und Auszeichnungen: „Bester Deutscher Film“ beim Kurzfilmfestival Hamburg, 2009;  Lobende Erwähnung der Jury, Kategorie „Bestes Drehbuch“, Internationales Festival (...) 1. Preis der Jury beim Kurzfilmfestival „unlimited“, Köln 2009 (...)'),
+(12, 2, 'man stirbt.', 'Experimenteller Dokumentarfilm', 'Experimenteller Dokumentarfilm über ein häufig tabuisiertes Thema. Zahlreiche Preise und Auszeichnungen: „Bester Deutscher Film“ beim Kurzfilmfestival Hamburg, 2009;  Lobende Erwähnung der Jury, Kategorie „Bestes Drehbuch“, Internationales Festival (...) 1. Preis der Jury beim Kurzfilmfestival „unlimited“, Köln 2009 (...)');
 -- --------------------------------------------------------
 
 --

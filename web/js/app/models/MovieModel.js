@@ -1,4 +1,5 @@
 import config from '../config';
+import { asset } from "../funcitons";
 
 var $ = require('jquery');
 
@@ -8,7 +9,8 @@ export default class MovieModel {
         this.id = movie_data.id;
         this.name = movie_data.name;
         this.year = movie_data.year;
-        this.logo = movie_data.logo;
+        this.logo = asset(movie_data.logo);
+        this.logo_short = asset(movie_data.logo_short);
         this.color = movie_data.color;
         this.genre = movie_data.genre;
         this.description = movie_data.description;
