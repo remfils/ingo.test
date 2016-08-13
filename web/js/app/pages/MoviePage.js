@@ -133,6 +133,8 @@ export default class MoviePage extends React.Component {
 
         this.resizePreviewIframe();
 
+        this.setScrollmagicScene();
+
         $(window).resize(this.resizePreviewIframe.bind(this));
     }
 
