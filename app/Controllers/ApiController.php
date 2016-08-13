@@ -76,12 +76,6 @@ class ApiController
             ->find_one()
             ->as_array();
 
-        /*$q = $app['db']->prepare('select * from project_description pd where pd.movie_id = :movie_id');
-        $q->bindValue(':movie_id', $id);
-        $q->execute();
-
-        $dsc = $q->fetch();*/
-
         $result['table'] = $app['idiorm.db']
             ->for_table('project_field_lang')
             ->where('project_id', $id)
@@ -89,27 +83,12 @@ class ApiController
             ->find_one()
             ->as_array();
 
-        /*$q = $app['db']->prepare('select * from project_fields pf where pf.movie_id = :movie_id');
-        $q->bindValue(':movie_id', $id);
-        $q->execute();
-
-        $fields = $q->fetchAll();
-
-        $dsc['table'] = $fields;*/
-
         $result['comments'] = $app['idiorm.db']
             ->for_table('project_comment_lang')
             ->where('project_id', $id)
             ->where('lang_id', $lang_id)
             ->find_one()
             ->as_array();
-
-        /*$q = $app['db']->prepare('select * from project_comments pc where pc.movie_id = :movie_id');
-        $q->bindValue(':movie_id', $id);
-        $q->execute();
-        $comments = $q->fetchAll();
-
-        $dsc['comments'] = $comments;*/
 
         return json_encode($result);
     }
