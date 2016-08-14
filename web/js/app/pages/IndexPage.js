@@ -75,14 +75,14 @@ export default class IndexPage extends React.Component {
                     return content;
                 });
 
-                console.log(data, this.content);
+                console.log("DEBUG: data loaded", data, this.content);
 
                 this.setState({
                     current_content: this.content[this.current_content_index]
                 });
             },
             error: (err) => {
-                console.log('error ' + err);
+                console.log('ERROR:  ' + err);
             }
         });
 
@@ -148,7 +148,7 @@ export default class IndexPage extends React.Component {
     currentMovieClickListener() {
         event.preventDefault();
 
-        console.log("currentMovieClickListener: ", this.current_content_index);
+        console.log("CLICK: ", this.current_content_index);
 
         var movies = [];
         this.content.forEach((item, index, array)=>{
@@ -171,6 +171,8 @@ export default class IndexPage extends React.Component {
     }
 
     render() {
+        console.log("RENDER(IndexPage): ");
+
         if ( this.content.length == 0 ) {
             return <div></div>;
         }
@@ -180,12 +182,14 @@ export default class IndexPage extends React.Component {
         var last_content = this.getContent(this.current_content_index + 2);
         var prev_content = this.getContent(this.current_content_index - 1);
 
-        console.log("PREV:", prev_content);
+        console.log("RENDER(IndexPage): contents", content, next_content, last_content, prev_content);
 
         var img_back_url = next_content.logo_short,
             img_current_url = content.logo_short,
             img_next = prev_content.logo_short,
             img_last = last_content.logo_short;
+
+        console.log("RENDER(IndexPage): image urls", img_back_url, img_current_url, img_next, img_last);
 
         var color = content.color;
 

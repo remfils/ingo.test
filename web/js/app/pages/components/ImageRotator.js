@@ -46,6 +46,13 @@ export default class ImageRotator extends React.Component {
 
     componentWillMount() {
         ResizeStore.on("RESIZE_TABLE_HEADER", this.resizeStoreListener.bind(this));
+
+        this.image_front = this.props.img_front;
+        this.image_back = this.props.img_back;
+        this.image_next = this.props.img_next;
+        this.image_last = this.props.img_last;
+
+        this.are_components_set = true;
     }
 
     resizeStoreListener() {
@@ -119,28 +126,27 @@ export default class ImageRotator extends React.Component {
         }
     }
 
-    render() {
-        console.log("ImageRotator rendered");
+    componentDidMount() {
+        this.updateImagePositions();
+    }
 
+    componentDidUpdate() {
+        this.updateImagePositions();
+    }
+
+    render() {
         var src_img_last = this.image_last;
         var src_img_back = this.image_back;
         var src_img_front = this.image_front;
         var src_img_next = this.image_next;
 
-        this.updateImagePositions();
+        console.log("RENDER(ImageRotator)", src_img_last, src_img_back, src_img_front, src_img_next);
 
         return <div id={this._id} className={this.props.className + " image-rotator"} >
             <img id="TitleBackgroundImage1" class="background-image" src={src_img_last} ></img>
             <img id="TitleBackgroundImage2" class="background-image" src={src_img_back} ></img>
             <img id="TitleBackgroundImage3" class="background-image" src={src_img_front} onClick={this.props.onClick}></img>
             <img id="TitleBackgroundImage4" class="background-image" src={src_img_next} ></img>
-
-
-
-
-
-
-
         </div>;
     }
 }
