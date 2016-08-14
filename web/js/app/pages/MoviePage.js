@@ -1,7 +1,12 @@
 import React from 'react';
 import ScrollMagic from 'scrollmagic';
 import 'imports?define=>false!scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap';
+
 var $ = require('jquery');
+
+import AlphaTextBox from "./components/AlphaTextBox";
+import AlphaBox from "./components/AlphaBox";
+import SlidingTableRow from "./components/SlidingTableRow";
 
 import TransitionStore from '../stores/TransitionStore';
 import SmallDescription from './MoviePage/SmallDescription';
@@ -80,23 +85,10 @@ export default class MoviePage extends React.Component {
             this.movies = this.props.movies;
             this.current_movie_index = this.props.current_movie_index;
 
-            $.ajax({
-                url: config.SITE_NAME + 'api/movie/' + this.Model.id,
-                dataType: 'json',
-                success: (data) => {
-                    var prj = new ProjectModel()
-                    prj.parseJsonData(data);
-
-                    console.log("DEBUG(MoviePage.componentWillCnageState): ", prj);
-
-                    this.setState({
-                        current_movie: prj
-                    });
-                }
-            })
+            this.loadDataForCurrentMovie();
         }
         else {
-            $.ajax({
+            /*$.ajax({
                 url: config.SITE_NAME + 'api/all-movies',
                 dataType: 'json',
                 success: (data) => {
@@ -119,12 +111,34 @@ export default class MoviePage extends React.Component {
                 error: (err) => {
                     console.log('error ' + err);
                 }
-            });
+            });*/
         }
     }
 
+    loadDataForCurrentMovie() {
+        this.setState({current_movie: null});
+
+        console.log("DEBUG(MoviePage.loadDataForCurrentMovie): loading movie №", this.current_movie_index);
+        var movie = this.short_models[this.current_movie_index];
+
+        $.ajax({
+            url: config.SITE_NAME + 'api/movie/' + movie.id,
+            dataType: 'json',
+            success: (data) => {
+                var prj = new ProjectModel()
+                prj.parseJsonData(data);
+
+                console.log("DEBUG(MoviePage.loadDataForCurrentMovie): ", prj);
+
+                this.setState({
+                    current_movie: prj
+                });
+            }
+        })
+    }
+
     loadMovieFromAPI ( movie, callback ) {
-        this.is_movie_loaded = false;
+        /*this.is_movie_loaded = false;
 
         this.setState({project_name: movie.name, project_year: movie.year});
 
@@ -142,7 +156,7 @@ export default class MoviePage extends React.Component {
             if ( callback ) {
                 callback();
             }
-        });
+        });*/
     }
 
     componentWillUnmount() {
@@ -241,14 +255,15 @@ export default class MoviePage extends React.Component {
     }
 
     transitionToNextMovie( is_left, callback ) {
-        this.is_transition = true;
+        console.log("DEBUG: !!!!!!!!!!!!!!!!!!!!!!!!");
 
-        var title_tl = new TimelineLite();
+        this.loadDataForCurrentMovie();
+
+        /*this.is_transition = true;*/
+
+        /*var title_tl = new TimelineLite();
         title_tl.to('.project-title', 0.5, {
-            opacity: 0,
-            onComplete: () => {
-                this.loadMovieFromAPI(this.movies[this.current_movie_index]);
-            }
+            opacity: 0
         });
         title_tl.to('.project-title', 0.5, {
             opacity: 1,
@@ -262,9 +277,9 @@ export default class MoviePage extends React.Component {
                     this.showMovieParts();
                 }
             }
-        });
+        });*/
 
-        var col = this.movies[this.current_movie_index].color;
+        /*var col = this.movies[this.current_movie_index].color;
         var $movie_title = $('.movie-title-section');
 
         var color_obj = {bgc: this.state.current_movie.color};
@@ -298,16 +313,18 @@ export default class MoviePage extends React.Component {
                 }
             })
             .set('#cover1', {width: "0"})
-            .set('#cover2', {width: "0"});
+            .set('#cover2', {width: "0"});*/
 
-        var tl = new TimelineLite();
+        /*var tl = new TimelineLite();
         $($('.project-stats tr').get().reverse()).each((i, item) => {
             var interval = 0.7 / 4;
             tl.to(item, interval, { delay: - interval / 5, opacity: 0, x: "-100%", ease: Power3.easeIn});
         });
         tl.to(window, 0, {onComplete: () => {
             TweenLite.set('.project-stats tr', {x: "+=100%"});
-        }});
+        }});*/
+
+        //this.render();
     }
 
     showMovieParts() {
@@ -350,6 +367,8 @@ export default class MoviePage extends React.Component {
         var movie_table;
         var movie = this.Model;
 
+        console.log("RENDER(MoviePage): movie", movie);
+
         if ( !movie ) {
             return <div></div>;
         }
@@ -361,19 +380,13 @@ export default class MoviePage extends React.Component {
         
         var current_logo_style = {backgroundImage: "url(" + movie.logo + ")"};
 
-        var description = "";
-
         if ( movie.project_info_table ) {
+            console.log("RENDER(MoviePage): movie.project_info_table", movie.project_info_table);
             movie_table = movie.project_info_table.map((item) => {
-                return <tr>
-                    <td>{ item.field_name }:</td>
-                    <td>{ item.field_value }</td>
-                </tr>;
+                return <SlidingTableRow field_key={item['field_name']} field_val={item.field_value} />;
             });
-        }
 
-        if ( movie.description && movie.comments ) {
-            description = <Description movie={movie} />;
+            console.log("RENDER(MoviePage): movie_table", movie_table);
         }
 
         return (
@@ -391,7 +404,11 @@ export default class MoviePage extends React.Component {
                     <div class="default-side-padding movie-title-section">
                         <table class="movie-navigation">
                             <tr>
-                                <td><h1 class="project-title">{ movie_name }<span class="project-year"> { movie_year }</span></h1></td>
+                                <td>
+                                    <AlphaBox>
+                                        <h1 class="project-title">{ movie_name }<span class="project-year"> { movie_year }</span></h1>
+                                    </AlphaBox>
+                                </td>
                                 <td class="cell-movies-nav">
                                     <div class="movies-nav">
                                         <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
@@ -407,7 +424,7 @@ export default class MoviePage extends React.Component {
                     <table class="col-30p project-stats">
                         <tr>
                             <th>Project:</th>
-                            <th>{ movie.name }</th>
+                            <th><AlphaTextBox text={ movie.name } /></th>
                         </tr>
 
                         {movie_table}
@@ -422,7 +439,7 @@ export default class MoviePage extends React.Component {
                     </div>
                 </section>
 
-                { description }
+                <Description movie={movie} />
 
                 <footer class="default-side-padding project-footer">
                     <a href="#goTop">Contact</a>

@@ -1,7 +1,7 @@
 import config from '../config';
 import ShortProjectModel from './ShortProjectModel';
 
-export default class MovieModel extends ShortProjectModel {
+export default class ProjectModel extends ShortProjectModel {
 
     constructor() {
         super();
