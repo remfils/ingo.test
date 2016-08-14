@@ -18,7 +18,7 @@ export default class ImageRotator extends React.Component {
         this.image_front = "";
         this.image_back = "";
         this.image_next = "";
-        this.image_prev = "";
+        this.image_last = "";
 
         this.table_width = HEADER_MIN_WIDTH;
 
@@ -30,10 +30,6 @@ export default class ImageRotator extends React.Component {
         this.state = {
             is_transition_finished: true
         };
-
-        this.animation_tween = Expo.easeInOut;
-
-        this.image_offset = -1 * (window.innerHeight * 989 / 904 * 2 + ( window.innerWidth - 870 ));
     }
 
     get id() {
@@ -72,15 +68,6 @@ export default class ImageRotator extends React.Component {
 
     componentWillUpdate(nextProps, nextState) {
         if  ( this.are_components_set ) {
-            // var coordinate_change = nextProps.direction == "right" ? "+=100%" : "-=100%";
-            var coordinate_change = this.image_offset;
-
-            /*TweenLite.to($(this.id), 1.5, {x: coordinate_change, ease: this.animation_tween, onComplete: () => {
-             this.are_components_set = false;
-
-             this.setState({current_image: this.image_front});
-             }});*/
-
             this.updateImagePositions();
 
             var image_width = window.innerHeight * BG_IMAGE_WIDTH / BG_IMAGE_HEIGHT;
@@ -115,8 +102,6 @@ export default class ImageRotator extends React.Component {
             }
         }
         else {
-            //TweenLite.set($(this.id), {x: this.image_offset});
-
             this.image_front = nextProps.img_front;
             this.image_back = nextProps.img_back;
             this.image_next = nextProps.img_next;
