@@ -204,7 +204,7 @@ export default class IndexPage extends React.Component {
 
                 <ImageRotator class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} onClick={this.currentMovieClickListener.bind(this)} />
 
-                <TitleColoredTable className="title-project-dsc" color={color}>
+                <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>
                         <td class="title-navigation">
                             <ul>
