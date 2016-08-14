@@ -27,6 +27,9 @@ module.exports = {
         ]
     },
     plugins: [
-        new WebpackNotifierPlugin(),
+        new WebpackNotifierPlugin({
+		title: 'Ingo.Test',
+		alwaysNotify: true
+	}),
     ]
 };
