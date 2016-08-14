@@ -534,17 +534,17 @@ a:active {
     z-index: 10;
 }
 
-.movie-title span, .movie-genre {
-    font-size: 100px;
+.movie-title,
+.movie-genre {
     font-family: pt-zerif_4;
 }
 
+.movie-title {font-size: 100px;}
+
+.movie-genre {font-size: 50px;}
+
 .movie-title:after {
     content: " ";
-}
-
-.movie-genre {
-    font-size: 50px;
 }
 
 .movie-short-description {

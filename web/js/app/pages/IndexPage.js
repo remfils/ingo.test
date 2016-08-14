@@ -32,7 +32,7 @@ export default class IndexPage extends React.Component {
 
     set current_content_index(val) {
         if ( val < 0 ) {
-            this._cci = this.content.length;
+            this._cci = this.content.length - 1;
         }
         else if ( val >= this.content.length ) {
             this._cci = 0;
@@ -121,7 +121,8 @@ export default class IndexPage extends React.Component {
         this.current_content_index++;
 
         this.setState({
-            current_content: this.content[this.current_content_index]
+            current_content: this.content[this.current_content_index],
+            movement_direction: "right"
         });
 
         setTimeout(()=>{
@@ -135,7 +136,8 @@ export default class IndexPage extends React.Component {
         this.current_content_index--;
 
         this.setState({
-            current_content: this.content[this.current_content_index]
+            current_content: this.content[this.current_content_index],
+            movement_direction: "left"
         });
 
         setTimeout(()=>{
