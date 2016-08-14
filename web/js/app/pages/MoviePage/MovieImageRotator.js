@@ -47,26 +47,45 @@ export default class MovieImageRotator extends React.Component {
 
         console.log("DEBUG(MovieImageRotator): componentUpdate current_movie, next_movie", current_movie, next_movie);
 
+        var is_left = nextProps.direction != "left";
+
+        this.animateMovieTransition(current_movie, next_movie, is_left);
+    }
+
+    animateMovieTransition(current_movie, next_movie, is_left) {
         var $this = $(this.id);
 
-        var is_left = false;
+        console.log("DEBUG(MovieImageRotator.animateMovieTransition): is_left", is_left);
 
-        $this.find('.movie-curtain').addClass('right');
+        if (is_left) {
+            $this.find('.movie-curtain').addClass('right');
 
-        $this.find('.current-image').css('z-index', 1);
-        $this.find('#cover1').css('background', current_movie.color);
-        $this.find('#cover2').css('background', next_movie.color);
-        $this.find('.next-image').css({
-            'background-image': "url(" + next_movie.logo + ")",
-            'z-index': 10
-        });
+            $this.find('.current-image').css('z-index', 1);
+            $this.find('#cover1').css('background', current_movie.color);
+            $this.find('#cover2').css('background', next_movie.color);
+            $this.find('.next-image').css({
+                'background-image': "url(" + next_movie.logo + ")",
+                'z-index': 10
+            });
+        }
+        else {
+            $this.find('.movie-curtain').addClass('left');
+            $this.find('.next-image').addClass('left');
+
+            $this.find('.current-image').css('z-index', 1);
+            $this.find('#cover1').css('background', current_movie.color);
+            $this.find('#cover2').css('background', next_movie.color);
+            $this.find('.next-image').css({
+                "background-image": "url(" + next_movie.logo + ")",
+                "z-index": 10});
+        }
 
         var tl = new TimelineLite();
         tl.to('#cover1', this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE})
             .to("#cover2", this.SWITCH_DURATION, {delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
             .from(".next-image", this.SWITCH_DURATION, {
                 delay: this.SWITCH_B_DELAY,
-                x: (is_left ? "-" : "") + "100%",
+                x: (is_left ? "" : "-") + "100%",
                 ease: this.SWITCH_EASE,
                 onComplete: () => {
                     $('.movie-curtain').removeClass('left')

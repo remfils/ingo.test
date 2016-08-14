@@ -43,7 +43,8 @@ export default class MoviePage extends React.Component {
             project_name: "",
             project_year: "",
             current_movie: null,
-            description: null
+            description: null,
+            movement_direction: "left"
         }
     }
 
@@ -204,12 +205,14 @@ export default class MoviePage extends React.Component {
             return false;
         }
 
+        this.setState({movement_direction: "left"});
+
         var current_movie = this.movies[this.current_movie_index];
 
         this.current_movie_index--;
         var next_movie = this.next_movie = this.movies[this.current_movie_index];
 
-        $('.movie-curtain').addClass('left');
+        /*$('.movie-curtain').addClass('left');
         $('.next-image').addClass('left');
 
         $('.current-image').css('z-index', 1);
@@ -217,7 +220,7 @@ export default class MoviePage extends React.Component {
         $('#cover2').css('background', next_movie.color);
         $('.next-image').css({
             "background-image": "url(" + next_movie.logo + ")",
-            "z-index": 10});
+            "z-index": 10});*/
 
         this.transitionToNextMovie(true);
 
@@ -231,19 +234,21 @@ export default class MoviePage extends React.Component {
             return false;
         }
 
+        this.setState({movement_direction: "right"});
+
         var current_movie = this.movies[this.current_movie_index];
 
         this.current_movie_index++;
         var next_movie = this.next_movie = this.movies[this.current_movie_index];
 
-        $('.movie-curtain').addClass('right');
+        /*$('.movie-curtain').addClass('right');
 
         $('.current-image').css('z-index', 1);
         $('#cover1').css('background', current_movie.color);
         $('#cover2').css('background', next_movie.color);
         $('.next-image').css({
             "background-image": "url(" + next_movie.logo + ")",
-            "z-index": 10});
+            "z-index": 10});*/
 
         this.transitionToNextMovie(false);
 
@@ -368,11 +373,13 @@ export default class MoviePage extends React.Component {
         var movie_table;
         var movie = this.Model;
 
-        console.log("RENDER(MoviePage): movie", movie);
+        console.log("RENDER(MoviePage): movie, direction", movie, this.state.movement_direction);
 
         if ( !movie ) {
             return <div></div>;
         }
+
+        var movement_direction = this.state.movement_direction;
 
         var is_short_model = movie instanceof ShortProjectModel;
 
@@ -396,7 +403,7 @@ export default class MoviePage extends React.Component {
                 <section class="project-title-section">
                     <div class="movie-curtain"></div>
 
-                    <MovieImageRotator image_url={movie.logo} movie={movie} direction="left" />
+                    <MovieImageRotator image_url={movie.logo} movie={movie} direction={movement_direction} />
 
                     <div class="default-side-padding movie-title-section">
                         <table class="movie-navigation">
