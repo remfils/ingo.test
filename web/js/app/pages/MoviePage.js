@@ -11,6 +11,8 @@ import * as TransitionActions from "../actions/TransitionActions";
 import { asset } from '../funcitons';
 import config from '../config';
 import MovieModel from '../models/MovieModel';
+import ShortProjectModel from '../models/ShortProjectModel';
+import ProjectModel from '../models/ProjectModel';
 
 export default class MoviePage extends React.Component {
     constructor() {
@@ -24,6 +26,8 @@ export default class MoviePage extends React.Component {
         this.current_movie_index = 0;
         this.next_movie = null;
 
+        this.short_models = [];
+
         this.SWITCH_DURATION = 1.2;
         this.SWITCH_EASE = Expo.easeOut;
         this.SWITCH_A_DELAY = -this.SWITCH_DURATION * 2.8 / 3;
@@ -35,6 +39,18 @@ export default class MoviePage extends React.Component {
             current_movie: null,
             description: null
         }
+    }
+
+    get Model () {
+        if (this.short_models.length === 0) {
+            return null;
+        }
+
+        if (this.state.current_movie) {
+            return this.state.current_movie;
+        }
+
+        return this.short_models[this.current_movie_index];
     }
 
     hadleTransitionAnimations() {
@@ -57,16 +73,27 @@ export default class MoviePage extends React.Component {
 
     componentWillMount() {
         if ( this.props.movies ) {
+            console.log("DEBUG(MoviePage.componentWillMount): ", this.props.movies);
+
+            this.short_models = this.props.movies;
+
             this.movies = this.props.movies;
             this.current_movie_index = this.props.current_movie_index;
 
-            var movie = this.movies[this.current_movie_index];
-            movie.getMoreData( () => {
-                console.log("componentWillMount: current Movie Loaded");
-                this.setState({
-                    current_movie: movie
-                });
-            } );
+            $.ajax({
+                url: config.SITE_NAME + 'api/movie/' + this.Model.id,
+                dataType: 'json',
+                success: (data) => {
+                    var prj = new ProjectModel()
+                    prj.parseJsonData(data);
+
+                    console.log("DEBUG(MoviePage.componentWillCnageState): ", prj);
+
+                    this.setState({
+                        current_movie: prj
+                    });
+                }
+            })
         }
         else {
             $.ajax({
@@ -321,7 +348,13 @@ export default class MoviePage extends React.Component {
 
     render() {
         var movie_table;
-        var movie = this.state.current_movie || this.movies[this.current_movie_index];
+        var movie = this.Model;
+
+        if ( !movie ) {
+            return <div></div>;
+        }
+
+        var is_short_model = movie instanceof ShortProjectModel;
 
         var movie_name = movie.name;
         var movie_year = movie.year;
@@ -330,26 +363,18 @@ export default class MoviePage extends React.Component {
 
         var description = "";
 
-        if ( movie ) {
-
-            if ( movie.project_info_table ) {
-                movie_table = movie.project_info_table.map((item) => {
-                    return <tr>
-                        <td>{ item.field_name }:</td>
-                        <td>{ item.field_value }</td>
-                    </tr>;
-                });
-            }
-
-            if ( movie.description && movie.comments ) {
-                description = <Description movie={movie} />;
-            }
-        }
-        else {
-            movie = new MovieModel({id: '',name:'',year:"",logo:""});
+        if ( movie.project_info_table ) {
+            movie_table = movie.project_info_table.map((item) => {
+                return <tr>
+                    <td>{ item.field_name }:</td>
+                    <td>{ item.field_value }</td>
+                </tr>;
+            });
         }
 
-        var id = "Movie" + 0;
+        if ( movie.description && movie.comments ) {
+            description = <Description movie={movie} />;
+        }
 
         return (
             <div id="MoviePage" class="content">

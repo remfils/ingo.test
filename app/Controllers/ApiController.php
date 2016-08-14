@@ -80,15 +80,13 @@ class ApiController
             ->for_table('project_field_lang')
             ->where('project_id', $id)
             ->where('lang_id', $lang_id)
-            ->find_one()
-            ->as_array();
+            ->find_array();
 
         $result['comments'] = $app['idiorm.db']
             ->for_table('project_comment_lang')
             ->where('project_id', $id)
             ->where('lang_id', $lang_id)
-            ->find_one()
-            ->as_array();
+            ->find_array();
 
         return json_encode($result);
     }
