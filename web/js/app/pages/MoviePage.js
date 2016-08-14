@@ -7,6 +7,7 @@ var $ = require('jquery');
 import AlphaTextBox from "./components/AlphaTextBox";
 import AlphaBox from "./components/AlphaBox";
 import SlidingTableRow from "./components/SlidingTableRow";
+import MovieImageRotator from "./MoviePage/MovieImageRotator";
 
 import TransitionStore from '../stores/TransitionStore';
 import SmallDescription from './MoviePage/SmallDescription';
@@ -394,12 +395,8 @@ export default class MoviePage extends React.Component {
 
                 <section class="project-title-section">
                     <div class="movie-curtain"></div>
-                    <div class="project-main-image">
-                        <div class="current-image" style={current_logo_style}></div>
-                        <div id="cover1" class="movie-curtain"></div>
-                        <div id="cover2" class="movie-curtain"></div>
-                        <div class="next-image"></div>
-                    </div>
+
+                    <MovieImageRotator image_url={movie.logo} movie={movie} direction="left" />
 
                     <div class="default-side-padding movie-title-section">
                         <table class="movie-navigation">
