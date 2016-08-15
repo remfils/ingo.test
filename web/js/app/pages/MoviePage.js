@@ -88,7 +88,6 @@ export default class MoviePage extends React.Component {
 
             this.short_models = this.props.movies;
 
-            /*this.movies = this.props.movies;*/
             this.current_movie_index = this.props.current_movie_index;
 
             this.loadDataForCurrentMovie();
@@ -169,7 +168,7 @@ export default class MoviePage extends React.Component {
 
         this.resizePreviewIframe();
 
-        this.setScrollmagicScene();
+        this.setScrollmagicScene(null, true);
 
         $(window).resize(this.resizePreviewIframe.bind(this));
     }
@@ -250,12 +249,18 @@ export default class MoviePage extends React.Component {
         }
     }
 
-    setScrollmagicScene(bg_color) {
+    componentDidUpdate() {
+        this.setScrollmagicScene(null, true);
+    }
+
+    setScrollmagicScene(bg_color, isForced) {
         if ( !bg_color ) {
-            bg_color = this.short_models[this.current_movie_index].color;
+            bg_color = this.Model.color;
         }
 
-        if ( !this.scroll_magic_scene ) {
+        console.debug("DEBUG(setScrollmagicScene): bg_color", bg_color);
+
+        if ( isForced || !this.scroll_magic_scene ) {
             var controller = new ScrollMagic.Controller();
 
             this.scroll_magic_scene = new ScrollMagic.Scene({
