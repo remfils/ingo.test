@@ -87,7 +87,7 @@ export default class Application extends React.Component {
                 var current_content = prev_page.state.current_content;
 
                 var movies = [];
-                var current_movie_index = 0;
+                var current_movie_index = content.indexOf(current_content);
 
                 console.log("DEBUG(leavePageListener): movies", content);
 

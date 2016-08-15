@@ -154,7 +154,6 @@ export default class IndexPage extends React.Component {
         this.content.forEach((item, index, array)=>{
             if ( item.content_type == "movie" ) {
                 movies.push(item.model);
-
             }
         });
 
@@ -224,7 +223,7 @@ export default class IndexPage extends React.Component {
                     </tr>
                     <tr>
                         <td class="title-footer">
-                            ++ Ingo Scheel Kameramann I DOP fГјr:  Imagefilm I Werbung I Spielfilm I Dokumentarfilm I KГ¶ln ++
+                            ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
                         </td>
                     </tr>
                 </TitleColoredTable>

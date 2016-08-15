@@ -143,7 +143,7 @@ export default class MoviePage extends React.Component {
                     current_movie: prj
                 });
             }
-        })
+        });
     }
 
     componentWillUnmount() {
