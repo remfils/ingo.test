@@ -120,8 +120,9 @@ export default class MoviePage extends React.Component {
     loadDataForCurrentMovie() {
         this.setState({current_movie: null});
 
-        console.log("DEBUG(MoviePage.loadDataForCurrentMovie): loading movie №", this.current_movie_index);
         var movie = this.short_models[this.current_movie_index];
+
+        console.log("DEBUG(MoviePage.loadDataForCurrentMovie): loading movie №", movie.id);
 
         $.ajax({
             url: config.SITE_NAME + 'api/movie/' + movie.id,
@@ -130,7 +131,7 @@ export default class MoviePage extends React.Component {
                 var prj = new ProjectModel()
                 prj.parseJsonData(data);
 
-                console.log("DEBUG(MoviePage.loadDataForCurrentMovie): ", prj);
+                console.debug("DEBUG(MoviePage.loadDataForCurrentMovie): prj, data", prj, data);
 
                 this.setState({
                     current_movie: prj

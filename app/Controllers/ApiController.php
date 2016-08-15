@@ -97,7 +97,7 @@ class ApiController
             ->where('lang_id', $lang_id)
             ->find_array();
 
-        $model['table'] = $result || array();
+        $model['table'] = $result;
 
         $result = $app['idiorm.db']
             ->for_table('project_comment_lang')
@@ -105,8 +105,8 @@ class ApiController
             ->where('lang_id', $lang_id)
             ->find_array();
 
-        $model['comments'] = $result || array();
+        $model['comments'] = $result;
 
-        return json_encode($result);
+        return json_encode($model);
     }
 }
