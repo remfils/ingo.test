@@ -69,7 +69,7 @@ export default class MovieFieldsTable extends React.Component {
             this.setState({movie: next_movie});
 
             var tl2 = new TimelineLite();
-            $($rows).each((i, item) => {
+            $($this.find('tr')).each((i, item) => {
                 TweenLite.set(item, {opacity: 0, x: "100%"});
                 tl2.to(item, interval, { opacity: 1, x: "0%", delay: -interval / 5, ease: Power3.easeOut });
             });
@@ -78,6 +78,7 @@ export default class MovieFieldsTable extends React.Component {
 
     render() {
         var movie = this.state.movie;
+        console.debug("RENDER(MovieFieldsTable): movie: ", movie);
 
         if (!movie) {
             return <table class="col-30p project-stats">
@@ -90,8 +91,6 @@ export default class MovieFieldsTable extends React.Component {
 
         var project_name = movie.name;
         var movie_table = "";
-
-        console.debug("RENDER(MovieFieldsTable): movie: ", movie);
         
         if (movie.project_info_table) {
             movie_table = movie.project_info_table.map(function(item, i) {
@@ -101,8 +100,6 @@ export default class MovieFieldsTable extends React.Component {
                 </tr>;
             });
         }
-
-        console.debug("RENDER(MovieFieldsTable): movie_table: ", movie_table);
 
         return <table id={this._id} class="col-30p project-stats">
              <tr>
