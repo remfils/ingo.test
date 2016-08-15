@@ -48,29 +48,32 @@ export default class MovieFieldsTable extends React.Component {
             return;
         }
 
-        if ( this.state.movie && this.props.movie.id == next_movie.id ) {
+        if (
+            this.state.movie
+            && (this.state.movie.id == next_movie.id || nextState.movie.id == next_movie.id) ) {
             return;
         }
 
         var $this = $(this.id);
 
-        var interval = 0.7;
-
+        var $rows = $this.find('tr');
+        var interval = 0.7 / $rows.size();
         var tl = new TimelineLite();
-        $($this.find('tr').get().reverse()).each((i, item) => {
-            tl.to(item, interval, { delay: - interval / 5, opacity: 0, x: "-=100%", ease: Power3.easeIn});
+        $($rows.get().reverse()).each((i, item) => {
+            tl.to(item, interval, { delay: - interval / 5, opacity: 0, x: "-100%", ease: Power3.easeIn});
         });
 
         tl.to($this, 0, {onComplete: () => {
+            console.debug("DEBUG(MovieFiedlsTable.componentWillUpdate): !!!!!!!!!!!!!");
+
             this.setState({movie: next_movie});
 
             var tl2 = new TimelineLite();
-            $($this.find('tr')).each((i, item) => {
-
-                TweenLite.set(item, {opacity: 0, x: "+=200%"});
-                tl2.to(item, interval, { /*delay: - interval / 5,*/ opacity: 1, x: "-=100%", ease: Power3.easeOut });
+            $($rows).each((i, item) => {
+                TweenLite.set(item, {opacity: 0, x: "100%"});
+                tl2.to(item, interval, { opacity: 1, x: "0%", delay: -interval / 5, ease: Power3.easeOut });
             });
-        }})
+        }});
     }
 
     render() {
