@@ -4,10 +4,10 @@ import 'imports?define=>false!scrollmagic/scrollmagic/uncompressed/plugins/anima
 
 var $ = require('jquery');
 
-import AlphaTextBox from "./components/AlphaTextBox";
 import AlphaBox from "./components/AlphaBox";
 import SlidingTableRow from "./components/SlidingTableRow";
 import MovieImageRotator from "./MoviePage/MovieImageRotator";
+import MovieFieldsTable from "./MoviePage/MovieFieldsTable";
 
 import TransitionStore from '../stores/TransitionStore';
 import SmallDescription from './MoviePage/SmallDescription';
@@ -374,7 +374,7 @@ export default class MoviePage extends React.Component {
         var movie_table;
         var movie = this.Model;
 
-        console.log("RENDER(MoviePage): movie, direction", movie, this.state.movement_direction);
+        console.debug("RENDER(MoviePage): movie, direction", movie, this.state.movement_direction);
 
         if ( !movie ) {
             return <div></div>;
@@ -426,15 +426,7 @@ export default class MoviePage extends React.Component {
                 </section>
 
                 <section class="default-side-padding project-sm-dsc">
-                    <table class="col-30p project-stats">
-                        <tr>
-                            <th>Project:</th>
-                            <th><AlphaTextBox text={ movie.name } /></th>
-                        </tr>
-
-                        {movie_table}
-
-                    </table>
+                    <MovieFieldsTable movie={movie} class="col-30p project-stats" />
 
                     <div class="col-70p project-demo-video">
                         <iframe height="60%" src={movie.preview_url} frameBorder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>

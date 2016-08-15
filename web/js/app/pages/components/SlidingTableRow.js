@@ -40,7 +40,7 @@ export default class SlidingTableRow extends React.Component {
         });
 
         this.duration = this.props.duration || 1;
-        this.dellay = this.props.dellay || 0;
+        this.delay = this.props.delay || 0;
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -49,21 +49,23 @@ export default class SlidingTableRow extends React.Component {
         var next_key = nextProps.field_key;
         var next_value = nextProps.field_val;
 
-        TweenLite.to($this, this.duration / 2, {
+        console.debug("DEBUG(SlidingTableRow.componentWillUpdate): starting animation");
+
+        TweenLite.to($this, this.duration, {
             opacity: 0, x: "-100%",
             ease: Power3.easeIn,
-            dellay: this.dellay,
+            delay: this.delay,
             onComplete: () => {
                 this.setState({
                     field_key: next_key,
                     field_value: next_value
                 });
 
-                TweenLite.to($this, 1, {
+                TweenLite.to($this, this.duration, {
                     opacity: 0, x: "100%",
                     ease: Power3.easeOut,
                     onComplete: () => {
-                        console.log("DEBUG(SlidingTableRow): completed animation")
+                        console.debug("DEBUG(SlidingTableRow): completed animation")
                     }})
             }});
     }
