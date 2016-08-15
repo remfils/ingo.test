@@ -112,7 +112,9 @@ export default class MovieImageRotator extends React.Component {
     }
 
     render() {
-        var current_logo_style = {backgroundImage: "url(" + this.state.current_movie.image_url + ")"};
+        var current_logo_style = {backgroundImage: "url(" + this.state.current_movie.logo + ")"};
+
+        console.debug("RENDER(MovieImageRotator): current_movie ", this.state.current_movie);
 
         return <div id={this._id} class="project-main-image">
             <div class="current-image" style={current_logo_style}></div>
