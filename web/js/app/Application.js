@@ -8,22 +8,42 @@ import config from './config';
 
 var $ = require('jquery');
 
+const URL_INDEX = "/";
+const URL_MOVIE = "/movie/";
+
 export default class Application extends React.Component {
     constructor() {
         super();
 
         this.flip = true;
 
-        this.state = {
-            first_page: <IndexPage />,
-            second_page: null
-        };
-
         this.movies = [];
     }
 
     componentWillMount() {
         TransitionStore.on("leave", this.leavePageListener.bind(this));
+
+        var domain = "http://" + document.domain;
+        var url = document.URL;
+
+        if ( url == domain + URL_INDEX ) {
+            this.setState({
+                first_page: <IndexPage />,
+                second_page: null
+            });
+        }
+        else if ( url.indexOf(URL_MOVIE) !== -1 ) {
+            var movie_index = url.indexOf(URL_MOVIE) + URL_MOVIE.length;
+
+            var index = url.slice(movie_index);
+
+            this.setState({
+                first_page: <MoviePage
+                    app={this}
+                    current_movie_index={index}/>,
+                second_page: null
+            });
+        }
     }
 
     gotoMovie(from, shared_timeline) {
@@ -72,6 +92,8 @@ export default class Application extends React.Component {
                 console.log("DEBUG(leavePageListener): movies", content);
 
                 var movie = movies[0];
+
+                window.history.pushState({}, '', '/movie/' + current_content.id);
 
                 page = <MoviePage
                     app={this}

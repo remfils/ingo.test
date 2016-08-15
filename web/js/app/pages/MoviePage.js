@@ -63,6 +63,10 @@ export default class MoviePage extends React.Component {
     hadleTransitionAnimations() {
         var transition = this.props.transition;
 
+        if (!transition) {
+            return;
+        }
+
         $("#MoviePage").css({"z-index": 99});
         
         transition.prev_page.leaveToMoviePage();
@@ -84,12 +88,39 @@ export default class MoviePage extends React.Component {
 
             this.short_models = this.props.movies;
 
-            this.movies = this.props.movies;
+            /*this.movies = this.props.movies;*/
             this.current_movie_index = this.props.current_movie_index;
 
             this.loadDataForCurrentMovie();
         }
         else {
+            console.debug("DEBUG(MoviePage.componentWillMount): init load");
+
+            $.ajax({
+                url: config.SITE_NAME + 'api/all-movies',
+                dataType: 'json',
+                success: (data) => {
+                    var movie_id = this.props.current_movie_index;
+
+                    this.short_models = data.map((item, index) => {
+                        var movie = new ShortProjectModel();
+                        movie.parseJsonData(item);
+
+                        if ( movie.id == movie_id ) {
+                            this.current_movie_index = index;
+                        }
+
+                        return movie;
+                    });
+
+                    console.debug("DEBUG(MoviePage.componentWillMount): recived", this.short_models);
+
+                    this.init();
+
+                    this.loadDataForCurrentMovie();
+                }
+            });
+
             /*$.ajax({
                 url: config.SITE_NAME + 'api/all-movies',
                 dataType: 'json',
@@ -122,7 +153,7 @@ export default class MoviePage extends React.Component {
 
         var movie = this.short_models[this.current_movie_index];
 
-        console.log("DEBUG(MoviePage.loadDataForCurrentMovie): loading movie №", movie.id);
+        console.debug("DEBUG(MoviePage.loadDataForCurrentMovie): loading movie ", movie);
 
         $.ajax({
             url: config.SITE_NAME + 'api/movie/' + movie.id,
@@ -169,7 +200,15 @@ export default class MoviePage extends React.Component {
     componentDidMount() {
         this.hadleTransitionAnimations();
 
-        var movie = this.movies[this.current_movie_index];
+        this.init();
+    }
+
+    init() {
+        var movie = this.Model;
+
+        if (!movie)
+            return;
+
         TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
         TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
 
@@ -208,10 +247,10 @@ export default class MoviePage extends React.Component {
 
         this.setState({movement_direction: "left"});
 
-        var current_movie = this.movies[this.current_movie_index];
+        var current_movie = this.short_models[this.current_movie_index];
 
         this.current_movie_index--;
-        var next_movie = this.next_movie = this.movies[this.current_movie_index];
+        var next_movie = this.next_movie = this.short_models[this.current_movie_index];
 
         /*$('.movie-curtain').addClass('left');
         $('.next-image').addClass('left');
@@ -231,16 +270,16 @@ export default class MoviePage extends React.Component {
     nextMovieClick(event) {
         event.preventDefault()
 
-        if ( this.isTransitionLocked() || (this.current_movie_index + 1 >= this.movies.length) ) {
+        if ( this.isTransitionLocked() || (this.current_movie_index + 1 >= this.short_models.length) ) {
             return false;
         }
 
         this.setState({movement_direction: "right"});
 
-        var current_movie = this.movies[this.current_movie_index];
+        var current_movie = this.short_models[this.current_movie_index];
 
         this.current_movie_index++;
-        var next_movie = this.next_movie = this.movies[this.current_movie_index];
+        var next_movie = this.next_movie = this.short_models[this.current_movie_index];
 
         /*$('.movie-curtain').addClass('right');
 
@@ -262,9 +301,9 @@ export default class MoviePage extends React.Component {
     }
 
     transitionToNextMovie( is_left, callback ) {
-        console.log("DEBUG: !!!!!!!!!!!!!!!!!!!!!!!!");
-
         this.loadDataForCurrentMovie();
+
+        window.history.pushState({}, '', '/movie/' + this.short_models[this.current_movie_index].id);
 
         /*this.is_transition = true;*/
 
@@ -352,7 +391,7 @@ export default class MoviePage extends React.Component {
 
     setScrollmagicScene(bg_color) {
         if ( !bg_color ) {
-            bg_color = this.movies[this.current_movie_index].color;
+            bg_color = this.short_models[this.current_movie_index].color;
         }
 
         if ( !this.scroll_magic_scene ) {
