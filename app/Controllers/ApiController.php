@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Silex\Application;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 class ApiController
@@ -23,7 +24,7 @@ class ApiController
     }
 
     public function allMoviesAction( Request $req, Application $app ) {
-        $lang = $app['session']->get('lang');
+        $lang = $app['translator']->getLocale();
 
         $result = $app['idiorm.db']
             ->for_table('projects')
@@ -48,13 +49,21 @@ class ApiController
     }
 
     public function movieDescriptionAction( Request $req, Application $app ) {
-        $lang_id = $app['idiorm.db']
+        $lang = $app['translator']->getLocale();
+
+        $lang_id_query = $app['idiorm.db']
             ->for_table('lang')
             ->select('id')
-            ->where('name', $app['session']->get('lang'))
-            ->find_one()['id'];
+            ->where('name', $lang)
+            ->find_one();
 
-        $id = $req->attributes->get('id');
+        if (!$lang_id_query) {
+            throw new Exception("no lang_id was found");
+        }
+
+        $lang_id = $lang_id_query->get('id');
+
+        $project_id = $req->attributes->get('id');
 
         $result = $app['idiorm.db']
             ->for_table('projects')
@@ -70,23 +79,33 @@ class ApiController
                 'pl.description'
             )
             ->join('project_lang', array('p.id', '=', 'pl.project_id'), 'pl')
-            ->where('p.id', $id)
+            ->where('p.id', $project_id)
             ->where('p.active', true)
             ->where('pl.lang_id', $lang_id)
-            ->find_one()
-            ->as_array();
+            ->find_one();
 
-        $result['table'] = $app['idiorm.db']
+        if ($result) {
+            $model = $result->as_array();
+        }
+        else {
+            throw new Exception("Project was not found");
+        }
+
+        $result = $app['idiorm.db']
             ->for_table('project_field_lang')
-            ->where('project_id', $id)
+            ->where('project_id', $project_id)
             ->where('lang_id', $lang_id)
             ->find_array();
 
-        $result['comments'] = $app['idiorm.db']
+        $model['table'] = $result || array();
+
+        $result = $app['idiorm.db']
             ->for_table('project_comment_lang')
-            ->where('project_id', $id)
+            ->where('project_id', $project_id)
             ->where('lang_id', $lang_id)
             ->find_array();
+
+        $model['comments'] = $result || array();
 
         return json_encode($result);
     }
