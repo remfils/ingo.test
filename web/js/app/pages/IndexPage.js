@@ -145,7 +145,7 @@ export default class IndexPage extends React.Component {
         }, 2000);
     }
 
-    currentMovieClickListener() {
+    currentMovieClickListener(event) {
         event.preventDefault();
 
         console.log("CLICK: ", this.current_content_index);
@@ -172,6 +172,8 @@ export default class IndexPage extends React.Component {
 
     render() {
         console.log("RENDER(IndexPage): ");
+
+        var self = this;
 
         if ( this.content.length == 0 ) {
             return <div></div>;
@@ -202,7 +204,7 @@ export default class IndexPage extends React.Component {
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} onClick={this.currentMovieClickListener.bind(this)} />
+                <ImageRotator onClick={self.currentMovieClickListener.bind(self)} class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 
                 <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>
