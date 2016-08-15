@@ -120,31 +120,6 @@ export default class MoviePage extends React.Component {
                     this.loadDataForCurrentMovie();
                 }
             });
-
-            /*$.ajax({
-                url: config.SITE_NAME + 'api/all-movies',
-                dataType: 'json',
-                success: (data) => {
-                    this.movies = data.map((item) => {
-                        var movie = new MovieModel(item);
-                        movie.logo = asset(movie.logo);
-                        return movie;
-                    });
-
-                    var movie = this.movies[this.current_movie_index];
-                    TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
-                    TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
-
-                    if ( this.props.transition ) {
-                        this.arrangeTransition(this.props.transition);
-                    }
-
-                    this.loadMovieFromAPI(movie);
-                },
-                error: (err) => {
-                    console.log('error ' + err);
-                }
-            });*/
         }
     }
 
@@ -169,28 +144,6 @@ export default class MoviePage extends React.Component {
                 });
             }
         })
-    }
-
-    loadMovieFromAPI ( movie, callback ) {
-        /*this.is_movie_loaded = false;
-
-        this.setState({project_name: movie.name, project_year: movie.year});
-
-        movie.getMoreData(() => {
-            this.is_movie_loaded = true;
-
-            if ( !this.is_transition ) {
-                this.setState({
-                    current_movie: movie,
-                    description: <Description movie={movie} />
-                });
-                this.showMovieParts();
-            }
-
-            if ( callback ) {
-                callback();
-            }
-        });*/
     }
 
     componentWillUnmount() {
@@ -247,20 +200,7 @@ export default class MoviePage extends React.Component {
 
         this.setState({movement_direction: "left"});
 
-        var current_movie = this.short_models[this.current_movie_index];
-
         this.current_movie_index--;
-        var next_movie = this.next_movie = this.short_models[this.current_movie_index];
-
-        /*$('.movie-curtain').addClass('left');
-        $('.next-image').addClass('left');
-
-        $('.current-image').css('z-index', 1);
-        $('#cover1').css('background', current_movie.color);
-        $('#cover2').css('background', next_movie.color);
-        $('.next-image').css({
-            "background-image": "url(" + next_movie.logo + ")",
-            "z-index": 10});*/
 
         this.transitionToNextMovie(true);
 
@@ -276,19 +216,7 @@ export default class MoviePage extends React.Component {
 
         this.setState({movement_direction: "right"});
 
-        var current_movie = this.short_models[this.current_movie_index];
-
         this.current_movie_index++;
-        var next_movie = this.next_movie = this.short_models[this.current_movie_index];
-
-        /*$('.movie-curtain').addClass('right');
-
-        $('.current-image').css('z-index', 1);
-        $('#cover1').css('background', current_movie.color);
-        $('#cover2').css('background', next_movie.color);
-        $('.next-image').css({
-            "background-image": "url(" + next_movie.logo + ")",
-            "z-index": 10});*/
 
         this.transitionToNextMovie(false);
 
@@ -304,73 +232,6 @@ export default class MoviePage extends React.Component {
         this.loadDataForCurrentMovie();
 
         window.history.pushState({}, '', '/movie/' + this.short_models[this.current_movie_index].id);
-
-        /*this.is_transition = true;*/
-
-        /*var title_tl = new TimelineLite();
-        title_tl.to('.project-title', 0.5, {
-            opacity: 0
-        });
-        title_tl.to('.project-title', 0.5, {
-            opacity: 1,
-            onComplete: () => {
-                this.is_transition = false;
-                if ( this.is_movie_loaded ) {
-                    this.setState({
-                        current_movie: this.next_movie,
-                        description: <Description movie={this.next_movie} />
-                    });
-                    this.showMovieParts();
-                }
-            }
-        });*/
-
-        /*var col = this.movies[this.current_movie_index].color;
-        var $movie_title = $('.movie-title-section');
-
-        var color_obj = {bgc: this.state.current_movie.color};
-        TweenMax.to(color_obj, 1, {bgc: this.next_movie.color, onUpdate: (co) => {
-            this.setScrollmagicScene(co.bgc);
-        }, onUpdateParams: [color_obj]});
-
-        var tl = new TimelineLite();
-        tl.to('#cover1', this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE})
-            .to("#cover2", this.SWITCH_DURATION, {delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
-            .from(".next-image", this.SWITCH_DURATION, {
-                delay: this.SWITCH_B_DELAY,
-                x: (is_left ? "-" : "") + "100%",
-                ease: this.SWITCH_EASE,
-                onComplete: () => {
-                    $('.movie-curtain').removeClass('left')
-                        .removeClass('right');
-
-                    var $next_image = $('.next-image');
-                    var $current_image = $('.current-image');
-
-                    $next_image.removeClass('left')
-                        .removeClass('right');
-
-                    var bgi = $next_image.css('background-image');
-                    $next_image.css('background-image', $current_image.css('background-image'));
-                    $current_image.css('background-image', bgi);
-
-                    $current_image.css('z-index', 10);
-                    $next_image.css('z-index', 1);
-                }
-            })
-            .set('#cover1', {width: "0"})
-            .set('#cover2', {width: "0"});*/
-
-        /*var tl = new TimelineLite();
-        $($('.project-stats tr').get().reverse()).each((i, item) => {
-            var interval = 0.7 / 4;
-            tl.to(item, interval, { delay: - interval / 5, opacity: 0, x: "-100%", ease: Power3.easeIn});
-        });
-        tl.to(window, 0, {onComplete: () => {
-            TweenLite.set('.project-stats tr', {x: "+=100%"});
-        }});*/
-
-        //this.render();
     }
 
     showMovieParts() {
