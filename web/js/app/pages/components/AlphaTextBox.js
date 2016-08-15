@@ -8,16 +8,9 @@ export default class AlphaTextBox extends React.Component {
     constructor() {
         super();
 
-        this.text_before = "";
-        this.text = "";
-
         AlphaTextBox.box_counter ++;
 
         this.id = "AlphaTextBox" + AlphaTextBox.box_counter;
-
-        this.state = {
-            is_transition: false
-        };
     }
 
     get id() {
@@ -28,37 +21,35 @@ export default class AlphaTextBox extends React.Component {
         this._id = val;
     }
 
+    componentWillMount() {
+        this.setState({
+            text: this.props.text
+        });
+    }
+
+    componentShouldUpdate(nextProps, nextState) {
+        if (this.props.text == nextProps.text) {
+            return false;
+        }
+
+        return super.componentShouldUpdate(nextProps, nextState);
+    }
+
     componentWillUpdate(nextProps, nextState) {
         var $this = $(this.id);
 
-        this.text_before = this.props.text;
-        this.text = nextProps.text;
+        var text = nextProps.text;
 
         TweenLite.to($this, 1, {opacity: 0, onComplete: () => {
-            this.text_before = "";
 
-            this.setState({
-                is_transition: true
-            });
+            this.setState({text: text});
 
             TweenLite.to($this, 1, {opacity: 1, onComplete: () => {console.log("all completed")}})
         }});
     }
 
     render() {
-        if ( !this.text ) {
-            this.text = this.props.text;
-        }
-
-        var text = this.text;
-
-        if ( this.text_before ) {
-            text = this.text_before;
-        }
-
-        console.log(text);
-
-        console.log("AlphaTextBox rendered");
+        var text = this.state.text;
 
         return <div id={this._id} className={this.props.className} >
             {text}
