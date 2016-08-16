@@ -16,7 +16,7 @@ import Description from './MoviePage/Description';
 import * as TransitionActions from "../actions/TransitionActions";
 import { asset } from '../funcitons';
 import config from '../config';
-import MovieModel from '../models/MovieModel';
+/*import MovieModel from '../models/MovieModel';*/
 import ShortProjectModel from '../models/ShortProjectModel';
 import ProjectModel from '../models/ProjectModel';
 
@@ -258,9 +258,11 @@ export default class MoviePage extends React.Component {
             bg_color = this.Model.color;
         }
 
-        console.debug("DEBUG(setScrollmagicScene): bg_color", bg_color);
-
         if ( isForced || !this.scroll_magic_scene ) {
+            if (this.scroll_magic_scene) {
+                this.scroll_magic_scene.destroy();
+            }
+
             var controller = new ScrollMagic.Controller();
 
             this.scroll_magic_scene = new ScrollMagic.Scene({
