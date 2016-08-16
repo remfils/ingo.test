@@ -1,7 +1,13 @@
 import React from 'react';
 import ScrollMagic from 'scrollmagic';
 import 'imports?define=>false!scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap';
+
 var $ = require('jquery');
+
+import AlphaBox from "./components/AlphaBox";
+import SlidingTableRow from "./components/SlidingTableRow";
+import MovieImageRotator from "./MoviePage/MovieImageRotator";
+import MovieFieldsTable from "./MoviePage/MovieFieldsTable";
 
 import TransitionStore from '../stores/TransitionStore';
 import SmallDescription from './MoviePage/SmallDescription';
@@ -11,6 +17,8 @@ import * as TransitionActions from "../actions/TransitionActions";
 import { asset } from '../funcitons';
 import config from '../config';
 import MovieModel from '../models/MovieModel';
+import ShortProjectModel from '../models/ShortProjectModel';
+import ProjectModel from '../models/ProjectModel';
 
 export default class MoviePage extends React.Component {
     constructor() {
@@ -24,6 +32,8 @@ export default class MoviePage extends React.Component {
         this.current_movie_index = 0;
         this.next_movie = null;
 
+        this.short_models = [];
+
         this.SWITCH_DURATION = 1.2;
         this.SWITCH_EASE = Expo.easeOut;
         this.SWITCH_A_DELAY = -this.SWITCH_DURATION * 2.8 / 3;
@@ -33,12 +43,29 @@ export default class MoviePage extends React.Component {
             project_name: "",
             project_year: "",
             current_movie: null,
-            description: null
+            description: null,
+            movement_direction: "left"
         }
+    }
+
+    get Model () {
+        if (this.short_models.length === 0) {
+            return null;
+        }
+
+        if (this.state.current_movie) {
+            return this.state.current_movie;
+        }
+
+        return this.short_models[this.current_movie_index];
     }
 
     hadleTransitionAnimations() {
         var transition = this.props.transition;
+
+        if (!transition) {
+            return;
+        }
 
         $("#MoviePage").css({"z-index": 99});
         
@@ -52,73 +79,68 @@ export default class MoviePage extends React.Component {
     }
 
     enterFromIndexPage() {
-        TweenLite.from($(".movie-title-section"), 1, {y: "+=100%", onComplete: () => {
-            $("#MoviePage .current-image").css("display", "block");
-        }});
-
-        $("#MoviePage .current-image").css("display", "none");
+        TweenLite.from($("#MoviePage"), 1, {y: "+=100%"});
     }
 
     componentWillMount() {
         if ( this.props.movies ) {
-            this.movies = this.props.movies;
+            console.log("DEBUG(MoviePage.componentWillMount): ", this.props.movies);
+
+            this.short_models = this.props.movies;
+
             this.current_movie_index = this.props.current_movie_index;
 
-            var movie = this.movies[this.current_movie_index];
-            movie.getMoreData( () => {
-                console.log("componentWillMount: current Movie Loaded");
-                this.setState({
-                    current_movie: movie
-                });
-            } );
+            this.loadDataForCurrentMovie();
         }
         else {
+            console.debug("DEBUG(MoviePage.componentWillMount): init load");
+
             $.ajax({
                 url: config.SITE_NAME + 'api/all-movies',
                 dataType: 'json',
                 success: (data) => {
-                    this.movies = data.map((item) => {
-                        var movie = new MovieModel(item);
-                        movie.logo = asset(movie.logo);
+                    var movie_id = this.props.current_movie_index;
+
+                    this.short_models = data.map((item, index) => {
+                        var movie = new ShortProjectModel();
+                        movie.parseJsonData(item);
+
+                        if ( movie.id == movie_id ) {
+                            this.current_movie_index = index;
+                        }
+
                         return movie;
                     });
 
-                    var movie = this.movies[this.current_movie_index];
-                    TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
-                    TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
+                    console.debug("DEBUG(MoviePage.componentWillMount): recived", this.short_models);
 
-                    if ( this.props.transition ) {
-                        this.arrangeTransition(this.props.transition);
-                    }
+                    this.init();
 
-                    this.loadMovieFromAPI(movie);
-                },
-                error: (err) => {
-                    console.log('error ' + err);
+                    this.loadDataForCurrentMovie();
                 }
             });
         }
     }
 
-    /* DEPRECATED */
-    loadMovieFromAPI ( movie, callback ) {
-        this.is_movie_loaded = false;
+    loadDataForCurrentMovie() {
+        this.setState({current_movie: null});
 
-        this.setState({project_name: movie.name, project_year: movie.year});
+        var movie = this.short_models[this.current_movie_index];
 
-        movie.getMoreData(() => {
-            this.is_movie_loaded = true;
+        console.debug("DEBUG(MoviePage.loadDataForCurrentMovie): loading movie ", movie);
 
-            if ( !this.is_transition ) {
+        $.ajax({
+            url: config.SITE_NAME + 'api/movie/' + movie.id,
+            dataType: 'json',
+            success: (data) => {
+                var prj = new ProjectModel()
+                prj.parseJsonData(data);
+
+                console.debug("DEBUG(MoviePage.loadDataForCurrentMovie): prj, data", prj, data);
+
                 this.setState({
-                    current_movie: movie,
-                    description: <Description movie={movie} />
+                    current_movie: prj
                 });
-                this.showMovieParts();
-            }
-
-            if ( callback ) {
-                callback();
             }
         });
     }
@@ -130,13 +152,23 @@ export default class MoviePage extends React.Component {
     componentDidMount() {
         this.hadleTransitionAnimations();
 
-        var movie = this.movies[this.current_movie_index];
+        this.init();
+    }
+
+    init() {
+        var movie = this.Model;
+
+        if (!movie)
+            return;
+
         TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
         TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
 
         this.preview_iframe = $('.project-demo-video > iframe')[0];
 
         this.resizePreviewIframe();
+
+        this.setScrollmagicScene(null, true);
 
         $(window).resize(this.resizePreviewIframe.bind(this));
     }
@@ -165,20 +197,9 @@ export default class MoviePage extends React.Component {
             return false;
         }
 
-        var current_movie = this.movies[this.current_movie_index];
+        this.setState({movement_direction: "left"});
 
         this.current_movie_index--;
-        var next_movie = this.next_movie = this.movies[this.current_movie_index];
-
-        $('.movie-curtain').addClass('left');
-        $('.next-image').addClass('left');
-
-        $('.current-image').css('z-index', 1);
-        $('#cover1').css('background', current_movie.color);
-        $('#cover2').css('background', next_movie.color);
-        $('.next-image').css({
-            "background-image": "url(" + next_movie.logo + ")",
-            "z-index": 10});
 
         this.transitionToNextMovie(true);
 
@@ -188,23 +209,13 @@ export default class MoviePage extends React.Component {
     nextMovieClick(event) {
         event.preventDefault()
 
-        if ( this.isTransitionLocked() || (this.current_movie_index + 1 >= this.movies.length) ) {
+        if ( this.isTransitionLocked() || (this.current_movie_index + 1 >= this.short_models.length) ) {
             return false;
         }
 
-        var current_movie = this.movies[this.current_movie_index];
+        this.setState({movement_direction: "right"});
 
         this.current_movie_index++;
-        var next_movie = this.next_movie = this.movies[this.current_movie_index];
-
-        $('.movie-curtain').addClass('right');
-
-        $('.current-image').css('z-index', 1);
-        $('#cover1').css('background', current_movie.color);
-        $('#cover2').css('background', next_movie.color);
-        $('.next-image').css({
-            "background-image": "url(" + next_movie.logo + ")",
-            "z-index": 10});
 
         this.transitionToNextMovie(false);
 
@@ -217,73 +228,9 @@ export default class MoviePage extends React.Component {
     }
 
     transitionToNextMovie( is_left, callback ) {
-        this.is_transition = true;
+        this.loadDataForCurrentMovie();
 
-        var title_tl = new TimelineLite();
-        title_tl.to('.project-title', 0.5, {
-            opacity: 0,
-            onComplete: () => {
-                this.loadMovieFromAPI(this.movies[this.current_movie_index]);
-            }
-        });
-        title_tl.to('.project-title', 0.5, {
-            opacity: 1,
-            onComplete: () => {
-                this.is_transition = false;
-                if ( this.is_movie_loaded ) {
-                    this.setState({
-                        current_movie: this.next_movie,
-                        description: <Description movie={this.next_movie} />
-                    });
-                    this.showMovieParts();
-                }
-            }
-        });
-
-        var col = this.movies[this.current_movie_index].color;
-        var $movie_title = $('.movie-title-section');
-
-        var color_obj = {bgc: this.state.current_movie.color};
-        TweenMax.to(color_obj, 1, {bgc: this.next_movie.color, onUpdate: (co) => {
-            this.setScrollmagicScene(co.bgc);
-        }, onUpdateParams: [color_obj]});
-
-        var tl = new TimelineLite();
-        tl.to('#cover1', this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE})
-            .to("#cover2", this.SWITCH_DURATION, {delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
-            .from(".next-image", this.SWITCH_DURATION, {
-                delay: this.SWITCH_B_DELAY,
-                x: (is_left ? "-" : "") + "100%",
-                ease: this.SWITCH_EASE,
-                onComplete: () => {
-                    $('.movie-curtain').removeClass('left')
-                        .removeClass('right');
-
-                    var $next_image = $('.next-image');
-                    var $current_image = $('.current-image');
-
-                    $next_image.removeClass('left')
-                        .removeClass('right');
-
-                    var bgi = $next_image.css('background-image');
-                    $next_image.css('background-image', $current_image.css('background-image'));
-                    $current_image.css('background-image', bgi);
-
-                    $current_image.css('z-index', 10);
-                    $next_image.css('z-index', 1);
-                }
-            })
-            .set('#cover1', {width: "0"})
-            .set('#cover2', {width: "0"});
-
-        var tl = new TimelineLite();
-        $($('.project-stats tr').get().reverse()).each((i, item) => {
-            var interval = 0.7 / 4;
-            tl.to(item, interval, { delay: - interval / 5, opacity: 0, x: "-100%", ease: Power3.easeIn});
-        });
-        tl.to(window, 0, {onComplete: () => {
-            TweenLite.set('.project-stats tr', {x: "+=100%"});
-        }});
+        window.history.pushState({}, '', '/movie/' + this.short_models[this.current_movie_index].id);
     }
 
     showMovieParts() {
@@ -302,12 +249,18 @@ export default class MoviePage extends React.Component {
         }
     }
 
-    setScrollmagicScene(bg_color) {
+    componentDidUpdate() {
+        this.setScrollmagicScene(null, true);
+    }
+
+    setScrollmagicScene(bg_color, isForced) {
         if ( !bg_color ) {
-            bg_color = this.movies[this.current_movie_index].color;
+            bg_color = this.Model.color;
         }
 
-        if ( !this.scroll_magic_scene ) {
+        console.debug("DEBUG(setScrollmagicScene): bg_color", bg_color);
+
+        if ( isForced || !this.scroll_magic_scene ) {
             var controller = new ScrollMagic.Controller();
 
             this.scroll_magic_scene = new ScrollMagic.Scene({
@@ -324,67 +277,61 @@ export default class MoviePage extends React.Component {
 
     render() {
         var movie_table;
-        var movie = this.state.current_movie || this.movies[this.current_movie_index];
+        var movie = this.Model;
+
+        console.debug("RENDER(MoviePage): movie, direction", movie, this.state.movement_direction);
+
+        if ( !movie ) {
+            return <div></div>;
+        }
+
+        var movement_direction = this.state.movement_direction;
+
+        var is_short_model = movie instanceof ShortProjectModel;
 
         var movie_name = movie.name;
         var movie_year = movie.year;
         
         var current_logo_style = {backgroundImage: "url(" + movie.logo + ")"};
 
-        var description = "";
+        if ( movie.project_info_table ) {
+            console.log("RENDER(MoviePage): movie.project_info_table", movie.project_info_table);
+            movie_table = movie.project_info_table.map((item) => {
+                return <SlidingTableRow field_key={item['field_name']} field_val={item.field_value} />;
+            });
 
-        if ( movie ) {
-
-            if ( movie.project_info_table ) {
-                movie_table = movie.project_info_table.map((item) => {
-                    return <tr>
-                        <td>{ item.field_name }:</td>
-                        <td>{ item.field_value }</td>
-                    </tr>;
-                });
-            }
-
-            if ( movie.description && movie.comments ) {
-                description = <Description movie={movie} />;
-            }
+            console.log("RENDER(MoviePage): movie_table", movie_table);
         }
-        else {
-            movie = new MovieModel({id: '',name:'',year:"",logo:""});
-        }
-
-        var id = "Movie" + 0;
 
         return (
             <div id="MoviePage" class="content">
 
                 <section class="project-title-section">
                     <div class="movie-curtain"></div>
-                    <div class="project-main-image">
-                        <div class="current-image" style={current_logo_style}></div>
-                        <div id="cover1" class="movie-curtain"></div>
-                        <div id="cover2" class="movie-curtain"></div>
-                        <div class="next-image"></div>
-                    </div>
+
+                    <MovieImageRotator image_url={movie.logo} movie={movie} direction={movement_direction} />
 
                     <div class="default-side-padding movie-title-section">
-                        <h1 class="project-title">{ movie_name }<span class="project-year"> { movie_year }</span></h1>
-                        <div class="movies-nav">
-                            <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
-                            <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
-                        </div>
+                        <table class="movie-navigation">
+                            <tr>
+                                <td>
+                                    <AlphaBox>
+                                        <h1 class="project-title">{ movie_name }<span class="project-year"> { movie_year }</span></h1>
+                                    </AlphaBox>
+                                </td>
+                                <td class="cell-movies-nav">
+                                    <div class="movies-nav">
+                                        <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
+                                        <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </section>
 
                 <section class="default-side-padding project-sm-dsc">
-                    <table class="col-30p project-stats">
-                        <tr>
-                            <th>Project:</th>
-                            <th>{ movie.name }</th>
-                        </tr>
-
-                        {movie_table}
-
-                    </table>
+                    <MovieFieldsTable movie={movie} class="col-30p project-stats" />
 
                     <div class="col-70p project-demo-video">
                         <iframe height="60%" src={movie.preview_url} frameBorder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
@@ -394,7 +341,7 @@ export default class MoviePage extends React.Component {
                     </div>
                 </section>
 
-                { description }
+                <Description movie={movie} />
 
                 <footer class="default-side-padding project-footer">
                     <a href="#goTop">Contact</a>

@@ -41,14 +41,15 @@ export default class Description extends React.Component {
         var description_html = {__html: movie.description };
 
         var comments = movie.comments.map((item) => {
+            console.log("DESCRIPTION RENDER: ", item);
             var text_html = {__html: item.text };
 
-            return <div class="info-block">
-                <div class="col-30p info-text" dangerouslySetInnerHTML={text_html} />
-                <div class="col-70p info-img">
+            return <tr class="info-block">
+                <td class="info-text" dangerouslySetInnerHTML={text_html} />
+                <td class="info-img">
                     <img src={ asset(item.image_url) } alt="Girl"/>
-                </div>
-            </div>
+                </td>
+            </tr>
         });
 
         return (
@@ -59,17 +60,18 @@ export default class Description extends React.Component {
                             <h1>ZUM PROJEKT:</h1>
                             <h1><strong>{movie.name} {movie.year}</strong></h1>
                         </div>
-                        
+
                         <div class="col-70p project-desctription-text" dangerouslySetInnerHTML={description_html}></div>
                     </div>
                 </section>
 
                 <section className="default-side-padding more-info">
-
-                    { comments }
-
+                    <table className="movie-comments">
+                        { comments }
+                    </table>
                 </section>
             </div>
         );
     }
+
 }

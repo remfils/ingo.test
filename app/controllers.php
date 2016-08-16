@@ -1,6 +1,7 @@
 <?php
 
 $app->get('/', 'App\\Controllers\\MainController::indexAction');
+$app->get('/movie/{id}', 'App\\Controllers\\MainController::indexAction');
 
 /* API */
 

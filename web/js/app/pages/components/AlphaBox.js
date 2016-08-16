@@ -2,15 +2,19 @@ import React from "react";
 
 var $ = require('jquery');
 
-export default class AlphaTextBox extends React.Component {
+export default class AlphaBox extends React.Component {
     static box_counter = 0;
 
     constructor() {
         super();
 
-        AlphaTextBox.box_counter ++;
+        AlphaBox.box_counter ++;
 
-        this.id = "AlphaTextBox" + AlphaTextBox.box_counter;
+        this.id = "AlphaBox" + AlphaBox.box_counter;
+
+        this.state = {
+            is_transition: false
+        };
     }
 
     get id() {
@@ -22,34 +26,35 @@ export default class AlphaTextBox extends React.Component {
     }
 
     componentWillMount() {
+        var children = this.props.children;
+
         this.setState({
-            text: this.props.text
+            children: children
         });
     }
 
-    componentShouldUpdate(nextProps, nextState) {
-        if (this.props.text == nextProps.text) {
-            return false;
+    componentWillUpdate(nextProps, nextState) {
+        if ( this.props.children == nextProps.children ) {
+            return;
         }
 
-        return super.componentShouldUpdate(nextProps, nextState);
-    }
-
-    componentWillUpdate(nextProps, nextState) {
         var $this = $(this.id);
 
-        var text = nextProps.text;
+        var children = nextProps.children;
 
         TweenLite.to($this, 1, {opacity: 0, onComplete: () => {
 
-            this.setState({text: text});
+            this.setState({
+                is_transition: true,
+                children: children
+            });
 
             TweenLite.to($this, 1, {opacity: 1, onComplete: () => {console.log("all completed")}})
         }});
     }
 
     render() {
-        var text = this.state.text;
+        var text = this.state.children;
 
         return <div id={this._id} className={this.props.className} >
             {text}

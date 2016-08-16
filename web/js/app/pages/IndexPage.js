@@ -10,7 +10,7 @@ import AlphaTextBox from "./components/AlphaTextBox";
 import BracketTextBox from "./components/BracketTextBox";
 import ImageRotator from "./components/ImageRotator";
 import TitleColoredTable from "./IndexPage/TitleColoredTable";
-import MovieModel from "../models/MovieModel";
+import ShortProjectModel from "../models/ShortProjectModel";
 
 export default class IndexPage extends React.Component {
     constructor() {
@@ -34,7 +34,7 @@ export default class IndexPage extends React.Component {
 
     set current_content_index(val) {
         if ( val < 0 ) {
-            this._cci = this.content.length;
+            this._cci = this.content.length - 1;
         }
         else if ( val >= this.content.length ) {
             this._cci = 0;
@@ -60,9 +60,6 @@ export default class IndexPage extends React.Component {
     }
 
     componentWillMount() {
-        console.log(config.SITE_NAME + 'api/all-movies');
-        var movie_counter = 1;
-
         var padIntegerWithZeros = function (num, places) {
             var zero = places - num.toString().length + 1;
             return Array(+(zero > 0 && zero)).join("0") + num;
@@ -72,23 +69,23 @@ export default class IndexPage extends React.Component {
             url: config.SITE_NAME + 'api/all-movies',
             dataType: 'json',
             success: (data) => {
-                this.content = data.map((item) => {
-                    var movie = new MovieModel(item);
+                this.content = data.map((item, index) => {
+                    var content = new ShortProjectModel();
 
-                    var content = new IndexContent();
-                    content.page_name = padIntegerWithZeros(movie_counter++, 2);
-                    content.setFromMovieModel(movie);
+                    content.parseJsonData(item);
+                    content.page_name = index + 1;
+
                     return content;
                 });
 
-                console.log(data, this.content);
+                console.log("DEBUG: data loaded", data, this.content);
 
                 this.setState({
                     current_content: this.content[this.current_content_index]
                 });
             },
             error: (err) => {
-                console.log('error ' + err);
+                console.log('ERROR:  ' + err);
             }
         });
 
@@ -137,7 +134,8 @@ export default class IndexPage extends React.Component {
         this.current_content_index++;
 
         this.setState({
-            current_content: this.content[this.current_content_index]
+            current_content: this.content[this.current_content_index],
+            movement_direction: "right"
         });
 
         setTimeout(()=>{
@@ -151,7 +149,8 @@ export default class IndexPage extends React.Component {
         this.current_content_index--;
 
         this.setState({
-            current_content: this.content[this.current_content_index]
+            current_content: this.content[this.current_content_index],
+            movement_direction: "left"
         });
 
         setTimeout(()=>{
@@ -159,14 +158,15 @@ export default class IndexPage extends React.Component {
         }, 2000);
     }
 
-    currentMovieClickListener() {
-        console.log("currentMovieClickListener: ", this.current_content_index);
+    currentMovieClickListener(event) {
+        event.preventDefault();
+
+        console.log("CLICK: ", this.current_content_index);
 
         var movies = [];
         this.content.forEach((item, index, array)=>{
             if ( item.content_type == "movie" ) {
                 movies.push(item.model);
-
             }
         });
 
@@ -174,7 +174,6 @@ export default class IndexPage extends React.Component {
     }
 
     leaveToMoviePage() {
-        console.log("leaveToMoviePage: leaving to movie page");
         TweenLite.to( $(".title-project-dsc"), 1, {left: "-=60%"} );
         TweenLite.to( $(".img-front"), 1, {left: "0", height: "70%"} );
         TweenLite.to( $(".title-header"), 1, {opacity: 0, onComplete: () => {
@@ -184,44 +183,42 @@ export default class IndexPage extends React.Component {
     }
 
     render() {
-        var content = this.getContent(this.current_content_index);
-        var prev_content = this.getContent(this.current_content_index - 1);
-        var next_content = this.getContent(this.current_content_index + 1);
-        var next2_content = this.getContent(this.current_content_index + 2);
-        
-        if ( !content ) {
-            return <div>Loading...</div>;
+        console.log("RENDER(IndexPage): ");
+
+        var self = this;
+
+        if ( this.content.length == 0 ) {
+            return <div></div>;
         }
 
-        /*console.log("PREV:", next_content);
+        var content = this.getContent(this.current_content_index);
+        var next_content = this.getContent(this.current_content_index + 1);
+        var last_content = this.getContent(this.current_content_index + 2);
+        var prev_content = this.getContent(this.current_content_index - 1);
 
-        var img_back_url = next_content.getLogo() || "",
-            img_current_url = content.getLogo(),
-            img_next = next2_content.getLogo();*/
-        
-        var images = [
-            next2_content.getLogo(),
-            next_content.getLogo(),
-            content.getLogo(),
-            prev_content.getLogo()
-        ];
+        console.log("RENDER(IndexPage): contents", content, next_content, last_content, prev_content);
 
-        console.log("render: ", next_content, content, next2_content);
+        var img_back_url = next_content.logo_short,
+            img_current_url = content.logo_short,
+            img_next = prev_content.logo_short,
+            img_last = last_content.logo_short;
 
-        var color = content.getColor();
+        console.log("RENDER(IndexPage): image urls", img_back_url, img_current_url, img_next, img_last);
+
+        var color = content.color;
 
         var page_name = content.page_name;
-        var large_name = content.getLargeName();
-        var small_name = content.getSmallName();
+        var large_name = content.name;
+        var small_name = content.genre;
 
-        var description_text = content.getDescription();
+        var description_text = content.short_description;
 
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator images={images} onClick={this.currentMovieClickListener.bind(this)} />
+                <ImageRotator onClick={self.currentMovieClickListener.bind(self)} class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 
-                <TitleColoredTable className="title-project-dsc" color={color}>
+                <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>
                         <td class="title-navigation">
                             <ul>
@@ -242,7 +239,7 @@ export default class IndexPage extends React.Component {
                     </tr>
                     <tr>
                         <td class="title-footer">
-                            ++ Ingo Scheel Kameramann I DOP für:  Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
+                            ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
                         </td>
                     </tr>
                 </TitleColoredTable>
@@ -259,85 +256,5 @@ export default class IndexPage extends React.Component {
 
             </section>
         );
-    }
-}
-
-class IndexContent {
-    constructor() {
-        this.page_name = "";
-        this.description = "THIS IS DSC";
-        this.large_name = "";
-        this.small_name = "";
-        this.img_back = "";
-        this.img_front = "";
-        this.logo = "";
-        this.color = "#ffffff";
-        this.content_type = "raw";
-        this.model = null;
-    }
-
-    setFromMovieModel(model) {
-        this.model = model;
-        this.content_type = "movie";
-    }
-
-    getLargeName() {
-        switch(this.content_type) {
-            case "movie":
-                return this.model.name;
-                break;
-            default:
-                return this.large_name;
-        }
-    }
-
-    getSmallName() {
-        switch(this.content_type) {
-            case "movie":
-                return this.model.genre;
-                break;
-            default:
-                return this.small_name;
-        }
-    }
-
-    getColor() {
-        switch(this.content_type) {
-            case "movie":
-                return this.model.color;
-                break;
-            default:
-                return this.color;
-        }
-    }
-
-    getDescription() {
-        switch(this.content_type) {
-            case "movie":
-                return this.model.description;
-                break;
-            default:
-                return this.description;
-        }
-    }
-
-    getLogo() {
-        switch(this.content_type) {
-            case "movie":
-                return this.model.logo;
-                break;
-            default:
-                return this.logo;
-        }
-    }
-
-    parseAllMoviesData(data) {
-        //this.page_name = this.padIntegerWithZeros(data.movie_count, 2);
-        this.large_name = data.name;
-        this.small_name = data.genre;
-        //this.img_front = asset(data.logo);
-        this.logo = asset(data.logo);
-        this.color = data.color;
-        this.content_type = "movie";
     }
 }

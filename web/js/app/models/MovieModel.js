@@ -10,12 +10,13 @@ export default class MovieModel {
         this.name = movie_data.name;
         this.year = movie_data.year;
         this.logo = asset(movie_data.logo);
+        this.logo_short = asset(movie_data.logo_short);
         this.color = movie_data.color;
         this.genre = movie_data.genre;
         this.description = movie_data.description;
 
         this.project_info_table = null;
-        this.preview_url = null;
+        this.preview_url = movie_data.preview_url;
         this.comments = null;
     }
 

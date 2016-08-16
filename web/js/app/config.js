@@ -1,12 +1,9 @@
 var config = {
     DEBUG: false,
-    HOME: true,
     SITE_NAME: "http://" + document.domain + "/"
 };
 
-if ( config.HOME ) {
-     config.SITE_NAME = "http://" + document.domain + "/";
-};
+console.log(config.SITE_NAME);
 
 config['ASSET_PATH'] = config.SITE_NAME + "web/";
 
