@@ -23,21 +23,28 @@ Editing Project:
                     <img src="{{ app.asset_path }}/{{ movie.logo }}" alt="Movie Logo" width="100%">
                 </div>
                 <div class="col-sm-2">
-                    <input type="file" id="logo" name="logo" value="{{ movie.logo }}"/>
+                    <input type="file" id="logo" name="project[logo]" value="{{ movie.logo }}"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">Name:</label>
                 <div class="col-sm-10">
-                    <input type="text" id="name" name="name" class="form-control" value="{{ movie.name }}"/>
+                    <input type="text" id="name" name="project[de][name]" class="form-control" value="{{ movie.name }}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Name:</label>
+                <div class="col-sm-10">
+                    <input type="text" id="name" name="project[en][name]" class="form-control" value="{{ movie.name }}"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="year" class="col-sm-2 control-label">Year:</label>
                 <div class="col-sm-10">
-                    <input type="text" id="year" name="year" class="form-control" value="{{ movie.year }}"/>
+                    <input type="text" id="year" name="project[year]" class="form-control" value="{{ movie.year }}"/>
                 </div>
             </div>
 
@@ -53,11 +60,11 @@ Editing Project:
                     <div id="field-{{ field.id }}" class="form-group">
                         <div class="col-lg-4 no-float">
                             <label for="field-name-{{ field.id }}">Field name:</label>
-                            <input type="text" id="field-name-{{ field.id }}" name="field_name_{{ field.id }}" class="form-control"  value="{{ field.field_name }}"/>
+                            <input type="text" id="field-name-{{ field.id }}" name="project[de][fields][{{ field.id }}][0]" class="form-control"  value="{{ field.field_name }}"/>
                         </div>
                         <div class="col-lg-4 no-float">
                             <label for="field-value-{{ field.id }}">Field value:</label>
-                            <input type="text" id="field-value-{{ field.id }}" name="field_value_{{ field.id }}" class="form-control" value="{{ field.field_value }}"/>
+                            <input type="text" id="field-value-{{ field.id }}" name="project[de][fields][{{ field.id }}][1]" class="form-control" value="{{ field.field_value }}"/>
                         </div>
                         <div class="col-sm-4 no-float" style="vertical-align: middle">
                             <span id="field-remove-{{ field.id }}" class="btn btn-sm btn-danger remove">Remove Field</span>
@@ -76,7 +83,7 @@ Editing Project:
             <div class="form-group">
                 <label for="preview_url" class="col-sm-2 control-label">Preview url:</label>
                 <div class="col-sm-10">
-                    <input type="text" id="preview_url" name="preview_url" class="form-control" value="{{ movie.preview_url }}"/>
+                    <input type="text" id="preview_url" name="project[preview_url]" class="form-control" value="{{ movie.preview_url }}"/>
                 </div>
             </div>
 
@@ -85,14 +92,14 @@ Editing Project:
             <div class="form-group">
                 <label for="color" class="col-sm-2 control-label">Color:</label>
                 <div class="col-sm-10">
-                    <input type="text" id="color" name="color" class="form-control" value="{{ movie.color }}" />
+                    <input type="text" id="color" name="project[color]" class="form-control" value="{{ movie.color }}" />
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="description" class="col-sm-2 control-label">Description:</label>
                 <div class="col-sm-10">
-                    <textarea type="text" id="description" name="description" class="form-control">{{ movie.description }}</textarea>
+                    <textarea type="text" id="description" name="project[de][description]" class="form-control">{{ movie.description }}</textarea>
                 </div>
             </div>
 
@@ -112,14 +119,14 @@ Editing Project:
                                 <img src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image" width="100%">
                             </div>
                             <div class="col-sm-6">
-                                <input type="file" name="comment_img_{{ comment.id }}" />
+                                <input type="file" name="project[comments][{{ comment.id }}][img]" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="comment_text_{{ comment.id }}" class="col-sm-2 control-label">Text:</label>
                             <div class="col-sm-10">
-                                <textarea name="comment_text_{{ comment.id }}" id="comment_text_{{ comment.id }}" class="form-control" >{{ comment.text }}</textarea>
+                                <textarea name="project[comments][{{ comment.id }}][text]" id="comment_text_{{ comment.id }}" class="form-control" >{{ comment.text }}</textarea>
                             </div>
                         </div>
                     </div>

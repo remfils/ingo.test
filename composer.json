@@ -12,7 +12,8 @@
         "symfony/security-csrf": "~2.8",
         "symfony/security": "~2.8",
         "doctrine/dbal": "2.4",
-        "arseniew/silex-idiorm-provider": "~1.1"
+        "arseniew/silex-idiorm-provider": "~1.1",
+        "raveren/kint": "^1.0"
     },
     "platform": {"php": "5.3"},
     "authors": [

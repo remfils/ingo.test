@@ -10,6 +10,8 @@ use Symfony\Component\Form\FormEvents;
 use App\Models\Project;
 use App\ProjectRepository;
 
+use Kint;
+
 class AdminController
 {
     public function indexAction( Request $req, Application $app )
@@ -195,12 +197,13 @@ class AdminController
     }
 
     public function editProjectPostAction( Request $req, Application $app ) {
-        $pr = new Project();
+        d($req->request->all());
+        /*$pr = new Project();
         $pr->id = $req->attributes->get('id');
 
         $pr->setProjectFromPost($req->request->all());
 
-        $pr->saveToDB($app);
+        $pr->saveToDB($app);*/
 
         return $app->redirect($app["url_generator"]->generate('admin_edit_project', array('id'=>$pr->id)));
     }

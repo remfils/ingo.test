@@ -1,4 +1,4 @@
-var $ = require('jquery');
+import $ from 'jquery';
 
 import * as AddPageScripts from './addPageScripts';
 
