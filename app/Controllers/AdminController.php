@@ -8,22 +8,24 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use App\Models\Project;
+use App\ProjectRepository;
 
 class AdminController
 {
     public function indexAction( Request $req, Application $app )
     {
         if ($app['security.authorization_checker']->isGranted('ROLE_USER')) {
-            $q = $app['db']->query('select * from projects');
-            $q->execute();
-            $projects = $q->fetchAll();
+            $db = new ProjectRepository($app);
+            $model = $db->getAllProjects();
 
             return $app['twig']->render('admin/admin.html.twig', array(
-                'projects' => $projects
+                'projects' => $model
             ));
         }
 
-        return 'NOPE';
+        $password = $app['security.encoder.digest']->encodePassword('admin', '');
+
+        return $password;
     }
 /*D!*/
     public function loginAction( Request $req, Application $app )
@@ -182,18 +184,13 @@ class AdminController
     public function editProjectAction( Request $req, Application $app ) {
         $id = $req->attributes->get('id');
 
-        $q = $app['db']->prepare('select * from projects p join project_description pd on pd.movie_id = p.id where p.id = :id');
-        $q->bindValue(':id', $id);
-        $q->execute();
-        $movie = $q->fetchAll(\PDO::FETCH_CLASS, 'App\\Models\\Project')[0];
-        $movie->description = str_replace('<br/>', "\n", $movie->description);
-
-        $movie->loadProjectData($app);
+        $db = new ProjectRepository($app);
+        $model = $db->getProject($id);
 
         return $app['twig']->render('admin/edit-project.html.twig', array(
             'error_msg' => '',
             'success_msg' => '',
-            'movie' => $movie
+            'movie' => $model
         ));
     }
 
