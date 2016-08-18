@@ -83,6 +83,13 @@ export default class IndexPage extends React.Component {
                 this.setState({
                     current_content: this.content[this.current_content_index]
                 });
+
+                TweenLite.set($("#IndexPage"), {opacity: 0});
+
+                if (this.props.onAjaxLoaded)
+                    this.props.onAjaxLoaded(() => {
+                        TweenLite.to($("#IndexPage"), 1, {opacity: 1});
+                    });
             },
             error: (err) => {
                 console.log('ERROR:  ' + err);

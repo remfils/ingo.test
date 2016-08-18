@@ -45,7 +45,9 @@ class ApiController
             ->where('lang.name', $lang)
             ->find_array();
 
-        return json_encode($result);
+        $result = $app->json($result);
+
+        return $result;
     }
 
     public function movieDescriptionAction( Request $req, Application $app ) {

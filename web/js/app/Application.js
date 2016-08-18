@@ -28,7 +28,7 @@ export default class Application extends React.Component {
 
         if ( url == domain + URL_INDEX ) {
             this.setState({
-                first_page: <IndexPage />,
+                first_page: <IndexPage onAjaxLoaded={this.props.onAjaxLoaded} />,
                 second_page: null
             });
         }
