@@ -40,7 +40,8 @@ export default class Application extends React.Component {
             this.setState({
                 first_page: <MoviePage
                     app={this}
-                    current_movie_index={index}/>,
+                    current_movie_index={index}
+                    onAjaxLoaded={this.props.onAjaxLoaded} />,
                 second_page: null
             });
         }

@@ -117,6 +117,13 @@ export default class MoviePage extends React.Component {
                     this.init();
 
                     this.loadDataForCurrentMovie();
+
+                    TweenLite.set($("#MoviePage"), {opacity: 0});
+
+                    if (this.props.onAjaxLoaded)
+                        this.props.onAjaxLoaded(() => {
+                            TweenLite.to($("#MoviePage"), 1, {opacity: 1});
+                        });
                 }
             });
         }
