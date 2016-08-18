@@ -450,13 +450,16 @@ a.arrow:hover {
 .info-text {
     font-size: 1.5em;
     padding-right: 160px;
-    width: 20%;
+    vertical-align: bottom;
 }
 .info-text p {
     padding-right: 20%;
 }
 
-.info-img,
+.info-img {
+    width: 70%;
+}
+
 .info-img img {
     width: 100%;
 }
