@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\ProjectRepository;
 use Silex\Application;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,28 +25,10 @@ class ApiController
     }
 
     public function allMoviesAction( Request $req, Application $app ) {
-        $lang = $app['translator']->getLocale();
+        $db = new ProjectRepository($app);
+        $model = $db->getAllProjects();
 
-        $result = $app['idiorm.db']
-            ->for_table('projects')
-            ->table_alias('p')
-            ->select_many(
-                'p.id',
-                'p.color',
-                'p.logo',
-                'p.logo_short',
-                'p.preview_url',
-                'pl.name',
-                'pl.genre',
-                'pl.description'
-            )
-            ->join('project_lang', array('p.id', '=', 'pl.project_id'), 'pl')
-            ->join('lang', array('pl.lang_id', '=', 'lang.id'), 'lang')
-            ->where('p.active', true)
-            ->where('lang.name', $lang)
-            ->find_array();
-
-        $result = $app->json($result);
+        $result = $app->json($model);
 
         return $result;
     }
