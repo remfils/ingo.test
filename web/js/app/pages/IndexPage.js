@@ -7,6 +7,7 @@ import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
 import { asset } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
+import AlphaBoxDangerHtml from "./components/AlphaBoxDangerHtml";
 import BracketTextBox from "./components/BracketTextBox";
 import ImageRotator from "./components/ImageRotator";
 import TitleColoredTable from "./IndexPage/TitleColoredTable";
@@ -218,7 +219,10 @@ export default class IndexPage extends React.Component {
         var large_name = content.name;
         var small_name = content.genre;
 
-        var description_text = content.short_description;
+        var description_text = content.description;
+        var cutat = description_text.lastIndexOf(' ',250);
+        if(cutat!=-1)
+            description_text = description_text.substring(0,cutat)+'(...)';
 
         return (
             <section id='IndexPage' class='title-container'>
@@ -238,7 +242,9 @@ export default class IndexPage extends React.Component {
                     </tr>
                     <tr>
                         <td class="title-content">
-                            <AlphaTextBox class="movie-short-description" text={description_text} />
+                            <AlphaBoxDangerHtml class="movie-short-description">
+                                {description_text}
+                            </AlphaBoxDangerHtml>
                         </td>
                     </tr>
                     <tr>
