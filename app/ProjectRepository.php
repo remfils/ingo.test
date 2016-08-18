@@ -97,4 +97,72 @@ class ProjectRepository {
 
         return $model;
     }
+
+    public function getProjectForEditing($project_id) {
+        $result = $this->db
+            ->for_table('projects')
+            ->table_alias('p')
+            ->select_many(array(
+                'language' => 'lang.name',
+                'p.id',
+                'p.color',
+                'p.year',
+                'p.logo',
+                'p.logo_short',
+                'p.preview_url',
+                'pl.name',
+                'pl.genre',
+                'pl.description')
+            )
+            ->join('project_lang', array('p.id', '=', 'pl.project_id'), 'pl')
+            ->where('p.id', $project_id)
+            ->where('p.active', true)
+            ->join('lang', array('pl.lang_id', '=', 'lang.id'), 'lang')
+            ->group_by('lang.name')
+            ->find_array();
+
+        foreach ( $result as $k => $item ) {
+            $model[$item['language']] = $item;
+        }
+
+        $result = $this->db
+            ->for_table('project_field_lang')
+            ->table_alias('pf')
+            ->select_many(array(
+                'pf.id',
+                'language' => 'lang.name',
+                'name' => 'pf.field_name',
+                'value' => 'pf.field_value'
+            ))
+            ->where('pf.project_id', $project_id)
+            ->join('lang', array('lang.id', '=', 'pf.lang_id'), 'lang')
+            ->find_array();
+
+        $model['de']['fields'] = array();
+        $model['en']['fields'] = array();
+        foreach ( $result as $key => $item ) {
+            $model[$item['language']]['fields'][] = $item;
+        }
+
+        $result = $this->db
+            ->for_table('project_comment_lang')
+            ->table_alias('cm')
+            ->select_many(array(
+                'id' => 'cm.id',
+                'language' => 'lang.name',
+                'text' => 'cm.text',
+                'image_url' => 'cm.image_url'
+            ))
+            ->where('project_id', $project_id)
+            ->join('lang', array('lang.id', '=', 'cm.lang_id'), 'lang')
+            ->find_array();
+
+        $model['de']['comments'] = array();
+        $model['en']['comments'] = array();
+        foreach ( $result as $key => $item ) {
+            $model[$item['language']]['comments'][] = $item;
+        }
+
+        return $model;
+    }
 }

@@ -22,6 +22,112 @@ class Project
 
     private $is_logo_uploaded = false;
 
+    private $Id;
+    private $entity;
+
+    public function __construct($project_entity) {
+        $this->entity = $project_entity;
+    }
+
+    public function getId() {
+        return $this->entity['de']['id'];
+    }
+
+    public function getColor() {
+        return $this->entity['de']['color'];
+    }
+
+    public function getPreviewUrl() {
+        return $this->entity['de']['preview_url'];
+    }
+
+    public function getYear() {
+        return $this->entity['de']['year'];
+    }
+
+    public function getLogo() {
+        return $this->entity['de']['logo'];
+    }
+
+    public function getLogoShort() {
+        return $this->entity['de']['logo_short'];
+    }
+
+    public function getName($lang) {
+        return $this->entity[$lang]['name'];
+    }
+
+    public function getGenre($lang) {
+        return $this->entity[$lang]['genre'];
+    }
+
+    public function getDescription($lang) {
+        $res = $this->entity[$lang]['description'];
+        return preg_replace('#<br\s*/?>#i', "\n", $res);
+    }
+
+    public function getFields($lang) {
+        return $this->entity[$lang]['fields'];
+    }
+
+    public function getComments($lang) {
+        return $this->entity[$lang]['comments'];
+    }
+
+    /* ATTRIBUTES */
+
+    public function getIdAttrName() {
+        return "project[de][id]";
+    }
+
+    public function getColorAttrName() {
+        return "project[de][color]";
+    }
+
+    public function getPreviewUrlAttrName() {
+        return "project[de][preview_url]";
+    }
+
+    public function getYearAttrName() {
+        return "project[de][year]";
+    }
+
+    public function getLogoAttrName() {
+        return "project[de][logo]";
+    }
+
+    public function getLogoShortAttrName() {
+        return "project[de][logo_short]";
+    }
+
+    public function getNameAttrName($lang) {
+        return "project[$lang][name]";
+    }
+
+    public function getGenreAttrName($lang) {
+        return "project[$lang][genre]";
+    }
+
+    public function getDescriptionAttrName($lang) {
+        return "project[$lang][description]";
+    }
+
+    public function getFieldsNameAttrName($lang, $field_id) {
+        return "project[$lang][fields][$field_id][name]";
+    }
+
+    public function getFieldsValueAttrName($lang, $field_id) {
+        return "project[$lang][fields][$field_id][value]";
+    }
+
+    public function getCommentsTextAttrName($lang, $comment_id) {
+        return "project[$lang][comments][$comment_id][text]";
+    }
+
+    public function getCommentsImageUrlAttrName($lang, $comment_id) {
+        return "project[$lang][comments][$comment_id][image_url]";
+    }
+
     public function setProjectFromPost( $data )
     {
         $this->name = $data['name'];

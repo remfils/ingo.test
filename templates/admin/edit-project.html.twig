@@ -20,51 +20,51 @@ Editing Project:
             <div class="form-group">
                 <label for="logo" class="col-sm-2 control-label">Logo:</label>
                 <div class="col-sm-8">
-                    <img src="{{ app.asset_path }}/{{ movie.logo }}" alt="Movie Logo" width="100%">
+                    <img src="{{ app.asset_path }}/{{ movie.getLogo() }}" alt="Movie Logo" width="100%">
                 </div>
                 <div class="col-sm-2">
-                    <input type="file" id="logo" name="project[logo]" value="{{ movie.logo }}"/>
+                    <input type="file" id="logo" name="{{ movie.getLogoAttrName() }}" value="{{ movie.getLogo() }}"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="name" class="col-sm-2 control-label">Name:</label>
+                <label for="name" class="col-sm-2 control-label">Name (de):</label>
                 <div class="col-sm-10">
-                    <input type="text" id="name" name="project[de][name]" class="form-control" value="{{ movie.name }}"/>
+                    <input type="text" id="name" name="{{ movie.getNameAttrName('de') }}" class="form-control" value="{{ movie.getName('de') }}"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="name" class="col-sm-2 control-label">Name:</label>
+                <label for="name" class="col-sm-2 control-label">Name (en):</label>
                 <div class="col-sm-10">
-                    <input type="text" id="name" name="project[en][name]" class="form-control" value="{{ movie.name }}"/>
+                    <input type="text" id="name" name="{{ movie.getNameAttrName('en') }}" class="form-control" value="{{ movie.getName('en') }}"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="year" class="col-sm-2 control-label">Year:</label>
                 <div class="col-sm-10">
-                    <input type="text" id="year" name="project[year]" class="form-control" value="{{ movie.year }}"/>
+                    <input type="text" id="year" name="{{ movie.getYearAttrName() }}" class="form-control" value="{{ movie.getYear() }}"/>
                 </div>
             </div>
 
-            <h2>Short Info:</h2>
+            <h2>Short Info (de):</h2>
 
             <div class="form-group">
                 <div class="col-md-2"></div>
 
                 <div id="ProjectInfoTable" class="col-md-9">
 
-                    {% for field in movie.fields %}
+                    {% for field in movie.getFields('de') %}
 
                     <div id="field-{{ field.id }}" class="form-group">
                         <div class="col-lg-4 no-float">
                             <label for="field-name-{{ field.id }}">Field name:</label>
-                            <input type="text" id="field-name-{{ field.id }}" name="project[de][fields][{{ field.id }}][0]" class="form-control"  value="{{ field.field_name }}"/>
+                            <input type="text" id="field-name-{{ field.id }}" name="{{ movie.getFieldsNameAttrName('de', field.id) }}" class="form-control"  value="{{ field.name }}"/>
                         </div>
                         <div class="col-lg-4 no-float">
                             <label for="field-value-{{ field.id }}">Field value:</label>
-                            <input type="text" id="field-value-{{ field.id }}" name="project[de][fields][{{ field.id }}][1]" class="form-control" value="{{ field.field_value }}"/>
+                            <input type="text" id="field-value-{{ field.id }}" name="{{ movie.getFieldsValueAttrName('de', field.id) }}" class="form-control" value="{{ field.value }}"/>
                         </div>
                         <div class="col-sm-4 no-float" style="vertical-align: middle">
                             <span id="field-remove-{{ field.id }}" class="btn btn-sm btn-danger remove">Remove Field</span>
@@ -80,61 +80,137 @@ Editing Project:
                 </div>
             </div>
 
+            <h2>Short Info (en):</h2>
+
             <div class="form-group">
-                <label for="preview_url" class="col-sm-2 control-label">Preview url:</label>
-                <div class="col-sm-10">
-                    <input type="text" id="preview_url" name="project[preview_url]" class="form-control" value="{{ movie.preview_url }}"/>
+                <div class="col-md-2"></div>
+
+                <div id="ProjectInfoTable" class="col-md-9">
+
+                    {% for field in movie.getFields('en') %}
+
+                        <div id="field-{{ field.id }}" class="form-group">
+                            <div class="col-lg-4 no-float">
+                                <label for="field-name-{{ field.id }}">Field name:</label>
+                                <input type="text" id="field-name-{{ field.id }}" name="{{ movie.getFieldsNameAttrName('en', field.id) }}" class="form-control"  value="{{ field.name }}"/>
+                            </div>
+                            <div class="col-lg-4 no-float">
+                                <label for="field-value-{{ field.id }}">Field value:</label>
+                                <input type="text" id="field-value-{{ field.id }}" name="{{ movie.getFieldsValueAttrName('en', field.id) }}" class="form-control" value="{{ field.value }}"/>
+                            </div>
+                            <div class="col-sm-4 no-float" style="vertical-align: middle">
+                                <span id="field-remove-{{ field.id }}" class="btn btn-sm btn-danger remove">Remove Field</span>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+
+                </div>
+                <div class="col-md-1">
+                    <span id="AddField" type="button" class="btn btn-success" style="margin-top: 25px">Add Field</span>
                 </div>
             </div>
 
             <h2>Description:</h2>
 
             <div class="form-group">
-                <label for="color" class="col-sm-2 control-label">Color:</label>
+                <label for="preview_url" class="col-sm-2 control-label">Preview url:</label>
                 <div class="col-sm-10">
-                    <input type="text" id="color" name="project[color]" class="form-control" value="{{ movie.color }}" />
+                    <input type="text" id="preview_url" name="{{ movie.getPreviewUrlAttrName() }}" class="form-control" value="{{ movie.getPreviewUrl() }}"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="description" class="col-sm-2 control-label">Description:</label>
+                <label for="color" class="col-sm-2 control-label">Color:</label>
                 <div class="col-sm-10">
-                    <textarea type="text" id="description" name="project[de][description]" class="form-control">{{ movie.description }}</textarea>
+                    <input type="text" id="color" name="{{ movie.getColorAttrName() }}" class="form-control" value="{{ movie.getColor() }}" />
                 </div>
             </div>
 
-            <h2>Comments:</h2>
-
-            <div id="CommentBox">
-
-                {% for comment in movie.comments %}
-
-                <div id="comment_{{ comment.id }}" class="form-group">
-                    <div class="col-sm-1"></div>
-
-                    <div class="col-sm-9">
-                        <div class="form-group">
-                            <label for="comment_img_{{ comment.id }}" class="col-sm-2 control-label">Image:</label>
-                            <div class="col-sm-4">
-                                <img src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image" width="100%">
-                            </div>
-                            <div class="col-sm-6">
-                                <input type="file" name="project[comments][{{ comment.id }}][img]" />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="comment_text_{{ comment.id }}" class="col-sm-2 control-label">Text:</label>
-                            <div class="col-sm-10">
-                                <textarea name="project[comments][{{ comment.id }}][text]" id="comment_text_{{ comment.id }}" class="form-control" >{{ comment.text }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-2">
-                        <span id="remove_comment_{{ comment.id }}" class="btn btn-sm btn-danger remove">Remove Comment</span>
-                    </div>
+            <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">Description (de):</label>
+                <div class="col-sm-10">
+                    <textarea type="text" id="description" name="{{ movie.getDescriptionAttrName('de') }}" class="form-control">{{ movie.getDescription('de') }}</textarea>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">Description (en):</label>
+                <div class="col-sm-10">
+                    <textarea type="text" id="description" name="{{ movie.getDescriptionAttrName('en') }}" class="form-control">{{ movie.getDescription('en') }}</textarea>
+                </div>
+            </div>
+
+            <h2>Comments (de):</h2>
+
+            <div id="CommentBox_de">
+
+                {% for comment in movie.getComments('de') %}
+
+                    <div id="comment_{{ comment.id }}" class="form-group">
+                        <div class="col-sm-1"></div>
+
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                                <label for="comment_img_{{ comment.id }}" class="col-sm-2 control-label">Image:</label>
+                                <div class="col-sm-4">
+                                    <img src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image" width="100%">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="file" name="{{ movie.getCommentsImageUrlAttrName('de', comment.id) }}" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="comment_text_{{ comment.id }}" class="col-sm-2 control-label">Text:</label>
+                                <div class="col-sm-10">
+                                    <textarea name="{{ movie.getCommentsTextAttrName('de', comment.id) }}" id="comment_text_{{ comment.id }}" class="form-control" >{{ comment.text }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <span id="remove_comment_{{ comment.id }}" class="btn btn-sm btn-danger remove">Remove Comment</span>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+            <h2>Comments (en):</h2>
+
+            <div id="CommentBox_en">
+
+                {% for comment in movie.getComments('en') %}
+
+                    <div id="comment_{{ comment.id }}" class="form-group">
+                        <div class="col-sm-1"></div>
+
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                                <label for="comment_img_{{ comment.id }}" class="col-sm-2 control-label">Image:</label>
+                                <div class="col-sm-4">
+                                    <img src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image" width="100%">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="file" name="{{ movie.getCommentsImageUrlAttrName('en', comment.id) }}" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="comment_text_{{ comment.id }}" class="col-sm-2 control-label">Text:</label>
+                                <div class="col-sm-10">
+                                    <textarea name="{{ movie.getCommentsTextAttrName('en', comment.id) }}" id="comment_text_{{ comment.id }}" class="form-control" >{{ comment.text }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <span id="remove_comment_{{ comment.id }}" class="btn btn-sm btn-danger remove">Remove Comment</span>
+                        </div>
+                    </div>
 
                 {% endfor %}
 

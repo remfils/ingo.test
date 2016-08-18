@@ -187,7 +187,8 @@ class AdminController
         $id = $req->attributes->get('id');
 
         $db = new ProjectRepository($app);
-        $model = $db->getProject($id);
+        $res = $db->getProjectForEditing($id);
+        $model = new Project($res);
 
         return $app['twig']->render('admin/edit-project.html.twig', array(
             'error_msg' => '',
