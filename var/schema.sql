@@ -300,6 +300,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Индексы сохранённых таблиц
 --
 
+INSERT INTO `users` VALUES
+(1,'test','nhDr7OyKlXQju+Ge/WKGrPQ9lPBSUFfpK+B1xqx/+8zLZqRNX0+5G1zBQklXUFy86lCpkAofsExlXiorUcKSNQ==','ROLE_USER',1);
+
 --
 -- Индексы таблицы `lang`
 --
