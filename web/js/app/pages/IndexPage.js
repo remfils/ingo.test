@@ -233,9 +233,6 @@ export default class IndexPage extends React.Component {
                                 <li><a href="#">work</a></li>
                                 <li><a href="#">contacts</a></li>
                                 <li><a href="#">impressum</a></li>
-
-                                <li><a href="/api/change-language/en">en</a></li>
-                                <li><a href="/api/change-language/de">de</a></li>
                             </ul>
                         </td>
                     </tr>
