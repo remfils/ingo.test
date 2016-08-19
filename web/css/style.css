@@ -395,6 +395,10 @@ a.arrow:hover {
     width: 100%;
 }
 
+.preview-frame {
+    background: black;
+}
+
 .btn-mehr-container {
     margin-top: 10%;
 }

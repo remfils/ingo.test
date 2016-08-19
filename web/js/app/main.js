@@ -17,7 +17,6 @@ loading_cover.css('width', '50%');
 
 function updatePercents() {
     var ratio = Math.round(loading_cover.outerWidth(true) / loading_screen.outerWidth(true) * 100);
-    console.debug(loading_cover.outerWidth(true) / loading_screen.outerWidth(true));
     loading_text.html(ratio);
 }
 
