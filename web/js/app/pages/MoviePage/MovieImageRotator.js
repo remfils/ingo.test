@@ -14,10 +14,12 @@ export default class MovieImageRotator extends React.Component {
         this.are_components_set = false;
 
 
-        this.SWITCH_DURATION = 1.2;
+        this.SWITCH_DURATION = 1.1;
         this.SWITCH_EASE = Expo.easeOut;
-        this.SWITCH_A_DELAY = -this.SWITCH_DURATION * 2.8 / 3;
-        this.SWITCH_B_DELAY = -this.SWITCH_DURATION * 2.3 / 3;
+        this.SWITCH_A_DELAY = -this.SWITCH_DURATION * 2.5 / 3;
+        this.SWITCH_B_DELAY = -this.SWITCH_DURATION * 2.5 / 3;
+
+        console.debug("CONSTRUCT(MovieImageRotator): ",this.SWITCH_A_DELAY, this.SWITCH_B_DELAY, this.SWITCH_DURATION);
 
 
         this.state = {
@@ -37,17 +39,23 @@ export default class MovieImageRotator extends React.Component {
         this.setState({current_movie: this.props.movie});
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps, nextState) {
         var current_movie = this.props.movie;
         var next_movie = nextProps.movie;
 
-        if ( current_movie.id === next_movie.id ) {
-            return;
-        }
+        console.log("DEBUG(MovieImageRotator.shouldComponentUpdate):", current_movie, next_movie);
 
+        return !(current_movie.id == next_movie.id);
+    }
+
+
+    componentWillUpdate(nextProps, nextState) {
         console.log("DEBUG(MovieImageRotator): componentUpdate current_movie, next_movie", current_movie, next_movie);
 
         var is_left = nextProps.direction != "left";
+
+        var current_movie = this.props.movie;
+        var next_movie = nextProps.movie;
 
         this.animateMovieTransition(current_movie, next_movie, is_left);
     }
@@ -55,7 +63,7 @@ export default class MovieImageRotator extends React.Component {
     animateMovieTransition(current_movie, next_movie, is_left) {
         var $this = $(this.id);
 
-        console.log("DEBUG(MovieImageRotator.animateMovieTransition): is_left", is_left);
+        console.debug("DEBUG(MovieImageRotator.animateMovieTransition): is_left", is_left);
 
         if (is_left) {
             $this.find('.movie-curtain').addClass('right');
@@ -81,13 +89,16 @@ export default class MovieImageRotator extends React.Component {
         }
 
         var tl = new TimelineLite();
-        tl.to('#cover1', this.SWITCH_DURATION * 1.2, {width: "100%", ease: this.SWITCH_EASE})
+        tl.to(window, 0.1, {});
+        tl.to('#cover1', this.SWITCH_DURATION , {width: "100%", ease: this.SWITCH_EASE})
             .to("#cover2", this.SWITCH_DURATION, {delay: this.SWITCH_A_DELAY, width: "100%", ease: this.SWITCH_EASE})
-            .from(".next-image", this.SWITCH_DURATION, {
+            .from($this.find('.next-image'), this.SWITCH_DURATION, {
                 delay: this.SWITCH_B_DELAY,
-                x: (is_left ? "" : "-") + "100%",
+                x: (is_left ? '' : '-') + "100%",
                 ease: this.SWITCH_EASE,
                 onComplete: () => {
+                    console.debug("DEBUG(MovieImageRotator): finished animation!");
+
                     $('.movie-curtain').removeClass('left')
                         .removeClass('right');
 
