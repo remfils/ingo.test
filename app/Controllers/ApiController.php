@@ -59,6 +59,7 @@ class ApiController
                 'p.logo',
                 'p.logo_short',
                 'p.preview_url',
+                'p.year',
                 'pl.name',
                 'pl.genre',
                 'pl.description'
