@@ -13,6 +13,7 @@ import TransitionStore from '../stores/TransitionStore';
 import SmallDescription from './MoviePage/SmallDescription';
 import FullDescription from './MoviePage/FullDescription';
 import Description from './MoviePage/Description';
+import PreviewFrame from './MoviePage/PreviewFrame';
 import * as TransitionActions from "../actions/TransitionActions";
 import { asset } from '../funcitons';
 import config from '../config';
@@ -171,13 +172,7 @@ export default class MoviePage extends React.Component {
         TweenLite.set('.movie-title-section', {backgroundColor: movie.color });
         TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
 
-        this.preview_iframe = $('.project-demo-video > iframe')[0];
-
-        this.resizePreviewIframe();
-
         this.setScrollmagicScene(null, true);
-
-        $(window).resize(this.resizePreviewIframe.bind(this));
     }
 
     arrangeTransition( transition ) {
@@ -188,12 +183,6 @@ export default class MoviePage extends React.Component {
                 transition.prev_page.leaveToMovies(time_line);
                 this.enterFromIndex(time_line);
                 break;
-        }
-    }
-
-    resizePreviewIframe(event) {
-        if ( this.preview_iframe ) {
-            this.preview_iframe.height = 609 * this.preview_iframe.clientWidth / 1092;
         }
     }
 
@@ -296,10 +285,14 @@ export default class MoviePage extends React.Component {
 
         var movement_direction = this.state.movement_direction;
 
-        var is_short_model = movie instanceof ShortProjectModel;
+        var is_model_full = movie instanceof ProjectModel;
 
-        var movie_name = movie.name;
-        var movie_year = movie.year;
+        var movie_name, movie_year;
+
+        if (is_model_full) {
+            movie_name = movie.name;
+            movie_year = movie.year;
+        }
         
         var current_logo_style = {backgroundImage: "url(" + movie.logo + ")"};
 
@@ -343,7 +336,7 @@ export default class MoviePage extends React.Component {
                     <MovieFieldsTable movie={movie} class="col-30p project-stats" />
 
                     <div class="col-70p project-demo-video">
-                        <iframe height="60%" src={movie.preview_url} frameBorder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <PreviewFrame url={movie.preview_url} class="preview-frame" />
                         <div class="btn-mehr-container">
                             <a class="btn-mehr">MEHR ERFAHREN</a>
                         </div>
