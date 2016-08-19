@@ -296,10 +296,14 @@ export default class MoviePage extends React.Component {
 
         var movement_direction = this.state.movement_direction;
 
-        var is_short_model = movie instanceof ShortProjectModel;
+        var is_model_full = movie instanceof ProjectModel;
 
-        var movie_name = movie.name;
-        var movie_year = movie.year;
+        var movie_name, movie_year;
+
+        if (is_model_full) {
+            movie_name = movie.name;
+            movie_year = movie.year;
+        }
         
         var current_logo_style = {backgroundImage: "url(" + movie.logo + ")"};
 
