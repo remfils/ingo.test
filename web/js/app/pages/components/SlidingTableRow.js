@@ -62,6 +62,7 @@ export default class SlidingTableRow extends React.Component {
                 });
 
                 TweenLite.to($this, this.duration, {
+                    delay: 0.1,
                     opacity: 0, x: "100%",
                     ease: Power3.easeOut,
                     onComplete: () => {
