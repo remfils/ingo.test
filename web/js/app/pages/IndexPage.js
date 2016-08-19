@@ -13,6 +13,8 @@ import ImageRotator from "./components/ImageRotator";
 import TitleColoredTable from "./IndexPage/TitleColoredTable";
 import ShortProjectModel from "../models/ShortProjectModel";
 
+const MAX_SCROLL_COUNTER_VALUE = 3;
+
 export default class IndexPage extends React.Component {
     constructor() {
         super();
@@ -27,6 +29,9 @@ export default class IndexPage extends React.Component {
         this.content = [];
         this.current_content = {};
         this.current_content_index = 0;
+
+        this.scroll_timer = null;
+        this.scroll_counter = 0;
     }
 
     get current_content_index() {
@@ -104,16 +109,15 @@ export default class IndexPage extends React.Component {
         $(window).off('mousewheel DOMMouseScroll', this.scrollListener);
     }
 
+    getMouseScrollDirection(e) {
+        var delta = (e.type === 'DOMMouseScroll' ?
+        e.originalEvent.detail * -40 :
+            e.originalEvent.wheelDelta);
+
+        return delta > 0 ? -1 : 1;
+    }
+
     scrollListener(e) {
-        var direction = function () {
-
-            var delta = (e.type === 'DOMMouseScroll' ?
-            e.originalEvent.detail * -40 :
-                e.originalEvent.wheelDelta);
-
-            return delta > 0 ? 0 : 1;
-        };
-
         if ( this.is_scroll_message_shown ) {
             this.is_scroll_message_shown = false;
 
@@ -128,10 +132,19 @@ export default class IndexPage extends React.Component {
             return;
         }
 
-        if(direction() === 1) {
+        clearTimeout(this.scroll_timer);
+
+        var dir = this.getMouseScrollDirection(e);
+        var self = this;
+        this.scroll_counter += dir;
+        this.scroll_timer = setTimeout(function(){
+            self.scroll_counter = 0;
+        }, 100);
+
+        if(this.scroll_counter >= MAX_SCROLL_COUNTER_VALUE) {
             this.nextMovie();
         }
-        if(direction() === 0) {
+        else if ( this.scroll_counter <= -MAX_SCROLL_COUNTER_VALUE) {
             this.prevMovie();
         }
     }

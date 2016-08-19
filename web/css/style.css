@@ -451,6 +451,7 @@ a.arrow:hover {
     font-size: 1.5em;
     padding-right: 160px;
     vertical-align: bottom;
+    width: 30%;
 }
 .info-text p {
     padding-right: 20%;
