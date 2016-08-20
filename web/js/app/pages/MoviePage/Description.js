@@ -39,6 +39,7 @@ export default class Description extends React.Component {
         }
 
         var description_html = {__html: movie.description };
+        var description_style = {backgroundColor: movie.color};
 
         var comments = movie.comments.map((item) => {
             console.log("DESCRIPTION RENDER: ", item);
@@ -54,10 +55,10 @@ export default class Description extends React.Component {
 
         return (
             <div>
-                <section class="default-side-padding project-dsc">
+                <section class="default-side-padding project-dsc" style={description_style}>
                     <div class="description-container">
                         <div class="col-30p">
-                            <h1>ZUM PROJEKT:</h1>
+                            <h2>ZUM PROJEKT:</h2>
                             <h1><strong>{movie.name} {movie.year}</strong></h1>
                         </div>
 
@@ -66,9 +67,16 @@ export default class Description extends React.Component {
                 </section>
 
                 <section className="default-side-padding more-info">
-                    <table className="movie-comments">
+                    <table className="movie-comments" cellspacing="0" cellpadding="0">
                         { comments }
                     </table>
+
+                    <hr/>
+
+                    <a href="#" class="movie_page-back-to-top">
+                        <span>BACK TO TOP</span>
+                    </a>
+
                 </section>
             </div>
         );

@@ -8,6 +8,8 @@ import AlphaBox from "./components/AlphaBox";
 import SlidingTableRow from "./components/SlidingTableRow";
 import MovieImageRotator from "./MoviePage/MovieImageRotator";
 import MovieFieldsTable from "./MoviePage/MovieFieldsTable";
+import FooterInfoBlock from "./MoviePage/FooterInfoBlock";
+import EmailForm from "./MoviePage/EmailForm";
 
 import TransitionStore from '../stores/TransitionStore';
 import SmallDescription from './MoviePage/SmallDescription';
@@ -308,6 +310,10 @@ export default class MoviePage extends React.Component {
         return (
             <div id="MoviePage" class="content">
 
+                <div className="fixed-menu-row">
+                    <a href="#" class="home-button">HOME</a>
+                </div>
+
                 <section class="project-title-section">
                     <div class="movie-curtain"></div>
 
@@ -318,7 +324,7 @@ export default class MoviePage extends React.Component {
                             <tr>
                                 <td>
                                     <AlphaBox>
-                                        <h1 class="project-title">{ movie_name }<span class="project-year"> { movie_year }</span></h1>
+                                        <h1 class="project-title">{ movie_name } <span class="project-year">{ movie_year }</span></h1>
                                     </AlphaBox>
                                 </td>
                                 <td class="cell-movies-nav">
@@ -338,7 +344,9 @@ export default class MoviePage extends React.Component {
                     <div class="col-70p project-demo-video">
                         <PreviewFrame url={movie.preview_url} class="preview-frame" />
                         <div class="btn-mehr-container">
-                            <a class="btn-mehr">MEHR ERFAHREN</a>
+                            <a class="btn-mehr pull-left">MEHR ERFAHREN</a>
+                            <a href="#" className="btn-mehr pull-left">PROJEKTGALERIE</a>
+                            <a href="#" className="btn-mehr pull-right">NÄCHSTES PROJEKT</a>
                         </div>
                     </div>
                 </section>
@@ -346,13 +354,16 @@ export default class MoviePage extends React.Component {
                 <Description movie={movie} />
 
                 <footer class="default-side-padding project-footer">
-                    <a href="#goTop">Contact</a>
-                    <a href="#goTop">Contact</a>
-                    <a href="#goTop">Contact</a>
-                    <a href="#goTop">Contact</a>
-                    <a href="#goTop">Contact</a>
-                    <a href="#goTop">Contact</a>
-                    <a href="#goTop">Contact</a>
+                    <table>
+                        <tr>
+                            <td class="footer_info_cell">
+                                <FooterInfoBlock class="footer-info"/>
+                            </td>
+                            <td class="footer_mail_cell">
+                                <EmailForm class="footer-form"/>
+                            </td>
+                        </tr>
+                    </table>
                 </footer>
 
             </div>
