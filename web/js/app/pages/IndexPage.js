@@ -250,7 +250,7 @@ export default class IndexPage extends React.Component {
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator onClick={self.currentMovieClickListener.bind(self)} class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
+                <ImageRotator class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 
                 <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>
@@ -283,7 +283,7 @@ export default class IndexPage extends React.Component {
                         <BracketTextBox text={page_name} />
                         <img src={asset("img/button-arrow-next.png")} class="img-next-arrow" onClick={this.nextArrowButtonClickListener.bind(this)} alt="" />
                     </div>
-                    <AlphaBox onClick={createNotReadyYetFunction("Movie title click")}>
+                    <AlphaBox onClick={self.currentMovieClickListener.bind(self)}>
                         <span class="movie-title">{large_name} </span>
                         <span class="movie-genre">{small_name}</span>
                         <img src={asset("img/button-film.png")} class="title-play-button" alt="" />
