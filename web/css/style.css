@@ -233,17 +233,57 @@ a, a:hover, a:focus, a:visited, a:active {
     font-family: MyriadPro-Regular_2;
     font-size: 18px;
     color: #F7F5F5;
+
+    -webkit-transition: margin-right 0.5s;
+    -moz-transition: margin-right 0.5s;
+    -ms-transition: margin-right 0.5s;
+    -o-transition: margin-right 0.5s;
+    transition: margin-right 0.5s;
 }
 
+.home-button:hover {
+    color: #F7F5F5;
+    margin-right: 15px;
+}
+
+.home-button:visited {
+    color: #F7F5F5;
+}
+
+.home-button:before,
 .home-button:after {
-    background-color: #969794;
+    background-color: #F7F5F5;
     content: "";
+    opacity: 0.7;
     height: 1px;
     left: 100%;
-    margin-left: 15px;
+    margin-left: 10px;
     position: absolute;
     top: 9px;
-    width: 50px;
+    width: 70px;
+
+    -webkit-transition: margin 0.5s, width 0.5s;
+    -moz-transition: margin 0.5s, width 0.5s;
+    -ms-transition: margin 0.5s, width 0.5s;
+    -o-transition: margin 0.5s, width 0.5s;
+    transition: margin 0.5s, width 0.5s;
+}
+
+.home-button:before {
+    width: 0;
+    margin-left: 80px;
+}
+
+.home-button:hover:before {
+    width: 85px;
+    margin-left: 10px;
+}
+
+.home-button:hover:after {
+    position: absolute;
+    margin-left: -70px;
+    left: 100%;
+    width: 0;
 }
 
 /* PROJECT section: header */
