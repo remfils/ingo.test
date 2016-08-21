@@ -12,7 +12,11 @@ export function padIntegerWithZeros (num, places) {
 export function createNotReadyYetFunction(feature) {
     return function(e) {
         e.preventDefault();
-        alert(feature + " is not reay yet!");
+        notReadyYet(feature);
         return false;
     }
+}
+
+export function notReadyYet(feature) {
+    alert(feature + " is not reay yet!");
 }

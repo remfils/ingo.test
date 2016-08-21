@@ -17,7 +17,7 @@ import FullDescription from './MoviePage/FullDescription';
 import Description from './MoviePage/Description';
 import PreviewFrame from './MoviePage/PreviewFrame';
 import * as TransitionActions from "../actions/TransitionActions";
-import { asset } from '../funcitons';
+import { asset, notReadyYet } from '../funcitons';
 import config from '../config';
 /*import MovieModel from '../models/MovieModel';*/
 import ShortProjectModel from '../models/ShortProjectModel';
@@ -204,6 +204,30 @@ export default class MoviePage extends React.Component {
         }
     }
 
+    homeButtonClickListener(e) {
+        e.preventDefault();
+
+        notReadyYet("Home Click");
+
+        return false;
+    }
+
+    projectGalerieButtonClickListener(e) {
+        e.preventDefault();
+
+        notReadyYet("ProjectGalerie Click");
+
+        return false;
+    }
+
+    nachtesProjectButtonClickListener(e) {
+        e.preventDefault();
+
+        notReadyYet("NachtesProject Click");
+
+        return false;
+    }
+
     prevMovieClick(event) {
         event.preventDefault();
 
@@ -335,7 +359,7 @@ export default class MoviePage extends React.Component {
             <div id="MoviePage" class="content">
 
                 <div className="fixed-menu-row">
-                    <a href="#" class="home-button">HOME</a>
+                    <a href="#" class="home-button" onClick={this.homeButtonClickListener.bind(this)}>HOME</a>
                 </div>
 
                 <section class="project-title-section">
@@ -369,8 +393,8 @@ export default class MoviePage extends React.Component {
                         <PreviewFrame url={movie.preview_url} class="preview-frame" />
                         <div class="btn-mehr-container">
                             <a class="btn-mehr pull-left" onClick={this.mehrButtonClickListener.bind(this)}>MEHR ERFAHREN</a>
-                            <a href="#" className="btn-mehr pull-left">PROJEKTGALERIE</a>
-                            <a href="#" className="btn-mehr pull-right">NÄCHSTES PROJEKT</a>
+                            <a href="#" className="btn-mehr pull-left" onClick={this.projectGalerieButtonClickListener.bind(this)}>PROJEKTGALERIE</a>
+                            <a href="#" className="btn-mehr pull-right" onClick={this.nachtesProjectButtonClickListener.bind(this)}>NÄCHSTES PROJEKT</a>
                         </div>
                     </div>
                 </section>
