@@ -855,6 +855,7 @@ a:active {
     font-size: 18px;
     width: 50%;
     color: #3c3c3b;
+    cursor: pointer;
 }
 
 /* footer */

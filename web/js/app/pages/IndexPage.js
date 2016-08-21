@@ -253,9 +253,9 @@ export default class IndexPage extends React.Component {
                     </tr>
                     <tr>
                         <td class="title-content">
-                            <AlphaBoxDangerHtml class="movie-short-description" onClick={createNotReadyYetFunction("Text click")}>
-                                {description_text}
-                            </AlphaBoxDangerHtml>
+                            <AlphaBox class="movie-short-description" onClick={createNotReadyYetFunction("Text click")}>
+                                <p dangerouslySetInnerHTML={{__html: description_text}}></p>
+                            </AlphaBox>
                         </td>
                     </tr>
                     <tr>
