@@ -8,11 +8,7 @@ export default class MovieImageRotator extends React.Component {
     constructor() {
         super();
 
-        MovieImageRotator.box_counter ++;
-        this.id = "MovieImageRotator" + MovieImageRotator.box_counter;
-
         this.are_components_set = false;
-
 
         this.SWITCH_DURATION = 1.1;
         this.SWITCH_EASE = Expo.easeOut;
@@ -36,6 +32,14 @@ export default class MovieImageRotator extends React.Component {
     }
 
     componentWillMount() {
+        if (this.props.id) {
+            this.id = this.props.id;
+        }
+        else {
+            MovieImageRotator.box_counter ++;
+            this.id = "MovieImageRotator" + MovieImageRotator.box_counter;
+        }
+
         this.setState({current_movie: this.props.movie});
     }
 

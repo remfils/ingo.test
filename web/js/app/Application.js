@@ -3,7 +3,7 @@ import React from 'react';
 import IndexPage from './pages/IndexPage';
 import MoviePage from './pages/MoviePage';
 import TransitionStore from './stores/TransitionStore';
-import { asset } from './funcitons';
+import { asset, createCountdownCallback } from './funcitons';
 import config from './config';
 
 var $ = require('jquery');
@@ -18,6 +18,10 @@ export default class Application extends React.Component {
         this.flip = true;
 
         this.movies = [];
+
+        this.state = {
+            pages: []
+        };
     }
 
     componentWillMount() {
@@ -29,25 +33,40 @@ export default class Application extends React.Component {
         console.log(domain, url);
 
         if ( url == domain + URL_INDEX ) {
-
-            this.setState({
-                first_page: <IndexPage onAjaxLoaded={this.props.onAjaxLoaded} />,
-                second_page: null
-            });
+            this.pushPage(
+                <IndexPage onAjaxLoaded={this.props.onAjaxLoaded} />
+            );
         }
         else if ( url.indexOf(URL_MOVIE) !== -1 ) {
             var movie_index = url.indexOf(URL_MOVIE) + URL_MOVIE.length;
 
             var index = url.slice(movie_index);
 
-            this.setState({
-                first_page: <MoviePage
+            this.pushPage(
+                <MoviePage
                     app={this}
                     current_movie_index={index}
-                    onAjaxLoaded={this.props.onAjaxLoaded} />,
-                second_page: null
-            });
+                    onAjaxLoaded={this.props.onAjaxLoaded} />
+            );
         }
+    }
+
+    pushPage(page) {
+        var pages = [].concat(this.state.pages);
+        pages.push(page);
+
+        this.setState({
+            pages: pages
+        });
+    }
+
+    shiftPage() {
+        var pages = [].concat(this.state.pages);
+        pages[pages.length-2] = null;
+
+        this.setState({
+            pages: pages
+        });
     }
 
     gotoMovie(from, shared_timeline) {
@@ -84,6 +103,10 @@ export default class Application extends React.Component {
 
         var page = <div></div>;
 
+        transition.callback = createCountdownCallback(() => {
+            this.shiftPage();
+        }, 2);
+
         switch ( transition.type ) {
             case "INDEX-MOVIE":
                 var prev_page = transition.prev_page;
@@ -116,21 +139,15 @@ export default class Application extends React.Component {
                 break;
         }
 
-        /*transition.callback = () => {
-            this.setState({
-                first_page: page,
-                second_page: null
-            });
-        };*/
-
-        this.prepareNextPageForTransition(page);
+        this.pushPage(page);
     }
 
     render() {
+        console.debug("DEBUG(App.Render): ", this.state.pages);
+
         return (
             <main>
-                { this.state.first_page }
-                { this.state.second_page }
+                { this.state.pages }
             </main>
             );
     }

@@ -98,13 +98,19 @@ export default class MoviePage extends React.Component {
             }});
     }
 
-    leaveToIndexPage() {
+    leaveToIndexPage(callback) {
         var tl = new TimelineLite();
 
         var $this = $("#MoviePage");
-        tl.to($this, 1, {y: "+=100%", onComplete: () => {
-            $this.hide();
-            $this.css('z-index', 0);
+        var $image = $("#MovieImageRotator");
+
+        tl.to($image, 1, {y: "+=100%", ease: Power2.easeIn})
+            .to($this, 1, {y: "+=100%", ease: Power3.easeInOut, onComplete: () => {
+                $this.hide();
+                $this.css('z-index', 0);
+
+                if (callback)
+                    callback();
         }});
     }
 
@@ -399,7 +405,7 @@ export default class MoviePage extends React.Component {
                 <section class="project-title-section">
                     <div class="movie-curtain"></div>
 
-                    <MovieImageRotator image_url={movie.logo} movie={movie} direction={movement_direction} />
+                    <MovieImageRotator id="MovieImageRotator" image_url={movie.logo} movie={movie} direction={movement_direction} />
 
                     <div class="default-side-padding movie-title-section">
                         <table class="movie-navigation">

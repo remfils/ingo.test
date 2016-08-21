@@ -20,3 +20,12 @@ export function createNotReadyYetFunction(feature) {
 export function notReadyYet(feature) {
     alert(feature + " is not reay yet!");
 }
+
+export function createCountdownCallback(callback, c) {
+    var counter = c;
+    return function() {
+        if (!--c) {
+            callback();
+        }
+    }
+}

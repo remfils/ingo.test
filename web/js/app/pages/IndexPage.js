@@ -126,19 +126,22 @@ export default class IndexPage extends React.Component {
         if ( !tr )
             return;
 
-        tr.prev_page.leaveToIndexPage();
+        tr.prev_page.leaveToIndexPage(tr.callback);
 
         switch ( tr.type ) {
-            case "INDEX-MOVIE":
-                this.enterFromMoviePage();
+            case "MOVIE-INDEX":
+                this.enterFromMoviePage(tr.callback);
                 break;
         }
     }
 
-    enterFromMoviePage() {
+    enterFromMoviePage(callback) {
         var tl = new TimelineLite();
 
-        tl.from($('.title-project-dsc'), 1, {x: "-100%"});
+        tl.from($('.title-project-dsc'), 1, {x: "-100%", onComplete:()=>{
+            if(callback)
+                callback();
+        }});
     }
 
     getMouseScrollDirection(e) {
