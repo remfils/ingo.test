@@ -267,7 +267,11 @@ export default class IndexPage extends React.Component {
 
                 <div class="title-header" onClick={createNotReadyYetFunction("Movie title click")}>
                     <BracketTextBox className="title-page-name" text={page_name} />
-                    <AlphaTextBox text={[<span class="movie-title">{large_name} </span>, <span class="movie-genre">{small_name}</span>]} />
+                    <AlphaTextBox text={[
+                        <span class="movie-title">{large_name} </span>,
+                        <span class="movie-genre">{small_name}</span>,
+                        <img src={asset("img/button-film.png")} alt="" />
+                        ]} />
                 </div>
 
                 <div className="scroll-message">
