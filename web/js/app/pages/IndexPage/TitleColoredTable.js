@@ -43,7 +43,7 @@ export default class TitleColoredTable extends React.Component {
             setTimeout(this.updateTableWidth.bind(this),10);
         });
 
-        this.current_color = this.props.color;
+        this.setState({color: this.props.color});
     }
 
     updateTableWidth() {
@@ -73,45 +73,38 @@ export default class TitleColoredTable extends React.Component {
 
     componentWillUpdate( nextProps, nextState ) {
         var next_color = nextProps.color;
-        if ( !this.current_color ) {
-            this.current_color = nextProps.color;
+
+        if ( this.props.color == next_color ) {
+            return;
         }
-        else if ( this.current_color != next_color ) {
-            this.next_color = next_color;
 
-            var $curtain = $("#TableForegroundColor");
-            $curtain.css("width", "100%");
+        $("#TableBackgroundColor").css('background-color', next_color);
 
-            if ( nextProps.direction == "right" ) {
-                $curtain.removeClass("left")
-                    .addClass("right");
-            }
-            else {
-                $curtain.removeClass("right")
-                    .addClass("left");
-            }
+        var $curtain = $("#TableForegroundColor");
+        $curtain.css("width", "100%");
 
-            TweenLite.to($("#TableForegroundColor"), 1, {width: 0, ease: Power3.easeInOut, onComplete: () => {
-                this.current_color = next_color;
-                this.setState(current_color, next_color);
-                this.next_color = "";
-            }});
+        if ( nextProps.direction == "right" ) {
+            $curtain.removeClass("left")
+                .addClass("right");
         }
+        else {
+            $curtain.removeClass("right")
+                .addClass("left");
+        }
+
+        TweenLite.to($("#TableForegroundColor"), 1, {width: 0, ease: Power3.easeInOut, onComplete: () => {
+            this.setState({
+                color: next_color
+            });
+        }});
     }
 
     render() {
-        var table_style = { background: this.color };
-
-        var current_bg_color = { backgroundColor: this.current_color };
-        var next_bg_color = {};
-
-        if ( this.next_color ) {
-            next_bg_color = { backgroundColor: this.next_color };
-        }
+        var table_style = { backgroundColor: this.state.color };
 
         return <div id="TableHeader" className={this.props.className}>
-            <div id="TableBackgroundColor" style={next_bg_color}></div>
-            <div id="TableForegroundColor" style={current_bg_color}></div>
+            <div id="TableBackgroundColor"></div>
+            <div id="TableForegroundColor" style={table_style}></div>
             <table id={this._id} >
                 { this.props.children }
             </table>
