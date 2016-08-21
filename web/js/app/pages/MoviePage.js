@@ -17,13 +17,15 @@ import FullDescription from './MoviePage/FullDescription';
 import Description from './MoviePage/Description';
 import PreviewFrame from './MoviePage/PreviewFrame';
 import * as TransitionActions from "../actions/TransitionActions";
-import { asset } from '../funcitons';
+import { asset, notReadyYet } from '../funcitons';
 import config from '../config';
 /*import MovieModel from '../models/MovieModel';*/
 import ShortProjectModel from '../models/ShortProjectModel';
 import ProjectModel from '../models/ProjectModel';
 
 export default class MoviePage extends React.Component {
+    static CMD_SHOW_TEXT = "SHOW_TEXT";
+
     constructor() {
         super();
 
@@ -76,13 +78,40 @@ export default class MoviePage extends React.Component {
 
         switch ( transition.type ) {
             case "INDEX-MOVIE":
-                this.enterFromIndexPage();
+                this.enterFromIndexPage(transition.callback);
                 break;
         }
     }
 
-    enterFromIndexPage() {
-        TweenLite.from($("#MoviePage"), 1, {y: "+=100%"});
+    enterFromIndexPage(callback) {
+        var cmd = this.props.transition.command;
+
+        var tl = new TimelineLite();
+        tl.from($("#MoviePage"), 1, {y: "+=100%", clearProps: "y,opacity,transform", onComplete: ()=>{
+            if (cmd == MoviePage.CMD_SHOW_TEXT) {
+                this.scrollToDescription();
+            }
+        }})
+            .from($('.fixed-menu-row'), 0.5, {opacity: 0, onComplete:()=>{
+                if (callback)
+                    callback();
+            }});
+    }
+
+    leaveToIndexPage() {
+        var tl = new TimelineLite();
+
+        var $this = $("#MoviePage");
+        tl.to($this, 1, {y: "+=100%", onComplete: () => {
+            $this.hide();
+            $this.css('z-index', 0);
+        }});
+    }
+
+    scrollToDescription() {
+        console.debug("DEBUG(scrollToDescription): ",$('#MovieDescription').offset().top);
+
+        TweenLite.to($("html, body"), 1, {scrollTop: $('#MovieDescription').offset().top, ease: Power2.easeInOut});
     }
 
     componentWillMount() {
@@ -151,6 +180,8 @@ export default class MoviePage extends React.Component {
                 this.setState({
                     current_movie: prj
                 });
+
+                this.setHomeButtonScrollMagicScene();
             }
         });
     }
@@ -177,6 +208,25 @@ export default class MoviePage extends React.Component {
         this.setScrollmagicScene(null, true);
     }
 
+    setHomeButtonScrollMagicScene() {
+        var ctrl = new ScrollMagic.Controller();
+
+        var $small_dsc = $('.project-sm-dsc');
+        var duration = $small_dsc.offset().top - $('.movie-title-section').offset().top + $small_dsc.outerHeight(true) / 2;
+
+        console.debug("DEBUG(setHomeButtonScrollMagicScene)", duration)
+
+        var scene = new ScrollMagic.Scene({triggerElement: '.movie-title-section', duration: duration})
+            .setClassToggle('#HomeButton', 'darker')
+            .triggerHook(0.05)
+            .addTo(ctrl);
+
+        var scene = new ScrollMagic.Scene({triggerElement: '#MovieDescription'})
+            .setClassToggle('#HomeButton', 'darker')
+            .triggerHook(0.05)
+            .addTo(ctrl);
+    }
+
     arrangeTransition( transition ) {
         var time_line = new TimelineLite();
 
@@ -186,6 +236,30 @@ export default class MoviePage extends React.Component {
                 this.enterFromIndex(time_line);
                 break;
         }
+    }
+
+    homeButtonClickListener(e) {
+        e.preventDefault();
+
+        TransitionActions.fromMovieToIndexTransition(this, {});
+
+        return false;
+    }
+
+    projectGalerieButtonClickListener(e) {
+        e.preventDefault();
+
+        notReadyYet("ProjectGalerie Click");
+
+        return false;
+    }
+
+    nachtesProjectButtonClickListener(e) {
+        e.preventDefault();
+
+        notReadyYet("NachtesProject Click");
+
+        return false;
     }
 
     prevMovieClick(event) {
@@ -216,6 +290,14 @@ export default class MoviePage extends React.Component {
         this.current_movie_index++;
 
         this.transitionToNextMovie(false);
+
+        return false;
+    }
+
+    mehrButtonClickListener(e) {
+        e.preventDefault();
+
+        this.scrollToDescription();
 
         return false;
     }
@@ -311,7 +393,7 @@ export default class MoviePage extends React.Component {
             <div id="MoviePage" class="content">
 
                 <div className="fixed-menu-row">
-                    <a href="#" class="home-button">HOME</a>
+                    <a href="#" id="HomeButton" class="home-button" onClick={this.homeButtonClickListener.bind(this)}>HOME</a>
                 </div>
 
                 <section class="project-title-section">
@@ -344,14 +426,14 @@ export default class MoviePage extends React.Component {
                     <div class="col-70p project-demo-video">
                         <PreviewFrame url={movie.preview_url} class="preview-frame" />
                         <div class="btn-mehr-container">
-                            <a class="btn-mehr pull-left">MEHR ERFAHREN</a>
-                            <a href="#" className="btn-mehr pull-left">PROJEKTGALERIE</a>
-                            <a href="#" className="btn-mehr pull-right">NÄCHSTES PROJEKT</a>
+                            <a class="btn-mehr pull-left" onClick={this.mehrButtonClickListener.bind(this)}>MEHR ERFAHREN</a>
+                            <a href="#" className="btn-mehr pull-left" onClick={this.projectGalerieButtonClickListener.bind(this)}>PROJEKTGALERIE</a>
+                            <a href="#" className="btn-mehr pull-right" onClick={this.nachtesProjectButtonClickListener.bind(this)}>NÄCHSTES PROJEKT</a>
                         </div>
                     </div>
                 </section>
 
-                <Description movie={movie} />
+                <Description id="MovieDescription" movie={movie} />
 
                 <footer class="default-side-padding project-footer">
                     <table>

@@ -1,5 +1,7 @@
 import React from "react";
 
+import {notReadyYet} from '../../funcitons.js';
+
 var $ = require('jquery');
 
 export default class EmailForm extends React.Component {
@@ -19,6 +21,14 @@ export default class EmailForm extends React.Component {
 
     set id(val) {
         this._id = val;
+    }
+
+    sendenClickListener(e) {
+        e.preventDefault();
+
+        notReadyYet("Sended Click");
+
+        return false;
     }
 
     render() {
@@ -41,7 +51,7 @@ export default class EmailForm extends React.Component {
             </div>
 
             <div class="custom-form-gruop">
-                <input type="submit" value="SENDEN"/>
+                <input type="submit" value="SENDEN" onClick={this.sendenClickListener.bind(this)}/>
             </div>
 
             <p>++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++</p>

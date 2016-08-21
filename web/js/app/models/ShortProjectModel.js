@@ -30,6 +30,11 @@ export default class ShortProjectModel {
     }
 
     get short_description () {
-        return this.description;
+        var result = this.description;
+        var cutat = result.lastIndexOf(' ',250);
+        if(cutat!=-1)
+            result = result.substring(0,cutat)+' [...]';
+
+        return result;
     }
 }

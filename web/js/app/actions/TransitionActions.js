@@ -4,6 +4,10 @@ export function fromIndexToMovieTranstion(index_page, params={}) {
     createTransition("INDEX-MOVIE", index_page, params);
 }
 
+export function fromMovieToIndexTransition(movie_page, params={}) {
+    createTransition("MOVIE-INDEX", movie_page, params);
+}
+
 export function fromMovieToMovie(is_right, prev_page, params={}) {
     createTransition(
         "MOVIE-MOVIE_" + (is_right ? "RIGHT" : "LEFT"),

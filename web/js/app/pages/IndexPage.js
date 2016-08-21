@@ -5,13 +5,15 @@ var $ = require('jquery');
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
-import { asset } from "../funcitons";
+import { asset, createNotReadyYetFunction } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
+import AlphaBox from "./components/AlphaBox";
 import AlphaBoxDangerHtml from "./components/AlphaBoxDangerHtml";
 import BracketTextBox from "./components/BracketTextBox";
 import ImageRotator from "./components/ImageRotator";
 import TitleColoredTable from "./IndexPage/TitleColoredTable";
 import ShortProjectModel from "../models/ShortProjectModel";
+import MoviePage from './MoviePage';
 
 const MAX_SCROLL_COUNTER_VALUE = 3;
 
@@ -66,47 +68,77 @@ export default class IndexPage extends React.Component {
     }
 
     componentWillMount() {
-        var padIntegerWithZeros = function (num, places) {
-            var zero = places - num.toString().length + 1;
-            return Array(+(zero > 0 && zero)).join("0") + num;
+        if ( this.props.movies ) {
+            this.content = this.props.movies;
+
+            this.current_content_index = this.props.contentIndex || 0;
+
+            this.setState({
+                current_content: this.content[this.current_content_index]
+            });
         }
+        else {
+            $.ajax({
+                url: config.SITE_NAME + 'api/all-movies',
+                dataType: 'json',
+                success: (data) => {
+                    this.content = data.map((item, index) => {
+                        var content = new ShortProjectModel();
 
-        $.ajax({
-            url: config.SITE_NAME + 'api/all-movies',
-            dataType: 'json',
-            success: (data) => {
-                this.content = data.map((item, index) => {
-                    var content = new ShortProjectModel();
+                        content.parseJsonData(item);
+                        content.page_name = index + 1;
 
-                    content.parseJsonData(item);
-                    content.page_name = index + 1;
-
-                    return content;
-                });
-
-                console.log("DEBUG: data loaded", data, this.content);
-
-                this.setState({
-                    current_content: this.content[this.current_content_index]
-                });
-
-                TweenLite.set($("#IndexPage"), {opacity: 0});
-
-                if (this.props.onAjaxLoaded)
-                    this.props.onAjaxLoaded(() => {
-                        TweenLite.to($("#IndexPage"), 1, {opacity: 1});
+                        return content;
                     });
-            },
-            error: (err) => {
-                console.log('ERROR:  ' + err);
-            }
-        });
+
+                    console.log("DEBUG: data loaded", data, this.content);
+
+                    this.setState({
+                        current_content: this.content[this.current_content_index]
+                    });
+
+                    TweenLite.set($("#IndexPage"), {opacity: 0});
+
+                    if (this.props.onAjaxLoaded)
+                        this.props.onAjaxLoaded(() => {
+                            TweenLite.to($("#IndexPage"), 1, {opacity: 1});
+                        });
+                },
+                error: (err) => {
+                    console.log('ERROR:  ' + err);
+                }
+            });
+        }
 
         $(window).on('mousewheel DOMMouseScroll', this.scrollListener.bind(this));
     }
 
     componentWillUnmount() {
         $(window).off('mousewheel DOMMouseScroll', this.scrollListener);
+    }
+
+    componentDidMount() {
+        this.hadleTransitionAnimations();
+    }
+
+    hadleTransitionAnimations() {
+        var tr = this.props.transition;
+        if ( !tr )
+            return;
+
+        tr.prev_page.leaveToIndexPage();
+
+        switch ( tr.type ) {
+            case "INDEX-MOVIE":
+                this.enterFromMoviePage();
+                break;
+        }
+    }
+
+    enterFromMoviePage() {
+        var tl = new TimelineLite();
+
+        tl.from($('.title-project-dsc'), 1, {x: "-100%"});
     }
 
     getMouseScrollDirection(e) {
@@ -118,7 +150,7 @@ export default class IndexPage extends React.Component {
     }
 
     scrollListener(e) {
-        if ( this.is_scroll_message_shown ) {
+        /*if ( this.is_scroll_message_shown ) {
             this.is_scroll_message_shown = false;
 
             var $scrl_msg = $(".scroll-message");
@@ -126,7 +158,7 @@ export default class IndexPage extends React.Component {
             TweenLite.to($scrl_msg, 1, {bottom: "-3em", opacity: 0, onComplete: () => {
                 $scrl_msg.hide();
             }});
-        }
+        }*/
 
         if ( this.is_transition ) {
             return;
@@ -179,6 +211,18 @@ export default class IndexPage extends React.Component {
         }, 2000);
     }
 
+    nextArrowButtonClickListener(event) {
+        event.preventDefault();
+
+        if ( this.is_transition ) {
+            return;
+        }
+
+        this.nextMovie();
+
+        return false;
+    }
+
     currentMovieClickListener(event) {
         event.preventDefault();
 
@@ -192,6 +236,17 @@ export default class IndexPage extends React.Component {
         });
 
         TransitionActions.fromIndexToMovieTranstion(this, {movies: movies});
+    }
+
+    currentMovieTextClickListener(event) {
+        event.preventDefault();
+
+        TransitionActions.fromIndexToMovieTranstion(this, {
+            movies: this.content,
+            command: MoviePage.CMD_SHOW_TEXT
+        });
+
+        return false;
     }
 
     leaveToMoviePage() {
@@ -232,32 +287,29 @@ export default class IndexPage extends React.Component {
         var large_name = content.name;
         var small_name = content.genre;
 
-        var description_text = content.description;
-        var cutat = description_text.lastIndexOf(' ',250);
-        if(cutat!=-1)
-            description_text = description_text.substring(0,cutat)+'(...)';
+        var description_text = content.short_description;
 
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator onClick={self.currentMovieClickListener.bind(self)} class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
+                <ImageRotator class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 
                 <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>
                         <td class="title-navigation">
                             <ul>
-                                <li><a href="#">about</a></li>
-                                <li><a href="#">work</a></li>
-                                <li><a href="#">contacts</a></li>
-                                <li><a href="#">impressum</a></li>
+                                <li><a href="#" onClick={createNotReadyYetFunction("news")}>news</a></li>
+                                <li><a href="#" onClick={createNotReadyYetFunction("work")}>work</a></li>
+                                <li><a href="#" onClick={createNotReadyYetFunction("about")}>about</a></li>
+                                <li><a href="#" onClick={createNotReadyYetFunction("contact")}>contacts</a></li>
                             </ul>
                         </td>
                     </tr>
                     <tr>
                         <td class="title-content">
-                            <AlphaBoxDangerHtml class="movie-short-description">
-                                {description_text}
-                            </AlphaBoxDangerHtml>
+                            <AlphaBox class="movie-short-description" onClick={this.currentMovieTextClickListener.bind(this)}>
+                                <p dangerouslySetInnerHTML={{__html: description_text}}></p>
+                            </AlphaBox>
                         </td>
                     </tr>
                     <tr>
@@ -269,12 +321,20 @@ export default class IndexPage extends React.Component {
 
 
                 <div class="title-header">
-                    <BracketTextBox className="title-page-name" text={page_name} />
-                    <AlphaTextBox text={[<span class="movie-title">{large_name} </span>, <span class="movie-genre">{small_name}</span>]} />
+                    <div className="title-page-name">
+                        <BracketTextBox text={page_name} />
+                        <img src={asset("img/button-arrow-next.png")} class="img-next-arrow" onClick={this.nextArrowButtonClickListener.bind(this)} alt="" />
+                    </div>
+                    <AlphaBox onClick={self.currentMovieClickListener.bind(self)}>
+                        <span class="movie-title">{large_name} </span>
+                        <span class="movie-genre">{small_name}</span>
+                        <img src={asset("img/button-film.png")} class="title-play-button" alt="" />
+                    </AlphaBox>
                 </div>
 
                 <div className="scroll-message">
-                    +++ Scroll and click to discover +++
+                    <img src={asset("img/button-two-arrows.png")} alt="" />
+                    <span>Scroll and click to discover</span>
                 </div>
 
             </section>

@@ -56,7 +56,7 @@ export default class AlphaBox extends React.Component {
     render() {
         var text = this.state.children;
 
-        return <div id={this._id} className={this.props.className}>
+        return <div id={this._id} {...this.props}>
             {text}
         </div>;
     }
