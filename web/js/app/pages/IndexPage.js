@@ -7,6 +7,7 @@ import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
 import { asset, createNotReadyYetFunction } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
+import AlphaBox from "./components/AlphaBox";
 import AlphaBoxDangerHtml from "./components/AlphaBoxDangerHtml";
 import BracketTextBox from "./components/BracketTextBox";
 import ImageRotator from "./components/ImageRotator";
@@ -265,16 +266,16 @@ export default class IndexPage extends React.Component {
                 </TitleColoredTable>
 
 
-                <div class="title-header" onClick={createNotReadyYetFunction("Movie title click")}>
+                <div class="title-header">
                     <div className="title-page-name">
                         <BracketTextBox text={page_name} />
-                        <img src={asset("img/button-arrow-next.png")} class="img-next-arrow" alt="" />
+                        <img src={asset("img/button-arrow-next.png")} class="img-next-arrow" onClick={createNotReadyYetFunction("switch next movie")} alt="" />
                     </div>
-                    <AlphaTextBox text={[
-                        <span class="movie-title">{large_name} </span>,
-                        <span class="movie-genre">{small_name}</span>,
+                    <AlphaBox onClick={createNotReadyYetFunction("Movie title click")}>
+                        <span class="movie-title">{large_name} </span>
+                        <span class="movie-genre">{small_name}</span>
                         <img src={asset("img/button-film.png")} class="title-play-button" alt="" />
-                        ]} />
+                    </AlphaBox>
                 </div>
 
                 <div className="scroll-message">

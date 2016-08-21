@@ -64,7 +64,7 @@ export default class BracketTextBox extends React.Component {
 
         console.log("BracketTextBox rendered");
 
-        return <span id={this._id} className={"bracket-text-box " + this.props.className} >
+        return <span id={this._id} className={"bracket-text-box " + this.props.className} {...this.props}>
             [<span class="in-bracket-text">{text}</span>]
         </span>;
     }
