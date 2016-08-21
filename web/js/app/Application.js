@@ -106,7 +106,22 @@ export default class Application extends React.Component {
                     transition={transition}/>;
 
                 break;
+            case "MOVIE-INDEX":
+                var prev_page = transition.prev_page;
+                var movies = prev_page.short_models;
+
+                page = <IndexPage
+                    movies={movies}
+                    transition={transition}/>;
+                break;
         }
+
+        /*transition.callback = () => {
+            this.setState({
+                first_page: page,
+                second_page: null
+            });
+        };*/
 
         this.prepareNextPageForTransition(page);
     }

@@ -68,47 +68,77 @@ export default class IndexPage extends React.Component {
     }
 
     componentWillMount() {
-        var padIntegerWithZeros = function (num, places) {
-            var zero = places - num.toString().length + 1;
-            return Array(+(zero > 0 && zero)).join("0") + num;
+        if ( this.props.movies ) {
+            this.content = this.props.movies;
+
+            this.current_content_index = this.props.contentIndex || 0;
+
+            this.setState({
+                current_content: this.content[this.current_content_index]
+            });
         }
+        else {
+            $.ajax({
+                url: config.SITE_NAME + 'api/all-movies',
+                dataType: 'json',
+                success: (data) => {
+                    this.content = data.map((item, index) => {
+                        var content = new ShortProjectModel();
 
-        $.ajax({
-            url: config.SITE_NAME + 'api/all-movies',
-            dataType: 'json',
-            success: (data) => {
-                this.content = data.map((item, index) => {
-                    var content = new ShortProjectModel();
+                        content.parseJsonData(item);
+                        content.page_name = index + 1;
 
-                    content.parseJsonData(item);
-                    content.page_name = index + 1;
-
-                    return content;
-                });
-
-                console.log("DEBUG: data loaded", data, this.content);
-
-                this.setState({
-                    current_content: this.content[this.current_content_index]
-                });
-
-                TweenLite.set($("#IndexPage"), {opacity: 0});
-
-                if (this.props.onAjaxLoaded)
-                    this.props.onAjaxLoaded(() => {
-                        TweenLite.to($("#IndexPage"), 1, {opacity: 1});
+                        return content;
                     });
-            },
-            error: (err) => {
-                console.log('ERROR:  ' + err);
-            }
-        });
+
+                    console.log("DEBUG: data loaded", data, this.content);
+
+                    this.setState({
+                        current_content: this.content[this.current_content_index]
+                    });
+
+                    TweenLite.set($("#IndexPage"), {opacity: 0});
+
+                    if (this.props.onAjaxLoaded)
+                        this.props.onAjaxLoaded(() => {
+                            TweenLite.to($("#IndexPage"), 1, {opacity: 1});
+                        });
+                },
+                error: (err) => {
+                    console.log('ERROR:  ' + err);
+                }
+            });
+        }
 
         $(window).on('mousewheel DOMMouseScroll', this.scrollListener.bind(this));
     }
 
     componentWillUnmount() {
         $(window).off('mousewheel DOMMouseScroll', this.scrollListener);
+    }
+
+    componentDidMount() {
+        this.hadleTransitionAnimations();
+    }
+
+    hadleTransitionAnimations() {
+        var tr = this.props.transition;
+        if ( !tr )
+            return;
+
+        tr.prev_page.leaveToIndexPage();
+
+        switch ( tr.type ) {
+            case "INDEX-MOVIE":
+                this.enterFromMoviePage();
+                break;
+        }
+    }
+
+    enterFromMoviePage() {
+        var tl = new TimelineLite();
+
+        tl.from($('.title-project-dsc'), 1, {x: "-100%"});
     }
 
     getMouseScrollDirection(e) {

@@ -78,12 +78,12 @@ export default class MoviePage extends React.Component {
 
         switch ( transition.type ) {
             case "INDEX-MOVIE":
-                this.enterFromIndexPage();
+                this.enterFromIndexPage(transition.callback);
                 break;
         }
     }
 
-    enterFromIndexPage() {
+    enterFromIndexPage(callback) {
         var cmd = this.props.transition.command;
 
         var tl = new TimelineLite();
@@ -92,7 +92,20 @@ export default class MoviePage extends React.Component {
                 this.scrollToDescription();
             }
         }})
-            .from($('.fixed-menu-row'), 0.5, {opacity: 0});
+            .from($('.fixed-menu-row'), 0.5, {opacity: 0, onComplete:()=>{
+                if (callback)
+                    callback();
+            }});
+    }
+
+    leaveToIndexPage() {
+        var tl = new TimelineLite();
+
+        var $this = $("#MoviePage");
+        tl.to($this, 1, {y: "+=100%", onComplete: () => {
+            $this.hide();
+            $this.css('z-index', 0);
+        }});
     }
 
     scrollToDescription() {
@@ -228,7 +241,7 @@ export default class MoviePage extends React.Component {
     homeButtonClickListener(e) {
         e.preventDefault();
 
-        notReadyYet("Home Click");
+        TransitionActions.fromMovieToIndexTransition(this, {});
 
         return false;
     }
