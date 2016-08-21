@@ -5,7 +5,7 @@ var $ = require('jquery');
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
-import { asset } from "../funcitons";
+import { asset, createNotReadyYetFunction } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import AlphaBoxDangerHtml from "./components/AlphaBoxDangerHtml";
 import BracketTextBox from "./components/BracketTextBox";
@@ -243,16 +243,16 @@ export default class IndexPage extends React.Component {
                     <tr>
                         <td class="title-navigation">
                             <ul>
-                                <li><a href="#">news</a></li>
-                                <li><a href="#">work</a></li>
-                                <li><a href="#">about</a></li>
-                                <li><a href="#">contacts</a></li>
+                                <li><a href="#" onClick={createNotReadyYetFunction("news")}>news</a></li>
+                                <li><a href="#" onClick={createNotReadyYetFunction("work")}>work</a></li>
+                                <li><a href="#" onClick={createNotReadyYetFunction("about")}>about</a></li>
+                                <li><a href="#" onClick={createNotReadyYetFunction("contact")}>contacts</a></li>
                             </ul>
                         </td>
                     </tr>
                     <tr>
                         <td class="title-content">
-                            <AlphaBoxDangerHtml class="movie-short-description">
+                            <AlphaBoxDangerHtml class="movie-short-description" onClick={createNotReadyYetFunction("Text click")}>
                                 {description_text}
                             </AlphaBoxDangerHtml>
                         </td>
@@ -265,7 +265,7 @@ export default class IndexPage extends React.Component {
                 </TitleColoredTable>
 
 
-                <div class="title-header">
+                <div class="title-header" onClick={createNotReadyYetFunction("Movie title click")}>
                     <BracketTextBox className="title-page-name" text={page_name} />
                     <AlphaTextBox text={[<span class="movie-title">{large_name} </span>, <span class="movie-genre">{small_name}</span>]} />
                 </div>
