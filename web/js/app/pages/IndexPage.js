@@ -266,11 +266,14 @@ export default class IndexPage extends React.Component {
 
 
                 <div class="title-header" onClick={createNotReadyYetFunction("Movie title click")}>
-                    <BracketTextBox className="title-page-name" text={page_name} />
+                    <div className="title-page-name">
+                        <BracketTextBox text={page_name} />
+                        <img src={asset("img/button-arrow-next.png")} class="img-next-arrow" alt="" />
+                    </div>
                     <AlphaTextBox text={[
                         <span class="movie-title">{large_name} </span>,
                         <span class="movie-genre">{small_name}</span>,
-                        <img src={asset("img/button-film.png")} alt="" />
+                        <img src={asset("img/button-film.png")} class="title-play-button" alt="" />
                         ]} />
                 </div>
 

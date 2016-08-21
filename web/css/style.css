@@ -799,18 +799,29 @@ a:active {
 
 /* movie title */
 
+.bracket-text-box {
+    display: inline-block;
+}
+
 .in-bracket-text {
     overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
 }
 
 .title-page-name {
-    display: flex;
     position: relative;
     top: -100px;
     left: -100px;
     color: #3c3c3b;
     font-weight: bold;
     font-size: 21.9pt;
+}
+
+.img-next-arrow {
+    cursor: pointer;
+    vertical-align: middle;
+    margin-left: 10px;
 }
 
 .title-header {
@@ -821,7 +832,7 @@ a:active {
     cursor: pointer;
 }
 
-.title-header img {
+.title-play-button {
     position: relative;
     bottom: -15px;
     left: 10px;
