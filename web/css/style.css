@@ -37,7 +37,6 @@ html, body, main {
 }
 
 main {
-    overflow-x: hidden;
     position: relative;
 }
 

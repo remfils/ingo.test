@@ -54,7 +54,7 @@ export default class Description extends React.Component {
         });
 
         return (
-            <div>
+            <div {...this.props}>
                 <section class="default-side-padding project-dsc" style={description_style}>
                     <div class="description-container">
                         <div class="col-30p">

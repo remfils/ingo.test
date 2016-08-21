@@ -13,6 +13,7 @@ import BracketTextBox from "./components/BracketTextBox";
 import ImageRotator from "./components/ImageRotator";
 import TitleColoredTable from "./IndexPage/TitleColoredTable";
 import ShortProjectModel from "../models/ShortProjectModel";
+import MoviePage from './MoviePage';
 
 const MAX_SCROLL_COUNTER_VALUE = 3;
 
@@ -207,6 +208,17 @@ export default class IndexPage extends React.Component {
         TransitionActions.fromIndexToMovieTranstion(this, {movies: movies});
     }
 
+    currentMovieTextClickListener(event) {
+        event.preventDefault();
+
+        TransitionActions.fromIndexToMovieTranstion(this, {
+            movies: this.content,
+            command: MoviePage.CMD_SHOW_TEXT
+        });
+
+        return false;
+    }
+
     leaveToMoviePage() {
         TweenLite.to( $(".title-project-dsc"), 1, {left: "-=60%"} );
         TweenLite.to( $(".img-front"), 1, {left: "0", height: "70%"} );
@@ -265,7 +277,7 @@ export default class IndexPage extends React.Component {
                     </tr>
                     <tr>
                         <td class="title-content">
-                            <AlphaBox class="movie-short-description" onClick={createNotReadyYetFunction("Text click")}>
+                            <AlphaBox class="movie-short-description" onClick={this.currentMovieTextClickListener.bind(this)}>
                                 <p dangerouslySetInnerHTML={{__html: description_text}}></p>
                             </AlphaBox>
                         </td>

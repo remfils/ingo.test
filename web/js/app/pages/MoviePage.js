@@ -24,6 +24,8 @@ import ShortProjectModel from '../models/ShortProjectModel';
 import ProjectModel from '../models/ProjectModel';
 
 export default class MoviePage extends React.Component {
+    static CMD_SHOW_TEXT = "SHOW_TEXT";
+
     constructor() {
         super();
 
@@ -82,9 +84,21 @@ export default class MoviePage extends React.Component {
     }
 
     enterFromIndexPage() {
+        var cmd = this.props.transition.command;
+
         var tl = new TimelineLite();
-        tl.from($("#MoviePage"), 1, {y: "+=100%", clearProps: "y,opacity,transform"})
+        tl.from($("#MoviePage"), 1, {y: "+=100%", clearProps: "y,opacity,transform", onComplete: ()=>{
+            if (cmd == MoviePage.CMD_SHOW_TEXT) {
+                this.scrollToDescription();
+            }
+        }})
             .from($('.fixed-menu-row'), 0.5, {opacity: 0});
+    }
+
+    scrollToDescription() {
+        console.debug("DEBUG(scrollToDescription): ",$('#MovieDescription').offset().top);
+
+        TweenLite.to($("html, body"), 1, {scrollTop: $('#MovieDescription').offset().top, ease: Power2.easeInOut});
     }
 
     componentWillMount() {
@@ -222,6 +236,14 @@ export default class MoviePage extends React.Component {
         return false;
     }
 
+    mehrButtonClickListener(e) {
+        e.preventDefault();
+
+        this.scrollToDescription();
+
+        return false;
+    }
+
     isTransitionLocked() {
         return this.is_transition
             || !this.is_movie_loaded;
@@ -346,14 +368,14 @@ export default class MoviePage extends React.Component {
                     <div class="col-70p project-demo-video">
                         <PreviewFrame url={movie.preview_url} class="preview-frame" />
                         <div class="btn-mehr-container">
-                            <a class="btn-mehr pull-left">MEHR ERFAHREN</a>
+                            <a class="btn-mehr pull-left" onClick={this.mehrButtonClickListener.bind(this)}>MEHR ERFAHREN</a>
                             <a href="#" className="btn-mehr pull-left">PROJEKTGALERIE</a>
                             <a href="#" className="btn-mehr pull-right">NÄCHSTES PROJEKT</a>
                         </div>
                     </div>
                 </section>
 
-                <Description movie={movie} />
+                <Description id="MovieDescription" movie={movie} />
 
                 <footer class="default-side-padding project-footer">
                     <table>
