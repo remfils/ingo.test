@@ -260,7 +260,7 @@ a, a:hover, a:focus, a:visited, a:active {
     margin-left: 10px;
     position: absolute;
     top: 9px;
-    width: 70px;
+    width: 55px;
 
     -webkit-transition: margin 0.5s, width 0.5s;
     -moz-transition: margin 0.5s, width 0.5s;
@@ -271,11 +271,11 @@ a, a:hover, a:focus, a:visited, a:active {
 
 .home-button:before {
     width: 0;
-    margin-left: 80px;
+    margin-left: 65px;
 }
 
 .home-button:hover:before {
-    width: 85px;
+    width: 70px;
     margin-left: 10px;
 }
 
@@ -876,8 +876,14 @@ a:active {
 
 .scroll-message {
     position: absolute;
-    bottom: 3em;
-    left: 55%;
+    bottom: 25%;
+    right: 25%;
+    font-size: 18px;
+}
+
+.scroll-message img {
+    vertical-align: middle;
+    margin-right: 10px;
 }
 
 /* ImageRotator */

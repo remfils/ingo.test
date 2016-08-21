@@ -119,7 +119,7 @@ export default class IndexPage extends React.Component {
     }
 
     scrollListener(e) {
-        if ( this.is_scroll_message_shown ) {
+        /*if ( this.is_scroll_message_shown ) {
             this.is_scroll_message_shown = false;
 
             var $scrl_msg = $(".scroll-message");
@@ -127,7 +127,7 @@ export default class IndexPage extends React.Component {
             TweenLite.to($scrl_msg, 1, {bottom: "-3em", opacity: 0, onComplete: () => {
                 $scrl_msg.hide();
             }});
-        }
+        }*/
 
         if ( this.is_transition ) {
             return;
@@ -279,7 +279,8 @@ export default class IndexPage extends React.Component {
                 </div>
 
                 <div className="scroll-message">
-                    +++ Scroll and click to discover +++
+                    <img src={asset("img/button-two-arrows.png")} alt="" />
+                    <span>Scroll and click to discover</span>
                 </div>
 
             </section>

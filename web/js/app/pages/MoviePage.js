@@ -82,7 +82,9 @@ export default class MoviePage extends React.Component {
     }
 
     enterFromIndexPage() {
-        TweenLite.from($("#MoviePage"), 1, {y: "+=100%"});
+        var tl = new TimelineLite();
+        tl.from($("#MoviePage"), 1, {y: "+=100%", clearProps: "y,opacity,transform"})
+            .from($('.fixed-menu-row'), 0.5, {opacity: 0});
     }
 
     componentWillMount() {
