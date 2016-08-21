@@ -8,8 +8,8 @@ import config from './config';
 
 var $ = require('jquery');
 
-const URL_INDEX = "/";
-const URL_MOVIE = "/movie/";
+const URL_INDEX = "";
+const URL_MOVIE = "movie/";
 
 export default class Application extends React.Component {
     constructor() {
@@ -23,10 +23,13 @@ export default class Application extends React.Component {
     componentWillMount() {
         TransitionStore.on("leave", this.leavePageListener.bind(this));
 
-        var domain = "http://" + document.domain;
+        var domain = config.SITE_NAME;
         var url = document.URL;
 
+        console.log(domain, url);
+
         if ( url == domain + URL_INDEX ) {
+
             this.setState({
                 first_page: <IndexPage onAjaxLoaded={this.props.onAjaxLoaded} />,
                 second_page: null

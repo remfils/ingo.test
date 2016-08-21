@@ -3,6 +3,10 @@ var webpack = require('webpack');
 
 var WebpackNotifierPlugin = require('webpack-notifier');
 
+var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+
+var LOCAL_WEBSITE = 'http://ingo.t';
+
 module.exports = {
     entry: {
         main: './web/js/app/main.js',
@@ -31,5 +35,11 @@ module.exports = {
 		title: 'Ingo.Test',
 		alwaysNotify: true
 	}),
+        new BrowserSyncPlugin({
+            host: 'localhost',
+            port: 3000,
+            proxy: LOCAL_WEBSITE,
+            files: ['./web/css/*.css']
+    })
     ]
 };
