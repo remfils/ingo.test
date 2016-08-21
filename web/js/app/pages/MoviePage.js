@@ -167,6 +167,8 @@ export default class MoviePage extends React.Component {
                 this.setState({
                     current_movie: prj
                 });
+
+                this.setHomeButtonScrollMagicScene();
             }
         });
     }
@@ -191,6 +193,25 @@ export default class MoviePage extends React.Component {
         TweenLite.set('.project-sm-dsc', {backgroundColor: movie.color });
 
         this.setScrollmagicScene(null, true);
+    }
+
+    setHomeButtonScrollMagicScene() {
+        var ctrl = new ScrollMagic.Controller();
+
+        var $small_dsc = $('.project-sm-dsc');
+        var duration = $small_dsc.offset().top - $('.movie-title-section').offset().top + $small_dsc.outerHeight(true) / 2;
+
+        console.debug("DEBUG(setHomeButtonScrollMagicScene)", duration)
+
+        var scene = new ScrollMagic.Scene({triggerElement: '.movie-title-section', duration: duration})
+            .setClassToggle('#HomeButton', 'darker')
+            .triggerHook(0.05)
+            .addTo(ctrl);
+
+        var scene = new ScrollMagic.Scene({triggerElement: '#MovieDescription'})
+            .setClassToggle('#HomeButton', 'darker')
+            .triggerHook(0.05)
+            .addTo(ctrl);
     }
 
     arrangeTransition( transition ) {
@@ -359,7 +380,7 @@ export default class MoviePage extends React.Component {
             <div id="MoviePage" class="content">
 
                 <div className="fixed-menu-row">
-                    <a href="#" class="home-button" onClick={this.homeButtonClickListener.bind(this)}>HOME</a>
+                    <a href="#" id="HomeButton" class="home-button" onClick={this.homeButtonClickListener.bind(this)}>HOME</a>
                 </div>
 
                 <section class="project-title-section">

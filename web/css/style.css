@@ -228,24 +228,27 @@ a, a:hover, a:focus, a:visited, a:active {
 
 .home-button {
     position: absolute;
-    right: 80px;
+    display: block;
+    width: 120px;
+    right: 0;
     font-family: MyriadPro-Regular_2;
     font-size: 18px;
     color: #F7F5F5;
 
-    -webkit-transition: margin-right 0.5s;
-    -moz-transition: margin-right 0.5s;
-    -ms-transition: margin-right 0.5s;
-    -o-transition: margin-right 0.5s;
-    transition: margin-right 0.5s;
+    -webkit-transition: margin-right 0.5s, color 0.5s;
+    -moz-transition: margin-right 0.5s, color 0.5s;
+    -ms-transition: margin-right 0.5s, color 0.5s;
+    -o-transition: margin-right 0.5s, color 0.5s;
+    transition: margin-right 0.5s, color 0.5s;
 }
 
 .home-button:hover {
     color: #F7F5F5;
-    margin-right: 15px;
+    margin-right: 10px;
 }
 
-.home-button:visited {
+.home-button:visited,
+.home-button:focus {
     color: #F7F5F5;
 }
 
@@ -255,34 +258,40 @@ a, a:hover, a:focus, a:visited, a:active {
     content: "";
     opacity: 0.7;
     height: 1px;
-    left: 100%;
-    margin-left: 10px;
     position: absolute;
     top: 9px;
+    right: 0;
     width: 55px;
 
-    -webkit-transition: margin 0.5s, width 0.5s;
-    -moz-transition: margin 0.5s, width 0.5s;
-    -ms-transition: margin 0.5s, width 0.5s;
-    -o-transition: margin 0.5s, width 0.5s;
-    transition: margin 0.5s, width 0.5s;
+    -webkit-transition: right 0.5s, width 0.5s, background-color 0.5s;
+    -moz-transition: right 0.5s, width 0.5s, background-color 0.5s;
+    -ms-transition: right 0.5s, width 0.5s, background-color 0.5s;
+    -o-transition: right 0.5s, width 0.5s, background-color 0.5s;
+    transition: right 0.5s, width 0.5s, background-color 0.5s;
 }
 
 .home-button:before {
     width: 0;
-    margin-left: 65px;
 }
 
 .home-button:hover:before {
     width: 70px;
-    margin-left: 10px;
+    right: -10px;
 }
 
 .home-button:hover:after {
     position: absolute;
-    margin-left: -70px;
-    left: 100%;
+    right: 120%;
     width: 0;
+}
+
+.home-button.darker {
+    color: black;
+}
+
+.home-button.darker:before,
+.home-button.darker:after {
+    background-color: black;
 }
 
 /* PROJECT section: header */
@@ -476,6 +485,10 @@ a.arrow:hover {
     font-size: 21px;
     padding: 15px 24px;
     margin-right: 12px;
+}
+
+.btn-mehr:visited {
+    color: #545454;
 }
 
 .btn-mehr:last-child {
@@ -689,10 +702,14 @@ td.info-text {
     border: none;
     border-bottom: 1px solid #E2DFDF;
     display: block;
-    width: 100%;
+    font-family: MyriadPro-Cond_3;
     font-size: 24px;
+    width: 100%;
     margin-top: 5px;
     margin-bottom: 30px;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+    outline: none;
 }
 
 .footer_mail_cell input[type="submit"] {

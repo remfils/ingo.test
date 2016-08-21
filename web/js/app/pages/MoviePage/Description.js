@@ -28,6 +28,14 @@ export default class Description extends React.Component {
         }
     }
 
+    backToTopClickListener(e) {
+        e.preventDefault();
+
+        TweenLite.to($('html, body'), 1, {scrollTop: 0, ease: Power2.easeInOut});
+
+        return false;
+    }
+
     render() {
         console.log("description rerender");
         var movie = this.props.movie;
@@ -73,7 +81,7 @@ export default class Description extends React.Component {
 
                     <hr/>
 
-                    <a href="#" class="movie_page-back-to-top">
+                    <a href="#" class="movie_page-back-to-top" onClick={this.backToTopClickListener.bind(this)}>
                         <span>BACK TO TOP</span>
                     </a>
 

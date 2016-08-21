@@ -15,6 +15,8 @@ var loading_text = $('#LoadingScreen > .loading-percents');
 
 loading_cover.css('width', '50%');
 
+window.$ = $;
+
 function updatePercents() {
     var ratio = Math.round(loading_cover.outerWidth(true) / loading_screen.outerWidth(true) * 100);
     loading_text.html(ratio);
