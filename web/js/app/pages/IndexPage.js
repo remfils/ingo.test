@@ -232,10 +232,7 @@ export default class IndexPage extends React.Component {
         var large_name = content.name;
         var small_name = content.genre;
 
-        var description_text = content.description;
-        var cutat = description_text.lastIndexOf(' ',250);
-        if(cutat!=-1)
-            description_text = description_text.substring(0,cutat)+'(...)';
+        var description_text = content.short_description;
 
         return (
             <section id='IndexPage' class='title-container'>
@@ -246,10 +243,10 @@ export default class IndexPage extends React.Component {
                     <tr>
                         <td class="title-navigation">
                             <ul>
-                                <li><a href="#">about</a></li>
+                                <li><a href="#">news</a></li>
                                 <li><a href="#">work</a></li>
+                                <li><a href="#">about</a></li>
                                 <li><a href="#">contacts</a></li>
-                                <li><a href="#">impressum</a></li>
                             </ul>
                         </td>
                     </tr>
