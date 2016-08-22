@@ -74,7 +74,7 @@ export default class MoviePage extends React.Component {
 
         $("#MoviePage").css({"z-index": 99});
         
-        transition.prev_page.leaveToMoviePage();
+        transition.prev_page.leaveToMoviePage(transition.callback);
 
         switch ( transition.type ) {
             case "INDEX-MOVIE":
@@ -87,11 +87,12 @@ export default class MoviePage extends React.Component {
         var cmd = this.props.transition.command;
 
         var tl = new TimelineLite();
-        tl.from($("#MoviePage"), 1, {y: "+=100%", clearProps: "y,opacity,transform", onComplete: ()=>{
-            if (cmd == MoviePage.CMD_SHOW_TEXT) {
-                this.scrollToDescription();
-            }
-        }})
+        tl.from($("#MoviePage"), 1, {y: "+=100%", clearProps: "y,opacity,transform", })
+            .from($("#MovieImageRotator"), 1, {y: "+=100%", onComplete: ()=>{
+                if (cmd == MoviePage.CMD_SHOW_TEXT) {
+                    this.scrollToDescription();
+                }
+            }})
             .from($('.fixed-menu-row'), 0.5, {opacity: 0, onComplete:()=>{
                 if (callback)
                     callback();
@@ -142,6 +143,7 @@ export default class MoviePage extends React.Component {
                     this.short_models = data.map((item, index) => {
                         var movie = new ShortProjectModel();
                         movie.parseJsonData(item);
+                        movie.page_name = index + 1;
 
                         if ( movie.id == movie_id ) {
                             this.current_movie_index = index;
