@@ -7,6 +7,7 @@ import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
 import { asset, createNotReadyYetFunction } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
+import NavigationMenu from "./components/NavigationMenu";
 import AlphaBox from "./components/AlphaBox";
 import AlphaBoxDangerHtml from "./components/AlphaBoxDangerHtml";
 import BracketTextBox from "./components/BracketTextBox";
@@ -322,12 +323,7 @@ export default class IndexPage extends React.Component {
                 <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>
                         <td class="title-navigation">
-                            <ul>
-                                <li><a href="#" onClick={createNotReadyYetFunction("news")}>news</a></li>
-                                <li><a href="#" onClick={createNotReadyYetFunction("work")}>work</a></li>
-                                <li><a href="#" onClick={createNotReadyYetFunction("about")}>about</a></li>
-                                <li><a href="#" onClick={createNotReadyYetFunction("contact")}>contacts</a></li>
-                            </ul>
+                            <NavigationMenu />
                         </td>
                     </tr>
                     <tr>
