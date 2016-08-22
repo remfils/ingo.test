@@ -32,7 +32,7 @@ export default class EmailForm extends React.Component {
     }
 
     render() {
-        return <form id={this._id} className={this.props.className}>
+        return <form id={this._id} className={"email-form " + this.props.className}>
             <h1>LET’S TALK…</h1>
 
             <div class="custom-form-gruop">

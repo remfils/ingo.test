@@ -127,11 +127,17 @@ export default class IndexPage extends React.Component {
         if ( !tr )
             return;
 
-        tr.prev_page.leaveToIndexPage(tr.callback);
+        var callback = tr.callback;
+        var prev_page = tr.prev_page;
 
         switch ( tr.type ) {
             case "MOVIE-INDEX":
+                prev_page.leaveToIndexPage(tr.callback);
                 this.enterFromMoviePage(tr.callback);
+                break;
+            case "CONTACT-INDEX":
+                prev_page.leaveToDifferentTitlePage(callback);
+                this.enterFromDifferentTitlePage(callback);
                 break;
         }
     }
@@ -174,6 +180,26 @@ export default class IndexPage extends React.Component {
                 callback();
         }} );
         TweenLite.set($("#IndexPage"), {"z-index": 0});*/
+    }
+
+    enterFromDifferentTitlePage(callback) {
+        var tl = new TimelineLite();
+        var $this = $('#IndexPage');
+
+        tl.from($this, 0, {opacity: 0, onComplete:()=>{
+            if (callback)
+                callback();
+        }});
+    }
+
+    leaveToDifferentTitlePage(callback) {
+        var tl = new TimelineLite();
+        var $this = $('#IndexPage');
+
+        tl.to($this, 1, {opacity: 0, onComplete:()=>{
+            if (callback)
+                callback();
+        }});
     }
 
     getMouseScrollDirection(e) {
@@ -323,7 +349,7 @@ export default class IndexPage extends React.Component {
                 <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>
                         <td class="title-navigation">
-                            <NavigationMenu />
+                            <NavigationMenu current_page={this}/>
                         </td>
                     </tr>
                     <tr>
