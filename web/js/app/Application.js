@@ -2,6 +2,7 @@ import React from 'react';
 
 import IndexPage from './pages/IndexPage';
 import MoviePage from './pages/MoviePage';
+import ContactPage from './pages/ContactPage';
 import TransitionStore from './stores/TransitionStore';
 import { asset, createCountdownCallback } from './funcitons';
 import config from './config';
@@ -10,6 +11,7 @@ var $ = require('jquery');
 
 const URL_INDEX = "";
 const URL_MOVIE = "movie/";
+const URL_CONTACTS = "contacts";
 
 export default class Application extends React.Component {
     constructor() {
@@ -48,6 +50,12 @@ export default class Application extends React.Component {
                     current_movie_index={index}
                     onAjaxLoaded={this.props.onAjaxLoaded} />
             );
+        }
+        else if (url.indexOf(URL_CONTACTS) !== -1) {
+            if (this.props.onAjaxLoaded)
+                this.props.onAjaxLoaded();
+
+            this.pushPage(<ContactPage />);
         }
     }
 
@@ -136,6 +144,9 @@ export default class Application extends React.Component {
                 page = <IndexPage
                     movies={movies}
                     transition={transition}/>;
+                break;
+            case "INDEX-CONTACT":
+                page = <ContactPage transition={transition} />;
                 break;
         }
 
