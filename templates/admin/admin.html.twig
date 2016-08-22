@@ -16,7 +16,8 @@
             </div>
             <ul class="nav navbar-nav">
                 <li {% if active_page == '/admin' %} class="active" {% endif %}><a href="{{ path('admin') }}">Admin</a></li>
-                <li {% if active_page == '/admin/add/project' %} class="active" {% endif %}><a href="{{ path('admin-add_project') }}">Add project</a></li>
+                {#<li {% if active_page == '/admin/add/project' %} class="active" {% endif %}><a href="{{ path('admin-add_project') }}">Add project</a></li>#}
+                <li {% if active_page == '/admin/add/project' %} class="active" {% endif %}><a href="#" onclick="alert('is not ready yet!')">Add project</a></li>
                 <li><a href="{{ path('admin_logout') }}">Logout</a></li>
             </ul>
         </div>
@@ -43,7 +44,8 @@
                 <td>{{ project.year }}</td>
                 <td>
                     <a href="{{ path('admin_edit_project', {id: project.id }) }}" class="btn btn-warning">Edit</a>
-                    <a href="/admin/remove/project/{{ project.id }}" class="btn btn-danger">Remove</a>
+                    {#<a href="/admin/remove/project/{{ project.id }}" class="btn btn-danger">Remove</a>#}
+                    <a href="#" class="btn btn-danger" disabled>Remove</a>
                 </td>
             </tr>
         {% endfor %}
