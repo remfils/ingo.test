@@ -17,6 +17,8 @@ loading_cover.css('width', '50%');
 
 window.$ = $;
 
+window.scrollTo(0,0);
+
 function updatePercents() {
     var ratio = Math.round(loading_cover.outerWidth(true) / loading_screen.outerWidth(true) * 100);
     loading_text.html(ratio);

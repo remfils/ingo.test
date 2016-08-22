@@ -138,10 +138,41 @@ export default class IndexPage extends React.Component {
     enterFromMoviePage(callback) {
         var tl = new TimelineLite();
 
-        tl.from($('.title-project-dsc'), 1, {x: "-100%", onComplete:()=>{
-            if(callback)
+        var $current_image = $(".index-page-image-rotator .img-front"),
+            $this = $('#IndexPage');
+
+        tl.from($this, 1, {x: "-=100%"})
+            .from($current_image, 1, {x: "-=100%", ease: Power2.easeInOut, onComplete:()=>{
+                if(callback)
+                    callback();
+            }});
+    }
+
+
+    leaveToMoviePage(callback) {
+        var tl = new TimelineLite();
+
+        var $prev_image = $(".index-page-image-rotator .img-back"),
+            $current_image = $(".index-page-image-rotator .img-front"),
+            $table = $(".title-project-dsc");
+
+        tl.to($current_image, 1, {x: "-=100%", ease: Power2.easeOut})
+            .to($("#IndexPage"), 1, {x: "-=100%", ease: Power2.easeInOut, onComplete:()=>{
+                $("#IndexPage").css("display", "none");
+
+                if (callback)
+                    callback();
+            }});
+
+        /*TweenLite.to( , 1, {left: "-=60%"} );
+        TweenLite.to( , 1, {left: "0", height: "70%"} );
+        TweenLite.to( $(".title-header"), 1, {opacity: 0, onComplete: () => {
+            $("#IndexPage").css("display", "none");
+
+            if (callback)
                 callback();
-        }});
+        }} );
+        TweenLite.set($("#IndexPage"), {"z-index": 0});*/
     }
 
     getMouseScrollDirection(e) {
@@ -250,15 +281,6 @@ export default class IndexPage extends React.Component {
         });
 
         return false;
-    }
-
-    leaveToMoviePage() {
-        TweenLite.to( $(".title-project-dsc"), 1, {left: "-=60%"} );
-        TweenLite.to( $(".img-front"), 1, {left: "0", height: "70%"} );
-        TweenLite.to( $(".title-header"), 1, {opacity: 0, onComplete: () => {
-            $("#IndexPage").css("display", "none");
-        }} );
-        TweenLite.set($("#IndexPage"), {"z-index": 0});
     }
 
     render() {
