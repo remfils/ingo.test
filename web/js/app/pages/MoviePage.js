@@ -249,7 +249,17 @@ export default class MoviePage extends React.Component {
     homeButtonClickListener(e) {
         e.preventDefault();
 
-        TransitionActions.fromMovieToIndexTransition(this, {});
+        var scroll_top = $(window).scrollTop();
+
+        if (scroll_top=== 0) {
+            TransitionActions.fromMovieToIndexTransition(this, {});
+        }
+        else {
+            var time = scroll_top / window.innerHeight;
+            TweenLite.to($('html,body'), time, {scrollTop: 0, onComplete: ()=>{
+                TransitionActions.fromMovieToIndexTransition(this, {});
+            }});
+        }
 
         return false;
     }
