@@ -51,6 +51,10 @@ export default class ImageRotator extends React.Component {
         this.are_components_set = true;
     }
 
+    componentWillMount() {
+        ResizeStore.off("RESIZE_TABLE_HEADER", this.resizeStoreListener);
+    }
+
     resizeStoreListener() {
         this.table_width = ResizeStore.data.width;
 

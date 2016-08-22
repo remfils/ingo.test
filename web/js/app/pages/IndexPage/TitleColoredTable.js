@@ -39,11 +39,17 @@ export default class TitleColoredTable extends React.Component {
     }
 
     componentWillMount() {
-        $(window).resize(() => {
-            setTimeout(this.updateTableWidth.bind(this),10);
-        });
+        $(window).on('resize', this.resizeListener.bind(this));
 
         this.setState({color: this.props.color});
+    }
+
+    resizeListener() {
+        setTimeout(this.updateTableWidth.bind(this),10);
+    }
+
+    componentWillUnmount() {
+        $(window).off('resize', this.resizeListener);
     }
 
     updateTableWidth() {
