@@ -51,8 +51,8 @@ export default class ImageRotator extends React.Component {
         this.are_components_set = true;
     }
 
-    componentWillMount() {
-        ResizeStore.off("RESIZE_TABLE_HEADER", this.resizeStoreListener);
+    componentWillUnmount() {
+        ResizeStore.removeListener("RESIZE_TABLE_HEADER", this.resizeStoreListener);
     }
 
     resizeStoreListener() {
@@ -131,9 +131,7 @@ export default class ImageRotator extends React.Component {
 
         var image_click_listener = this.props.onClick;
 
-        console.log("RENDER(ImageRotator): image_click_listener", image_click_listener);
-
-        console.log("RENDER(ImageRotator)", src_img_last, src_img_back, src_img_front, src_img_next);
+        console.debug("RENDER(ImageRotator)", src_img_last, src_img_back, src_img_front, src_img_next);
 
         return <div id={this._id} className={this.props.className + " image-rotator"} >
             <img id="TitleBackgroundImage1" class="background-image img-last" src={src_img_last} ></img>
