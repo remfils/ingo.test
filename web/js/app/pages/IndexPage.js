@@ -138,10 +138,14 @@ export default class IndexPage extends React.Component {
     enterFromMoviePage(callback) {
         var tl = new TimelineLite();
 
-        tl.from($('.title-project-dsc'), 1, {x: "-100%", onComplete:()=>{
-            if(callback)
-                callback();
-        }});
+        var $current_image = $(".index-page-image-rotator .img-front"),
+            $this = $('#IndexPage');
+
+        tl.from($this, 1, {x: "-=100%"})
+            .from($current_image, 1, {x: "-=100%", ease: Power2.easeInOut, onComplete:()=>{
+                if(callback)
+                    callback();
+            }});
     }
 
 
@@ -152,8 +156,8 @@ export default class IndexPage extends React.Component {
             $current_image = $(".index-page-image-rotator .img-front"),
             $table = $(".title-project-dsc");
 
-        tl.to($current_image, 1, {x: "-=100%"})
-            .to($("#IndexPage"), 1, {x: "-=100%", onComplete:()=>{
+        tl.to($current_image, 1, {x: "-=100%", ease: Power2.easeOut})
+            .to($("#IndexPage"), 1, {x: "-=100%", ease: Power2.easeInOut, onComplete:()=>{
                 $("#IndexPage").css("display", "none");
 
                 if (callback)
