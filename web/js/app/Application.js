@@ -150,6 +150,7 @@ export default class Application extends React.Component {
 
                 page = <IndexPage
                     movies={movies}
+                    current_content_index={prev_page.current_movie_index}
                     transition={transition}/>;
                 break;
             case "INDEX-CONTACT":

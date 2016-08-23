@@ -72,7 +72,7 @@ export default class IndexPage extends React.Component {
         if ( this.props.movies ) {
             this.content = this.props.movies;
 
-            this.current_content_index = this.props.contentIndex || 0;
+            this.current_content_index = this.props.current_content_index || 0;
 
             this.setState({
                 current_content: this.content[this.current_content_index]
