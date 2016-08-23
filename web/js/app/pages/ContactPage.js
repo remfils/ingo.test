@@ -79,7 +79,7 @@ export default class ContactPage extends React.Component {
                 <TitleColoredTable className="title-project-dsc" color="#D1D3D0" direction="">
                     <tr>
                         <td class="title-navigation">
-                            <NavigationMenu />
+                            <NavigationMenu current_page={this}/>
                         </td>
                     </tr>
                     <tr>

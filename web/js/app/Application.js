@@ -157,6 +157,10 @@ export default class Application extends React.Component {
                 this.setUrl('/contacts');
                 page = <ContactPage transition={transition} />;
                 break;
+            case "CONTACT-INDEX":
+                this.setUrl('/');
+                page = <IndexPage transition={transition} />;
+                break;
         }
 
         this.pushPage(page);
