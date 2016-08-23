@@ -487,7 +487,9 @@ a.arrow:hover {
     margin-right: 12px;
 }
 
-.btn-mehr:visited {
+.btn-mehr:visited,
+.btn-mehr:active,
+.btn-mehr:focus {
     color: #545454;
 }
 
