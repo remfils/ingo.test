@@ -41,7 +41,7 @@ export default class ImageRotator extends React.Component {
 
     $ (element) {
         if (this._$this)
-            return this._$this.find(element);
+            return $(this.id + " " + element);
         return $;
     }
 
@@ -68,7 +68,9 @@ export default class ImageRotator extends React.Component {
     }
 
     resizeStoreListener() {
-        this.table_width = ResizeStore.data.width;
+        this.table_width = ResizeStore.data.width || HEADER_MIN_WIDTH;
+
+        console.debug("TABLE_WIDTH", this.table_width);
 
         this.updateImagePositions();
     }
