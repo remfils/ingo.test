@@ -338,9 +338,22 @@ export default class MoviePage extends React.Component {
     }
 
     transitionToNextMovie( is_left, callback ) {
+        this.colorTransition();
+
         this.loadDataForCurrentMovie();
 
         window.history.pushState({}, '', '/movie/' + this.short_models[this.current_movie_index].id);
+    }
+
+    colorTransition() {
+        var from_color = this.state.current_movie.color;
+        var to_color = this.short_models[this.current_movie_index].color;
+
+        var c = {color: from_color};
+
+        TweenLite.to(c, 1, {color: to_color, onUpdate: ()=>{
+            this.setScrollmagicScene(c.color);
+        }});
     }
 
     showMovieParts() {
