@@ -115,7 +115,8 @@ export default class IndexPage extends React.Component {
     }
 
     componentWillUnmount() {
-        $(window).off('mousewheel DOMMouseScroll', this.scrollListener);
+        console.debug('DEBUG(IndexPage.componentWillUnmount)');
+        $(window).off('mousewheel DOMMouseScroll');
     }
 
     componentDidMount() {
@@ -235,9 +236,11 @@ export default class IndexPage extends React.Component {
         }, 100);
 
         if(this.scroll_counter >= MAX_SCROLL_COUNTER_VALUE) {
+            console.debug("SCROLL(nextMovie)");
             this.nextMovie();
         }
         else if ( this.scroll_counter <= -MAX_SCROLL_COUNTER_VALUE) {
+            console.debug("SCROLL(prevMovie)");
             this.prevMovie();
         }
     }
@@ -344,7 +347,7 @@ export default class IndexPage extends React.Component {
         return (
             <section id='IndexPage' class='title-container'>
 
-                <ImageRotator class="index-page-image-rotator" img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
+                <ImageRotator class="index-page-image-rotator" movie_id={content.id} img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 
                 <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>

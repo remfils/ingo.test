@@ -12,24 +12,23 @@ const BG_IMAGE_HEIGHT = 904;
 export default class ImageRotator extends React.Component {
     static box_counter = 0;
 
-    constructor() {
-        super();
-
-        this.image_front = "";
-        this.image_back = "";
-        this.image_next = "";
-        this.image_last = "";
+    constructor(props) {
+        super(props);
 
         this.table_width = HEADER_MIN_WIDTH;
 
         ImageRotator.box_counter ++;
         this.id = "ImageRotator" + ImageRotator.box_counter;
 
-        this.are_components_set = false;
-
         this.state = {
-            is_transition: false
+            movie_id: props.movie_id,
+            image_front: props.img_front,
+            image_back: props.img_back,
+            image_next: props.img_next,
+            image_last: props.img_last
         };
+
+        console.debug(props);
     }
 
     get id() {
@@ -40,15 +39,28 @@ export default class ImageRotator extends React.Component {
         this._id = val;
     }
 
+    $ (element) {
+        if (this._$this)
+            return this._$this.find(element);
+        return $;
+    }
+
     componentWillMount() {
         ResizeStore.on("RESIZE_TABLE_HEADER", this.resizeStoreListener.bind(this));
 
-        this.image_front = this.props.img_front;
+        /*this.image_front = this.props.img_front;
         this.image_back = this.props.img_back;
         this.image_next = this.props.img_next;
         this.image_last = this.props.img_last;
 
-        this.are_components_set = true;
+        this.are_components_set = true;*/
+
+        /*this.setState({
+            image_front: this.props.image_front,
+            image_back: this.props.image_back,
+            image_next: this.props.image_next,
+            image_last: this.props.image_last
+        });*/
     }
 
     componentWillUnmount() {
@@ -64,59 +76,74 @@ export default class ImageRotator extends React.Component {
     updateImagePositions() {
         var image_width = window.innerHeight * BG_IMAGE_WIDTH / BG_IMAGE_HEIGHT;
 
-        $("#TitleBackgroundImage1").css("left", -image_width);
-        $("#TitleBackgroundImage2").css("left", HEADER_LEFT_MARGIN - image_width);
-        $("#TitleBackgroundImage3").css("left", HEADER_LEFT_MARGIN + this.table_width);
-        $("#TitleBackgroundImage4").css("left", HEADER_LEFT_MARGIN + this.table_width + image_width);
+        $('.img-last').css("left", -image_width);
+        $('.img-back').css("left", HEADER_LEFT_MARGIN - image_width);
+        $('.img-front').css("left", HEADER_LEFT_MARGIN + this.table_width);
+        $('.img-next').css("left", HEADER_LEFT_MARGIN + this.table_width + image_width);
     }
 
     componentWillUpdate(nextProps, nextState) {
-        if  ( this.are_components_set ) {
-            this.updateImagePositions();
+        if (this.props.movie_id == nextProps.movie_id)
+            return;
 
-            var image_width = window.innerHeight * BG_IMAGE_WIDTH / BG_IMAGE_HEIGHT;
+        var movie_id = nextProps.movie_id;
+        var image_front = nextProps.img_front;
+        var image_back = nextProps.img_back;
+        var image_next = nextProps.img_next;
+        var image_last = nextProps.img_last;
 
-            if ( nextProps.direction == "right" ) {
-                /* MOVING RIGHT */
+        //this.updateImagePositions();
 
-                TweenLite.to($("#TitleBackgroundImage1"), 0.2, {left: HEADER_LEFT_MARGIN - image_width});
-                TweenLite.to($("#TitleBackgroundImage2"), 0.3, {left: HEADER_LEFT_MARGIN + this.table_width - image_width, ease: Power2.easeIn, onComplete: () => {
-                    TweenLite.to($("#TitleBackgroundImage2"), 1, {left: HEADER_LEFT_MARGIN + this.table_width, ease: Power2.easeOut});
+        var image_width = window.innerHeight * BG_IMAGE_WIDTH / BG_IMAGE_HEIGHT;
 
-                    TweenLite.to($("#TitleBackgroundImage3"), 1, {left: HEADER_LEFT_MARGIN + this.table_width + image_width, ease: Power2.easeOut, delay: 0.1, onComplete: () => {
-                        this.are_components_set = false;
+        if ( nextProps.direction == "right" ) {
+            /* MOVING RIGHT */
 
-                        this.setState({current_image: this.image_front});
-                    }});
+            TweenLite.to(this.$('.img-last'), 0.2, {left: HEADER_LEFT_MARGIN - image_width});
+            TweenLite.to(this.$(".img-back"), 0.3, {left: HEADER_LEFT_MARGIN + this.table_width - image_width, ease: Power2.easeIn, onComplete: () => {
+                TweenLite.to(this.$(".img-back"), 1, {left: HEADER_LEFT_MARGIN + this.table_width, ease: Power2.easeOut});
+
+                TweenLite.to(this.$(".img-front"), 1, {left: HEADER_LEFT_MARGIN + this.table_width + image_width, ease: Power2.easeOut, delay: 0.1, onComplete: () => {
+                    //this.are_components_set = false;
+
+                    //this.setState({current_image: this.image_front});
+
+                    this.setState({
+                        image_front,
+                        image_back,
+                        image_next,
+                        image_last
+                    });
                 }});
-            }
-            else {
-                /* MOVING LEFT */
-
-                TweenLite.to($("#TitleBackgroundImage3"), 0.5, {left: HEADER_LEFT_MARGIN + this.table_width - image_width, ease: Power2.easeInOut, delay: 0.1, });
-                TweenLite.to($("#TitleBackgroundImage4"), 0.5, {left: HEADER_LEFT_MARGIN + this.table_width, ease: Power2.easeInOut, onComplete: () => {
-                    TweenLite.to($("#TitleBackgroundImage2"), 0.2, {left: -image_width, delay: 0.5, ease: Power2.easeOut});
-
-                    TweenLite.to($("#TitleBackgroundImage3"), 0.7, {left: HEADER_LEFT_MARGIN - image_width, ease: Power2.easeOut, onComplete: () => {
-                        this.are_components_set = false;
-
-                        this.setState({current_image: this.image_front});
-                    }});
-                }});
-            }
+            }});
         }
         else {
-            this.image_front = nextProps.img_front;
-            this.image_back = nextProps.img_back;
-            this.image_next = nextProps.img_next;
-            this.image_last = nextProps.img_last;
+            /* MOVING LEFT */
 
-            this.are_components_set = true;
+            TweenLite.to(this.$('.img-front'), 0.5, {left: HEADER_LEFT_MARGIN + this.table_width - image_width, ease: Power2.easeInOut, delay: 0.1, });
+            TweenLite.to(this.$('.img-next'), 0.5, {left: HEADER_LEFT_MARGIN + this.table_width, ease: Power2.easeInOut, onComplete: () => {
+                TweenLite.to(this.$(".img-back"), 0.2, {left: -image_width, delay: 0.5, ease: Power2.easeOut});
+
+                TweenLite.to(this.$(".img-front"), 0.7, {left: HEADER_LEFT_MARGIN - image_width, ease: Power2.easeOut, onComplete: () => {
+                    /*this.are_components_set = false;
+
+                    this.setState({current_image: this.image_front});*/
+
+                    this.setState({
+                        image_front,
+                        image_back,
+                        image_next,
+                        image_last
+                    });
+                }});
+            }});
         }
     }
 
     componentDidMount() {
         this.updateImagePositions();
+
+        this._$this = $(this.id);
     }
 
     componentDidUpdate() {
@@ -124,20 +151,20 @@ export default class ImageRotator extends React.Component {
     }
 
     render() {
-        var src_img_last = this.image_last;
-        var src_img_back = this.image_back;
-        var src_img_front = this.image_front;
-        var src_img_next = this.image_next;
+        var src_img_last = this.state.image_last;
+        var src_img_back = this.state.image_back;
+        var src_img_front = this.state.image_front;
+        var src_img_next = this.state.image_next;
 
         var image_click_listener = this.props.onClick;
 
         console.debug("RENDER(ImageRotator)", src_img_last, src_img_back, src_img_front, src_img_next);
 
         return <div id={this._id} className={this.props.className + " image-rotator"} >
-            <img id="TitleBackgroundImage1" class="background-image img-last" src={src_img_last} ></img>
-            <img id="TitleBackgroundImage2" class="background-image img-back" src={src_img_back} ></img>
-            <img id="TitleBackgroundImage3" class="background-image img-front" src={src_img_front} onClick={image_click_listener}></img>
-            <img id="TitleBackgroundImage4" class="background-image img-next" src={src_img_next} ></img>
+            <img class="background-image img-last" src={src_img_last} ></img>
+            <img class="background-image img-back" src={src_img_back} ></img>
+            <img class="background-image img-front" src={src_img_front} onClick={image_click_listener}></img>
+            <img class="background-image img-next" src={src_img_next} ></img>
         </div>;
     }
 }
