@@ -137,6 +137,9 @@ export default class MoviePage extends React.Component {
 
             this.current_movie_index = this.props.current_movie_index;
 
+            this.is_movie_loaded = true;
+            this.is_transition = false;
+
             this.loadDataForCurrentMovie();
         }
         else {
@@ -289,7 +292,9 @@ export default class MoviePage extends React.Component {
     }
 
     nextMovie() {
-        if ( this.isTransitionLocked() || (this.current_movie_index + 1 >= this.short_models.length) ) {
+        console.debug(this.isTransitionLocked(), this.current_movie_index, this.short_models.length);
+
+        if ( this.isTransitionLocked() || (this.current_movie_index >= this.short_models.length) ) {
             return false;
         }
 

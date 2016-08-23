@@ -70,7 +70,16 @@ export default class Application extends React.Component {
         else if ( url.indexOf(URL_MOVIE) !== -1 ) {
             var movie_index = url.indexOf(URL_MOVIE) + URL_MOVIE.length;
 
-            var index = url.slice(movie_index);
+            var id = url.slice(movie_index);
+            var index = 0;
+            
+            var i = this.movies.length;
+            while (i--) {
+                if (this.movies[i].id === id) {
+                    index = i;
+                    break;
+                }
+            }
 
             this.pushPage(
                 <MoviePage
