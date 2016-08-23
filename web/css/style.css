@@ -771,6 +771,7 @@ a:active {
 
 .title-navigation ul {
     padding: 0;
+    display: inline;
 }
 
 .title-navigation li {
@@ -780,6 +781,11 @@ a:active {
 .title-navigation li:not(:last-child):after {
     content: " // ";
     color: #3c3c3b;
+}
+
+.btn-menu {
+    margin-left: 40px;
+    cursor: pointer;
 }
 
 .title-project-dsc {
