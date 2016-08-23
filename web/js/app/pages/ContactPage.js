@@ -44,7 +44,7 @@ export default class ContactPage extends React.Component {
         var callback = tr.callback;
 
         switch ( tr.type ) {
-            case "INDEX-CONTACT":
+            case "INDEX-CONTACTS":
                 tr.prev_page.leaveToDifferentTitlePage(callback);
                 this.enterFromDifferentTitlePage(callback);
                 break;
@@ -88,7 +88,7 @@ export default class ContactPage extends React.Component {
                 <TitleColoredTable className="title-project-dsc" color="#D1D3D0" direction="">
                     <tr>
                         <td class="title-navigation">
-                            <NavigationMenu current_page={this}/>
+                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_CONTACTS}/>
                         </td>
                     </tr>
                     <tr>

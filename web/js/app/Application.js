@@ -180,11 +180,11 @@ export default class Application extends React.Component {
                     current_content_index={prev_page.current_movie_index}
                     transition={transition}/>;
                 break;
-            case "INDEX-CONTACT":
+            case "INDEX-CONTACTS":
                 this.setUrl('/contacts');
                 page = <ContactPage transition={transition} />;
                 break;
-            case "CONTACT-INDEX":
+            case "CONTACTS-INDEX":
                 this.setUrl('/');
                 page = <IndexPage movies={this.movies} transition={transition} />;
                 break;

@@ -16,6 +16,11 @@ export function fromContactToIndexTransition(contact_page, params={}) {
     createTransition("CONTACT-INDEX", contact_page, params);
 }
 
+export function createTitleTransition(from_page_name, to_page_name , current_page, params={}) {
+    console.debug(from_page_name + "-" + to_page_name);
+    createTransition(from_page_name + "-" + to_page_name, current_page, params);
+}
+
 export function fromMovieToMovie(is_right, prev_page, params={}) {
     createTransition(
         "MOVIE-MOVIE_" + (is_right ? "RIGHT" : "LEFT"),

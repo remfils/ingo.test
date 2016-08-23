@@ -138,7 +138,7 @@ export default class IndexPage extends React.Component {
                 prev_page.leaveToIndexPage(tr.callback);
                 this.enterFromMoviePage(tr.callback);
                 break;
-            case "CONTACT-INDEX":
+            case "CONTACTS-INDEX":
                 prev_page.leaveToDifferentTitlePage(callback);
                 this.enterFromDifferentTitlePage(callback);
                 break;
@@ -363,7 +363,7 @@ export default class IndexPage extends React.Component {
                 <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>
                         <td class="title-navigation">
-                            <NavigationMenu current_page={this}/>
+                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_INDEX}/>
                         </td>
                     </tr>
                     <tr>

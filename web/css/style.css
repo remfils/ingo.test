@@ -783,6 +783,10 @@ a:active {
     color: #3c3c3b;
 }
 
+.title-menu .active {
+    text-decoration: line-through;
+}
+
 .btn-menu {
     margin-left: 40px;
     cursor: pointer;
