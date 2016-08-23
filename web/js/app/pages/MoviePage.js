@@ -373,12 +373,12 @@ export default class MoviePage extends React.Component {
     componentWillUpdate() {
         if ( !this.isTransitionLocked() ) {
             console.log("ScrollMagic happened!");
-            this.setScrollmagicScene();
+            //this.setScrollmagicScene();
         }
     }
 
     componentDidUpdate() {
-        this.setScrollmagicScene(null, true);
+        //this.setScrollmagicScene(null, true);
     }
 
     setScrollmagicScene(bg_color, isForced) {
