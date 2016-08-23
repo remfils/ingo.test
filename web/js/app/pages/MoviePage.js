@@ -68,7 +68,8 @@ export default class MoviePage extends React.Component {
     hadleTransitionAnimations() {
         var transition = this.props.transition;
 
-        if (!transition) {
+        if ( !transition ) {
+            this.introAnimation();
             return;
         }
 
@@ -81,6 +82,13 @@ export default class MoviePage extends React.Component {
                 this.enterFromIndexPage(transition.callback);
                 break;
         }
+    }
+
+    introAnimation(callback) {
+        TweenLite.to($("#MoviePage"), 1, {opacity: 1, delay: 2, onComplete:()=>{
+            if (callback)
+                callback();
+        }});
     }
 
     enterFromIndexPage(callback) {

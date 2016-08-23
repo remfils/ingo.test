@@ -125,8 +125,10 @@ export default class IndexPage extends React.Component {
 
     hadleTransitionAnimations() {
         var tr = this.props.transition;
-        if ( !tr )
+        if ( !tr ) {
+            this.introAnimation();
             return;
+        }
 
         var callback = tr.callback;
         var prev_page = tr.prev_page;
@@ -141,6 +143,15 @@ export default class IndexPage extends React.Component {
                 this.enterFromDifferentTitlePage(callback);
                 break;
         }
+    }
+
+    introAnimation(callback) {
+        console.debug("introAnimation");
+
+        TweenLite.from($("#IndexPage"), 1, {opacity: 0, delay: 2, onComplete:()=>{
+            if (callback)
+                callback();
+        }});
     }
 
     enterFromMoviePage(callback) {

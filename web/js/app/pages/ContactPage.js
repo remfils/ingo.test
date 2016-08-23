@@ -36,8 +36,10 @@ export default class ContactPage extends React.Component {
 
     hadleTransitionAnimations() {
         var tr = this.props.transition;
-        if ( !tr )
+        if ( !tr ) {
+            this.introAnimation();
             return;
+        }
 
         var callback = tr.callback;
 
@@ -47,6 +49,13 @@ export default class ContactPage extends React.Component {
                 this.enterFromDifferentTitlePage(callback);
                 break;
         }
+    }
+
+    introAnimation(callback) {
+        TweenLite.to($("#ContactPage"), 1, {opacity: 1, delay: 2, onComplete:()=>{
+            if (callback)
+                callback();
+        }});
     }
 
     enterFromDifferentTitlePage(callback) {
