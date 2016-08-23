@@ -85,7 +85,7 @@ export default class MoviePage extends React.Component {
     }
 
     introAnimation(callback) {
-        TweenLite.to($("#MoviePage"), 1, {opacity: 1, delay: 2, onComplete:()=>{
+        TweenLite.from($("#MoviePage"), 1, {opacity: 0, delay: 1, onComplete:()=>{
             if (callback)
                 callback();
         }});

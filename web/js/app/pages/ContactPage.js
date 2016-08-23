@@ -52,7 +52,7 @@ export default class ContactPage extends React.Component {
     }
 
     introAnimation(callback) {
-        TweenLite.to($("#ContactPage"), 1, {opacity: 1, delay: 2, onComplete:()=>{
+        TweenLite.from($("#ContactPage"), 1, {opacity: 0, delay: 2, onComplete:()=>{
             if (callback)
                 callback();
         }});

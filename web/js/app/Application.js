@@ -72,7 +72,7 @@ export default class Application extends React.Component {
 
             var id = url.slice(movie_index);
             var index = 0;
-            
+
             var i = this.movies.length;
             while (i--) {
                 if (this.movies[i].id === id) {
