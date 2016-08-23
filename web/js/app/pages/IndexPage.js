@@ -187,7 +187,7 @@ export default class IndexPage extends React.Component {
         var tl = new TimelineLite();
         var $this = $('#IndexPage');
 
-        tl.from($this, 0, {opacity: 0, onComplete:()=>{
+        tl.from($this, 1, {opacity: 0, onComplete:()=>{
             if (callback)
                 callback();
         }});

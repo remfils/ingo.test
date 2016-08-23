@@ -51,9 +51,9 @@ export default class ContactPage extends React.Component {
 
     enterFromDifferentTitlePage(callback) {
         var tl = new TimelineLite();
-        var $this = $('#IndexPage');
+        var $this = $('#ContactPage');
 
-        tl.from($this, 0, {opacity: 0, onComplete:()=>{
+        tl.from($this, 1, {opacity: 0, onComplete:()=>{
             if (callback)
                 callback();
         }});
@@ -61,7 +61,7 @@ export default class ContactPage extends React.Component {
 
     leaveToDifferentTitlePage(callback) {
         var tl = new TimelineLite();
-        var $this = $('#IndexPage');
+        var $this = $('#ContactPage');
 
         tl.to($this, 1, {opacity: 0, onComplete:()=>{
             if (callback)

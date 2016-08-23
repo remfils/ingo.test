@@ -35,6 +35,7 @@ export default class Application extends React.Component {
         console.log(domain, url);
 
         if ( url == domain + URL_INDEX ) {
+
             this.pushPage(
                 <IndexPage onAjaxLoaded={this.props.onAjaxLoaded} />
             );
@@ -57,6 +58,10 @@ export default class Application extends React.Component {
 
             this.pushPage(<ContactPage />);
         }
+    }
+
+    setUrl(url) {
+        window.history.pushState({}, '', url);
     }
 
     pushPage(page) {
@@ -128,7 +133,7 @@ export default class Application extends React.Component {
 
                 var movie = movies[0];
 
-                window.history.pushState({}, '', '/movie/' + current_content.id);
+                this.setUrl('/movie/' + current_content.id);
 
                 page = <MoviePage
                     app={this}
@@ -141,11 +146,14 @@ export default class Application extends React.Component {
                 var prev_page = transition.prev_page;
                 var movies = prev_page.short_models;
 
+                this.setUrl('/');
+
                 page = <IndexPage
                     movies={movies}
                     transition={transition}/>;
                 break;
             case "INDEX-CONTACT":
+                this.setUrl('/contacts');
                 page = <ContactPage transition={transition} />;
                 break;
         }
