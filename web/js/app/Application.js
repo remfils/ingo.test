@@ -7,6 +7,8 @@ import TransitionStore from './stores/TransitionStore';
 import { asset, createCountdownCallback } from './funcitons';
 import config from './config';
 
+import ShortProjectModel from './models/ShortProjectModel';
+
 var $ = require('jquery');
 
 const URL_INDEX = "";
@@ -29,15 +31,40 @@ export default class Application extends React.Component {
     componentWillMount() {
         TransitionStore.on("leave", this.leavePageListener.bind(this));
 
+        $.ajax({
+            url: config.SITE_NAME + 'api/all-movies',
+            dataType: 'json',
+            success: (data) => {
+                this.movies = data.map((item, index) => {
+                    var content = new ShortProjectModel();
+
+                    content.parseJsonData(item);
+                    content.page_name = index + 1;
+
+                    return content;
+                });
+
+                if (this.props.onAjaxLoaded)
+                    this.props.onAjaxLoaded();
+
+                this.route();
+            },
+            error: (err) => {
+                console.log('ERROR:  ' + err);
+            }
+        });
+
+
+    }
+
+    route() {
         var domain = config.SITE_NAME;
         var url = document.URL;
-
-        console.log(domain, url);
 
         if ( url == domain + URL_INDEX ) {
 
             this.pushPage(
-                <IndexPage onAjaxLoaded={this.props.onAjaxLoaded} />
+                <IndexPage movies={this.movies} />
             );
         }
         else if ( url.indexOf(URL_MOVIE) !== -1 ) {
@@ -49,7 +76,7 @@ export default class Application extends React.Component {
                 <MoviePage
                     app={this}
                     current_movie_index={index}
-                    onAjaxLoaded={this.props.onAjaxLoaded} />
+                    movies={this.movies} />
             );
         }
         else if (url.indexOf(URL_CONTACTS) !== -1) {
@@ -138,7 +165,7 @@ export default class Application extends React.Component {
                 page = <MoviePage
                     app={this}
                     current_movie_index={current_movie_index}
-                    movies={content}
+                    movies={this.movies}
                     transition={transition}/>;
 
                 break;
@@ -149,7 +176,7 @@ export default class Application extends React.Component {
                 this.setUrl('/');
 
                 page = <IndexPage
-                    movies={movies}
+                    movies={this.movies}
                     current_content_index={prev_page.current_movie_index}
                     transition={transition}/>;
                 break;
@@ -159,7 +186,7 @@ export default class Application extends React.Component {
                 break;
             case "CONTACT-INDEX":
                 this.setUrl('/');
-                page = <IndexPage transition={transition} />;
+                page = <IndexPage movies={this.movies} transition={transition} />;
                 break;
         }
 
