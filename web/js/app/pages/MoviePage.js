@@ -275,9 +275,21 @@ export default class MoviePage extends React.Component {
     nachtesProjectButtonClickListener(e) {
         e.preventDefault();
 
-        notReadyYet("NachtesProject Click");
+        this.nextMovie();
 
         return false;
+    }
+
+    nextMovie() {
+        if ( this.isTransitionLocked() || (this.current_movie_index + 1 >= this.short_models.length) ) {
+            return false;
+        }
+
+        this.setState({movement_direction: "right"});
+
+        this.current_movie_index++;
+
+        this.transitionToNextMovie(false);
     }
 
     prevMovieClick(event) {
@@ -299,15 +311,7 @@ export default class MoviePage extends React.Component {
     nextMovieClick(event) {
         event.preventDefault()
 
-        if ( this.isTransitionLocked() || (this.current_movie_index + 1 >= this.short_models.length) ) {
-            return false;
-        }
-
-        this.setState({movement_direction: "right"});
-
-        this.current_movie_index++;
-
-        this.transitionToNextMovie(false);
+        this.nextMovie();
 
         return false;
     }
