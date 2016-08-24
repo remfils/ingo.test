@@ -56,6 +56,10 @@ export default class WorksPage extends React.Component {
                 tr.prev_page.leaveToDifferentTitlePage(callback);
                 this.enterFromDifferentTitlePage(callback);
                 break;
+            case "MOVIE-WORKS":
+                tr.prev_page.leaveToIndexPage(callback);
+                this.enterFromDifferentTitlePage(callback);
+                break;
         }
     }
 
@@ -120,6 +124,18 @@ export default class WorksPage extends React.Component {
         }});
     }
 
+    createProjectOnClickFunction(project_id) {
+        var self = this;
+
+        return function(e) {
+            e.preventDefault();
+
+            TransitionActions.fromWorksToMovie(self, project_id);
+
+            return false;
+        }
+    }
+
     render() {
 
         var tds = this.props.movies.map((item, index) => {
@@ -129,7 +145,7 @@ export default class WorksPage extends React.Component {
 
             return <td className='movie_cell'>
                     <div class='movie_image' style={image_style}>
-                        <span style={span_style}>
+                        <span style={span_style} onClick={this.createProjectOnClickFunction(index)}>
                             <h2>{item.name}</h2><br/>
                             <h3>{item.genre}</h3>
                         </span>
@@ -157,8 +173,6 @@ export default class WorksPage extends React.Component {
 
         return (
             <section id='WorksPage' class='title-container works-page'>
-
-                <div className="contact-bg-image"></div>
 
                 <TitleColoredTable className="title-project-dsc" color="#CCE1EE" direction="">
                     <tr>

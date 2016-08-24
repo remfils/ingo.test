@@ -74,11 +74,14 @@ export default class MoviePage extends React.Component {
         }
 
         $("#MoviePage").css({"z-index": 99});
-        
-        transition.prev_page.leaveToMoviePage(transition.callback);
 
         switch ( transition.type ) {
             case "INDEX-MOVIE":
+                transition.prev_page.leaveToMoviePage(transition.callback);
+                this.enterFromIndexPage(transition.callback);
+                break;
+            case "WORKS-MOVIE":
+                transition.prev_page.leaveToDifferentTitlePage(transition.callback);
                 this.enterFromIndexPage(transition.callback);
                 break;
         }
@@ -254,6 +257,8 @@ export default class MoviePage extends React.Component {
                 transition.prev_page.leaveToMovies(time_line);
                 this.enterFromIndex(time_line);
                 break;
+            case "WORKS-MOVIE":
+                transition.prev_page.leaveToDifferentTitlePage(time_line);
         }
     }
 

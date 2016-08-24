@@ -194,6 +194,17 @@ export default class Application extends React.Component {
                     transition={transition}/>;
 
                 break;
+            case "WORKS-MOVIE":
+                var current_movie_index = transition.movie_index;
+
+                this.setUrl('/movie/' + this.movies[current_movie_index].id);
+
+                page = <MoviePage
+                    app={this}
+                    current_movie_index={current_movie_index}
+                    movies={this.movies}
+                    transition={transition}/>;
+                break;
             case "MOVIE-INDEX":
                 var prev_page = transition.prev_page;
                 var movies = prev_page.short_models;
@@ -226,6 +237,7 @@ export default class Application extends React.Component {
             case "INDEX-WORKS":
             case "CONTACTS-WORKS":
             case "ABOUT-WORKS":
+            case "MOVIE-WORKS":
                 this.setUrl('/works');
                 page = <WorksPage movies={this.movies} transition={transition} />;
                 break;
