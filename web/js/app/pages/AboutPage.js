@@ -82,7 +82,7 @@ export default class AboutPage extends React.Component {
     render() {
 
         return (
-            <section id='AboutPage' class='title-container'>
+            <section id='AboutPage' class='title-container about-page'>
 
                 <div className="contact-bg-image"></div>
 
