@@ -17,7 +17,7 @@ import ShortProjectModel from "../models/ShortProjectModel";
 import MoviePage from './MoviePage';
 import EmailForm from './MoviePage/EmailForm';
 
-export default class ContactPage extends React.Component {
+export default class AboutPage extends React.Component {
     constructor() {
         super();
     }
@@ -44,8 +44,8 @@ export default class ContactPage extends React.Component {
         var callback = tr.callback;
 
         switch ( tr.type ) {
-            case "INDEX-CONTACTS":
-            case "ABOUT-CONTACTS":
+            case "INDEX-ABOUT":
+            case "CONTACTS-ABOUT":
                 tr.prev_page.leaveToDifferentTitlePage(callback);
                 this.enterFromDifferentTitlePage(callback);
                 break;
@@ -53,7 +53,7 @@ export default class ContactPage extends React.Component {
     }
 
     introAnimation(callback) {
-        TweenLite.from($("#ContactPage"), 1, {opacity: 0, delay: 2, onComplete:()=>{
+        TweenLite.from($("#AboutPage"), 1, {opacity: 0, delay: 2, onComplete:()=>{
             if (callback)
                 callback();
         }});
@@ -61,7 +61,7 @@ export default class ContactPage extends React.Component {
 
     enterFromDifferentTitlePage(callback) {
         var tl = new TimelineLite();
-        var $this = $('#ContactPage');
+        var $this = $('#AboutPage');
 
         tl.from($this, 1, {opacity: 0, onComplete:()=>{
             if (callback)
@@ -71,7 +71,7 @@ export default class ContactPage extends React.Component {
 
     leaveToDifferentTitlePage(callback) {
         var tl = new TimelineLite();
-        var $this = $('#ContactPage');
+        var $this = $('#AboutPage');
 
         tl.to($this, 1, {opacity: 0, onComplete:()=>{
             if (callback)
@@ -82,19 +82,23 @@ export default class ContactPage extends React.Component {
     render() {
 
         return (
-            <section id='ContactPage' class='title-container'>
+            <section id='AboutPage' class='title-container'>
 
                 <div className="contact-bg-image"></div>
 
                 <TitleColoredTable className="title-project-dsc" color="#D1D3D0" direction="">
                     <tr>
                         <td class="title-navigation">
-                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_CONTACTS}/>
+                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_ABOUT}/>
                         </td>
                     </tr>
                     <tr>
                         <td class="title-content">
-                            <EmailForm class="contact-form"/>
+                            <h2>Ingo Scheel - Dipl. Designer Kamera (FH)</h2>
+                            <p>
+                                Geboren 1975 in Geldern, beschäftigte ich mich schon im Alter von 14 Jahren mit der Fotografie. Jahre später, nach mehr- jähriger Tätigkeit als Beleuchter bei Filmproduktionen absolvierte ich den Kamerastudiengang an der Fachhochschule Dortmund mit dem
+                                Abschluss als Diplomdesigner im Jahr 2008. Anschließend konnte ich zahlreiche Projekte als Lichtsetzender Kameramann für Filmproduktionen, Unternehmen und Freie Künstler umsetzen und freue mich auf neue Projekte.
+                            </p>
                         </td>
                     </tr>
                     <tr>
@@ -107,7 +111,7 @@ export default class ContactPage extends React.Component {
 
                 <div class="title-header">
                     <AlphaBox>
-                        <span class="movie-title contact-title">Contact</span>
+                        <span class="movie-title contact-title">About</span>
                     </AlphaBox>
                 </div>
 

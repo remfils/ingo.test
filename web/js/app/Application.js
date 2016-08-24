@@ -3,6 +3,7 @@ import React from 'react';
 import IndexPage from './pages/IndexPage';
 import MoviePage from './pages/MoviePage';
 import ContactPage from './pages/ContactPage';
+import AboutPage from './pages/AboutPage';
 import TransitionStore from './stores/TransitionStore';
 import { asset, createCountdownCallback } from './funcitons';
 import config from './config';
@@ -14,6 +15,7 @@ var $ = require('jquery');
 const URL_INDEX = "";
 const URL_MOVIE = "movie/";
 const URL_CONTACTS = "contacts";
+const URL_ABOUT = "about";
 
 export default class Application extends React.Component {
     constructor() {
@@ -93,6 +95,12 @@ export default class Application extends React.Component {
                 this.props.onAjaxLoaded();
 
             this.pushPage(<ContactPage />);
+        }
+        else if (url.indexOf(URL_ABOUT) !== -1) {
+            if (this.props.onAjaxLoaded)
+                this.props.onAjaxLoaded();
+
+            this.pushPage(<AboutPage />);
         }
     }
 
@@ -190,12 +198,19 @@ export default class Application extends React.Component {
                     transition={transition}/>;
                 break;
             case "INDEX-CONTACTS":
+            case "ABOUT-CONTACTS":
                 this.setUrl('/contacts');
                 page = <ContactPage transition={transition} />;
                 break;
             case "CONTACTS-INDEX":
+            case "ABOUT-INDEX":
                 this.setUrl('/');
                 page = <IndexPage movies={this.movies} transition={transition} />;
+                break;
+            case "INDEX-ABOUT":
+            case "CONTACTS-ABOUT":
+                this.setUrl('/about');
+                page = <AboutPage transition={transition} />;
                 break;
         }
 

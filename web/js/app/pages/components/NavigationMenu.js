@@ -56,7 +56,7 @@ export default class NavigationMenu extends React.Component {
                 <ul>
                     <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_INDEX ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_INDEX)}>news</a></li>
                     <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_WORK ? 'active' : ''} onClick={createNotReadyYetFunction("work")}>work</a></li>
-                    <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_ABOUT ? 'active' : ''} onClick={createNotReadyYetFunction("about")}>about</a></li>
+                    <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_ABOUT ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_ABOUT)}>about</a></li>
                     <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_CONTACTS)}>contacts</a></li>
                 </ul>
                 <span class='btn-menu' onClick={this.titleMenuClickListener.bind(this)}><img src={asset('img/button-menu.png')} alt=""/></span>
