@@ -17,7 +17,7 @@ import ShortProjectModel from "../models/ShortProjectModel";
 import MoviePage from './MoviePage';
 import EmailForm from './MoviePage/EmailForm';
 
-export default class ContactPage extends React.Component {
+export default class WorksPage extends React.Component {
     constructor() {
         super();
     }
@@ -44,9 +44,9 @@ export default class ContactPage extends React.Component {
         var callback = tr.callback;
 
         switch ( tr.type ) {
-            case "INDEX-CONTACTS":
-            case "ABOUT-CONTACTS":
-            case "WORKS-CONTACTS":
+            case "INDEX-WORKS":
+            case "CONTACTS-WORKS":
+            case "ABOUT-WORKS":
                 tr.prev_page.leaveToDifferentTitlePage(callback);
                 this.enterFromDifferentTitlePage(callback);
                 break;
@@ -54,7 +54,7 @@ export default class ContactPage extends React.Component {
     }
 
     introAnimation(callback) {
-        TweenLite.from($("#ContactPage"), 1, {opacity: 0, delay: 2, onComplete:()=>{
+        TweenLite.from($("#WorksPage"), 1, {opacity: 0, delay: 2, onComplete:()=>{
             if (callback)
                 callback();
         }});
@@ -62,7 +62,7 @@ export default class ContactPage extends React.Component {
 
     enterFromDifferentTitlePage(callback) {
         var tl = new TimelineLite();
-        var $this = $('#ContactPage');
+        var $this = $('#WorksPage');
 
         tl.from($this, 1, {opacity: 0, onComplete:()=>{
             if (callback)
@@ -72,7 +72,7 @@ export default class ContactPage extends React.Component {
 
     leaveToDifferentTitlePage(callback) {
         var tl = new TimelineLite();
-        var $this = $('#ContactPage');
+        var $this = $('#WorksPage');
 
         tl.to($this, 1, {opacity: 0, onComplete:()=>{
             if (callback)
@@ -83,19 +83,18 @@ export default class ContactPage extends React.Component {
     render() {
 
         return (
-            <section id='ContactPage' class='title-container'>
+            <section id='WorksPage' class='title-container works-page'>
 
                 <div className="contact-bg-image"></div>
 
-                <TitleColoredTable className="title-project-dsc" color="#D1D3D0" direction="">
+                <TitleColoredTable className="title-project-dsc" color="#CCE1EE" direction="">
                     <tr>
                         <td class="title-navigation">
-                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_CONTACTS}/>
+                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_WORKS}/>
                         </td>
                     </tr>
                     <tr>
                         <td class="title-content">
-                            <EmailForm class="contact-form"/>
                         </td>
                     </tr>
                     <tr>
@@ -108,7 +107,7 @@ export default class ContactPage extends React.Component {
 
                 <div class="title-header">
                     <AlphaBox>
-                        <span class="movie-title contact-title">Contact</span>
+                        <span class="movie-title contact-title">About</span>
                     </AlphaBox>
                 </div>
 

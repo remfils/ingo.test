@@ -140,6 +140,7 @@ export default class IndexPage extends React.Component {
                 break;
             case "CONTACTS-INDEX":
             case "ABOUT-INDEX":
+            case "WORKS-INDEX":
                 prev_page.leaveToDifferentTitlePage(callback);
                 this.enterFromDifferentTitlePage(callback);
                 break;

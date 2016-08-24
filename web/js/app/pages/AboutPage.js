@@ -46,6 +46,7 @@ export default class AboutPage extends React.Component {
         switch ( tr.type ) {
             case "INDEX-ABOUT":
             case "CONTACTS-ABOUT":
+            case "WORKS-ABOUT":
                 tr.prev_page.leaveToDifferentTitlePage(callback);
                 this.enterFromDifferentTitlePage(callback);
                 break;

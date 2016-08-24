@@ -8,7 +8,7 @@ var $ = require('jquery');
 export default class NavigationMenu extends React.Component {
 
     static PAGE_INDEX = 'INDEX';
-    static PAGE_WORK = 'WORK';
+    static PAGE_WORKS = 'WORKS';
     static PAGE_ABOUT = 'ABOUT';
     static PAGE_CONTACTS = 'CONTACTS';
 
@@ -55,7 +55,7 @@ export default class NavigationMenu extends React.Component {
         return <div class='title-menu'>
                 <ul>
                     <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_INDEX ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_INDEX)}>news</a></li>
-                    <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_WORK ? 'active' : ''} onClick={createNotReadyYetFunction("work")}>work</a></li>
+                    <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_WORKS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_WORKS)}>work</a></li>
                     <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_ABOUT ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_ABOUT)}>about</a></li>
                     <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_CONTACTS)}>contacts</a></li>
                 </ul>
