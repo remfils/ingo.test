@@ -110,6 +110,12 @@ export default class ContactPage extends React.Component {
                     <AlphaBox>
                         <span class="movie-title contact-title">Contact</span>
                     </AlphaBox>
+
+                    <div className="contact-info">
+                        <p><strong>Ingo Scheel</strong>  Kameramann  I  DOP   I  visual concepts</p>
+                        <p>Thielenstraße 13  I  50825 Köln</p>
+                        <p>Tel: 0163 8765 082  I  E-Mail: ingo.scheel@yahoo.de</p>
+                    </div>
                 </div>
 
                 <div className="scroll-message">

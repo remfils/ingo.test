@@ -952,6 +952,14 @@ a:active {
     margin-left: 400px;
 }
 
+.contact-info {
+    position: absolute;
+    left: 600px;
+    top: 300px;
+    width: 100%;
+    font-size: 24px;
+}
+
 .title-bg-image {
 
 }
