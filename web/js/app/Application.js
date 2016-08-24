@@ -3,6 +3,8 @@ import React from 'react';
 import IndexPage from './pages/IndexPage';
 import MoviePage from './pages/MoviePage';
 import ContactPage from './pages/ContactPage';
+import AboutPage from './pages/AboutPage';
+import WorksPage from './pages/WorksPage';
 import TransitionStore from './stores/TransitionStore';
 import { asset, createCountdownCallback } from './funcitons';
 import config from './config';
@@ -14,6 +16,8 @@ var $ = require('jquery');
 const URL_INDEX = "";
 const URL_MOVIE = "movie/";
 const URL_CONTACTS = "contacts";
+const URL_ABOUT = "about";
+const URL_WORKS = "works";
 
 export default class Application extends React.Component {
     constructor() {
@@ -93,6 +97,18 @@ export default class Application extends React.Component {
                 this.props.onAjaxLoaded();
 
             this.pushPage(<ContactPage />);
+        }
+        else if (url.indexOf(URL_ABOUT) !== -1) {
+            if (this.props.onAjaxLoaded)
+                this.props.onAjaxLoaded();
+
+            this.pushPage(<AboutPage />);
+        }
+        else if (url.indexOf(URL_WORKS) !== -1) {
+            if (this.props.onAjaxLoaded)
+                this.props.onAjaxLoaded();
+
+            this.pushPage(<WorksPage movies={this.movies} />);
         }
     }
 
@@ -178,6 +194,17 @@ export default class Application extends React.Component {
                     transition={transition}/>;
 
                 break;
+            case "WORKS-MOVIE":
+                var current_movie_index = transition.movie_index;
+
+                this.setUrl('/movie/' + this.movies[current_movie_index].id);
+
+                page = <MoviePage
+                    app={this}
+                    current_movie_index={current_movie_index}
+                    movies={this.movies}
+                    transition={transition}/>;
+                break;
             case "MOVIE-INDEX":
                 var prev_page = transition.prev_page;
                 var movies = prev_page.short_models;
@@ -190,12 +217,29 @@ export default class Application extends React.Component {
                     transition={transition}/>;
                 break;
             case "INDEX-CONTACTS":
+            case "ABOUT-CONTACTS":
+            case "WORKS-CONTACTS":
                 this.setUrl('/contacts');
                 page = <ContactPage transition={transition} />;
                 break;
             case "CONTACTS-INDEX":
+            case "ABOUT-INDEX":
+            case "WORKS-INDEX":
                 this.setUrl('/');
                 page = <IndexPage movies={this.movies} transition={transition} />;
+                break;
+            case "INDEX-ABOUT":
+            case "CONTACTS-ABOUT":
+            case "WORKS-ABOUT":
+                this.setUrl('/about');
+                page = <AboutPage transition={transition} />;
+                break;
+            case "INDEX-WORKS":
+            case "CONTACTS-WORKS":
+            case "ABOUT-WORKS":
+            case "MOVIE-WORKS":
+                this.setUrl('/works');
+                page = <WorksPage movies={this.movies} transition={transition} />;
                 break;
         }
 

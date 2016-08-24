@@ -3,6 +3,8 @@
 $app->get('/', 'App\\Controllers\\MainController::indexAction');
 $app->get('/movie/{id}', 'App\\Controllers\\MainController::indexAction');
 $app->get('/contacts', 'App\\Controllers\\MainController::indexAction');
+$app->get('/about', 'App\\Controllers\\MainController::indexAction');
+$app->get('/works', 'App\\Controllers\\MainController::indexAction');
 
 /* API */
 
