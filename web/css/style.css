@@ -1003,3 +1003,66 @@ a:active {
     font-size: 24px;
     padding-right: 100px;
 }
+
+/* WORKS PAGE */
+
+.works-page .title-header {
+    top: 17%;
+}
+
+.movie-works-table {
+    width: 100%;
+}
+
+.movie_cell {
+    position: relative;
+    border: 12px solid rgba(0,0,0,0);
+}
+
+.movie_image {
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: right 0px;
+    display: table;
+    border-collapse: collapse;
+}
+
+.movie_cell {
+    /*display: table;*/
+}
+
+.movie_image span {
+    width: 100%;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    overflow: hidden;
+}
+
+/*.movie_cell:hover span {
+    display: table-cell;
+}*/
+
+.movie_cell h2,
+.movie_cell h3 {
+    padding: 0;
+    display: inline-block;
+    pointer-events: none;
+    margin: 0;
+    font-family: pt-zerif_4;
+    font-weight: normal;
+}
+
+.movie_cell h2 {
+    font-size: 36px;
+}
+
+.movie_cell h3 {
+    font-size: 18px;
+}
+/*
+
+.movie_cell br {
+    font-size: 1px;
+}*/

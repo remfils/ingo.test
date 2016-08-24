@@ -108,7 +108,7 @@ export default class Application extends React.Component {
             if (this.props.onAjaxLoaded)
                 this.props.onAjaxLoaded();
 
-            this.pushPage(<WorksPage />);
+            this.pushPage(<WorksPage movies={this.movies} />);
         }
     }
 
