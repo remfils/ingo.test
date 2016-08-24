@@ -86,7 +86,7 @@ export default class AboutPage extends React.Component {
 
                 <div className="contact-bg-image"></div>
 
-                <TitleColoredTable className="title-project-dsc" color="#D1D3D0" direction="">
+                <TitleColoredTable className="title-project-dsc" color="#D7D4BE" direction="">
                     <tr>
                         <td class="title-navigation">
                             <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_ABOUT}/>
