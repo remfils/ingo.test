@@ -200,15 +200,52 @@ export default class IndexPage extends React.Component {
         var tl = new TimelineLite();
         var $this = $('#IndexPage');
 
-        tl.from($this, 1, {opacity: 0, onComplete:()=>{
+        var $brackets = $('#IndexPage .title-page-name');
+        var $title = $('#IndexPage .title-header')
+        var $scroll_msg = $('#IndexPage .scroll-message');
+        var $table = $('#IndexPage .title-project-dsc');
+        var $left_image = $('#IndexPage .img-back');
+        var $right_image = $('#IndexPage .img-front');
+        var $movie_dsc = $('#IndexPage .movie-short-description');
+
+        tl.to(window, 1, {});
+
+        tl.from($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'first_stage')
+            .from($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'first_stage');
+
+        tl.from($title, 0.5, {opacity: 0}, 'second-stage')
+            .from($brackets, 0.5, {opacity: 0}, 'second-stage')
+            .from($scroll_msg, 0.5, {opacity: 0}, 'second-stage')
+            .from($movie_dsc, 0.5, {opacity: 0}, 'second-stage');
+
+        tl.to(window, 0, {onComplete: () => {
             if (callback)
                 callback();
-        }});
+        }})
     }
 
     leaveToDifferentTitlePage(callback) {
         var tl = new TimelineLite();
         var $this = $('#IndexPage');
+
+        $this.css('z-index', 9999);
+
+        var $brackets = $('#IndexPage .title-page-name');
+        var $title = $('#IndexPage .title-header')
+        var $scroll_msg = $('#IndexPage .scroll-message');
+        var $table = $('#IndexPage .title-project-dsc');
+        var $left_image = $('#IndexPage .img-back');
+        var $right_image = $('#IndexPage .img-front');
+        var $movie_dsc = $('#IndexPage .movie-short-description');
+
+        tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
+            .to($brackets, 0.5, {opacity: 0}, 'clear-stage')
+            .to($scroll_msg, 0.5, {opacity: 0}, 'clear-stage')
+            .to($movie_dsc, 0.5, {opacity: 0}, 'clear-stage');
+
+        tl.to($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'first_stage')
+            .to($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'first_stage')
+            .to($table, 1, {opacity: 0}, 'first_stage');
 
         tl.to($this, 1, {opacity: 0, onComplete:()=>{
             if (callback)

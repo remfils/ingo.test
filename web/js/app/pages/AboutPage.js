@@ -74,7 +74,20 @@ export default class AboutPage extends React.Component {
         var tl = new TimelineLite();
         var $this = $('#AboutPage');
 
-        tl.to($this, 1, {opacity: 0, onComplete:()=>{
+        $this.css('z-index', 9999);
+
+        var $title = $('#AboutPage .title-header');
+        var $dsc = $('#AboutPage .title-content');
+        var $img = $('#AboutPage .contact-bg-image');
+
+        tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
+            .to($dsc, 0.5, {opacity: 0}, 'clear-stage');
+
+        tl.to($img, 1, {y: "+=100%", ease: Power4.easeInOut});
+
+        tl.to($this, 1, {opacity: 0});
+
+        tl.to(window, 0, {onComplete:()=>{
             if (callback)
                 callback();
         }});

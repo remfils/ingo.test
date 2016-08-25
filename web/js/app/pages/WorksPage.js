@@ -108,15 +108,25 @@ export default class WorksPage extends React.Component {
         var tl = new TimelineLite();
         var $this = $('#WorksPage');
 
-        tl.from($this, 1, {opacity: 0, onComplete:()=>{
+        tl.from($this, 0.5, {opacity: 0});
+
+        tl.to(window, 1, {});
+
+        $('#WorksPage .movie_cell').each((index, item) => {
+            tl.from(item, 0.5, {opacity: 0, delay: -0.4, ease: Power4.easeInOut});
+        })
+
+        tl.to(window, 0, {onComplete: () => {
             if (callback)
                 callback();
-        }});
+        }} )
     }
 
     leaveToDifferentTitlePage(callback) {
         var tl = new TimelineLite();
         var $this = $('#WorksPage');
+
+        $this.css('z-index', 9999);
 
         tl.to($this, 1, {opacity: 0, onComplete:()=>{
             if (callback)

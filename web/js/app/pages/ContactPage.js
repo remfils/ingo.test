@@ -74,7 +74,22 @@ export default class ContactPage extends React.Component {
         var tl = new TimelineLite();
         var $this = $('#ContactPage');
 
-        tl.to($this, 1, {opacity: 0, onComplete:()=>{
+        $this.css('z-index', 9999);
+
+        var $title = $('#ContactPage .contact-title');
+        var $info = $('#ContactPage .contact-info');
+        var $form = $('#ContactPage .contact-form');
+        var $img = $('#ContactPage .contact-bg-image');
+
+        tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
+            .to($info, 0.5, {opacity: 0}, 'clear-stage')
+            .to($form, 0.5, {opacity: 0}, 'clear-stage');
+
+        tl.to($img, 1, {y: '+=100%', ease: Power4.easeInOut}, 'move-images-stage');
+
+        tl.to($this, 1, {opacity: 0}, 'hiding-stage')
+
+        tl.to(window, 1, {onComplete:()=>{
             if (callback)
                 callback();
         }});
