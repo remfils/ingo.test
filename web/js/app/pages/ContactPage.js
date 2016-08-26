@@ -43,14 +43,24 @@ export default class ContactPage extends React.Component {
 
         var callback = tr.callback;
 
+        var tl = new TimelineLite();
+        tl.add('clear-stage', 0)
+            .add('leave-stage', 0.5)
+            .add('enter-stage', 1.5);
+
         switch ( tr.type ) {
             case "INDEX-CONTACTS":
             case "ABOUT-CONTACTS":
             case "WORKS-CONTACTS":
-                tr.prev_page.leaveToDifferentTitlePage(callback);
-                this.enterFromDifferentTitlePage(callback);
+                tr.prev_page.leaveToDifferentTitlePage(tl);
+                this.enterFromDifferentTitlePage(tl);
                 break;
         }
+
+        tl.to(window,0,{onComplete:()=>{
+            if (callback)
+                callback();
+        }})
     }
 
     introAnimation(callback) {
@@ -60,14 +70,16 @@ export default class ContactPage extends React.Component {
         }});
     }
 
-    enterFromDifferentTitlePage(callback) {
-        var tl = new TimelineLite();
+    enterFromDifferentTitlePage(tl) {
         var $this = $('#ContactPage');
 
-        tl.from($this, 1, {opacity: 0, onComplete:()=>{
-            if (callback)
-                callback();
-        }});
+        var $contact = $('#ContactPage .title-header');
+        var $info = $('#ContactPage .contact-info');
+        var $form = $('#ContactPage .contact-form');
+
+        tl.from($contact, 1, {opacity: 0}, 'enter-stage')
+            .from($info, 1, {opacity: 0}, 'enter-stage')
+            .from($form, 1, {opacity: 0}, 'enter-stage');
     }
 
     leaveToDifferentTitlePage(callback) {
