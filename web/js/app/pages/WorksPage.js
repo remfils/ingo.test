@@ -115,18 +115,27 @@ export default class WorksPage extends React.Component {
 
     enterFromDifferentTitlePage(tl) {
         $('#WorksPage .movie_cell').each((index, item) => {
-            var delay = -0.4;
+            var delay = 0.1 * index;
             tl.from(item, 0.5, {opacity: 0, delay: delay, ease: Power4.easeInOut}, 'enter-stage');
-        })
+        });
     }
 
     leaveToDifferentTitlePage(tl) {
         var $this = $('#WorksPage');
 
-        tl.to($this, 1, {opacity: 0, onComplete:()=>{
-            if (callback)
-                callback();
-        }});
+        $this.css('z-index', 9999);
+
+        var $movies = $('#WorksPage .movie_cell');
+        var $color = $('#WorksPage .table-bg-color');
+
+        var movie_count = $movies.length;
+        var interval = 1 / (0.1*movie_count+1);
+        $movies.each((index, item)=>{
+            var delay = interval * index * 0.1;
+            tl.to(item, interval, {opacity: 0, delay}, 'clear-stage');
+        })
+
+        tl.to($color, 1, {opacity: 0}, 'leave-stage');
     }
 
     createProjectOnClickFunction(project_id) {

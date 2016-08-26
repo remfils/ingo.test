@@ -77,7 +77,7 @@ export default class AboutPage extends React.Component {
         var $dsc = $('#AboutPage .title-content');
         var $img = $('#AboutPage .contact-bg-image');
 
-        tl.from($img, 1, {y: "-=100", ease: Power4.easeInOut}, 'leave-stage');
+        tl.from($img, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage');
 
         tl.from($title, 1, {opacity: 0}, 'enter-stage')
             .from($dsc, 1, {opacity: 0}, 'enter-stage');
