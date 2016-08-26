@@ -110,7 +110,7 @@ export default class TitleColoredTable extends React.Component {
 
         return <div id="TableHeader" className={this.props.className}>
             <div id="TableBackgroundColor"></div>
-            <div id="TableForegroundColor" style={table_style}></div>
+            <div id="TableForegroundColor" style={table_style} class="table-bg-color"></div>
             <table id={this._id} >
                 { this.props.children }
             </table>

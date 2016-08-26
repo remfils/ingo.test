@@ -76,6 +76,9 @@ export default class ContactPage extends React.Component {
         var $contact = $('#ContactPage .title-header');
         var $info = $('#ContactPage .contact-info');
         var $form = $('#ContactPage .contact-form');
+        var $img = $('#ContactPage .contact-bg-image');
+
+        tl.from($img, 1, {y: '-=100%'}, 'leave-stage');
 
         tl.from($contact, 1, {opacity: 0}, 'enter-stage')
             .from($info, 1, {opacity: 0}, 'enter-stage')
@@ -92,19 +95,14 @@ export default class ContactPage extends React.Component {
         var $info = $('#ContactPage .contact-info');
         var $form = $('#ContactPage .contact-form');
         var $img = $('#ContactPage .contact-bg-image');
+        var $color = $('#ContactPage .table-bg-color');
 
         tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
             .to($info, 0.5, {opacity: 0}, 'clear-stage')
             .to($form, 0.5, {opacity: 0}, 'clear-stage');
 
-        tl.to($img, 1, {y: '+=100%', ease: Power4.easeInOut}, 'move-images-stage');
-
-        tl.to($this, 1, {opacity: 0}, 'hiding-stage')
-
-        tl.to(window, 1, {onComplete:()=>{
-            if (callback)
-                callback();
-        }});
+        tl.to($img, 1, {y: '+=100%', ease: Power4.easeInOut}, 'leave-stage')
+            .to($color, 1, {opacity: 0}, 'leave-stage');
     }
 
     render() {

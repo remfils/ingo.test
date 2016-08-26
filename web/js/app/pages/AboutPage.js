@@ -42,15 +42,24 @@ export default class AboutPage extends React.Component {
         }
 
         var callback = tr.callback;
+        var tl = new TimelineLite();
+        tl.add('clear-stage', 0)
+            .add('leave-stage', 0.5)
+            .add('enter-stage', 1.5);
 
         switch ( tr.type ) {
             case "INDEX-ABOUT":
             case "CONTACTS-ABOUT":
             case "WORKS-ABOUT":
-                tr.prev_page.leaveToDifferentTitlePage(callback);
-                this.enterFromDifferentTitlePage(callback);
+                tr.prev_page.leaveToDifferentTitlePage(tl);
+                this.enterFromDifferentTitlePage(tl);
                 break;
         }
+
+        tl.to(window,0,{onComplete:()=>{
+            if (callback)
+                callback();
+        }})
     }
 
     introAnimation(callback) {
@@ -60,18 +69,20 @@ export default class AboutPage extends React.Component {
         }});
     }
 
-    enterFromDifferentTitlePage(callback) {
-        var tl = new TimelineLite();
+    enterFromDifferentTitlePage(tl) {
         var $this = $('#AboutPage');
 
-        tl.from($this, 1, {opacity: 0, onComplete:()=>{
-            if (callback)
-                callback();
-        }});
+        var $img = $('#AboutPage .contact-bg-image');
+        var $title = $('#AboutPage .title-header');
+        var $dsc = $('#AboutPage .title-project-dsc');
+
+        tl.from($img, 1, {y: "-=100"}, 'leave-stage');
+
+        tl.from($title, 1, {opacity: 0}, 'enter-stage')
+            .from($dsc, 1, {opacity: 0}, 'enter-stage');
     }
 
-    leaveToDifferentTitlePage(callback) {
-        var tl = new TimelineLite();
+    leaveToDifferentTitlePage(tl) {
         var $this = $('#AboutPage');
 
         $this.css('z-index', 9999);
@@ -79,18 +90,13 @@ export default class AboutPage extends React.Component {
         var $title = $('#AboutPage .title-header');
         var $dsc = $('#AboutPage .title-content');
         var $img = $('#AboutPage .contact-bg-image');
+        var $color = $('#AboutPage .table-bg-color');
 
         tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
             .to($dsc, 0.5, {opacity: 0}, 'clear-stage');
 
-        tl.to($img, 1, {y: "+=100%", ease: Power4.easeInOut});
-
-        tl.to($this, 1, {opacity: 0});
-
-        tl.to(window, 0, {onComplete:()=>{
-            if (callback)
-                callback();
-        }});
+        tl.to($img, 1, {y: "+=100%", ease: Power4.easeInOut}, 'leave-stage')
+            .to($color, 0.4, {opacity: 0, delay: 0.6}, 'leave-stage');
     }
 
     render() {

@@ -238,6 +238,7 @@ export default class IndexPage extends React.Component {
         var $left_image = $('#IndexPage .img-back');
         var $right_image = $('#IndexPage .img-front');
         var $movie_dsc = $('#IndexPage .movie-short-description');
+        var $color = $('#IndexPage .table-bg-color');
 
         tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
             .to($brackets, 0.5, {opacity: 0}, 'clear-stage')
@@ -246,7 +247,7 @@ export default class IndexPage extends React.Component {
 
         tl.to($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'leave-stage')
             .to($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage')
-            .to($table, 1, {opacity: 0}, 'leave-stage');
+            .to($color, 1, {opacity: 0}, 'leave-stage');
     }
 
     getMouseScrollDirection(e) {

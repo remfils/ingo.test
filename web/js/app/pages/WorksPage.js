@@ -48,19 +48,28 @@ export default class WorksPage extends React.Component {
         }
 
         var callback = tr.callback;
+        var tl = new TimelineLite();
+        tl.add('clear-stage', 0)
+            .add('leave-stage', 0.5)
+            .add('enter-stage', 1.5);
 
         switch ( tr.type ) {
             case "INDEX-WORKS":
             case "CONTACTS-WORKS":
             case "ABOUT-WORKS":
-                tr.prev_page.leaveToDifferentTitlePage(callback);
-                this.enterFromDifferentTitlePage(callback);
+                tr.prev_page.leaveToDifferentTitlePage(tl);
+                this.enterFromDifferentTitlePage(tl);
                 break;
             case "MOVIE-WORKS":
                 tr.prev_page.leaveToIndexPage(callback);
                 this.enterFromDifferentTitlePage(callback);
                 break;
         }
+
+        tl.to(window,0,{onComplete:()=>{
+            if (callback)
+                callback();
+        }});
     }
 
     updateSizeOfImages() {
@@ -104,29 +113,15 @@ export default class WorksPage extends React.Component {
         }});
     }
 
-    enterFromDifferentTitlePage(callback) {
-        var tl = new TimelineLite();
-        var $this = $('#WorksPage');
-
-        tl.from($this, 0.5, {opacity: 0});
-
-        tl.to(window, 1, {});
-
+    enterFromDifferentTitlePage(tl) {
         $('#WorksPage .movie_cell').each((index, item) => {
-            tl.from(item, 0.5, {opacity: 0, delay: -0.4, ease: Power4.easeInOut});
+            var delay = -0.4;
+            tl.from(item, 0.5, {opacity: 0, delay: delay, ease: Power4.easeInOut}, 'enter-stage');
         })
-
-        tl.to(window, 0, {onComplete: () => {
-            if (callback)
-                callback();
-        }} )
     }
 
-    leaveToDifferentTitlePage(callback) {
-        var tl = new TimelineLite();
+    leaveToDifferentTitlePage(tl) {
         var $this = $('#WorksPage');
-
-        $this.css('z-index', 9999);
 
         tl.to($this, 1, {opacity: 0, onComplete:()=>{
             if (callback)
