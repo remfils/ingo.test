@@ -140,8 +140,8 @@ export default class IndexPage extends React.Component {
 
         switch ( tr.type ) {
             case "MOVIE-INDEX":
-                prev_page.leaveToIndexPage(tr.callback);
-                this.enterFromMoviePage(tr.callback);
+                prev_page.leaveToIndexPage(tl);
+                this.enterFromMoviePage(tl);
                 break;
             case "CONTACTS-INDEX":
             case "ABOUT-INDEX":
@@ -166,34 +166,42 @@ export default class IndexPage extends React.Component {
         }});
     }
 
-    enterFromMoviePage(callback) {
-        var tl = new TimelineLite();
-
+    enterFromMoviePage(tl) {
         var $current_image = $(".index-page-image-rotator .img-front"),
             $this = $('#IndexPage');
 
-        tl.from($this, 1, {x: "-=100%"})
-            .from($current_image, 1, {x: "-=100%", ease: Power2.easeInOut, onComplete:()=>{
-                if(callback)
-                    callback();
-            }});
+        var $brackets = $('#IndexPage .title-page-name');
+        var $title = $('#IndexPage .title-header');
+        var $scroll_msg = $('#IndexPage .scroll-message');
+        var $movie_dsc = $('#IndexPage .movie-short-description');
+
+        tl.from($this, 1, {x: "-=100%"}, 'leave-stage')
+            .from($current_image, 1, {x: "-=100%", ease: Power2.easeInOut}, 'leave-stage+=0.5');
+
+        tl.from($brackets, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
+            .from($title, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
+            .from($scroll_msg, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
+            .from($movie_dsc, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage');
     }
 
 
-    leaveToMoviePage(callback) {
-        var tl = new TimelineLite();
-
+    leaveToMoviePage(tl) {
         var $prev_image = $(".index-page-image-rotator .img-back"),
             $current_image = $(".index-page-image-rotator .img-front"),
             $table = $(".title-project-dsc");
 
-        tl.to($current_image, 1, {x: "-=100%", ease: Power2.easeOut})
-            .to($("#IndexPage"), 1, {x: "-=100%", ease: Power2.easeInOut, onComplete:()=>{
-                $("#IndexPage").css("display", "none");
+        var $brackets = $('#IndexPage .title-page-name');
+        var $title = $('#IndexPage .title-header');
+        var $scroll_msg = $('#IndexPage .scroll-message');
+        var $movie_dsc = $('#IndexPage .movie-short-description');
 
-                if (callback)
-                    callback();
-            }});
+        tl.to($brackets, 0.5, {opacity: 0}, 'clear-stage')
+            .to($title, 0.5, {opacity: 0}, 'clear-stage')
+            .to($scroll_msg, 0.5, {opacity: 0}, 'clear-stage')
+            .to($movie_dsc, 0.5, {opacity: 0}, 'clear-stage');
+
+        tl.to($current_image, 1, {x: "-=100%", ease: Power2.easeOut}, 'leave-stage')
+            .to($("#IndexPage"), 1, {x: "-=100%", ease: Power2.easeInOut}, 'leave-stage+=1');
 
         /*TweenLite.to( , 1, {left: "-=60%"} );
         TweenLite.to( , 1, {left: "0", height: "70%"} );
