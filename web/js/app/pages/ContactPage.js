@@ -78,7 +78,7 @@ export default class ContactPage extends React.Component {
         var $form = $('#ContactPage .contact-form');
         var $img = $('#ContactPage .contact-bg-image');
 
-        tl.from($img, 1, {y: '-=100%'}, 'leave-stage');
+        tl.from($img, 1, {y: '-=100%', ease: Power4.easeInOut}, 'leave-stage');
 
         tl.from($contact, 1, {opacity: 0}, 'enter-stage')
             .from($info, 1, {opacity: 0}, 'enter-stage')
@@ -102,7 +102,7 @@ export default class ContactPage extends React.Component {
             .to($form, 0.5, {opacity: 0}, 'clear-stage');
 
         tl.to($img, 1, {y: '+=100%', ease: Power4.easeInOut}, 'leave-stage')
-            .to($color, 1, {opacity: 0}, 'leave-stage');
+            .to($color, 0.4, {opacity: 0, delay: 0.6}, 'leave-stage');
     }
 
     render() {

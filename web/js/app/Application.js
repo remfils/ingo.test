@@ -168,9 +168,7 @@ export default class Application extends React.Component {
 
         var page = <div></div>;
 
-        transition.callback = createCountdownCallback(() => {
-            this.shiftPage();
-        }, 2);
+        transition.callback = this.shiftPage.bind(this);
 
         switch ( transition.type ) {
             case "INDEX-MOVIE":
