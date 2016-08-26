@@ -133,18 +133,28 @@ export default class IndexPage extends React.Component {
         var callback = tr.callback;
         var prev_page = tr.prev_page;
 
+        var tl = new TimelineLite();
+        tl.add('clear-stage', 0)
+            .add('leave-stage', 0.5)
+            .add('enter-stage', 1.5);
+
         switch ( tr.type ) {
             case "MOVIE-INDEX":
-                prev_page.leaveToIndexPage(tr.callback);
-                this.enterFromMoviePage(tr.callback);
+                prev_page.leaveToIndexPage(tl);
+                this.enterFromMoviePage(tl);
                 break;
             case "CONTACTS-INDEX":
             case "ABOUT-INDEX":
             case "WORKS-INDEX":
-                prev_page.leaveToDifferentTitlePage(callback);
-                this.enterFromDifferentTitlePage(callback);
+                prev_page.leaveToDifferentTitlePage(tl);
+                this.enterFromDifferentTitlePage(tl);
                 break;
         }
+
+        tl.to(window,0,{onComplete:()=>{
+            if (callback)
+                callback();
+        }})
     }
 
     introAnimation(callback) {
@@ -156,34 +166,42 @@ export default class IndexPage extends React.Component {
         }});
     }
 
-    enterFromMoviePage(callback) {
-        var tl = new TimelineLite();
-
+    enterFromMoviePage(tl) {
         var $current_image = $(".index-page-image-rotator .img-front"),
             $this = $('#IndexPage');
 
-        tl.from($this, 1, {x: "-=100%"})
-            .from($current_image, 1, {x: "-=100%", ease: Power2.easeInOut, onComplete:()=>{
-                if(callback)
-                    callback();
-            }});
+        var $brackets = $('#IndexPage .title-page-name');
+        var $title = $('#IndexPage .title-header');
+        var $scroll_msg = $('#IndexPage .scroll-message');
+        var $movie_dsc = $('#IndexPage .movie-short-description');
+
+        tl.from($this, 1, {x: "-=100%"}, 'leave-stage')
+            .from($current_image, 1, {x: "-=100%", ease: Power2.easeInOut}, 'leave-stage+=0.5');
+
+        tl.from($brackets, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
+            .from($title, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
+            .from($scroll_msg, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
+            .from($movie_dsc, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage');
     }
 
 
-    leaveToMoviePage(callback) {
-        var tl = new TimelineLite();
-
+    leaveToMoviePage(tl) {
         var $prev_image = $(".index-page-image-rotator .img-back"),
             $current_image = $(".index-page-image-rotator .img-front"),
             $table = $(".title-project-dsc");
 
-        tl.to($current_image, 1, {x: "-=100%", ease: Power2.easeOut})
-            .to($("#IndexPage"), 1, {x: "-=100%", ease: Power2.easeInOut, onComplete:()=>{
-                $("#IndexPage").css("display", "none");
+        var $brackets = $('#IndexPage .title-page-name');
+        var $title = $('#IndexPage .title-header');
+        var $scroll_msg = $('#IndexPage .scroll-message');
+        var $movie_dsc = $('#IndexPage .movie-short-description');
 
-                if (callback)
-                    callback();
-            }});
+        tl.to($brackets, 0.5, {opacity: 0}, 'clear-stage')
+            .to($title, 0.5, {opacity: 0}, 'clear-stage')
+            .to($scroll_msg, 0.5, {opacity: 0}, 'clear-stage')
+            .to($movie_dsc, 0.5, {opacity: 0}, 'clear-stage');
+
+        tl.to($current_image, 1, {x: "-=100%", ease: Power2.easeOut}, 'leave-stage')
+            .to($("#IndexPage"), 1, {x: "-=100%", ease: Power2.easeInOut}, 'leave-stage+=1');
 
         /*TweenLite.to( , 1, {left: "-=60%"} );
         TweenLite.to( , 1, {left: "0", height: "70%"} );
@@ -196,8 +214,7 @@ export default class IndexPage extends React.Component {
         TweenLite.set($("#IndexPage"), {"z-index": 0});*/
     }
 
-    enterFromDifferentTitlePage(callback) {
-        var tl = new TimelineLite();
+    enterFromDifferentTitlePage(tl) {
         var $this = $('#IndexPage');
 
         var $brackets = $('#IndexPage .title-page-name');
@@ -208,24 +225,16 @@ export default class IndexPage extends React.Component {
         var $right_image = $('#IndexPage .img-front');
         var $movie_dsc = $('#IndexPage .movie-short-description');
 
-        tl.to(window, 1, {});
+        tl.from($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'leave-stage')
+            .from($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage');
 
-        tl.from($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'first_stage')
-            .from($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'first_stage');
-
-        tl.from($title, 0.5, {opacity: 0}, 'second-stage')
-            .from($brackets, 0.5, {opacity: 0}, 'second-stage')
-            .from($scroll_msg, 0.5, {opacity: 0}, 'second-stage')
-            .from($movie_dsc, 0.5, {opacity: 0}, 'second-stage');
-
-        tl.to(window, 0, {onComplete: () => {
-            if (callback)
-                callback();
-        }})
+        tl.from($title, 0.5, {opacity: 0}, 'enter-stage')
+            .from($brackets, 0.5, {opacity: 0}, 'enter-stage')
+            .from($scroll_msg, 0.5, {opacity: 0}, 'enter-stage')
+            .from($movie_dsc, 0.5, {opacity: 0}, 'enter-stage');
     }
 
-    leaveToDifferentTitlePage(callback) {
-        var tl = new TimelineLite();
+    leaveToDifferentTitlePage(tl) {
         var $this = $('#IndexPage');
 
         $this.css('z-index', 9999);
@@ -237,20 +246,16 @@ export default class IndexPage extends React.Component {
         var $left_image = $('#IndexPage .img-back');
         var $right_image = $('#IndexPage .img-front');
         var $movie_dsc = $('#IndexPage .movie-short-description');
+        var $color = $('#IndexPage .table-bg-color');
 
         tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
             .to($brackets, 0.5, {opacity: 0}, 'clear-stage')
             .to($scroll_msg, 0.5, {opacity: 0}, 'clear-stage')
             .to($movie_dsc, 0.5, {opacity: 0}, 'clear-stage');
 
-        tl.to($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'first_stage')
-            .to($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'first_stage')
-            .to($table, 1, {opacity: 0}, 'first_stage');
-
-        tl.to($this, 1, {opacity: 0, onComplete:()=>{
-            if (callback)
-                callback();
-        }});
+        tl.to($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'leave-stage')
+            .to($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage')
+            .to($color, 1, {opacity: 0}, 'leave-stage');
     }
 
     getMouseScrollDirection(e) {

@@ -43,14 +43,24 @@ export default class ContactPage extends React.Component {
 
         var callback = tr.callback;
 
+        var tl = new TimelineLite();
+        tl.add('clear-stage', 0)
+            .add('leave-stage', 0.5)
+            .add('enter-stage', 1.5);
+
         switch ( tr.type ) {
             case "INDEX-CONTACTS":
             case "ABOUT-CONTACTS":
             case "WORKS-CONTACTS":
-                tr.prev_page.leaveToDifferentTitlePage(callback);
-                this.enterFromDifferentTitlePage(callback);
+                tr.prev_page.leaveToDifferentTitlePage(tl);
+                this.enterFromDifferentTitlePage(tl);
                 break;
         }
+
+        tl.to(window,0,{onComplete:()=>{
+            if (callback)
+                callback();
+        }})
     }
 
     introAnimation(callback) {
@@ -60,14 +70,19 @@ export default class ContactPage extends React.Component {
         }});
     }
 
-    enterFromDifferentTitlePage(callback) {
-        var tl = new TimelineLite();
+    enterFromDifferentTitlePage(tl) {
         var $this = $('#ContactPage');
 
-        tl.from($this, 1, {opacity: 0, onComplete:()=>{
-            if (callback)
-                callback();
-        }});
+        var $contact = $('#ContactPage .title-header');
+        var $info = $('#ContactPage .contact-info');
+        var $form = $('#ContactPage .contact-form');
+        var $img = $('#ContactPage .contact-bg-image');
+
+        tl.from($img, 1, {y: '-=100%', ease: Power4.easeInOut}, 'leave-stage');
+
+        tl.from($contact, 1, {opacity: 0}, 'enter-stage')
+            .from($info, 1, {opacity: 0}, 'enter-stage')
+            .from($form, 1, {opacity: 0}, 'enter-stage');
     }
 
     leaveToDifferentTitlePage(callback) {
@@ -80,19 +95,14 @@ export default class ContactPage extends React.Component {
         var $info = $('#ContactPage .contact-info');
         var $form = $('#ContactPage .contact-form');
         var $img = $('#ContactPage .contact-bg-image');
+        var $color = $('#ContactPage .table-bg-color');
 
         tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
             .to($info, 0.5, {opacity: 0}, 'clear-stage')
             .to($form, 0.5, {opacity: 0}, 'clear-stage');
 
-        tl.to($img, 1, {y: '+=100%', ease: Power4.easeInOut}, 'move-images-stage');
-
-        tl.to($this, 1, {opacity: 0}, 'hiding-stage')
-
-        tl.to(window, 1, {onComplete:()=>{
-            if (callback)
-                callback();
-        }});
+        tl.to($img, 1, {y: '+=100%', ease: Power4.easeInOut}, 'leave-stage')
+            .to($color, 0.4, {opacity: 0, delay: 0.6}, 'leave-stage');
     }
 
     render() {

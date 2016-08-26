@@ -75,16 +75,28 @@ export default class MoviePage extends React.Component {
 
         $("#MoviePage").css({"z-index": 99});
 
+        var callback = transition.callback;
+
+        var tl = new TimelineLite();
+        tl.add('clear-stage', 0)
+            .add('leave-stage', 0.5)
+            .add('enter-stage', 1.5);
+
         switch ( transition.type ) {
             case "INDEX-MOVIE":
-                transition.prev_page.leaveToMoviePage(transition.callback);
-                this.enterFromIndexPage(transition.callback);
+                transition.prev_page.leaveToMoviePage(tl);
+                this.enterFromIndexPage(tl);
                 break;
             case "WORKS-MOVIE":
-                transition.prev_page.leaveToDifferentTitlePage(transition.callback);
-                this.enterFromIndexPage(transition.callback);
+                transition.prev_page.leaveToDifferentTitlePage(tl);
+                this.enterFromIndexPage(tl);
                 break;
         }
+
+        tl.to(window,0,{onComplete:()=>{
+            if (callback)
+                callback();
+        }})
     }
 
     introAnimation(callback) {
@@ -94,36 +106,25 @@ export default class MoviePage extends React.Component {
         }});
     }
 
-    enterFromIndexPage(callback) {
+    enterFromIndexPage(tl) {
         var cmd = this.props.transition.command;
 
-        var tl = new TimelineLite();
-        tl.from($("#MoviePage"), 1, {y: "+=100%", clearProps: "y,opacity,transform", })
+        tl.from($("#MoviePage"), 1, {y: "+=100%", clearProps: "y,opacity,transform"}, 'leave-stage')
             .from($("#MovieImageRotator"), 1, {y: "+=100%", onComplete: ()=>{
                 if (cmd == MoviePage.CMD_SHOW_TEXT) {
                     this.scrollToDescription();
                 }
-            }})
-            .from($('.fixed-menu-row'), 0.5, {opacity: 0, onComplete:()=>{
-                if (callback)
-                    callback();
-            }});
+            }}, 'leave-stage+=1')
+            .from($('.fixed-menu-row'), 0.5, {opacity: 0}, 'enter-stage');
     }
 
-    leaveToIndexPage(callback) {
-        var tl = new TimelineLite();
-
+    leaveToIndexPage(tl) {
         var $this = $("#MoviePage");
         var $image = $("#MovieImageRotator");
 
-        tl.to($image, 1, {y: "+=100%", ease: Power2.easeIn})
-            .to($this, 1, {y: "+=100%", ease: Power3.easeInOut, onComplete: () => {
-                $this.hide();
-                $this.css('z-index', 0);
+        tl.to($image, 1, {y: "+=100%", ease: Power2.easeIn}, 'clear-stage');
 
-                if (callback)
-                    callback();
-        }});
+        tl.to($this, 1, {y: "+=100%", ease: Power3.easeInOut}, 'leave-stage+=0.5');
     }
 
     scrollToDescription() {

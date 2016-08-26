@@ -48,19 +48,28 @@ export default class WorksPage extends React.Component {
         }
 
         var callback = tr.callback;
+        var tl = new TimelineLite();
+        tl.add('clear-stage', 0)
+            .add('leave-stage', 0.5)
+            .add('enter-stage', 1.5);
 
         switch ( tr.type ) {
             case "INDEX-WORKS":
             case "CONTACTS-WORKS":
             case "ABOUT-WORKS":
-                tr.prev_page.leaveToDifferentTitlePage(callback);
-                this.enterFromDifferentTitlePage(callback);
+                tr.prev_page.leaveToDifferentTitlePage(tl);
+                this.enterFromDifferentTitlePage(tl);
                 break;
             case "MOVIE-WORKS":
                 tr.prev_page.leaveToIndexPage(callback);
                 this.enterFromDifferentTitlePage(callback);
                 break;
         }
+
+        tl.to(window,0,{onComplete:()=>{
+            if (callback)
+                callback();
+        }});
     }
 
     updateSizeOfImages() {
@@ -104,34 +113,29 @@ export default class WorksPage extends React.Component {
         }});
     }
 
-    enterFromDifferentTitlePage(callback) {
-        var tl = new TimelineLite();
-        var $this = $('#WorksPage');
-
-        tl.from($this, 0.5, {opacity: 0});
-
-        tl.to(window, 1, {});
-
+    enterFromDifferentTitlePage(tl) {
         $('#WorksPage .movie_cell').each((index, item) => {
-            tl.from(item, 0.5, {opacity: 0, delay: -0.4, ease: Power4.easeInOut});
-        })
-
-        tl.to(window, 0, {onComplete: () => {
-            if (callback)
-                callback();
-        }} )
+            var delay = 0.1 * index;
+            tl.from(item, 0.5, {opacity: 0, delay: delay, ease: Power4.easeInOut}, 'enter-stage');
+        });
     }
 
-    leaveToDifferentTitlePage(callback) {
-        var tl = new TimelineLite();
+    leaveToDifferentTitlePage(tl) {
         var $this = $('#WorksPage');
 
         $this.css('z-index', 9999);
 
-        tl.to($this, 1, {opacity: 0, onComplete:()=>{
-            if (callback)
-                callback();
-        }});
+        var $movies = $('#WorksPage .movie_cell');
+        var $color = $('#WorksPage .table-bg-color');
+
+        var movie_count = $movies.length;
+        var interval = 1 / (0.1*movie_count+1);
+        $movies.each((index, item)=>{
+            var delay = interval * index * 0.1;
+            tl.to(item, interval, {opacity: 0, delay}, 'clear-stage');
+        })
+
+        tl.to($color, 1, {opacity: 0}, 'leave-stage');
     }
 
     createProjectOnClickFunction(project_id) {
