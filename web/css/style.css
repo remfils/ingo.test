@@ -829,8 +829,8 @@ a:active {
 
 /* INDEX PAGE: TitleColoredTable */
 
-#TableBackgroundColor,
-#TableForegroundColor {
+.color-table-fg,
+.table-bg-color {
     position: absolute;
     left: 0;
     top: 0;
@@ -838,8 +838,8 @@ a:active {
     height: 100%;
 }
 
-#TableBackgroundColor {  z-index: 1; }
-#TableForegroundColor {  z-index: 2; }
+.color-table-fg {  z-index: 2; }
+.table-bg-color {  z-index: 1; }
 .title-project-dsc table {
     position: absolute;
     top: 0;

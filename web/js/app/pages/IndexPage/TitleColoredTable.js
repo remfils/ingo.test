@@ -12,8 +12,8 @@ const BG_IMAGE_HEIGHT = 904;
 export default class TitleColoredTable extends React.Component {
     static box_counter = 0;
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.color = "#ffffff";
 
@@ -86,8 +86,11 @@ export default class TitleColoredTable extends React.Component {
 
         $("#TableBackgroundColor").css('background-color', next_color);
 
-        var $curtain = $("#TableForegroundColor");
-        $curtain.css("width", "100%");
+        var $curtain = $("#TableHeader .color-table-fg");
+        $curtain.css({
+            backgroundColor: this.props.color,
+            width: "100%"
+        });
 
         if ( nextProps.direction == "right" ) {
             $curtain.removeClass("left")
@@ -98,19 +101,15 @@ export default class TitleColoredTable extends React.Component {
                 .addClass("left");
         }
 
-        TweenLite.to($("#TableForegroundColor"), 1, {width: 0, ease: Power3.easeInOut, onComplete: () => {
-            this.setState({
-                color: next_color
-            });
-        }});
+        TweenLite.to($curtain, 1, {width: 0, ease: Power3.easeInOut});
     }
 
     render() {
-        var table_style = { backgroundColor: this.state.color };
+        var table_style = { backgroundColor: this.props.color };
 
         return <div id="TableHeader" className={this.props.className}>
-            <div id="TableBackgroundColor"></div>
-            <div id="TableForegroundColor" style={table_style} class="table-bg-color"></div>
+            <div class='color-table-fg'></div>
+            <div style={table_style} class="table-bg-color"></div>
             <table id={this._id} >
                 { this.props.children }
             </table>
