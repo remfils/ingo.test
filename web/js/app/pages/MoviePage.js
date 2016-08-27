@@ -25,6 +25,7 @@ import ProjectModel from '../models/ProjectModel';
 
 export default class MoviePage extends React.Component {
     static CMD_SHOW_TEXT = "SHOW_TEXT";
+    static CMD_SHOW_MOVIE = "SHOW_MOVIE";
 
     constructor() {
         super();
@@ -114,6 +115,9 @@ export default class MoviePage extends React.Component {
                 if (cmd == MoviePage.CMD_SHOW_TEXT) {
                     this.scrollToDescription();
                 }
+                else if(cmd === MoviePage.CMD_SHOW_MOVIE) {
+                    this.scrollToMovie();
+                }
             }}, 'leave-stage+=1')
             .from($('.fixed-menu-row'), 0.5, {opacity: 0}, 'enter-stage');
     }
@@ -131,6 +135,10 @@ export default class MoviePage extends React.Component {
         console.debug("DEBUG(scrollToDescription): ",$('#MovieDescription').offset().top);
 
         TweenLite.to($("html, body"), 1, {scrollTop: $('#MovieDescription').offset().top, ease: Power2.easeInOut});
+    }
+
+    scrollToMovie() {
+        TweenLite.to($("html, body"), 1, {scrollTop: $('#MoviePage .project-sm-dsc').offset().top, ease: Power2.easeInOut});
     }
 
     componentWillMount() {

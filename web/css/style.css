@@ -838,13 +838,13 @@ a:active {
     left: 320px;
     bottom: 50%;
     z-index: 10;
-    cursor: pointer;
 }
 
 .title-play-button {
     position: relative;
     bottom: -15px;
     left: 10px;
+    cursor: pointer;
 }
 
 .movie-title,
