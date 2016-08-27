@@ -477,7 +477,7 @@ export default class MoviePage extends React.Component {
                 <section class="default-side-padding project-sm-dsc">
                     <MovieFieldsTable movie={movie} class="col-30p project-stats" />
 
-                    <div class="col-70p project-demo-video">
+                    <div class="col-70p project-demo-video clearfix">
                         <PreviewFrame url={movie.preview_url} class="preview-frame" />
                         <div class="btn-mehr-container">
                             <a class="btn-mehr pull-left" onClick={this.mehrButtonClickListener.bind(this)}>MEHR ERFAHREN</a>
