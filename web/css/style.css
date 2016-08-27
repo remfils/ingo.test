@@ -883,12 +883,55 @@ a:active {
     position: absolute;
 }
 
+@-webkit-keyframes scroll-message-animation {
+    0%, 100% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(0.8, 0.8);
+    }
+}
+@-moz-keyframes scroll-message-animation {
+    0%, 100% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(0.8, 0.8);
+    }
+}
+@-o-keyframes scroll-message-animation {
+    0%, 100% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(0.8, 0.8);
+    }
+}
+@keyframes scroll-message-animation {
+    0%, 100% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(0.8, 0.8);
+    }
+}
+
 .scroll-message {
     position: absolute;
     bottom: 25%;
     right: 25%;
     font-size: 18px;
+
+    -webkit-animation: scroll-message-animation 2s infinite;
+    -o-animation: scroll-message-animation 2s infinite;
+    animation: scroll-message-animation 2s infinite;
+
+    -webkit-animation-timing-function: cubic-bezier(.56,.01,.44,.93);
+    -moz-animation-timing-function: cubic-bezier(.56,.01,.44,.93);
+    -o-animation-timing-function: cubic-bezier(.56,.01,.44,.93);
+    animation-timing-function: cubic-bezier(.56,.01,.44,.93);
 }
+
 
 .scroll-message img {
     vertical-align: middle;
