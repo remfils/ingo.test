@@ -12,6 +12,14 @@ export default class NavigationMenu extends React.Component {
     static PAGE_ABOUT = 'ABOUT';
     static PAGE_CONTACTS = 'CONTACTS';
 
+    constructor () {
+        super();
+
+        this.state = {
+            page_name: null
+        };
+    }
+
     newsClickListener(e) {
         e.preventDefault();
 
@@ -28,6 +36,8 @@ export default class NavigationMenu extends React.Component {
 
             if (page_name == self.props.page_name)
                 return false;
+
+            self.setState({page_name});
 
             TransitionActions.createTitleTransition(self.props.page_name, page_name, self.props.current_page);
 
@@ -52,12 +62,14 @@ export default class NavigationMenu extends React.Component {
     }
 
     render() {
+        var page_name = this.state.page_name || this.props.page_name;
+
         return <div class='title-menu'>
                 <ul>
-                    <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_INDEX ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_INDEX)}>news</a></li>
-                    <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_WORKS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_WORKS)}>work</a></li>
-                    <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_ABOUT ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_ABOUT)}>about</a></li>
-                    <li><a href="#" class={this.props.page_name == NavigationMenu.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_CONTACTS)}>contacts</a></li>
+                    <li><a href="#" class={page_name === NavigationMenu.PAGE_INDEX ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_INDEX)}>news</a></li>
+                    <li><a href="#" class={page_name === NavigationMenu.PAGE_WORKS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_WORKS)}>work</a></li>
+                    <li><a href="#" class={page_name === NavigationMenu.PAGE_ABOUT ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_ABOUT)}>about</a></li>
+                    <li><a href="#" class={page_name === NavigationMenu.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_CONTACTS)}>contacts</a></li>
                 </ul>
                 <span class='btn-menu' onClick={this.titleMenuClickListener.bind(this)}><img src={asset('img/button-menu.png')} alt=""/></span>
             </div>;

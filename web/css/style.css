@@ -785,8 +785,28 @@ a:active {
     color: #3c3c3b;
 }
 
-.title-menu .active {
-    text-decoration: line-through;
+.title-menu a {
+    position: relative;
+}
+
+.title-menu a:before {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: #3C3C3B;
+    left: 0;
+    top: 50%;
+
+    -webkit-transition: width 0.5s;
+    -moz-transition: width 0.5s;
+    -ms-transition: width 0.5s;
+    -o-transition: width 0.5s;
+    transition: width 0.5s;
+}
+
+.title-menu a.active:before {
+    width: 100%;
 }
 
 .btn-menu {
