@@ -77,12 +77,16 @@ export default class ContactPage extends React.Component {
         var $info = $('#ContactPage .contact-info');
         var $form = $('#ContactPage .contact-form');
         var $img = $('#ContactPage .contact-bg-image');
+        var $nav = $('#ContactPage .title-navigation');
 
         tl.from($img, 1, {y: '-=100%', ease: Power4.easeInOut}, 'leave-stage');
 
         tl.from($contact, 1, {opacity: 0}, 'enter-stage')
             .from($info, 1, {opacity: 0}, 'enter-stage')
             .from($form, 1, {opacity: 0}, 'enter-stage');
+
+        tl.set($nav, {opacity:0}, 'clear-stage');
+        tl.set($nav, {opacity:1}, 'enter-stage');
     }
 
     leaveToDifferentTitlePage(callback) {
@@ -96,6 +100,7 @@ export default class ContactPage extends React.Component {
         var $form = $('#ContactPage .contact-form');
         var $img = $('#ContactPage .contact-bg-image');
         var $color = $('#ContactPage .table-bg-color');
+        var $nav = $('#ContactPage .title-navigation');
 
         tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
             .to($info, 0.5, {opacity: 0}, 'clear-stage')
@@ -103,6 +108,8 @@ export default class ContactPage extends React.Component {
 
         tl.to($img, 1, {y: '+=100%', ease: Power4.easeInOut}, 'leave-stage')
             .to($color, 0.4, {opacity: 0, delay: 0.6}, 'leave-stage');
+
+        tl.set($nav, {opacity:0}, 'enter-stage');
     }
 
     render() {
