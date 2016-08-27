@@ -114,10 +114,17 @@ export default class WorksPage extends React.Component {
     }
 
     enterFromDifferentTitlePage(tl) {
+        var $nav = $('#WorksPage .title-navigation');
+
+        tl.from($nav, 0, {opacity:0}, 'enter-stage');
+
         $('#WorksPage .movie_cell').each((index, item) => {
             var delay = 0.1 * index;
             tl.from(item, 0.5, {opacity: 0, delay: delay, ease: Power4.easeInOut}, 'enter-stage');
         });
+
+        tl.set($nav, {opacity:0}, 'clear-stage');
+        tl.set($nav, {opacity:1}, 'enter-stage');
     }
 
     leaveToDifferentTitlePage(tl) {
@@ -125,6 +132,7 @@ export default class WorksPage extends React.Component {
 
         $this.css('z-index', 9999);
 
+        var $nav = $('#WorksPage .title-navigation');
         var $movies = $('#WorksPage .movie_cell');
         var $color = $('#WorksPage .table-bg-color');
 
@@ -136,6 +144,8 @@ export default class WorksPage extends React.Component {
         })
 
         tl.to($color, 1, {opacity: 0}, 'leave-stage');
+
+        tl.set($nav, {opacity:0}, 'enter-stage');
     }
 
     createProjectOnClickFunction(project_id) {

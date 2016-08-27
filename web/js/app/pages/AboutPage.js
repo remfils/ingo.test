@@ -76,11 +76,15 @@ export default class AboutPage extends React.Component {
         var $title = $('#AboutPage .title-header');
         var $dsc = $('#AboutPage .title-content');
         var $img = $('#AboutPage .contact-bg-image');
+        var $nav = $('#AboutPage .title-navigation');
 
         tl.from($img, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage');
 
         tl.from($title, 1, {opacity: 0}, 'enter-stage')
             .from($dsc, 1, {opacity: 0}, 'enter-stage');
+
+        tl.set($nav, {opacity:0}, 'clear-stage');
+        tl.set($nav, {opacity:1}, 'enter-stage');
     }
 
     leaveToDifferentTitlePage(tl) {
@@ -92,12 +96,15 @@ export default class AboutPage extends React.Component {
         var $dsc = $('#AboutPage .title-content');
         var $img = $('#AboutPage .contact-bg-image');
         var $color = $('#AboutPage .table-bg-color');
+        var $nav = $('#AboutPage .title-navigation');
 
         tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
             .to($dsc, 0.5, {opacity: 0}, 'clear-stage');
 
         tl.to($img, 1, {y: "+=100%", ease: Power4.easeInOut}, 'leave-stage')
             .to($color, 0.4, {opacity: 0, delay: 0.6}, 'leave-stage');
+
+        tl.set($nav, {opacity:0}, 'enter-stage');
     }
 
     render() {

@@ -224,6 +224,7 @@ export default class IndexPage extends React.Component {
         var $left_image = $('#IndexPage .img-back');
         var $right_image = $('#IndexPage .img-front');
         var $movie_dsc = $('#IndexPage .movie-short-description');
+        var $nav = $('#IndexPage .title-navigation');
 
         tl.from($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'leave-stage')
             .from($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage');
@@ -232,6 +233,9 @@ export default class IndexPage extends React.Component {
             .from($brackets, 0.5, {opacity: 0}, 'enter-stage')
             .from($scroll_msg, 0.5, {opacity: 0}, 'enter-stage')
             .from($movie_dsc, 0.5, {opacity: 0}, 'enter-stage');
+
+        tl.set($nav, {opacity:0}, 'clear-stage');
+        tl.set($nav, {opacity:1}, 'enter-stage');
     }
 
     leaveToDifferentTitlePage(tl) {
@@ -247,6 +251,7 @@ export default class IndexPage extends React.Component {
         var $right_image = $('#IndexPage .img-front');
         var $movie_dsc = $('#IndexPage .movie-short-description');
         var $color = $('#IndexPage .table-bg-color');
+        var $nav = $('#IndexPage .title-navigation');
 
         tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
             .to($brackets, 0.5, {opacity: 0}, 'clear-stage')
@@ -256,6 +261,8 @@ export default class IndexPage extends React.Component {
         tl.to($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'leave-stage')
             .to($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage')
             .to($color, 1, {opacity: 0}, 'leave-stage');
+
+        tl.set($nav, {opacity:0}, 'enter-stage');
     }
 
     getMouseScrollDirection(e) {
