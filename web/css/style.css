@@ -429,8 +429,7 @@ a.arrow:hover {
 
 .project-demo-video {
     height: 100%;
-    -ms-align-items: center;
-    justify-content: center;
+    text-align: center;
 }
 
 .project-demo-video iframe {
