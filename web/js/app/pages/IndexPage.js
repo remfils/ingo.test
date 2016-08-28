@@ -5,8 +5,9 @@ var $ = require('jquery');
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
-import { asset, createNotReadyYetFunction } from "../funcitons";
+import { asset, createNotReadyYetFunction, notReadyYet } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
+import SiteMap from "./components/SiteMap";
 import NavigationMenu from "./components/NavigationMenu";
 import AlphaBox from "./components/AlphaBox";
 import AlphaBoxDangerHtml from "./components/AlphaBoxDangerHtml";
@@ -22,7 +23,8 @@ export default class IndexPage extends React.Component {
     constructor() {
         super();
         this.state = {
-            current_content: null
+            current_content: null,
+            isMenuDisplayed: false
         };
 
         this.is_scroll_message_shown = true;
@@ -349,6 +351,16 @@ export default class IndexPage extends React.Component {
         return false;
     }
 
+    menuClickListener(event) {
+        event.preventDefault();
+
+        this.setState({
+            isMenuDisplayed: true
+        })
+
+        return false;
+    }
+
     currentMovieClickListener(event) {
         event.preventDefault();
 
@@ -419,13 +431,14 @@ export default class IndexPage extends React.Component {
 
         return (
             <section id='IndexPage' class='title-container'>
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} is_displayed={this.state.isMenuDisplayed}/>
 
                 <ImageRotator class="index-page-image-rotator" movie_id={content.id} img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 
                 <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
                     <tr>
                         <td class="title-navigation">
-                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_INDEX}/>
+                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_INDEX} menuClickListener={this.menuClickListener.bind(this)}/>
                         </td>
                     </tr>
                     <tr>
