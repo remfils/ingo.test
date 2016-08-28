@@ -12,12 +12,42 @@ export default class SiteMap extends React.Component {
     static PAGE_CONTACTS = 'CONTACTS';
     static PAGE_IMPRESSUM = 'IMPRESSUM'
 
+    static ITEM_COUNTER = 0;
+
     constructor () {
         super();
+
+        SiteMap.ITEM_COUNTER++;
+
+        this.id = "SiteMap" + SiteMap.ITEM_COUNTER;
 
         this.state = {
             page_name: null
         };
+    }
+
+    get id () {
+        return "#" + this._id;
+    }
+
+    set id (value) {
+        this._id = value;
+    }
+
+    componentDidMount() {
+        this.$ = $(this.id).find;
+
+        $(this.id).hide();
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if (this.props.is_displayed === nextProps.is_displayed) {
+            return;
+        }
+
+        if (nextProps.is_displayed) {
+            $(this.id).show();
+        }
     }
 
     createClickFunctionForPage(page_name) {
@@ -40,6 +70,8 @@ export default class SiteMap extends React.Component {
     closeButtonClickListener(e) {
         e.preventDefault();
 
+        $(this.id).hide();
+
         return false;
     }
 
@@ -47,7 +79,7 @@ export default class SiteMap extends React.Component {
         var page_name = this.state.page_name || this.props.page_name;
         var lang = this.props.lang;
 
-        return <div class='site-map'>
+        return <div id={this._id} class='site-map'>
             <div className="close-btn-container">
                 <img src={asset('img/button-close.png')} alt="" class="close-btn" onClick={this.closeButtonClickListener.bind(this)}/>
             </div>
