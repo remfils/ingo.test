@@ -834,7 +834,7 @@ a:active {
 
 .title-header {
     position: absolute;
-    left: 320px;
+    left: 360px;
     bottom: 50%;
     z-index: 10;
 }
@@ -969,15 +969,20 @@ a:active {
 /* CONTACT PAGE */
 
 .contact-title {
-    margin-left: 400px;
+    margin-left: 300px;
 }
 
 .contact-info {
     position: absolute;
-    left: 600px;
+    left: 90%;
     top: 300px;
     width: 100%;
     font-size: 24px;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .title-bg-image {
@@ -995,7 +1000,13 @@ a:active {
 }
 
 .contact-form {
+    margin-bottom: -30px;
     padding-right: 100px;
+}
+
+.contact-form h1 {
+    font-weight: normal;
+    font-family: MyriadPro-BoldCond_1;
 }
 
 .contact-bg-image {
