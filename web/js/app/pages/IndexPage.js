@@ -7,6 +7,7 @@ import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
 import { asset, createNotReadyYetFunction } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
+import SiteMap from "./components/SiteMap";
 import NavigationMenu from "./components/NavigationMenu";
 import AlphaBox from "./components/AlphaBox";
 import AlphaBoxDangerHtml from "./components/AlphaBoxDangerHtml";
@@ -419,6 +420,8 @@ export default class IndexPage extends React.Component {
 
         return (
             <section id='IndexPage' class='title-container'>
+
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} />
 
                 <ImageRotator class="index-page-image-rotator" movie_id={content.id} img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 

@@ -1105,3 +1105,59 @@ a:active {
 .movie_cell br {
     font-size: 1px;
 }*/
+
+
+/* SiteMap */
+
+.site-map {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(197,204,255,0.74);
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    padding-left: 350px;
+    padding-top: 130px;
+}
+
+.site-map ul {
+    padding: 0;
+}
+
+.site-map li,
+.lang-menu {
+    list-style-type: none;
+    font-family: MyriadPro-BoldCond_1;
+    font-weight: 100;
+    font-size: 60px;
+}
+
+.site-map a {
+    color: white;
+}
+
+.site-map li a.small {
+    font-size: 30px;
+}
+
+.close-btn-container {
+    position: absolute;
+    top: 38px;
+}
+
+
+
+.site-map .description {
+    position: absolute;
+    bottom: 200px;
+    left: 300px;
+    width: 400px;
+    font-size: 28px;
+}
+
+.site-map .description p {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
