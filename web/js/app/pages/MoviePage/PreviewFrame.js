@@ -37,7 +37,21 @@ export default class PreviewFrame extends React.Component {
 
     resizePreviewIframe(event) {
         var $iframe = $(this.id);
-        $iframe.height( 609 * $iframe.width() / 1092);
+
+        $iframe.css({
+            width: '100%',
+            height: '60%'
+        })
+
+        var ratio = window.innerHeight / window.innerWidth;
+        if (ratio < 0.5) {
+            $iframe.width(1092 * $iframe.height() / 609);
+        }
+        else {
+            $iframe.height( 609 * $iframe.width() / 1092);
+        }
+
+        console.debug(ratio, 1092 * $iframe.height() / 609);
     }
 
     componentWillUpdate(nextProps, nextState) {
