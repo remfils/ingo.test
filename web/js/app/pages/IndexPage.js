@@ -364,6 +364,17 @@ export default class IndexPage extends React.Component {
         TransitionActions.fromIndexToMovieTranstion(this, {movies: movies});
     }
 
+    playButtonClickLister(event) {
+        event.preventDefault();
+
+        TransitionActions.fromIndexToMovieTranstion(this, {
+            movies: this.content,
+            command: MoviePage.CMD_SHOW_MOVIE
+        });
+
+        return false;
+    }
+
     currentMovieTextClickListener(event) {
         event.preventDefault();
 
@@ -437,10 +448,10 @@ export default class IndexPage extends React.Component {
                         <BracketTextBox text={page_name} />
                         <img src={asset("img/button-arrow-next.png")} class="img-next-arrow" onClick={this.nextArrowButtonClickListener.bind(this)} alt="" />
                     </div>
-                    <AlphaBox onClick={self.currentMovieClickListener.bind(self)}>
+                    <AlphaBox>
                         <span class="movie-title">{large_name} </span>
                         <span class="movie-genre">{small_name}</span>
-                        <img src={asset("img/button-film.png")} class="title-play-button" alt="" />
+                        <img src={asset("img/button-film.png")} class="title-play-button" alt="" onClick={self.playButtonClickLister.bind(self)}/>
                     </AlphaBox>
                 </div>
 

@@ -27,7 +27,7 @@
     src: url(../fonts/pt-zerif/PTZ55F.ttf);
 }
 
-html, body, main {
+html, body, main, #App {
     width: 100%;
     height: 100%;
     color: white;
@@ -37,13 +37,23 @@ html, body, main {
 }
 
 main {
-    position: relative;
+    position: absolute;
 }
 
 a, a:hover, a:focus, a:visited, a:active {
     text-decoration: none;
     color: black;
 }
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0;
+}
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
 
 .container {
     width: 100%;
@@ -55,15 +65,6 @@ a, a:hover, a:focus, a:visited, a:active {
     height: 100%;
     position: absolute;
     z-index: 99;
-}
-
-.animated-content,
-.animated-content > .content{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    position: relative;
 }
 
 .col-30p, .col-70p {
@@ -170,34 +171,12 @@ a, a:hover, a:focus, a:visited, a:active {
     background: black;
 }
 
-.video-container,
-.index-logo-container {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.video-container {
-    background-color: black;
-    opacity: 0;
-}
-
 .index-logo {
     background: url(../img/logo.png);
     display: inline-block;
     width: 876px;
     height: 186px;
     opacity: 0;
-}
-
-.video-container video {
-    height: 100%;
-    margin: 0 auto;
 }
 
 .index-loading-message {
@@ -434,12 +413,6 @@ a.arrow:hover {
     height: 100%;
     background: url(../img/movies/bg-black_white.png);
     background-repeat: repeat-x;
-    background-size: cover;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flex;
-    display: -o-flex;
-    display: flex;
     background-size: 100% 100%;
 }
 
@@ -456,18 +429,12 @@ a.arrow:hover {
 
 .project-demo-video {
     height: 100%;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flex;
-    display: -o-flex;
-    display: flex;
-    -ms-align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    text-align: center;
 }
 
 .project-demo-video iframe {
     width: 100%;
+    margin-top: 15%;
 }
 
 .preview-frame {
@@ -561,16 +528,6 @@ a.arrow:hover {
 .movie-comments tr,
 .movie-comments td {
     padding: 0;
-}
-
-.info-block {
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flex;
-    display: -o-flex;
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 25px;
 }
 
 td.info-text {
@@ -877,16 +834,16 @@ a:active {
 
 .title-header {
     position: absolute;
-    left: 320px;
+    left: 360px;
     bottom: 50%;
     z-index: 10;
-    cursor: pointer;
 }
 
 .title-play-button {
     position: relative;
     bottom: -15px;
     left: 10px;
+    cursor: pointer;
 }
 
 .movie-title,
@@ -925,12 +882,55 @@ a:active {
     position: absolute;
 }
 
+@-webkit-keyframes scroll-message-animation {
+    0%, 100% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(0.8, 0.8);
+    }
+}
+@-moz-keyframes scroll-message-animation {
+    0%, 100% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(0.8, 0.8);
+    }
+}
+@-o-keyframes scroll-message-animation {
+    0%, 100% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(0.8, 0.8);
+    }
+}
+@keyframes scroll-message-animation {
+    0%, 100% {
+        transform: scale(1,1);
+    }
+    50% {
+        transform: scale(0.8, 0.8);
+    }
+}
+
 .scroll-message {
     position: absolute;
     bottom: 25%;
     right: 25%;
     font-size: 18px;
+
+    -webkit-animation: scroll-message-animation 2s infinite;
+    -o-animation: scroll-message-animation 2s infinite;
+    animation: scroll-message-animation 2s infinite;
+
+    -webkit-animation-timing-function: cubic-bezier(.56,.01,.44,.93);
+    -moz-animation-timing-function: cubic-bezier(.56,.01,.44,.93);
+    -o-animation-timing-function: cubic-bezier(.56,.01,.44,.93);
+    animation-timing-function: cubic-bezier(.56,.01,.44,.93);
 }
+
 
 .scroll-message img {
     vertical-align: middle;
@@ -969,15 +969,20 @@ a:active {
 /* CONTACT PAGE */
 
 .contact-title {
-    margin-left: 400px;
+    margin-left: 300px;
 }
 
 .contact-info {
     position: absolute;
-    left: 600px;
+    left: 90%;
     top: 300px;
     width: 100%;
     font-size: 24px;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .title-bg-image {
@@ -995,7 +1000,13 @@ a:active {
 }
 
 .contact-form {
+    margin-bottom: -30px;
     padding-right: 100px;
+}
+
+.contact-form h1 {
+    font-weight: normal;
+    font-family: MyriadPro-BoldCond_1;
 }
 
 .contact-bg-image {

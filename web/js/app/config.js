@@ -4,6 +4,7 @@ var config = {
 };
 
 config.SITE_NAME = "http://localhost:3000/";
+//config.SITE_NAME = "http://192.168.0.100:3000/";
 
 console.log(config.SITE_NAME);
 
