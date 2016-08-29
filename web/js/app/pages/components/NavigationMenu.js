@@ -2,6 +2,7 @@ import React from "react";
 
 import { asset, notReadyYet, createNotReadyYetFunction } from "../../funcitons";
 import * as TransitionActions from "../../actions/TransitionActions";
+import * as ClickActions from "../../actions/ClickActions";
 
 var $ = require('jquery');
 
@@ -61,6 +62,14 @@ export default class NavigationMenu extends React.Component {
         return false;
     }
 
+    menuClickListener(e) {
+        e.preventDefault();
+
+        ClickActions.clickTitleMenu();
+
+        return false;
+    }
+
     render() {
         var page_name = this.state.page_name || this.props.page_name;
 
@@ -71,7 +80,7 @@ export default class NavigationMenu extends React.Component {
                     <li><a href="#" class={page_name === NavigationMenu.PAGE_ABOUT ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_ABOUT)}>about</a></li>
                     <li><a href="#" class={page_name === NavigationMenu.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_CONTACTS)}>contacts</a></li>
                 </ul>
-                <span class='btn-menu' onClick={this.props.menuClickListener}><img src={asset('img/button-menu.png')} alt=""/></span>
+                <span class='btn-menu' onClick={this.menuClickListener}><img src={asset('img/button-menu.png')} alt=""/></span>
             </div>;
     }
 }

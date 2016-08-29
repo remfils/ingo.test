@@ -8,6 +8,7 @@ import * as TransitionActions from '../actions/TransitionActions';
 import { asset, createNotReadyYetFunction, hexToRgba } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import NavigationMenu from "./components/NavigationMenu";
+import SiteMap from "./components/SiteMap";
 import AlphaBox from "./components/AlphaBox";
 import AlphaBoxDangerHtml from "./components/AlphaBoxDangerHtml";
 import BracketTextBox from "./components/BracketTextBox";
@@ -197,6 +198,8 @@ export default class WorksPage extends React.Component {
 
         return (
             <section id='WorksPage' class='title-container works-page'>
+
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} />
 
                 <TitleColoredTable className="title-project-dsc" color="#CCE1EE" direction="">
                     <tr>

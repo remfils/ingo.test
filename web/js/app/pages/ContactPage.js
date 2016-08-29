@@ -8,6 +8,7 @@ import * as TransitionActions from '../actions/TransitionActions';
 import { asset, createNotReadyYetFunction } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import NavigationMenu from "./components/NavigationMenu";
+import SiteMap from "./components/SiteMap";
 import AlphaBox from "./components/AlphaBox";
 import AlphaBoxDangerHtml from "./components/AlphaBoxDangerHtml";
 import BracketTextBox from "./components/BracketTextBox";
@@ -116,6 +117,8 @@ export default class ContactPage extends React.Component {
 
         return (
             <section id='ContactPage' class='title-container'>
+
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} />
 
                 <div className="contact-bg-image"></div>
 
