@@ -6,14 +6,21 @@ class ClickStore extends EventEmmiter {
         super();
 
         this.ACTION_MENU_CLICK = "ACTION_TYPE_MENU_CLICK";
+        this.ACTION_MENU_ITEM_CLICK = "ACTION_TYPE_MENU_ITEM_CLICK";
 
         this.EVENT_CLICK_MENU = "CLICK_MENU";
+        this.EVENT_CLICK_MENU_ITEM = "CLICK_MENU";
     }
 
     handleActions(action) {
+        console.debug("This action is fired:", action);
+
         switch (action.type) {
             case this.ACTION_MENU_CLICK:
                 this.emit(this.EVENT_CLICK_MENU);
+                break;
+            case this.ACTION_MENU_ITEM_CLICK:
+                this.emit(this.EVENT_CLICK_MENU_ITEM, action.data);
                 break;
         }
     }

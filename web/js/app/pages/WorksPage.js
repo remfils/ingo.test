@@ -63,8 +63,8 @@ export default class WorksPage extends React.Component {
                 this.enterFromDifferentTitlePage(tl);
                 break;
             case "MOVIE-WORKS":
-                tr.prev_page.leaveToIndexPage(callback);
-                this.enterFromDifferentTitlePage(callback);
+                tr.prev_page.leaveToIndexPage(tl);
+                this.enterFromDifferentTitlePage(tl);
                 break;
         }
 

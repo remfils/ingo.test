@@ -3,6 +3,7 @@ import React from "react";
 import { asset, notReadyYet, createNotReadyYetFunction } from "../../funcitons";
 import * as TransitionActions from "../../actions/TransitionActions";
 import * as ClickActions from "../../actions/ClickActions";
+import ClickStore from "../../stores/ClickStore";
 
 var $ = require('jquery');
 
@@ -20,6 +21,24 @@ export default class NavigationMenu extends React.Component {
         this.state = {
             page_name: null
         };
+    }
+
+    componentWillMount() {
+        ClickStore.on(ClickStore.EVENT_CLICK_MENU_ITEM, this.clickMenuItemListener.bind(this));
+    }
+
+    componentWillUnmount() {
+        ClickStore.removeListener(ClickStore.EVENT_CLICK_MENU_ITEM, this.clickMenuItemListener);
+    }
+
+
+    clickMenuItemListener(data) {
+        if (!data)
+            return;
+
+        this.setState({
+            page_name: data.to
+        });
     }
 
     newsClickListener(e) {

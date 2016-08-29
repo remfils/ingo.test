@@ -2,6 +2,7 @@ import React from "react";
 
 import { asset, notReadyYet, createNotReadyYetFunction } from "../../funcitons";
 import * as TransitionActions from "../../actions/TransitionActions";
+import * as ClickActions from "../../actions/ClickActions";
 import ClickStore from "../../stores/ClickStore";
 
 var $ = require('jquery');
@@ -75,6 +76,8 @@ export default class SiteMap extends React.Component {
 
             self.hideMenu(()=>{
                 TransitionActions.createTitleTransition(self.props.page_name, page_name, self.props.current_page);
+
+                ClickActions.clickMenuItem(self.props.page_name, page_name);
             });
 
             return false;
