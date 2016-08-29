@@ -8,6 +8,7 @@ import * as TransitionActions from '../actions/TransitionActions';
 import { asset, createNotReadyYetFunction, hexToRgba } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import NavigationMenu from "./components/NavigationMenu";
+import SiteMap from "./components/SiteMap";
 import AlphaBox from "./components/AlphaBox";
 import AlphaBoxDangerHtml from "./components/AlphaBoxDangerHtml";
 import BracketTextBox from "./components/BracketTextBox";
@@ -27,11 +28,11 @@ export default class WorksPage extends React.Component {
     }
 
     componentWillMount() {
-
+        $(window).on('resize', this.updateSizeOfImages.bind(this))
     }
 
     componentWillUnmount() {
-
+        $(window).off('resize');
     }
 
     componentDidMount() {
@@ -57,12 +58,13 @@ export default class WorksPage extends React.Component {
             case "INDEX-WORKS":
             case "CONTACTS-WORKS":
             case "ABOUT-WORKS":
+            case "IMPRESSUM-WORKS":
                 tr.prev_page.leaveToDifferentTitlePage(tl);
                 this.enterFromDifferentTitlePage(tl);
                 break;
             case "MOVIE-WORKS":
-                tr.prev_page.leaveToIndexPage(callback);
-                this.enterFromDifferentTitlePage(callback);
+                tr.prev_page.leaveToIndexPage(tl);
+                this.enterFromDifferentTitlePage(tl);
                 break;
         }
 
@@ -197,6 +199,8 @@ export default class WorksPage extends React.Component {
 
         return (
             <section id='WorksPage' class='title-container works-page'>
+
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_WORKS} />
 
                 <TitleColoredTable className="title-project-dsc" color="#CCE1EE" direction="">
                     <tr>

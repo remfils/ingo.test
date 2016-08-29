@@ -5,6 +5,7 @@ import MoviePage from './pages/MoviePage';
 import ContactPage from './pages/ContactPage';
 import AboutPage from './pages/AboutPage';
 import WorksPage from './pages/WorksPage';
+import ImpressumPage from './pages/ImpressumPage';
 import TransitionStore from './stores/TransitionStore';
 import { asset, createCountdownCallback } from './funcitons';
 import config from './config';
@@ -18,6 +19,7 @@ const URL_MOVIE = "movie/";
 const URL_CONTACTS = "contacts";
 const URL_ABOUT = "about";
 const URL_WORKS = "works";
+const URL_IMPRESSUM = "impressum";
 
 export default class Application extends React.Component {
     constructor() {
@@ -109,6 +111,12 @@ export default class Application extends React.Component {
                 this.props.onAjaxLoaded();
 
             this.pushPage(<WorksPage movies={this.movies} />);
+        }
+        else if (url.indexOf(URL_IMPRESSUM) !== -1) {
+            if (this.props.onAjaxLoaded)
+                this.props.onAjaxLoaded();
+
+            this.pushPage(<ImpressumPage />);
         }
     }
 
@@ -217,18 +225,21 @@ export default class Application extends React.Component {
             case "INDEX-CONTACTS":
             case "ABOUT-CONTACTS":
             case "WORKS-CONTACTS":
+            case "IMPRESSUM-CONTACTS":
                 this.setUrl('/contacts');
                 page = <ContactPage transition={transition} />;
                 break;
             case "CONTACTS-INDEX":
             case "ABOUT-INDEX":
             case "WORKS-INDEX":
+            case "IMPRESSUM-INDEX":
                 this.setUrl('/');
                 page = <IndexPage movies={this.movies} transition={transition} />;
                 break;
             case "INDEX-ABOUT":
             case "CONTACTS-ABOUT":
             case "WORKS-ABOUT":
+            case "IMPRESSUM-ABOUT":
                 this.setUrl('/about');
                 page = <AboutPage transition={transition} />;
                 break;
@@ -236,8 +247,16 @@ export default class Application extends React.Component {
             case "CONTACTS-WORKS":
             case "ABOUT-WORKS":
             case "MOVIE-WORKS":
+            case "IMPRESSUM-WORKS":
                 this.setUrl('/works');
                 page = <WorksPage movies={this.movies} transition={transition} />;
+                break;
+            case "INDEX-IMPRESSUM":
+            case "CONTACTS-IMPRESSUM":
+            case "ABOUT-IMPRESSUM":
+            case "WORKS-IMPRESSUM":
+                this.setUrl('/impressum');
+                page = <ImpressumPage transition={transition} />;
                 break;
         }
 

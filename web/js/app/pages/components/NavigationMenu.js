@@ -2,6 +2,8 @@ import React from "react";
 
 import { asset, notReadyYet, createNotReadyYetFunction } from "../../funcitons";
 import * as TransitionActions from "../../actions/TransitionActions";
+import * as ClickActions from "../../actions/ClickActions";
+import ClickStore from "../../stores/ClickStore";
 
 var $ = require('jquery');
 
@@ -11,6 +13,7 @@ export default class NavigationMenu extends React.Component {
     static PAGE_WORKS = 'WORKS';
     static PAGE_ABOUT = 'ABOUT';
     static PAGE_CONTACTS = 'CONTACTS';
+    static PAGE_IMPRESSUM = 'IMPRESSUM';
 
     constructor () {
         super();
@@ -18,6 +21,24 @@ export default class NavigationMenu extends React.Component {
         this.state = {
             page_name: null
         };
+    }
+
+    componentWillMount() {
+        ClickStore.on(ClickStore.EVENT_CLICK_MENU_ITEM, this.clickMenuItemListener.bind(this));
+    }
+
+    componentWillUnmount() {
+        ClickStore.removeListener(ClickStore.EVENT_CLICK_MENU_ITEM, this.clickMenuItemListener);
+    }
+
+
+    clickMenuItemListener(data) {
+        if (!data)
+            return;
+
+        this.setState({
+            page_name: data.to
+        });
     }
 
     newsClickListener(e) {
@@ -61,6 +82,14 @@ export default class NavigationMenu extends React.Component {
         return false;
     }
 
+    menuClickListener(e) {
+        e.preventDefault();
+
+        ClickActions.clickTitleMenu();
+
+        return false;
+    }
+
     render() {
         var page_name = this.state.page_name || this.props.page_name;
 
@@ -71,7 +100,7 @@ export default class NavigationMenu extends React.Component {
                     <li><a href="#" class={page_name === NavigationMenu.PAGE_ABOUT ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_ABOUT)}>about</a></li>
                     <li><a href="#" class={page_name === NavigationMenu.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_CONTACTS)}>contacts</a></li>
                 </ul>
-                <span class='btn-menu' onClick={this.props.menuClickListener}><img src={asset('img/button-menu.png')} alt=""/></span>
+                <span class='btn-menu' onClick={this.menuClickListener}><img src={asset('img/button-menu.png')} alt=""/></span>
             </div>;
     }
 }

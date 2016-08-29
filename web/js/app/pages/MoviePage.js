@@ -292,7 +292,9 @@ export default class MoviePage extends React.Component {
     projectGalerieButtonClickListener(e) {
         e.preventDefault();
 
-        notReadyYet("ProjectGalerie Click");
+        TweenLite.to('html, body', 0.5, {scrollTop: 0, onComplete: ()=>{
+            TransitionActions.fromMovieToWorks(this);
+        }})
 
         return false;
     }

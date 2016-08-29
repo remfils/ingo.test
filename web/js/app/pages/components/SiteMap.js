@@ -2,6 +2,8 @@ import React from "react";
 
 import { asset, notReadyYet, createNotReadyYetFunction } from "../../funcitons";
 import * as TransitionActions from "../../actions/TransitionActions";
+import * as ClickActions from "../../actions/ClickActions";
+import ClickStore from "../../stores/ClickStore";
 
 var $ = require('jquery');
 
@@ -14,8 +16,8 @@ export default class SiteMap extends React.Component {
 
     static ITEM_COUNTER = 0;
 
-    constructor () {
-        super();
+    constructor (props) {
+        super(props);
 
         SiteMap.ITEM_COUNTER++;
 
@@ -34,20 +36,33 @@ export default class SiteMap extends React.Component {
         this._id = value;
     }
 
+    componentWillMount() {
+        ClickStore.on(ClickStore.EVENT_CLICK_MENU, this.onMenuClickListener.bind(this));
+    }
+
+    componentWillUnmount() {
+        ClickStore.removeListener(ClickStore.EVENT_CLICK_MENU, this.onMenuClickListener);
+    }
+
+    onMenuClickListener(e) {
+        this.showMenu();
+    }
+
     componentDidMount() {
         this.$ = $(this.id).find;
 
         $(this.id).hide();
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        if (this.props.is_displayed === nextProps.is_displayed) {
-            return;
-        }
+    showMenu() {
+        $(this.id).show();
+    }
 
-        if (nextProps.is_displayed) {
-            $(this.id).show();
-        }
+    hideMenu(callback) {
+        $(this.id).hide();
+
+        if (callback)
+            callback();
     }
 
     createClickFunctionForPage(page_name) {
@@ -59,9 +74,11 @@ export default class SiteMap extends React.Component {
             if (page_name == self.props.page_name)
                 return false;
 
-            self.setState({page_name});
+            self.hideMenu(()=>{
+                TransitionActions.createTitleTransition(self.props.page_name, page_name, self.props.current_page);
 
-            TransitionActions.createTitleTransition(self.props.page_name, page_name, self.props.current_page);
+                ClickActions.clickMenuItem(self.props.page_name, page_name);
+            });
 
             return false;
         }
@@ -70,7 +87,7 @@ export default class SiteMap extends React.Component {
     closeButtonClickListener(e) {
         e.preventDefault();
 
-        $(this.id).hide();
+        this.hideMenu();
 
         return false;
     }
@@ -85,9 +102,9 @@ export default class SiteMap extends React.Component {
             </div>
 
             <div class="lang-menu">
-                <span class={lang === 'DE' ? 'active' : ''}><a href="#">DE</a></span>
+                <span class={lang === 'DE' ? 'active' : ''}><a href="/api/change-language/de">DE</a></span>
                 <span> - </span>
-                <span class={lang === 'EN' ? 'active' : ''}><a href="#">EN</a></span>
+                <span class={lang === 'EN' ? 'active' : ''}><a href="/api/change-language/en">EN</a></span>
             </div>
 
             <ul>
@@ -95,7 +112,7 @@ export default class SiteMap extends React.Component {
                 <li><a href="#" class={page_name === SiteMap.PAGE_WORKS ? 'active' : ''} onClick={this.createClickFunctionForPage(SiteMap.PAGE_WORKS)}>WORK</a></li>
                 <li><a href="#" class={page_name === SiteMap.PAGE_ABOUT ? 'active' : ''} onClick={this.createClickFunctionForPage(SiteMap.PAGE_ABOUT)}>ABOUT</a></li>
                 <li><a href="#" class={page_name === SiteMap.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(SiteMap.PAGE_CONTACTS)}>CONTACT</a></li>
-                <li><a href="#" class={'small ' + (page_name === SiteMap.PAGE_CONTACTS ? 'active' : '')} onClick={this.createClickFunctionForPage(SiteMap.PAGE_CONTACTS)}>IMPRESSUM</a></li>
+                <li><a href="#" class={'small ' + (page_name === SiteMap.PAGE_CONTACTS ? 'active' : '')} onClick={this.createClickFunctionForPage(SiteMap.PAGE_IMPRESSUM)}>IMPRESSUM</a></li>
             </ul>
 
             <div class='description'>

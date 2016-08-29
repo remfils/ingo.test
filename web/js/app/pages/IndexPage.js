@@ -148,6 +148,7 @@ export default class IndexPage extends React.Component {
             case "CONTACTS-INDEX":
             case "ABOUT-INDEX":
             case "WORKS-INDEX":
+            case "IMPRESSUM-INDEX":
                 prev_page.leaveToDifferentTitlePage(tl);
                 this.enterFromDifferentTitlePage(tl);
                 break;
@@ -431,7 +432,7 @@ export default class IndexPage extends React.Component {
 
         return (
             <section id='IndexPage' class='title-container'>
-                <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} is_displayed={this.state.isMenuDisplayed}/>
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} />
 
                 <ImageRotator class="index-page-image-rotator" movie_id={content.id} img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 
