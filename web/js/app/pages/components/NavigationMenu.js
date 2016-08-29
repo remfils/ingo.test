@@ -12,6 +12,7 @@ export default class NavigationMenu extends React.Component {
     static PAGE_WORKS = 'WORKS';
     static PAGE_ABOUT = 'ABOUT';
     static PAGE_CONTACTS = 'CONTACTS';
+    static PAGE_IMPRESSUM = 'IMPRESSUM';
 
     constructor () {
         super();

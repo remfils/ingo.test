@@ -1036,7 +1036,8 @@ a:active {
     margin-bottom: 40px;
 }
 
-.about-page p {
+.about-page p,
+.impressum-page p {
     color: #3C3C3B;
     font-family: MyriadPro-Cond_3;
     font-size: 24px;
@@ -1205,4 +1206,15 @@ a:active {
     text-align: center;
     padding: 0;
     margin: 0;
+}
+
+/* IMPRESSUM */
+
+.impressum-page .ingo-info {
+    line-height: 2em;
+}
+
+.impressum-page p strong {
+    font-family: MyriadPro-BoldCond_1;
+    font-weight: 100;
 }

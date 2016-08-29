@@ -28,11 +28,11 @@ export default class WorksPage extends React.Component {
     }
 
     componentWillMount() {
-
+        $(window).on('resize', this.updateSizeOfImages.bind(this))
     }
 
     componentWillUnmount() {
-
+        $(window).off('resize');
     }
 
     componentDidMount() {
@@ -58,6 +58,7 @@ export default class WorksPage extends React.Component {
             case "INDEX-WORKS":
             case "CONTACTS-WORKS":
             case "ABOUT-WORKS":
+            case "IMPRESSUM-WORKS":
                 tr.prev_page.leaveToDifferentTitlePage(tl);
                 this.enterFromDifferentTitlePage(tl);
                 break;
@@ -199,7 +200,7 @@ export default class WorksPage extends React.Component {
         return (
             <section id='WorksPage' class='title-container works-page'>
 
-                <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} />
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_WORKS} />
 
                 <TitleColoredTable className="title-project-dsc" color="#CCE1EE" direction="">
                     <tr>

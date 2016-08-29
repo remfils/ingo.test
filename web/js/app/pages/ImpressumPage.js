@@ -18,7 +18,7 @@ import ShortProjectModel from "../models/ShortProjectModel";
 import MoviePage from './MoviePage';
 import EmailForm from './MoviePage/EmailForm';
 
-export default class AboutPage extends React.Component {
+export default class ImpressumPage extends React.Component {
     constructor() {
         super();
     }
@@ -49,10 +49,9 @@ export default class AboutPage extends React.Component {
             .add('enter-stage', 1.5);
 
         switch ( tr.type ) {
-            case "INDEX-ABOUT":
-            case "CONTACTS-ABOUT":
-            case "WORKS-ABOUT":
-            case "IMPRESSUM-ABOUT":
+            case "INDEX-IMPRESSUM":
+            case "CONTACTS-IMPRESSUM":
+            case "WORKS-IMPRESSUM":
                 tr.prev_page.leaveToDifferentTitlePage(tl);
                 this.enterFromDifferentTitlePage(tl);
                 break;
@@ -65,20 +64,20 @@ export default class AboutPage extends React.Component {
     }
 
     introAnimation(callback) {
-        TweenLite.from($("#AboutPage"), 1, {opacity: 0, delay: 2, onComplete:()=>{
+        TweenLite.from($("#ImpressumPage"), 1, {opacity: 0, delay: 2, onComplete:()=>{
             if (callback)
                 callback();
         }});
     }
 
     enterFromDifferentTitlePage(tl) {
-        var $this = $('#AboutPage');
+        var $this = $('#ImpressumPage');
 
-        var $img = $('#AboutPage .contact-bg-image');
-        var $title = $('#AboutPage .title-header');
-        var $dsc = $('#AboutPage .title-content');
-        var $img = $('#AboutPage .contact-bg-image');
-        var $nav = $('#AboutPage .title-navigation');
+        var $img = $('#ImpressumPage .contact-bg-image');
+        var $title = $('#ImpressumPage .title-header');
+        var $dsc = $('#ImpressumPage .title-content');
+        var $img = $('#ImpressumPage .contact-bg-image');
+        var $nav = $('#ImpressumPage .title-navigation');
 
         tl.from($img, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage');
 
@@ -90,15 +89,15 @@ export default class AboutPage extends React.Component {
     }
 
     leaveToDifferentTitlePage(tl) {
-        var $this = $('#AboutPage');
+        var $this = $('#ImpressumPage');
 
         $this.css('z-index', 9999);
 
-        var $title = $('#AboutPage .title-header');
-        var $dsc = $('#AboutPage .title-content');
-        var $img = $('#AboutPage .contact-bg-image');
-        var $color = $('#AboutPage .table-bg-color');
-        var $nav = $('#AboutPage .title-navigation');
+        var $title = $('#ImpressumPage .title-header');
+        var $dsc = $('#ImpressumPage .title-content');
+        var $img = $('#ImpressumPage .contact-bg-image');
+        var $color = $('#ImpressumPage .table-bg-color');
+        var $nav = $('#ImpressumPage .title-navigation');
 
         tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
             .to($dsc, 0.5, {opacity: 0}, 'clear-stage');
@@ -112,24 +111,33 @@ export default class AboutPage extends React.Component {
     render() {
 
         return (
-            <section id='AboutPage' class='title-container about-page'>
+            <section id='ImpressumPage' class='title-container impressum-page'>
 
-                <SiteMap current_page={this} page_name={SiteMap.PAGE_ABOUT} />
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_IMPRESSUM} />
 
                 <div className="contact-bg-image"></div>
 
-                <TitleColoredTable className="title-project-dsc" color="#D7D4BE" direction="">
+                <TitleColoredTable className="title-project-dsc" color="#C7D8D2" direction="">
                     <tr>
                         <td class="title-navigation">
-                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_ABOUT}/>
+                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_IMPRESSUM} />
                         </td>
                     </tr>
                     <tr>
                         <td class="title-content">
-                            <h2>Ingo Scheel - Dipl. Designer Kamera (FH)</h2>
+                            <p><strong>Verantwortlich für den Inhalt dieser Seite:</strong></p>
+
+                            <p class="ingo-info">
+                                <strong>Ingo Scheel</strong> <br/>
+
+                                Thielenstraße 13  I  50825 Köln <br/>
+
+                                Tel: 0163 8765 082  I  E-Mail: ingo.scheel@yahoo.de
+                            </p>
+
                             <p>
-                                Geboren 1975 in Geldern, beschäftigte ich mich schon im Alter von 14 Jahren mit der Fotografie. Jahre später, nach mehr- jähriger Tätigkeit als Beleuchter bei Filmproduktionen absolvierte ich den Kamerastudiengang an der Fachhochschule Dortmund mit dem
-                                Abschluss als Diplomdesigner im Jahr 2008. Anschließend konnte ich zahlreiche Projekte als Lichtsetzender Kameramann für Filmproduktionen, Unternehmen und Freie Künstler umsetzen und freue mich auf neue Projekte.
+                                Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.
+                                Als Diensteanbieter sind wir gemäß § 6 Abs.1 MDStV und § 8 Abs.1 TDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
                             </p>
                         </td>
                     </tr>
@@ -143,7 +151,7 @@ export default class AboutPage extends React.Component {
 
                 <div class="title-header">
                     <AlphaBox>
-                        <span class="movie-title contact-title">About</span>
+                        <span class="movie-title contact-title">Impressum</span>
                     </AlphaBox>
                 </div>
 
