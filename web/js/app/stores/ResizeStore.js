@@ -9,9 +9,14 @@ class ResizeStore extends EventEmmiter {
     }
 
     handleActions(action) {
-        this.current_action = action;
-        this.data = action.params;
-        this.emit("RESIZE_TABLE_HEADER");
+
+        switch (action.type) {
+            case "RESIZE_TABLE_HEADER":
+                this.current_action = action;
+                this.data = action.params;
+                this.emit("RESIZE_TABLE_HEADER");
+                break;
+        }
     }
 }
 

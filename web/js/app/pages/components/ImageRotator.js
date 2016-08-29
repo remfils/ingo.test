@@ -65,6 +65,8 @@ export default class ImageRotator extends React.Component {
 
     componentWillUnmount() {
         ResizeStore.removeListener("RESIZE_TABLE_HEADER", this.resizeStoreListener);
+
+        console.debug("ResizeStore.listenerCount(RESIZE_TABLE_HEADER)", ResizeStore.listenerCount("RESIZE_TABLE_HEADER"));
     }
 
     resizeStoreListener() {

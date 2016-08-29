@@ -37,32 +37,46 @@ export default class SiteMap extends React.Component {
     }
 
     componentWillMount() {
-        ClickStore.on(ClickStore.EVENT_CLICK_MENU, this.onMenuClickListener.bind(this));
+        console.debug("ClickStore.EVENT_CLICK_MENU before", ClickStore.listenerCount(ClickStore.EVENT_CLICK_MENU));
+        ClickStore.addListener(ClickStore.EVENT_CLICK_MENU, this.onMenuClickListener.bind(this));
+        console.debug("ClickStore.EVENT_CLICK_MENU after", ClickStore.listenerCount(ClickStore.EVENT_CLICK_MENU));
     }
 
     componentWillUnmount() {
         ClickStore.removeListener(ClickStore.EVENT_CLICK_MENU, this.onMenuClickListener);
+
+        console.debug("ClickStore.EVENT_CLICK_MENU after", ClickStore.listenerCount(ClickStore.EVENT_CLICK_MENU));
     }
 
-    onMenuClickListener(e) {
+    onMenuClickListener() {
         this.showMenu();
     }
 
     componentDidMount() {
         this.$ = $(this.id).find;
-
         $(this.id).hide();
     }
 
     showMenu() {
         $(this.id).show();
+
+        console.debug("showMenu started!");
+
+        TweenLite.from($(this.id), 1, {opacity: 0, onComplete: ()=>{
+            console.debug("showMenu finished!");
+        }});
     }
 
     hideMenu(callback) {
-        $(this.id).hide();
+        console.debug("hideMenu started!");
 
-        if (callback)
-            callback();
+        TweenLite.to($(this.id), 1, {opacity: 0, onComplete: ()=>{
+            console.debug("hideMenu ended!");
+            $(this.id).hide();
+
+            if (callback)
+                callback();
+        }});
     }
 
     createClickFunctionForPage(page_name) {
