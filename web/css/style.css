@@ -840,10 +840,11 @@ a:active {
 }
 
 .title-play-button {
-    position: relative;
     bottom: -15px;
-    left: 10px;
     cursor: pointer;
+    margin-left: 20px;
+    position: relative;
+    left: 10px;
 }
 
 .movie-title,
@@ -918,8 +919,9 @@ a:active {
 .scroll-message {
     position: absolute;
     bottom: 25%;
-    right: 25%;
+    right: 250px;
     font-size: 18px;
+    letter-spacing: 2px;
 
     -webkit-animation: scroll-message-animation 2s infinite;
     -o-animation: scroll-message-animation 2s infinite;
@@ -1057,6 +1059,7 @@ a:active {
 .movie_cell {
     position: relative;
     border: 12px solid rgba(0,0,0,0);
+    cursor: pointer;
 }
 
 .movie_image {
@@ -1095,11 +1098,12 @@ a:active {
 }
 
 .movie_cell h2 {
-    font-size: 36px;
+    font-size: 22px;
 }
 
 .movie_cell h3 {
     font-size: 18px;
+    letter-spacing: 3px;
 }
 /*
 
