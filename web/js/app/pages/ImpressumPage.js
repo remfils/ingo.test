@@ -135,8 +135,8 @@ export default class ImpressumPage extends React.Component {
                                 Tel: 0163 8765 082  I  E-Mail: ingo.scheel@yahoo.de
                             </p>
 
-                            <p>
-                                Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.
+                            <p class="ingo-description">
+                                Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.<br/>
                                 Als Diensteanbieter sind wir gemäß § 6 Abs.1 MDStV und § 8 Abs.1 TDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
                             </p>
                         </td>
