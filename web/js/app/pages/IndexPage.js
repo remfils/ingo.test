@@ -5,7 +5,7 @@ var $ = require('jquery');
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
-import { asset, createNotReadyYetFunction, notReadyYet } from "../funcitons";
+import { asset, createNotReadyYetFunction, notReadyYet, lockScroll, unlockScroll } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import SiteMap from "./components/SiteMap";
 import NavigationMenu from "./components/NavigationMenu";
@@ -71,6 +71,8 @@ export default class IndexPage extends React.Component {
     }
 
     componentWillMount() {
+        lockScroll();
+
         if ( this.props.movies ) {
             this.content = this.props.movies;
 
@@ -117,6 +119,7 @@ export default class IndexPage extends React.Component {
     }
 
     componentWillUnmount() {
+        unlockScroll();
         console.debug('DEBUG(IndexPage.componentWillUnmount)');
         $(window).off('mousewheel DOMMouseScroll');
     }

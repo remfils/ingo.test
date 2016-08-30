@@ -42,3 +42,13 @@ export function hexToRgba(hex, alpha) {
 
     return 'rgba(' + [r,g,b,alpha].join(',') + ')';
 }
+
+export function lockScroll() {
+    $(document).bind('scroll',function () {
+        window.scrollTo(0,0);
+    });
+}
+
+export function unlockScroll() {
+    $(document).unbind('scroll');
+}
