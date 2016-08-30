@@ -45,10 +45,23 @@ export default class PreviewFrame extends React.Component {
 
         var ratio = window.innerHeight / window.innerWidth;
         if (ratio < 0.5) {
-            $iframe.width(1092 * $iframe.height() / 609);
+            var w = 1092 * $iframe.height() / 609;
+            $iframe.width(w);
+
+            var p = ($('.btn-mehr-container').width() - w) / 2;
+
+            $('.btn-mehr-container').css({
+                'padding-left': p,
+                'padding-right': p
+            });
         }
         else {
             $iframe.height( 609 * $iframe.width() / 1092);
+
+            $('.btn-mehr-container').css({
+                'padding-left': 0,
+                'padding-right': 0
+            });
         }
 
         console.debug(ratio, 1092 * $iframe.height() / 609);

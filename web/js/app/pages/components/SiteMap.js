@@ -60,21 +60,36 @@ export default class SiteMap extends React.Component {
 
         console.debug(this.id, " showMenu started!");
 
-        TweenLite.from($(this.id), 1, {opacity: 0, onComplete: ()=>{
-            console.debug("showMenu finished!");
-        }});
+        this.updateCrossPosition();
+
+        var tl = new TimelineLite();
+
+        tl.to('.btn-menu', 0.4, {opacity: 0});
+
+        tl.from($(this.id), 1, {opacity: 0, delay: -0.2})
+            .from('.close-btn', 0.4, {opacity: 0, delay: -0.5});
+    }
+
+    updateCrossPosition() {
+        var offset = $('.btn-menu').offset().left - $('.title-menu li').offset().left;
+        $('.close-btn').css('margin-left', offset);
     }
 
     hideMenu(callback) {
         console.debug("hideMenu started!");
 
-        TweenLite.to($(this.id), 1, {opacity: 0, onComplete: ()=>{
-            console.debug("hideMenu ended!");
+        var tl = new TimelineLite();
+
+        tl.to('.close-btn', 0.4, {opacity: 0})
+            .to($(this.id), 1, {opacity: 0, delay: -0.2})
+            .to('.btn-menu', 0.4, {opacity: 1, delay: -0.5});
+
+        tl.to(window, 0, {onComplete: () => {
             $(this.id).hide();
 
             if (callback)
                 callback();
-        }});
+        }})
     }
 
     createClickFunctionForPage(page_name) {
@@ -124,11 +139,11 @@ export default class SiteMap extends React.Component {
                 <li><a href="#" class={page_name === SiteMap.PAGE_WORKS ? 'active' : ''} onClick={this.createClickFunctionForPage(SiteMap.PAGE_WORKS)}>WORK</a></li>
                 <li><a href="#" class={page_name === SiteMap.PAGE_ABOUT ? 'active' : ''} onClick={this.createClickFunctionForPage(SiteMap.PAGE_ABOUT)}>ABOUT</a></li>
                 <li><a href="#" class={page_name === SiteMap.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(SiteMap.PAGE_CONTACTS)}>CONTACT</a></li>
-                <li><a href="#" class={'small ' + (page_name === SiteMap.PAGE_CONTACTS ? 'active' : '')} onClick={this.createClickFunctionForPage(SiteMap.PAGE_IMPRESSUM)}>IMPRESSUM</a></li>
+                <li><a href="#" class={page_name === SiteMap.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(SiteMap.PAGE_IMPRESSUM)}>IMPRESSUM</a></li>
             </ul>
 
             <div class='description'>
-                <p>Ingo Scheel   Kameramann I DOP</p>
+                <p><strong>Ingo Scheel</strong>   Kameramann I DOP</p>
                 <p>visual concepts</p>
             </div>
         </div>;

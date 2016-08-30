@@ -41,7 +41,7 @@ export default class FooterInfoBlock extends React.Component {
 
             <h4>Netzwerk:</h4>
 
-            <p>in</p>
+            <p><a href="https://www.linkedin.com/">in</a></p>
 
             <span>© 2016, Ingo Scheel</span>
         </div>;

@@ -530,6 +530,10 @@ a.arrow:hover {
     padding: 0;
 }
 
+.info-block {
+    border-bottom: white 25px solid;
+}
+
 td.info-text {
     font-size: 1.5em;
     padding-right: 160px;
@@ -616,6 +620,7 @@ td.info-text {
     padding: 20px 30px;
     position: relative;
     top: -50px;
+    width: 280px;
 }
 
 .footer-info h4 {
@@ -625,7 +630,11 @@ td.info-text {
     margin-bottom: 5px;
 }
 
-.footer-info p {
+.footer-info p,
+.footer-info p a
+.footer-info p a:active,
+.footer-info p a:visited,
+.footer-info p a:hover {
     color: #929291;
     font-size: 24px;
     margin: 0;
@@ -654,6 +663,10 @@ td.info-text {
     color: #3C3B3A;
     display: block;
     font-size: 24px;
+}
+
+.email-form.footer-form p {
+    margin-top: 80px;
 }
 
 .email-form input[type="text"],
@@ -840,10 +853,11 @@ a:active {
 }
 
 .title-play-button {
-    position: relative;
     bottom: -15px;
-    left: 10px;
     cursor: pointer;
+    margin-left: 20px;
+    position: relative;
+    left: 10px;
 }
 
 .movie-title,
@@ -918,8 +932,11 @@ a:active {
 .scroll-message {
     position: absolute;
     bottom: 25%;
-    right: 25%;
+    right: 250px;
     font-size: 18px;
+    letter-spacing: 2px;
+
+    z-index: 100;
 
     -webkit-animation: scroll-message-animation 2s infinite;
     -o-animation: scroll-message-animation 2s infinite;
@@ -1057,6 +1074,7 @@ a:active {
 .movie_cell {
     position: relative;
     border: 12px solid rgba(0,0,0,0);
+    cursor: pointer;
 }
 
 .movie_image {
@@ -1095,11 +1113,12 @@ a:active {
 }
 
 .movie_cell h2 {
-    font-size: 36px;
+    font-size: 22px;
 }
 
 .movie_cell h3 {
     font-size: 18px;
+    letter-spacing: 3px;
 }
 /*
 
@@ -1193,6 +1212,10 @@ a:active {
     top: 38px;
 }
 
+.close-btn {
+    cursor: pointer;
+}
+
 
 .site-map .description {
     position: absolute;
@@ -1211,10 +1234,14 @@ a:active {
 /* IMPRESSUM */
 
 .impressum-page .ingo-info {
-    line-height: 2em;
+    line-height: 150%;
 }
 
-.impressum-page p strong {
+.impressum-page .ingo-description {
+    font-size: 18px;
+}
+
+strong {
     font-family: MyriadPro-BoldCond_1;
     font-weight: 100;
 }

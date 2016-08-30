@@ -315,6 +315,8 @@ export default class IndexPage extends React.Component {
 
         this.current_content_index++;
 
+        this.toggleArrowIfNessecery();
+
         this.setState({
             current_content: this.content[this.current_content_index],
             movement_direction: "right"
@@ -325,10 +327,30 @@ export default class IndexPage extends React.Component {
         }, 1000);
     }
 
+    toggleArrowIfNessecery() {
+        var $arrow = $('.img-next-arrow');
+
+        if (this.current_content_index === this.content.length - 1) {
+            if ($arrow.is(":visible")) {
+                TweenLite.fromTo($arrow, 0.3, {opacity: 1}, {opacity: 0, onComplete: ()=>{
+                    $arrow.hide();
+                }})
+            }
+        }
+        else {
+            if (!$arrow.is(":visible")) {
+                $arrow.show();
+                TweenLite.fromTo($arrow, 0.3, {opacity: 0}, {opacity: 1})
+            }
+        }
+    }
+
     prevMovie() {
         this.is_transition = true;
 
         this.current_content_index--;
+
+        this.toggleArrowIfNessecery();
 
         this.setState({
             current_content: this.content[this.current_content_index],
