@@ -932,6 +932,8 @@ a:active {
     font-size: 18px;
     letter-spacing: 2px;
 
+    z-index: 100;
+
     -webkit-animation: scroll-message-animation 2s infinite;
     -o-animation: scroll-message-animation 2s infinite;
     animation: scroll-message-animation 2s infinite;

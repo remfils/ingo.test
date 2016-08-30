@@ -21,6 +21,8 @@ export default class TitleColoredTable extends React.Component {
 
         this.id = "TitleColoredTable" + TitleColoredTable.box_counter;
 
+        this.resizeListener = this.resizeListener.bind(this);
+
         this.state = {
             is_transition: false,
             current_color: ""
@@ -39,7 +41,7 @@ export default class TitleColoredTable extends React.Component {
     }
 
     componentWillMount() {
-        $(window).on('resize', this.resizeListener.bind(this));
+        $(window).on('resize', this.resizeListener);
 
         this.setState({color: this.props.color});
     }
@@ -52,21 +54,25 @@ export default class TitleColoredTable extends React.Component {
         $(window).off('resize', this.resizeListener);
     }
 
+    componentDidMount() {
+        this.updateTableWidth();
+    }
+
     updateTableWidth() {
         var image_width = window.innerHeight * BG_IMAGE_WIDTH / BG_IMAGE_HEIGHT;
 
-        console.log("updateTableWidth: happened! ", image_width, window.innerWidth - HEADER_MIN_WIDTH - HEADER_LEFT_MARGIN);
+        console.debug("updateTableWidth: happened! ", image_width, window.innerWidth - HEADER_MIN_WIDTH - HEADER_LEFT_MARGIN);
 
         if ( image_width < window.innerWidth - HEADER_MIN_WIDTH - HEADER_LEFT_MARGIN) {
             var delta = window.innerWidth - HEADER_MIN_WIDTH - HEADER_LEFT_MARGIN - image_width;
 
-            $("#TableHeader").width(HEADER_MIN_WIDTH + delta);
+            $(".colored-table-header").width(HEADER_MIN_WIDTH + delta);
 
             ResizeActions.resizeTableHeaderAction(HEADER_MIN_WIDTH + delta);
         }
         else {
-            if ( $("#TableHeader").width() > HEADER_MIN_WIDTH ) {
-                $("#TableHeader").width(HEADER_MIN_WIDTH);
+            if ( $(".colored-table-header").width() > HEADER_MIN_WIDTH ) {
+                $(".colored-table-header").width(HEADER_MIN_WIDTH);
 
                 ResizeActions.resizeTableHeaderAction(HEADER_MIN_WIDTH);
             }
@@ -86,7 +92,7 @@ export default class TitleColoredTable extends React.Component {
 
         $("#TableBackgroundColor").css('background-color', next_color);
 
-        var $curtain = $("#TableHeader .color-table-fg");
+        var $curtain = $(".colored-table-header .color-table-fg");
         $curtain.css({
             backgroundColor: this.props.color,
             width: "100%"
@@ -107,7 +113,7 @@ export default class TitleColoredTable extends React.Component {
     render() {
         var table_style = { backgroundColor: this.props.color };
 
-        return <div id="TableHeader" className={this.props.className}>
+        return <div id="TableHeader" className={"colored-table-header " + this.props.className}>
             <div class='color-table-fg'></div>
             <div style={table_style} class="table-bg-color"></div>
             <table id={this._id} >
