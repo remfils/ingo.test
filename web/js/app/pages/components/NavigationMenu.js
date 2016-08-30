@@ -15,8 +15,10 @@ export default class NavigationMenu extends React.Component {
     static PAGE_CONTACTS = 'CONTACTS';
     static PAGE_IMPRESSUM = 'IMPRESSUM';
 
-    constructor () {
-        super();
+    constructor (props) {
+        super(props);
+
+        this.clickMenuItemListener = this.clickMenuItemListener.bind(this);
 
         this.state = {
             page_name: null
@@ -24,7 +26,7 @@ export default class NavigationMenu extends React.Component {
     }
 
     componentWillMount() {
-        ClickStore.on(ClickStore.EVENT_CLICK_MENU_ITEM, this.clickMenuItemListener.bind(this));
+        ClickStore.on(ClickStore.EVENT_CLICK_MENU_ITEM, this.clickMenuItemListener);
     }
 
     componentWillUnmount() {

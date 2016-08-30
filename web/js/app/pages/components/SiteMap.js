@@ -23,6 +23,8 @@ export default class SiteMap extends React.Component {
 
         this.id = "SiteMap" + SiteMap.ITEM_COUNTER;
 
+        this.onMenuClickListener = this.onMenuClickListener.bind(this);
+
         this.state = {
             page_name: null
         };
@@ -37,15 +39,11 @@ export default class SiteMap extends React.Component {
     }
 
     componentWillMount() {
-        console.debug("ClickStore.EVENT_CLICK_MENU before", ClickStore.listenerCount(ClickStore.EVENT_CLICK_MENU));
-        ClickStore.addListener(ClickStore.EVENT_CLICK_MENU, this.onMenuClickListener.bind(this));
-        console.debug("ClickStore.EVENT_CLICK_MENU after", ClickStore.listenerCount(ClickStore.EVENT_CLICK_MENU));
+        ClickStore.addListener(ClickStore.EVENT_CLICK_MENU, this.onMenuClickListener);
     }
 
     componentWillUnmount() {
         ClickStore.removeListener(ClickStore.EVENT_CLICK_MENU, this.onMenuClickListener);
-
-        console.debug("ClickStore.EVENT_CLICK_MENU after", ClickStore.listenerCount(ClickStore.EVENT_CLICK_MENU));
     }
 
     onMenuClickListener() {
@@ -60,7 +58,7 @@ export default class SiteMap extends React.Component {
     showMenu() {
         $(this.id).show();
 
-        console.debug("showMenu started!");
+        console.debug(this.id, " showMenu started!");
 
         TweenLite.from($(this.id), 1, {opacity: 0, onComplete: ()=>{
             console.debug("showMenu finished!");
@@ -89,9 +87,9 @@ export default class SiteMap extends React.Component {
                 return false;
 
             self.hideMenu(()=>{
-                TransitionActions.createTitleTransition(self.props.page_name, page_name, self.props.current_page);
-
                 ClickActions.clickMenuItem(self.props.page_name, page_name);
+
+                TransitionActions.createTitleTransition(self.props.page_name, page_name, self.props.current_page);
             });
 
             return false;

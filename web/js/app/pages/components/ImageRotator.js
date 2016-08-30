@@ -20,6 +20,8 @@ export default class ImageRotator extends React.Component {
         ImageRotator.box_counter ++;
         this.id = "ImageRotator" + ImageRotator.box_counter;
 
+        this.resizeStoreListener = this.resizeStoreListener.bind(this);
+
         this.state = {
             movie_id: props.movie_id,
             image_front: props.img_front,
@@ -46,7 +48,7 @@ export default class ImageRotator extends React.Component {
     }
 
     componentWillMount() {
-        ResizeStore.on("RESIZE_TABLE_HEADER", this.resizeStoreListener.bind(this));
+        ResizeStore.on("RESIZE_TABLE_HEADER", this.resizeStoreListener);
 
         /*this.image_front = this.props.img_front;
         this.image_back = this.props.img_back;
