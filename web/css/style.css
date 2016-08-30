@@ -530,6 +530,10 @@ a.arrow:hover {
     padding: 0;
 }
 
+.info-block {
+    border-bottom: white 25px solid;
+}
+
 td.info-text {
     font-size: 1.5em;
     padding-right: 160px;
