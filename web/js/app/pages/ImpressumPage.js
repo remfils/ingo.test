@@ -51,6 +51,7 @@ export default class ImpressumPage extends React.Component {
         switch ( tr.type ) {
             case "INDEX-IMPRESSUM":
             case "CONTACTS-IMPRESSUM":
+            case "ABOUT-IMPRESSUM":
             case "WORKS-IMPRESSUM":
                 tr.prev_page.leaveToDifferentTitlePage(tl);
                 this.enterFromDifferentTitlePage(tl);
