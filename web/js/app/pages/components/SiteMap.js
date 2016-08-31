@@ -64,10 +64,10 @@ export default class SiteMap extends React.Component {
 
         var tl = new TimelineLite();
 
-        tl.to('.btn-menu', 0.4, {opacity: 0});
+        tl.fromTo('.btn-menu', 0.4, {opacity: 1}, {opacity: 0});
 
-        tl.from($(this.id), 1, {opacity: 0, delay: -0.2})
-            .from('.close-btn', 0.4, {opacity: 0, delay: -0.5});
+        tl.fromTo($(this.id), 1, {opacity: 0}, {opacity: 1, delay: -0.2})
+            .fromTo('.close-btn', 0.4, {opacity: 0}, {opacity: 1, delay: -0.5});
     }
 
     updateCrossPosition() {
@@ -86,6 +86,8 @@ export default class SiteMap extends React.Component {
 
         tl.to(window, 0, {onComplete: () => {
             $(this.id).hide();
+
+            $('.btn-menu').css('opacity', 1);
 
             if (callback)
                 callback();
