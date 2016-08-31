@@ -29,6 +29,8 @@ export default class Application extends React.Component {
 
         this.movies = [];
 
+        this.is_transition = false;
+
         this.state = {
             pages: []
         };
@@ -122,7 +124,8 @@ export default class Application extends React.Component {
     }
 
     setUrl(url) {
-        window.history.pushState({}, '', url);
+        url = url.substr(1);
+        window.history.pushState({}, '', config.SITE_NAME + url);
     }
 
     pushPage(page) {
@@ -171,13 +174,21 @@ export default class Application extends React.Component {
     }
 
     leavePageListener() {
+        if (this.is_transition)
+            return;
+
+        this.is_transition = true;
+
         var transition = TransitionStore.current_transition;
 
         console.log(transition);
 
         var page = <div></div>;
 
-        transition.callback = this.shiftPage.bind(this);
+        transition.callback = () => {
+            this.is_transition = false;
+            this.shiftPage();
+        }
 
         switch ( transition.type ) {
             case "INDEX-MOVIE":

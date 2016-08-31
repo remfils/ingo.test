@@ -3,6 +3,7 @@
 $app['debug'] = true;
 
 /* assets */
+$app['sub_domain'] = '';
 $app['asset_path'] = 'http://'. $_SERVER['SERVER_NAME'] .'/web/';
 
 /*$db_name = "ingo";

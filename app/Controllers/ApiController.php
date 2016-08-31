@@ -17,20 +17,18 @@ class ApiController
     public function changeLanguage(Request $req, Application $app)
     {
         $lang = $req->attributes->get('language');
-        //$lang = 'de';
-        //$app['session']->set('lang', $lang);
-        //$app['translator']->setLocale($lang);
 
         $app['session']->set('current_language', $lang);
 
         $referer = $req->headers->get('referer');
-        return $app->redirect("/");
-
+        return $app->redirect($referer);
     }
 
     public function allMoviesAction( Request $req, Application $app ) {
         $db = new ProjectRepository($app);
         $model = $db->getAllProjects();
+
+        $model = self::array_utf8_encode($model);
 
         $result = $app->json($model);
 
@@ -54,7 +52,7 @@ class ApiController
 
         $project_id = $req->attributes->get('id');
 
-        $result = $app['idiorm.db']
+        $result = self::array_utf8_encode($app['idiorm.db']
             ->for_table('projects')
             ->table_alias('p')
             ->select_many(
@@ -72,7 +70,7 @@ class ApiController
             ->where('p.id', $project_id)
             ->where('p.active', true)
             ->where('pl.lang_id', $lang_id)
-            ->find_one();
+            ->find_one());
 
         if ($result) {
             $model = $result->as_array();
@@ -97,6 +95,20 @@ class ApiController
 
         $model['comments'] = $result;
 
+        $model = self::array_utf8_encode($model);
+
         return json_encode($model);
+    }
+
+    public static function array_utf8_encode($dat)
+    {
+        if (is_string($dat))
+            return utf8_encode($dat);
+        if (!is_array($dat))
+            return $dat;
+        $ret = array();
+        foreach ($dat as $i => $d)
+            $ret[$i] = self::array_utf8_encode($d);
+        return $ret;
     }
 }

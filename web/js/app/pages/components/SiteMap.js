@@ -1,5 +1,6 @@
 import React from "react";
 
+import config from "../../config";
 import { asset, notReadyYet, createNotReadyYetFunction } from "../../funcitons";
 import * as TransitionActions from "../../actions/TransitionActions";
 import * as ClickActions from "../../actions/ClickActions";
@@ -133,9 +134,9 @@ export default class SiteMap extends React.Component {
             </div>
 
             <div class="lang-menu">
-                <span class={lang === 'de' ? 'active' : ''}><a href="/api/change-language/de">DE</a></span>
+                <span class={lang === 'de' ? 'active' : ''}><a href={config.SITE_NAME + "api/change-language/de"}>DE</a></span>
                 <span> - </span>
-                <span class={lang === 'en' ? 'active' : ''}><a href="/api/change-language/en">EN</a></span>
+                <span class={lang === 'en' ? 'active' : ''}><a href={config.SITE_NAME + "api/change-language/en"}>EN</a></span>
             </div>
 
             <ul>
