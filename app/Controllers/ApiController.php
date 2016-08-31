@@ -18,7 +18,11 @@ class ApiController
     {
         $lang = $req->attributes->get('language');
         //$lang = 'de';
-        $app['session']->set('lang', $lang);
+        //$app['session']->set('lang', $lang);
+        //$app['translator']->setLocale($lang);
+
+        $app['session']->set('current_language', $lang);
+
         $referer = $req->headers->get('referer');
         return $app->redirect("/");
 

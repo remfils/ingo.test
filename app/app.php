@@ -57,7 +57,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 /* LANGUAGE */
 
 $app->register(new Silex\Provider\TranslationServiceProvider(), array(
-    'locale_fallback' => 'de',
+    'locale_fallbacks' => array('de'),
 ));
 
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
@@ -65,15 +65,26 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
     return $translator;
 }));
 
-$lang = 'de';
-
+$lang = "de";
 if ($app['session']->get('current_language')) {
     $lang = $app['session']->get('current_language');
 }
+
+foreach (glob(__DIR__ . '../locale/'. $lang . '/*.yml') as $locale) {
+    $app['translator']->addResource('yaml', $locale, $lang);
+}
+
+$app['translator']->setLocale($lang);
+
+//$lang = 'de';
+
+/*if ($app['session']->get('current_language')) {
+    $lang = $app['session']->get('current_language');
+}*/
 /*foreach (glob(__DIR__ . '/../locale/'. $lang . '/*.yml') as $locale) {
     $app['translator']->addResource('yaml', $locale, $lang);
 }*/
 
-$app['translator']->setLocale($lang);
+//$app['translator']->setLocale($lang);
 
 return $app;

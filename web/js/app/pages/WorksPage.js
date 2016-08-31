@@ -200,7 +200,7 @@ export default class WorksPage extends React.Component {
         return (
             <section id='WorksPage' class='title-container works-page'>
 
-                <SiteMap current_page={this} page_name={SiteMap.PAGE_WORKS} />
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_WORKS} lang={this.props.lang}/>
 
                 <TitleColoredTable className="title-project-dsc" color="#CCE1EE" direction="">
                     <tr>

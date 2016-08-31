@@ -1162,6 +1162,10 @@ a:active {
     transition: color 0.5s;
 }
 
+.site-map .active a {
+    color: black;
+}
+
 .site-map li a {
     position: relative;
 }

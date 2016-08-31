@@ -113,7 +113,7 @@ export default class ImpressumPage extends React.Component {
         return (
             <section id='ImpressumPage' class='title-container impressum-page'>
 
-                <SiteMap current_page={this} page_name={SiteMap.PAGE_IMPRESSUM} />
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_IMPRESSUM} lang={this.props.lang} />
 
                 <div className="contact-bg-image"></div>
 

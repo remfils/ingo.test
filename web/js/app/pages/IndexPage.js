@@ -457,7 +457,7 @@ export default class IndexPage extends React.Component {
 
         return (
             <section id='IndexPage' class='title-container'>
-                <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} />
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} lang={this.props.lang} />
 
                 <ImageRotator class="index-page-image-rotator" movie_id={content.id} img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 

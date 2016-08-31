@@ -123,15 +123,17 @@ export default class SiteMap extends React.Component {
         var page_name = this.state.page_name || this.props.page_name;
         var lang = this.props.lang;
 
+        console.debug(lang);
+
         return <div id={this._id} class='site-map'>
             <div className="close-btn-container">
                 <img src={asset('img/button-close.png')} alt="" class="close-btn" onClick={this.closeButtonClickListener.bind(this)}/>
             </div>
 
             <div class="lang-menu">
-                <span class={lang === 'DE' ? 'active' : ''}><a href="/api/change-language/de">DE</a></span>
+                <span class={lang === 'de' ? 'active' : ''}><a href="/api/change-language/de">DE</a></span>
                 <span> - </span>
-                <span class={lang === 'EN' ? 'active' : ''}><a href="/api/change-language/en">EN</a></span>
+                <span class={lang === 'en' ? 'active' : ''}><a href="/api/change-language/en">EN</a></span>
             </div>
 
             <ul>

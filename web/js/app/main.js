@@ -37,4 +37,4 @@ function hideLoadingScreen(callback) {
     }, 2000);
 }
 
-ReactDOM.render(<Application onAjaxLoaded={hideLoadingScreen}/>, app);
+ReactDOM.render(<Application onAjaxLoaded={hideLoadingScreen} lang={window.lang}/>, app);

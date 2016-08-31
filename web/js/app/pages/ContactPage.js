@@ -119,7 +119,7 @@ export default class ContactPage extends React.Component {
         return (
             <section id='ContactPage' class='title-container'>
 
-                <SiteMap current_page={this} page_name={SiteMap.PAGE_CONTACTS} />
+                <SiteMap current_page={this} page_name={SiteMap.PAGE_CONTACTS} lang={this.props.lang} />
 
                 <div className="contact-bg-image"></div>
 
