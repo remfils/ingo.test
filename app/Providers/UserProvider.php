@@ -13,10 +13,12 @@ use Doctrine\DBAL\Connection;
 class UserProvider implements UserProviderInterface
 {
     private $conn;
+    private $db;
 
-    public function __construct(Connection $conn)
+    public function __construct($conn)
     {
-        $this->conn = $conn;
+        //$this->conn = $conn;
+        $this->db = $conn;
     }
 
     /**
@@ -33,8 +35,10 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $stmt = $this->conn->executeQuery('SELECT * FROM users WHERE login = ?', array(strtolower($username)));
-        if (!$user = $stmt->fetch()) {
+        //$stmt = $this->conn->executeQuery('SELECT * FROM users WHERE login = ?', array(strtolower($username)));
+        $user = $this->db->for_table('users')->where('login', $username)->find_one()->as_array();
+
+        if (!$user) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 

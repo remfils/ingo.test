@@ -44,11 +44,11 @@ $app->register(new Arseniew\Silex\Provider\IdiormServiceProvider(), array(
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
         'admin' => array(
-            'pattern' => '^/admin',
+            'pattern' => '^'. $app['sub_domain'] .'/admin',
             'http' => true,
-            'logout' => array('logout_path' => '/admin/logout', 'invalidate_session' => true),
+            'logout' => array('logout_path' => $app['sub_domain'] . '/admin/logout', 'invalidate_session' => true),
             'users' => $app->share(function() use ($app) {
-                return new App\Providers\UserProvider($app['db']);
+                return new App\Providers\UserProvider($app['idiorm.db']);
             }),
         ),
     )

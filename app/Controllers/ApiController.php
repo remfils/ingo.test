@@ -52,7 +52,7 @@ class ApiController
 
         $project_id = $req->attributes->get('id');
 
-        $result = self::array_utf8_encode($app['idiorm.db']
+        $result = $app['idiorm.db']
             ->for_table('projects')
             ->table_alias('p')
             ->select_many(
@@ -70,10 +70,10 @@ class ApiController
             ->where('p.id', $project_id)
             ->where('p.active', true)
             ->where('pl.lang_id', $lang_id)
-            ->find_one());
+            ->find_one();
 
         if ($result) {
-            $model = $result->as_array();
+            $model = self::array_utf8_encode($result->as_array());
         }
         else {
             throw new Exception("Project was not found");
