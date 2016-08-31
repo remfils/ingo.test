@@ -9,7 +9,7 @@ class ClickStore extends EventEmmiter {
         this.ACTION_MENU_ITEM_CLICK = "ACTION_TYPE_MENU_ITEM_CLICK";
 
         this.EVENT_CLICK_MENU = "CLICK_MENU";
-        this.EVENT_CLICK_MENU_ITEM = "CLICK_MENU";
+        this.EVENT_CLICK_MENU_ITEM = "CLICK_MENU_ITEM";
     }
 
     handleActions(action) {
