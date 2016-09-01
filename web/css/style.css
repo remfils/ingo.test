@@ -34,6 +34,7 @@ html, body, main, #App {
     margin: 0;
     padding: 0;
     font-family: MyriadPro-Cond_3;
+    overflow: auto;
 }
 
 main {
