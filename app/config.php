@@ -10,8 +10,8 @@ $app['asset_path'] = 'http://'. $_SERVER['SERVER_NAME'] . $app['sub_domain'] .'/
 $db_user = "ingo";
 $db_pass = "777qwe777";*/
 
-$db_name = "ingodb";
-$db_user = "a2892633_ingo";
+$db_name = "wsh1490_ingo";
+$db_user = "wsh1490_ingo";
 $db_pass = "777qwe777";
 
 if ( $app['debug'] == true ) {
