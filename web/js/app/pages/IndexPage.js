@@ -327,7 +327,7 @@ export default class IndexPage extends React.Component {
 
         setTimeout(()=>{
             this.is_transition = false;
-        }, 1000);
+        }, 2000);
     }
 
     toggleArrowIfNessecery() {
