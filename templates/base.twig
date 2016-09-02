@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <title>{% block title %} This is title {% endblock %}</title>
     {% block styles %}
-        <link rel="stylesheet" href="{{ app.asset_path }}/css/style.css?{{"now"|date("m/d/Y")}}">
+        <link rel="stylesheet" href="{{ app.asset_path }}/css/style.css?date={{"now"|date("m/d/Y/h:m:s")}}">
     {% endblock %}
 </head>
 <body>
