@@ -70,8 +70,19 @@ class Project
         return $this->entity[$lang]['fields'];
     }
 
-    public function getComments($lang) {
-        return $this->entity[$lang]['comments'];
+    public function getComments() {
+        $result = array();
+        foreach ( $this->entity as $lang => $item) {
+            $i = 0;
+            foreach ($item['comments'] as $key => $comment) {
+                $result[$i]['image_url'] = $comment['image_url'];
+                $result[$i][$lang]['id'] = $comment['id'];
+                $result[$i][$lang]['text'] = $comment['text'];
+                $i++;
+            }
+        }
+
+        return $result;
     }
 
     /* ATTRIBUTES */

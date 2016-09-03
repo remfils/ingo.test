@@ -14,19 +14,7 @@ Editing Project:
 
     <div class="container">
 
-        <h1>New Project:</h1>
-
         <form action="" method="POST" class="form-horizontal" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="logo" class="col-sm-2 control-label">Logo:</label>
-                <div class="col-sm-8">
-                    <img src="{{ app.asset_path }}/{{ movie.getLogo() }}" alt="Movie Logo" width="100%">
-                </div>
-                <div class="col-sm-2">
-                    <input type="file" id="logo" name="{{ movie.getLogoAttrName() }}" value="{{ movie.getLogo() }}"/>
-                </div>
-            </div>
-
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">Name (de):</label>
                 <div class="col-sm-10">
@@ -45,6 +33,27 @@ Editing Project:
                 <label for="year" class="col-sm-2 control-label">Year:</label>
                 <div class="col-sm-10">
                     <input type="text" id="year" name="{{ movie.getYearAttrName() }}" class="form-control" value="{{ movie.getYear() }}"/>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="logo" class="col-sm-2 control-label">Logo:</label>
+                <div class="col-lg-8">
+                    <img src="{{ app.asset_path }}/{{ movie.getLogo() }}" alt="Movie Logo" width="100%">
+                </div>
+                <div class="col-sm-2">
+                    <input type="file" id="logo" name="{{ movie.getLogoAttrName() }}" value="{{ movie.getLogo() }}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="short-logo" class="col-sm-2 control-label">Index Logo:</label>
+                <div class="col-lg-8">
+                    <img src="{{ app.asset_path }}/{{ movie.getLogoShort() }}" alt="Movie Logo" width="100%">
+                </div>
+                <div class="col-sm-2">
+                    <input type="file" id="short-logo" name="{{ movie.getLogoShortAttrName() }}" value="{{ movie.getLogo() }}"/>
                 </div>
             </div>
 
@@ -142,36 +151,43 @@ Editing Project:
                 </div>
             </div>
 
-            <h2>Comments (de):</h2>
+            <h2>Comments:</h2>
 
             <div id="CommentBox_de">
 
-                {% for comment in movie.getComments('de') %}
+                {% for comment in movie.getComments() %}
 
-                    <div id="comment_{{ comment.id }}" class="form-group">
+                    <div class="form-group comment-block">
                         <div class="col-sm-1"></div>
 
                         <div class="col-sm-9">
                             <div class="form-group">
-                                <label for="comment_img_{{ comment.id }}" class="col-sm-2 control-label">Image:</label>
+                                <label for="comment_img_{{ comment.de.id }}" class="col-sm-2 control-label">Image:</label>
                                 <div class="col-sm-4">
                                     <img src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image" width="100%">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="file" name="{{ movie.getCommentsImageUrlAttrName('de', comment.id) }}" />
+                                    <input type="file" name="{{ movie.getCommentsImageUrlAttrName('de', comment.de.id) }}" />
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="comment_text_{{ comment.id }}" class="col-sm-2 control-label">Text:</label>
-                                <div class="col-sm-10">
-                                    <textarea name="{{ movie.getCommentsTextAttrName('de', comment.id) }}" id="comment_text_{{ comment.id }}" class="form-control" >{{ comment.text }}</textarea>
+                                <label for="comment_text_{{ comment.de.id }}" class="col-sm-2 control-label">Text (de):</label>
+                                <div class="col-lg-10">
+                                    <textarea name="{{ movie.getCommentsTextAttrName('de', comment.de.id) }}" id="comment_text_{{ comment.de.id }}" class="form-control" >{{ comment.de.text }}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="comment_text_{{ comment.en.id }}" class="col-sm-2 control-label">Text (en):</label>
+                                <div class="col-lg-10">
+                                    <textarea name="{{ movie.getCommentsTextAttrName('en', comment.en.id) }}" id="comment_text_{{ comment.en.id }}" class="form-control" >{{ comment.en.text }}</textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-sm-2">
-                            <span id="remove_comment_{{ comment.id }}" class="btn btn-sm btn-danger remove">Remove Comment</span>
+                            <span id="remove_comment_{{ comment.en.id }}" class="btn btn-sm btn-danger remove">Remove Comment</span>
                         </div>
                     </div>
 
@@ -179,42 +195,6 @@ Editing Project:
 
             </div>
 
-            <h2>Comments (en):</h2>
-
-            <div id="CommentBox_en">
-
-                {% for comment in movie.getComments('en') %}
-
-                    <div id="comment_{{ comment.id }}" class="form-group">
-                        <div class="col-sm-1"></div>
-
-                        <div class="col-sm-9">
-                            <div class="form-group">
-                                <label for="comment_img_{{ comment.id }}" class="col-sm-2 control-label">Image:</label>
-                                <div class="col-sm-4">
-                                    <img src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image" width="100%">
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="file" name="{{ movie.getCommentsImageUrlAttrName('en', comment.id) }}" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="comment_text_{{ comment.id }}" class="col-sm-2 control-label">Text:</label>
-                                <div class="col-sm-10">
-                                    <textarea name="{{ movie.getCommentsTextAttrName('en', comment.id) }}" id="comment_text_{{ comment.id }}" class="form-control" >{{ comment.text }}</textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-2">
-                            <span id="remove_comment_{{ comment.id }}" class="btn btn-sm btn-danger remove">Remove Comment</span>
-                        </div>
-                    </div>
-
-                {% endfor %}
-
-            </div>
 
             <div class="row">
                 <div class="col-sm-4"></div>
