@@ -66,8 +66,19 @@ class Project
         return preg_replace('#<br\s*/?>#i', "\n", $res);
     }
 
-    public function getFields($lang) {
-        return $this->entity[$lang]['fields'];
+    public function getFields() {
+        $result = array();
+        foreach ( $this->entity as $lang => $item) {
+            $i = 0;
+            foreach ($item['fields'] as $key => $field) {
+                $result[$i][$lang]['id'] = $field['id'];
+                $result[$i][$lang]['name'] = $field['name'];
+                $result[$i][$lang]['value'] = $field['value'];
+                $i++;
+            }
+        }
+
+        return $result;
     }
 
     public function getComments() {
