@@ -23,13 +23,24 @@ export function addFieldButtonsClickListeners() {
         var $field = $('#field-' + id);
 
         if ( $field.parent().children().length > 1 ) {
-            $field.remove();
+            var remove_marker = createRemoveMarker(id);
+            $field.append(remove_marker);
+            $field.hide();
         }
         else {
             alert('There has to be at least one field');
         }
     });
 };
+
+function createRemoveMarker(id) {
+    var marker = document.createElement('input');
+    marker.type = 'hidden';
+    marker.name = "project[de][fields]["+id+"][delete]";
+    marker.value = true;
+
+    return marker;
+}
 
 function createField(name = "", value = "") {
     field_count ++;
@@ -38,15 +49,23 @@ function createField(name = "", value = "") {
     container.classList.add('form-group');
     container.id = "field-" + field_count;
 
-    var name_row = createInfoRow('name', name);
-    container.appendChild(name_row);
+    var input_container = document.createElement('div');
+    input_container.classList.add('col-lg-12');
 
-    var value_row = createInfoRow('value', value);
-    container.appendChild(value_row);
+    var de_row = createLangRow('de', name, value);
+    input_container.appendChild(de_row);
+
+    var en_row = createLangRow('en', name, value);
+    input_container.appendChild(en_row);
+
+    container.appendChild(input_container);
+
+    var new_marker = createNewMarker('de');
+    container.appendChild(new_marker);
 
     var field_container = document.createElement('div');
-    field_container.classList.add('col-md-4');
-    field_container.classList.add('no-float');
+    field_container.classList.add('form-group');
+    field_container.classList.add('col-lg-8');
     field_container.style['vertical-align'] = "middle";
     var btn = document.createElement('span');
     btn.id = "field-remove-" + field_count;
@@ -54,6 +73,7 @@ function createField(name = "", value = "") {
     btn.classList.add('btn');
     btn.classList.add('btn-sm');
     btn.classList.add('btn-danger');
+    btn.classList.add('pull-right');
     btn.classList.add('remove');
     field_container.appendChild(btn);
     container.appendChild(field_container);
@@ -62,21 +82,34 @@ function createField(name = "", value = "") {
     table.appendChild(container);
 }
 
-function createInfoRow (row_type, row_text="") {
+function createLangRow(lang, name, value) {
+    var lang_container = document.createElement('div');
+    lang_container.classList.add('row');
+    lang_container.classList.add('form-group');
+
+    var name_row = createInfoRow('name', lang, name);
+    lang_container.appendChild(name_row);
+
+    var value_row = createInfoRow('value', lang, value);
+    lang_container.appendChild(value_row);
+
+    return lang_container;
+}
+
+function createInfoRow (row_type, lang, row_text="") {
     var field_container = document.createElement('div');
     field_container.classList.add('col-md-4');
-    field_container.classList.add('no-float');
 
     var field_id = ["field", row_type, field_count].join('-');
 
     var label = document.createElement('label');
     label.htmlFor = field_id;
-    label.innerHTML = "Field " + row_type + ":";
+    label.innerHTML = "Field " + row_type +" (" + lang + ")" + ":";
 
     var input = document.createElement('input');
     input.type = "text";
     input.id = field_id;
-    input.name = ["field", row_type, field_count].join('_');
+    input.name = "project["+lang+"][fields]["+field_count+"]["+row_type+"]";
     input.classList.add("form-control");
     input.value = row_text;
 
@@ -85,6 +118,15 @@ function createInfoRow (row_type, row_text="") {
 
     return field_container;
 };
+
+function createNewMarker(lang) {
+    var marker = document.createElement('input');
+    marker.type = 'hidden';
+    marker.name = "project["+lang+"][fields]["+field_count+"][new]";
+    marker.value = true;
+
+    return marker;
+}
 
 var comment_count = 1;
 
