@@ -135,11 +135,11 @@ Editing Project:
 
             <h2>Comments:</h2>
 
-            <div id="CommentBox_de">
+            <div id="CommentBox">
 
                 {% for comment in movie.getComments() %}
 
-                    <div class="form-group comment-block">
+                    <div id="comment_{{ comment.de.id }}" class="form-group comment-block">
                         <div class="col-sm-1"></div>
 
                         <div class="col-sm-9">
@@ -169,7 +169,7 @@ Editing Project:
                         </div>
 
                         <div class="col-sm-2">
-                            <span id="remove_comment_{{ comment.en.id }}" class="btn btn-sm btn-danger remove">Remove Comment</span>
+                            <span id="remove_comment_{{ comment.de.id }}" class="btn btn-sm btn-danger remove">Remove Comment</span>
                         </div>
                     </div>
 
@@ -199,12 +199,15 @@ Editing Project:
     {{ parent() }}
 
     <script>
-        {% if movie.fields|length > 0 %}
-            setFieldCounter({{ movie.fields|last.id }});
+        {% if movie.getFields()|length > 0 %}
+            setFieldCounter({{ movie.getFields()|last.de.id }});
         {% endif %}
 
-        {% if movie.comments|length > 0 %}
-            setCommentCounter({{ movie.comments|last.id }});;
+        alert('out');
+
+        {% if movie.getComments()|length > 0 %}
+            setCommentCounter({{ movie.getComments()|last.de.id }});
+            alert('in');
         {% endif %}
 
         addFieldButtonsClickListeners();

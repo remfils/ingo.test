@@ -23,7 +23,7 @@ export function addFieldButtonsClickListeners() {
         var $field = $('#field-' + id);
 
         if ( $field.parent().children().length > 1 ) {
-            var remove_marker = createRemoveMarker(id);
+            var remove_marker = createRemoveMarker('fields', id);
             $field.append(remove_marker);
             $field.hide();
         }
@@ -33,10 +33,10 @@ export function addFieldButtonsClickListeners() {
     });
 };
 
-function createRemoveMarker(id) {
+function createRemoveMarker(type, id) {
     var marker = document.createElement('input');
     marker.type = 'hidden';
-    marker.name = "project[de][fields]["+id+"][delete]";
+    marker.name = 'project[de]['+type+']['+id+'][delete]';
     marker.value = true;
 
     return marker;
@@ -60,7 +60,7 @@ function createField(name = "", value = "") {
 
     container.appendChild(input_container);
 
-    var new_marker = createNewMarker('de');
+    var new_marker = createNewMarker('de', 'fields', field_count);
     container.appendChild(new_marker);
 
     var field_container = document.createElement('div');
@@ -119,10 +119,10 @@ function createInfoRow (row_type, lang, row_text="") {
     return field_container;
 };
 
-function createNewMarker(lang) {
+function createNewMarker(lang, type, index) {
     var marker = document.createElement('input');
     marker.type = 'hidden';
-    marker.name = "project["+lang+"][fields]["+field_count+"][new]";
+    marker.name = 'project['+lang+']['+type+']['+index+'][new]';
     marker.value = true;
 
     return marker;
@@ -136,78 +136,7 @@ export function setCommentCounter(counter) {
 
 export function addCommentClickListeners() {
     $("#AddComment").on("click", (e) => {
-        comment_count ++;
-
-        var container = createDiv("comment_" + comment_count, "form-group");
-        container.appendChild(createDiv(null, "col-sm-1"));
-
-        var comment_container = createDiv(null, "col-sm-9");
-
-        var id = ["comment", "img", comment_count].join("_");
-
-        var img_container = createDiv(null, "form-group");
-
-        var label = document.createElement("label");
-
-        label.htmlFor = id;
-        label.classList.add("col-sm-2");
-        label.classList.add("control-label");
-        label.innerHTML = "Image:";
-        img_container.appendChild(label);
-
-        var input_container = createDiv(null, "col-sm-10");
-
-        var input = document.createElement("input");
-        input.type = "file";
-        input.id = id;
-        input.name = id;
-        input_container.appendChild(input);
-
-        img_container.appendChild(input_container);
-
-        comment_container.appendChild(img_container);
-
-        var text_container = createDiv(null, "form-group");
-
-        var id = ["comment", "text", comment_count].join("_");
-
-        var text_container = createDiv(null, "form-group");
-
-        var label = document.createElement("label");
-
-        label.htmlFor = id;
-        label.classList.add("col-sm-2");
-        label.classList.add("control-label");
-        label.innerHTML = "Text:";
-        text_container.appendChild(label);
-
-        var input_container = createDiv(null, "col-sm-10");
-
-        var input = document.createElement("textarea");
-        input.id = id;
-        input.name = id;
-        input.classList.add("form-control");
-        input_container.appendChild(input);
-
-        text_container.appendChild(input_container);
-
-        comment_container.appendChild(text_container);
-
-        container.appendChild(comment_container);
-
-        var remove_container = createDiv(null, "col-sm-2");
-
-        var remove_button = createElement(
-            'span',
-            ["comment", "remove", comment_container].join("_"),
-            ["btn", "btn-sm", "btn-danger", "remove"]
-        );
-        remove_button.innerHTML = "Remove Comment";
-        remove_container.appendChild(remove_button);
-
-        container.appendChild(remove_container);
-
-        $("#CommentBox")[0].appendChild(container);
+        createComment();
     });
 
     $("#CommentBox").on('click', ".remove", function(){
@@ -215,8 +144,94 @@ export function addCommentClickListeners() {
 
         var $field = $('#comment_' + id);
 
-        $field.remove();
+        var remove_marker = createRemoveMarker('comments', id);
+        $field.append(remove_marker)
+            .hide();
     });
+}
+
+function createComment() {
+    comment_count ++;
+
+    var comment_container = createDiv(comment_count, ['form-group','comment-block']);
+    var input_container = createDiv(null, 'col-sm-1');
+    comment_container.appendChild(input_container);
+
+    var input_container = createDiv(null, 'col-sm-9');
+
+    var logo = createCommentLogo(comment_count);
+    input_container.appendChild(logo);
+
+    var text = createCommentText('de', comment_count);
+    input_container.appendChild(text);
+
+    var text = createCommentText('en', comment_count);
+    input_container.appendChild(text);
+
+    comment_container.appendChild(input_container);
+    var btn_container = createDiv(null, 'col-sm-2');
+
+    var btn = createRemoveCommentButton(comment_count);
+    btn_container.appendChild(btn);
+    comment_container.appendChild(btn_container);
+
+    var marker = createNewMarker('de', 'comments', comment_count);
+
+    comment_container.id = 'Comment-' + comment_container;
+
+    $('#CommentBox').append(comment_container);
+}
+
+function createCommentLogo(comment_id) {
+    var container = createDiv(null, 'form-group');
+
+    var logo_name = 'project[de][comments][' + comment_id + ']';
+
+    var label = createElement('label', null, ['col-sm-2','control-label']);
+    label.innerHTML = "Image:";
+    label.for = logo_name;
+    container.appendChild(label);
+
+    var input_container = createDiv(null, 'col-sm-6');
+
+    var input = document.createElement('input');
+    input.type = "file";
+    input.name = logo_name;
+    input_container.appendChild(input);
+
+    container.appendChild(input_container);
+
+    return container;
+}
+
+function createCommentText(lang, comment_id) {
+    var field_id = 'comment_text_' + comment_id;
+    var field_name = 'project['+lang+'][comments]['+comment_id+'][text]'
+
+    var container = createDiv(null, 'form-group');
+
+    var label = createElement('label', null, ['col-sm-2', 'control-label']);
+    label.innerHTML = 'Text ('+lang+'):';
+    label.for = field_name;
+    container.appendChild(label);
+
+    var input_container = createDiv(null, 'col-lg-10');
+
+    var textarea = createElement('textarea', field_id, 'form-control');
+    textarea.name = field_name;
+
+    input_container.appendChild(textarea);
+
+    container.appendChild(input_container);
+
+    return container;
+}
+
+function createRemoveCommentButton(comment_id) {
+    var btn = createElement('span', 'remove_comment_' + comment_id, ['btn', 'btn-sm', 'btn-danger', 'remove']);
+    btn.innerHTML = 'Remove Comment';
+
+    return btn;
 }
 
 function createDiv(id, classes) {
