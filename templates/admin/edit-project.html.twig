@@ -203,11 +203,8 @@ Editing Project:
             setFieldCounter({{ movie.getFields()|last.de.id }});
         {% endif %}
 
-        alert('out');
-
         {% if movie.getComments()|length > 0 %}
             setCommentCounter({{ movie.getComments()|last.de.id }});
-            alert('in');
         {% endif %}
 
         addFieldButtonsClickListeners();

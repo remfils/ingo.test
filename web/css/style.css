@@ -120,6 +120,9 @@ a, a:hover, a:focus, a:visited, a:active {
 #IndexPage {
     overflow:auto;
     -webkit-overflow-scrolling: touch;
+    -webkit-transform: translateZ(0px);
+    -webkit-transform: translate3d(0,0,0);
+    -webkit-perspective: 1000;
 }
 
 .index-navigation {
