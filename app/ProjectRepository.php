@@ -165,4 +165,72 @@ class ProjectRepository {
 
         return $model;
     }
+
+    public function updateProjectFromPost($prj_id, $p_data) {
+        $this->updateBaseProjectInfo($prj_id, $p_data);
+
+        $this->updateMultilangInfo($prj_id, $p_data);
+
+        $this->updateFields($prj_id, $p_data);
+
+        $this->updateComments($prj_id, $p_data);
+    }
+
+    private function updateBaseProjectInfo($prj_id, $p_data)
+    {
+        $prj = $this->db->for_table('projects')->table_alias('p')
+            ->where_equal('id', $prj_id)
+            ->find_one();
+
+        $prj_de = $p_data['de'];
+        $prj_en = $p_data['en'];
+
+        $prj->set(array(
+            'color' => $prj_de['color'],
+            'year' => $prj_de['year'],
+            'preview_url' => $prj_de['preview_url']
+        ));
+
+        if (array_key_exists('logo',$prj_de)) {
+            $prj->set('logo', $prj_de['logo']);
+        }
+        if (array_key_exists('logo_short',$prj_de)) {
+            $prj->set('logo_short', $prj_de['logo_short']);
+        }
+
+        $prj->save();
+    }
+
+    private function updateMultilangInfo($prj_id, $p_data)
+    {
+        $prj = $this->db->for_table('project_lang')->table_alias('pl')
+            ->where('project_id', $prj_id)
+            ->select_many(array(
+                'id' => 'pl.project_id',
+                'lang' => 'l.name',
+                'genre',
+                'description',
+                'name' => 'pl.name'
+            ))
+            ->join('lang', array('pl.lang_id', '=', 'l.id'), 'l');
+
+        foreach ($prj as $row) {
+            $lang = $row['lang'];
+            !d($row);
+            $row->set(array(
+                'name' => $p_data[$lang]['name'],
+                'description' => $p_data[$lang]['description']
+            ));
+
+            $row->save();
+        }
+    }
+
+    private function updateFields($prj_id, $p_data)
+    {
+    }
+
+    private function updateComments($prj_id, $p_data)
+    {
+    }
 }
