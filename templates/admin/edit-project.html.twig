@@ -29,10 +29,28 @@ Editing Project:
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="year" class="col-sm-2 control-label">Year:</label>
-                <div class="col-sm-10">
-                    <input type="text" id="year" name="{{ movie.getYearAttrName() }}" class="form-control" value="{{ movie.getYear() }}"/>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="{{ movie.getGenreAttrName('de') }}" class="col-sm-3 control-label">Genre (de):</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="{{ movie.getGenreAttrName('de') }}" value="{{ movie.getGenre('de') }}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ movie.getGenreAttrName('en') }}" class="col-sm-3 control-label">Genre (en):</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="{{ movie.getGenreAttrName('en') }}" value="{{ movie.getGenre('en') }}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="year" class="col-sm-2 control-label">Year:</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="year" name="{{ movie.getYearAttrName() }}" class="form-control" value="{{ movie.getYear() }}"/>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -57,7 +75,7 @@ Editing Project:
                 </div>
             </div>
 
-            <h2>Short Info (de):</h2>
+            <h2>Short Info:</h2>
 
             <div class="form-group">
                 <div class="col-md-2"></div>
