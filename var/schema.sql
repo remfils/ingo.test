@@ -245,11 +245,13 @@ INSERT INTO `project_field_lang` (`project_id`, `lang_id`, `field_name`, `field_
 --
 
 CREATE TABLE IF NOT EXISTS `project_lang` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL,
   `lang_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `genre` varchar(255) NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
