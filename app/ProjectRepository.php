@@ -215,8 +215,6 @@ class ProjectRepository {
             ->join('lang', array('pl.lang_id', '=', 'l.id'), 'l')
             ->find_many();
 
-        !d($prj);
-
         foreach ($prj as $row) {
             $lang = $row['lang'];
 
@@ -224,14 +222,40 @@ class ProjectRepository {
             $row->description = $p_data[$lang]['description'];
             $row->genre = $p_data[$lang]['genre'];
 
-            !d($lang, $p_data[$lang], $row);
-
             $row->save();
         }
     }
 
     private function updateFields($prj_id, $p_data)
     {
+        $langs = $this->db->for_table('lang')->find_array();
+
+        foreach($langs as $k => $lang) {
+            $fields = $p_data[$lang['name']]['fields'];
+
+            foreach ($fields as $k2 => $field) {
+
+                if (array_key_exists('delete', $field)) {
+                    if (!array_key_exists('new', $field)) {
+                        // delete existing fields
+                    }
+                }
+                else if (array_key_exists('new', $field)) {
+                    // create new fields
+                }
+                else {
+                    $q = $this->db->for_table('project_field_lang')
+                        ->where_id_is($field['id'])->find_one();
+
+                    $q->field_name = $field['name'];
+                    $q->field_value = $field['value'];
+
+                    $q->save();
+
+                    !d($q);
+                }
+            }
+        }
     }
 
     private function updateComments($prj_id, $p_data)

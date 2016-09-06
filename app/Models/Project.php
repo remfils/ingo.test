@@ -134,6 +134,10 @@ class Project
         return "project[$lang][description]";
     }
 
+    public function getFieldsIdAttrName($lang, $field_id) {
+        return "project[$lang][fields][$field_id][id]";
+    }
+
     public function getFieldsNameAttrName($lang, $field_id) {
         return "project[$lang][fields][$field_id][name]";
     }

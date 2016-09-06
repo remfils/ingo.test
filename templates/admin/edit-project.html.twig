@@ -98,6 +98,7 @@ Editing Project:
                                             <label for="field-value-{{ field.de.id }}">Field value (de):</label>
                                             <input type="text" id="field-value-{{ field.de.id }}" name="{{ movie.getFieldsValueAttrName('de', field.de.id) }}" class="form-control" value="{{ field.de.value }}"/>
                                         </div>
+                                        <input type="hidden" name="{{ movie.getFieldsIdAttrName('de', field.de.id) }}" value="{{ field.de.id }}">
                                     </div>
                                     <div class="row form-group">
                                         <div class="col-lg-4">
@@ -108,6 +109,7 @@ Editing Project:
                                             <label for="field-value-{{ field.en.id }}">Field value (en):</label>
                                             <input type="text" id="field-value-{{ field.en.id }}" name="{{ movie.getFieldsValueAttrName('en', field.en.id) }}" class="form-control" value="{{ field.en.value }}"/>
                                         </div>
+                                        <input type="hidden" name="{{ movie.getFieldsIdAttrName('en', field.en.id) }}" value="{{ field.en.id }}">
                                     </div>
                                 </div>
 
