@@ -66,12 +66,34 @@ class Project
         return preg_replace('#<br\s*/?>#i', "\n", $res);
     }
 
-    public function getFields($lang) {
-        return $this->entity[$lang]['fields'];
+    public function getFields() {
+        $result = array();
+        foreach ( $this->entity as $lang => $item) {
+            $i = 0;
+            foreach ($item['fields'] as $key => $field) {
+                $result[$i][$lang]['id'] = $field['id'];
+                $result[$i][$lang]['name'] = $field['name'];
+                $result[$i][$lang]['value'] = $field['value'];
+                $i++;
+            }
+        }
+
+        return $result;
     }
 
-    public function getComments($lang) {
-        return $this->entity[$lang]['comments'];
+    public function getComments() {
+        $result = array();
+        foreach ( $this->entity as $lang => $item) {
+            $i = 0;
+            foreach ($item['comments'] as $key => $comment) {
+                $result[$i]['image_url'] = $comment['image_url'];
+                $result[$i][$lang]['id'] = $comment['id'];
+                $result[$i][$lang]['text'] = $comment['text'];
+                $i++;
+            }
+        }
+
+        return $result;
     }
 
     /* ATTRIBUTES */
@@ -112,12 +134,20 @@ class Project
         return "project[$lang][description]";
     }
 
+    public function getFieldsIdAttrName($lang, $field_id) {
+        return "project[$lang][fields][$field_id][id]";
+    }
+
     public function getFieldsNameAttrName($lang, $field_id) {
         return "project[$lang][fields][$field_id][name]";
     }
 
     public function getFieldsValueAttrName($lang, $field_id) {
         return "project[$lang][fields][$field_id][value]";
+    }
+
+    public function getCommentsIdAttrName($lang, $comment_id) {
+        return "project[$lang][comments][$comment_id][id]";
     }
 
     public function getCommentsTextAttrName($lang, $comment_id) {
