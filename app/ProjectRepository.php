@@ -31,7 +31,7 @@ class ProjectRepository {
             ->join('project_lang', array('p.id', '=', 'pl.project_id'), 'pl')
             ->join('lang', array('pl.lang_id', '=', 'lang.id'), 'lang')
             ->where('p.active', true)
-            ->where('lang.name', 'de')
+            ->where('lang.name', $lang)
             ->find_array();
 
         return $result;
@@ -206,21 +206,25 @@ class ProjectRepository {
         $prj = $this->db->for_table('project_lang')->table_alias('pl')
             ->where('project_id', $prj_id)
             ->select_many(array(
-                'id' => 'pl.project_id',
+                'id' => 'pl.id',
                 'lang' => 'l.name',
                 'genre',
                 'description',
                 'name' => 'pl.name'
             ))
-            ->join('lang', array('pl.lang_id', '=', 'l.id'), 'l');
+            ->join('lang', array('pl.lang_id', '=', 'l.id'), 'l')
+            ->find_many();
+
+        !d($prj);
 
         foreach ($prj as $row) {
             $lang = $row['lang'];
-            !d($row);
-            $row->set(array(
-                'name' => $p_data[$lang]['name'],
-                'description' => $p_data[$lang]['description']
-            ));
+
+            $row->name = $p_data[$lang]['name'];
+            $row->description = $p_data[$lang]['description'];
+            $row->genre = $p_data[$lang]['genre'];
+
+            !d($lang, $p_data[$lang], $row);
 
             $row->save();
         }
