@@ -198,15 +198,13 @@ class AdminController
     }
 
     public function editProjectPostAction( Request $req, Application $app ) {
-        !d($req->request->all());
-
         $id = $req->attributes->get('id');
 
         $post = $req->request->all();
 
         $project_repo = new ProjectRepository($app);
         $project_repo->updateProjectFromPost($id, $post['project']);
-        return 'hello';
+        
         return $app->redirect($app["url_generator"]->generate('admin_edit_project', array('id'=>$id)));
     }
 
