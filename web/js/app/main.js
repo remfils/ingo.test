@@ -5,6 +5,8 @@ import 'gsap';
 // require('gsap/src/minified/plugins/ColorPropsPlugin.min');
 require('../../../node_modules/gsap/src/minified/plugins/ColorPropsPlugin.min');
 
+require('jquery-mousewheel');
+
 import Application from './Application';
 
 var app = document.getElementById('App');

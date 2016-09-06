@@ -117,13 +117,43 @@ export default class IndexPage extends React.Component {
             });
         }
 
-        $(window).on('mousewheel DOMMouseScroll', this.scrollListener);
+        $(window).on('mousewheel', this.scrollListener);
     }
 
     componentWillUnmount() {
         unlockScroll();
         console.debug('DEBUG(IndexPage.componentWillUnmount)');
-        $(window).off('mousewheel DOMMouseScroll');
+        $(window).off('mousewheel');
+    }
+
+    scrollListener(e) {
+        if ( this.is_transition ) {
+            return;
+        }
+
+        clearTimeout(this.scroll_timer);
+
+        var dir = this.getMouseScrollDirection(e);
+        var self = this;
+        this.scroll_counter += dir;
+        this.scroll_timer = setTimeout(function(){
+            self.scroll_counter = 0;
+        }, 100);
+
+        if(this.scroll_counter >= MAX_SCROLL_COUNTER_VALUE) {
+            console.debug("SCROLL(nextMovie)");
+            this.nextMovie();
+        }
+        else if ( this.scroll_counter <= -MAX_SCROLL_COUNTER_VALUE) {
+            console.debug("SCROLL(prevMovie)");
+            this.prevMovie();
+        }
+    }
+
+    getMouseScrollDirection(e) {
+        var delta = e.deltaY;
+
+        return delta > 0 ? -1 : 1;
     }
 
     componentDidMount() {
@@ -271,38 +301,6 @@ export default class IndexPage extends React.Component {
             .to($color, 1, {opacity: 0}, 'leave-stage');
 
         tl.set($nav, {opacity:0}, 'enter-stage');
-    }
-
-    scrollListener(e) {
-        if ( this.is_transition ) {
-            return;
-        }
-
-        clearTimeout(this.scroll_timer);
-
-        var dir = this.getMouseScrollDirection(e);
-        var self = this;
-        this.scroll_counter += dir;
-        this.scroll_timer = setTimeout(function(){
-            self.scroll_counter = 0;
-        }, 100);
-
-        if(this.scroll_counter >= MAX_SCROLL_COUNTER_VALUE) {
-            console.debug("SCROLL(nextMovie)");
-            this.nextMovie();
-        }
-        else if ( this.scroll_counter <= -MAX_SCROLL_COUNTER_VALUE) {
-            console.debug("SCROLL(prevMovie)");
-            this.prevMovie();
-        }
-    }
-
-    getMouseScrollDirection(e) {
-        var delta = (e.type === 'DOMMouseScroll'
-            ? e.originalEvent.detail
-            : e.originalEvent.wheelDelta);
-
-        return delta > 0 ? -1 : 1;
     }
 
     nextMovie() {
