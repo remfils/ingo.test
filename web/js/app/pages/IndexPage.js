@@ -35,6 +35,8 @@ export default class IndexPage extends React.Component {
         this.current_content = {};
         this.current_content_index = 0;
 
+        this.scrollListener = this.scrollListener.bind(this);
+
         this.scroll_timer = null;
         this.scroll_counter = 0;
     }
@@ -115,7 +117,7 @@ export default class IndexPage extends React.Component {
             });
         }
 
-        $(window).on('mousewheel DOMMouseScroll', this.scrollListener.bind(this));
+        $(window).on('mousewheel DOMMouseScroll', this.scrollListener);
     }
 
     componentWillUnmount() {
@@ -271,25 +273,7 @@ export default class IndexPage extends React.Component {
         tl.set($nav, {opacity:0}, 'enter-stage');
     }
 
-    getMouseScrollDirection(e) {
-        var delta = (e.type === 'DOMMouseScroll' ?
-        e.originalEvent.detail * -40 :
-            e.originalEvent.wheelDelta);
-
-        return delta > 0 ? -1 : 1;
-    }
-
     scrollListener(e) {
-        /*if ( this.is_scroll_message_shown ) {
-            this.is_scroll_message_shown = false;
-
-            var $scrl_msg = $(".scroll-message");
-
-            TweenLite.to($scrl_msg, 1, {bottom: "-3em", opacity: 0, onComplete: () => {
-                $scrl_msg.hide();
-            }});
-        }*/
-
         if ( this.is_transition ) {
             return;
         }
@@ -311,6 +295,14 @@ export default class IndexPage extends React.Component {
             console.debug("SCROLL(prevMovie)");
             this.prevMovie();
         }
+    }
+
+    getMouseScrollDirection(e) {
+        var delta = (e.type === 'DOMMouseScroll'
+            ? e.originalEvent.detail
+            : e.originalEvent.wheelDelta);
+
+        return delta > 0 ? -1 : 1;
     }
 
     nextMovie() {
