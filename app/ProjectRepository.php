@@ -264,22 +264,25 @@ class ProjectRepository {
             $comments = $p_data[$lang['name']]['comments'];
 
             foreach ($comments as $k2 => $comment) {
+                if (array_key_exists('new', $comment)) {
+                    if (!array_key_exists('delete', $comment)) {
+                        /*$q = $this->for_table('project_comment_lang')->create();
 
-                if (array_key_exists('delete', $comment)) {
-                    if (!array_key_exists('new', $comment)) {
-                        // delete existing fields
+                        $q->*/
                     }
-                }
-                else if (array_key_exists('new', $comment)) {
-                    // create new fields
                 }
                 else {
                     $q = $this->db->for_table('project_comment_lang')
                         ->where_id_is($comment['id'])->find_one();
 
-                    $q->text = $comment['text'];
+                    if (array_key_exists('delete', $comment)) {
+                        //$q->delete();
+                    }
+                    else {
+                        $q->text = $comment['text'];
 
-                    $q->save();
+                        $q->save();
+                    }
                 }
             }
         }
