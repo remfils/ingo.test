@@ -184,6 +184,7 @@ Editing Project:
                                     <div class="col-lg-10">
                                         <textarea name="{{ movie.getCommentsTextAttrName('de', comment.de.id) }}" id="comment_text_{{ comment.de.id }}" class="form-control" >{{ comment.de.text }}</textarea>
                                     </div>
+                                    <input type="hidden" name="{{ movie.getCommentsIdAttrName('de', comment.de.id) }}" value="{{ comment.de.id }}">
                                 </div>
 
                                 <div class="form-group">
@@ -191,6 +192,7 @@ Editing Project:
                                     <div class="col-lg-10">
                                         <textarea name="{{ movie.getCommentsTextAttrName('en', comment.en.id) }}" id="comment_text_{{ comment.en.id }}" class="form-control" >{{ comment.en.text }}</textarea>
                                     </div>
+                                    <input type="hidden" name="{{ movie.getCommentsIdAttrName('en', comment.en.id) }}" value="{{ comment.en.id }}">
                                 </div>
                             </div>
 

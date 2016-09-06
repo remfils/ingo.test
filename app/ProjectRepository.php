@@ -251,8 +251,6 @@ class ProjectRepository {
                     $q->field_value = $field['value'];
 
                     $q->save();
-
-                    !d($q);
                 }
             }
         }
@@ -260,5 +258,30 @@ class ProjectRepository {
 
     private function updateComments($prj_id, $p_data)
     {
+        $langs = $this->db->for_table('lang')->find_array();
+
+        foreach($langs as $k => $lang) {
+            $comments = $p_data[$lang['name']]['comments'];
+
+            foreach ($comments as $k2 => $comment) {
+
+                if (array_key_exists('delete', $comment)) {
+                    if (!array_key_exists('new', $comment)) {
+                        // delete existing fields
+                    }
+                }
+                else if (array_key_exists('new', $comment)) {
+                    // create new fields
+                }
+                else {
+                    $q = $this->db->for_table('project_comment_lang')
+                        ->where_id_is($comment['id'])->find_one();
+
+                    $q->text = $comment['text'];
+
+                    $q->save();
+                }
+            }
+        }
     }
 }

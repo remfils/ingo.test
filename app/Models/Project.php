@@ -146,6 +146,10 @@ class Project
         return "project[$lang][fields][$field_id][value]";
     }
 
+    public function getCommentsIdAttrName($lang, $comment_id) {
+        return "project[$lang][comments][$comment_id][id]";
+    }
+
     public function getCommentsTextAttrName($lang, $comment_id) {
         return "project[$lang][comments][$comment_id][text]";
     }
