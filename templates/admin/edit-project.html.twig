@@ -68,10 +68,10 @@ Editing Project:
             <div class="form-group">
                 <label for="short-logo" class="col-sm-2 control-label">Index Logo:</label>
                 <div class="col-lg-8">
-                    <img src="{{ app.asset_path }}/{{ movie.getLogoShort() }}" alt="Movie Logo" width="100%">
+                    <img id="IndexLogo_Img" src="{{ app.asset_path }}/{{ movie.getLogoShort() }}" alt="Movie Logo" width="100%">
                 </div>
                 <div class="col-sm-2">
-                    <input type="file" id="short-logo" name="{{ movie.getLogoShortAttrName() }}" value="{{ movie.getLogo() }}"/>
+                    <input id="IndexLogo_Input" type="file" id="short-logo" name="{{ movie.getLogoShortAttrName() }}" value="{{ movie.getLogo() }}"/>
                 </div>
             </div>
 
@@ -233,7 +233,7 @@ Editing Project:
     <script>
 
         initEditPage();
-        
+
         {% if fields|length > 0 %}
             setFieldCounter({{ fields|last.de.id }});
         {% endif %}

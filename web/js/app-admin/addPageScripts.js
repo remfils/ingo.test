@@ -7,12 +7,10 @@ export function initAddPage() {
 }
 
 export function initEditPage() {
-    addLargeImageLoadClickListener();
-}
-
-function addLargeImageLoadClickListener() {
-    alert('addLargeImageLoadClickListener launched');
     addInputClickListenerForImageLoad('#Logo_Input', '#Logo_Img');
+    addInputClickListenerForImageLoad('#IndexLogo_Input', '#IndexLogo_Img');
+
+    addCommentUploadButtonClickListener();
 }
 
 function addInputClickListenerForImageLoad(input_selector, image_selector) {
@@ -32,6 +30,10 @@ function addInputClickListenerForImageLoad(input_selector, image_selector) {
     $(input_selector).change(function(){
         readURL(this);
     });
+}
+
+function addCommentUploadButtonClickListener() {
+    
 }
 
 var field_count = 1;
