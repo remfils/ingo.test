@@ -73,7 +73,7 @@ class ApiController
             ->find_one();
 
         if ($result) {
-            $model = self::array_utf8_encode($result->as_array());
+            $model = $result->as_array();
         }
         else {
             throw new Exception("Project was not found");
