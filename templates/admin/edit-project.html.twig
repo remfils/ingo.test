@@ -216,7 +216,8 @@ Editing Project:
             </div>
 
             <div class="form-group">
-                <input type="submit" class="pull-right btn btn-success" value="EDIT" />
+                {#<input id="SubmitProject" type="submit" class="pull-right btn btn-success" value="EDIT" />#}
+                <input id="SubmitProject" type="button" class="pull-right btn btn-success" value="EDIT" />
             </div>
         </form>
 
@@ -245,4 +246,5 @@ Editing Project:
         addFieldButtonsClickListeners();
         addCommentClickListeners();
     </script>
+    <script src="{{ app.asset_path }}/js/NewProjectScript.bundle.js"></script>
 {% endblock %}
