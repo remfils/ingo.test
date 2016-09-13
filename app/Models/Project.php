@@ -25,8 +25,19 @@ class Project
     private $Id;
     private $entity;
 
-    public function __construct($project_entity) {
-        $this->entity = $project_entity;
+    public function __construct($project_entity = null) {
+        if ($project_entity) {
+            $this->entity = $project_entity;
+        }
+        else {
+            $ar = array(
+                'fields' => array(),
+                'comments' => array()
+                );
+
+            $this->entity['de'] = $ar;
+            $this->entity['en'] = $ar;
+        }
     }
 
     public function getId() {

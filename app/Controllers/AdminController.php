@@ -145,8 +145,9 @@ class AdminController
         }
 
         return $app['twig']->render('admin/new-project.html.twig', array(
-            'success_message' => $success_message,
-            'error_message' => $error_message
+            'movie' => new Project(),
+            'success_msg' => $success_message,
+            'error_msg' => $error_message
         ));
     }
 
