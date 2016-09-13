@@ -58,20 +58,20 @@ Editing Project:
             <div class="form-group">
                 <label for="logo" class="col-sm-2 control-label">Logo:</label>
                 <div class="col-lg-8">
-                    <img src="{{ app.asset_path }}/{{ movie.getLogo() }}" alt="Movie Logo" width="100%">
+                    <img id="Logo_Img" src="{{ app.asset_path }}/{{ movie.getLogo() }}" alt="Movie Logo" width="100%">
                 </div>
                 <div class="col-sm-2">
-                    <input type="file" id="logo" name="{{ movie.getLogoAttrName() }}" value="{{ movie.getLogo() }}"/>
+                    <input type="file" id="Logo_Input" name="{{ movie.getLogoAttrName() }}" value="{{ movie.getLogo() }}"/>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="short-logo" class="col-sm-2 control-label">Index Logo:</label>
                 <div class="col-lg-8">
-                    <img src="{{ app.asset_path }}/{{ movie.getLogoShort() }}" alt="Movie Logo" width="100%">
+                    <img id="IndexLogo_Img" src="{{ app.asset_path }}/{{ movie.getLogoShort() }}" alt="Movie Logo" width="100%">
                 </div>
                 <div class="col-sm-2">
-                    <input type="file" id="short-logo" name="{{ movie.getLogoShortAttrName() }}" value="{{ movie.getLogo() }}"/>
+                    <input id="IndexLogo_Input" type="file" id="short-logo" name="{{ movie.getLogoShortAttrName() }}" value="{{ movie.getLogo() }}"/>
                 </div>
             </div>
 
@@ -216,7 +216,8 @@ Editing Project:
             </div>
 
             <div class="form-group">
-                <input type="submit" class="pull-right btn btn-success" value="EDIT" />
+                {#<input id="SubmitProject" type="submit" class="pull-right btn btn-success" value="EDIT" />#}
+                <input id="SubmitProject" type="button" class="pull-right btn btn-success" value="EDIT" />
             </div>
         </form>
 
@@ -231,6 +232,9 @@ Editing Project:
     {% set comments = movie.getComments() %}
 
     <script>
+
+        initEditPage();
+
         {% if fields|length > 0 %}
             setFieldCounter({{ fields|last.de.id }});
         {% endif %}
@@ -242,4 +246,5 @@ Editing Project:
         addFieldButtonsClickListeners();
         addCommentClickListeners();
     </script>
+    <script src="{{ app.asset_path }}/js/NewProjectScript.bundle.js"></script>
 {% endblock %}
