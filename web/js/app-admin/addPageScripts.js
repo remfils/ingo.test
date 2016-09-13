@@ -6,6 +6,34 @@ export function initAddPage() {
     createField("Schnitt");
 }
 
+export function initEditPage() {
+    addLargeImageLoadClickListener();
+}
+
+function addLargeImageLoadClickListener() {
+    alert('addLargeImageLoadClickListener launched');
+    addInputClickListenerForImageLoad('#Logo_Input', '#Logo_Img');
+}
+
+function addInputClickListenerForImageLoad(input_selector, image_selector) {
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(image_selector).attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $(input_selector).change(function(){
+        readURL(this);
+    });
+}
+
 var field_count = 1;
 
 export function setFieldCounter(counter) {

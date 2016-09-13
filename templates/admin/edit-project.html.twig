@@ -58,10 +58,10 @@ Editing Project:
             <div class="form-group">
                 <label for="logo" class="col-sm-2 control-label">Logo:</label>
                 <div class="col-lg-8">
-                    <img src="{{ app.asset_path }}/{{ movie.getLogo() }}" alt="Movie Logo" width="100%">
+                    <img id="Logo_Img" src="{{ app.asset_path }}/{{ movie.getLogo() }}" alt="Movie Logo" width="100%">
                 </div>
                 <div class="col-sm-2">
-                    <input type="file" id="logo" name="{{ movie.getLogoAttrName() }}" value="{{ movie.getLogo() }}"/>
+                    <input type="file" id="Logo_Input" name="{{ movie.getLogoAttrName() }}" value="{{ movie.getLogo() }}"/>
                 </div>
             </div>
 
@@ -231,6 +231,9 @@ Editing Project:
     {% set comments = movie.getComments() %}
 
     <script>
+
+        initEditPage();
+        
         {% if fields|length > 0 %}
             setFieldCounter({{ fields|last.de.id }});
         {% endif %}
