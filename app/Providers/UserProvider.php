@@ -36,11 +36,13 @@ class UserProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         //$stmt = $this->conn->executeQuery('SELECT * FROM users WHERE login = ?', array(strtolower($username)));
-        $user = $this->db->for_table('users')->where('login', $username)->find_one()->as_array();
+        $q = $this->db->for_table('users')->where('login', $username)->find_one();
 
-        if (!$user) {
+        if (!$q) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
+
+        $user = $q->as_array();
 
         return new User($user['login'], $user['password'], array($user['role']), true, true, true, true);
     }
