@@ -238,10 +238,20 @@ class ProjectRepository {
                 if (array_key_exists('delete', $field)) {
                     if (!array_key_exists('new', $field)) {
                         // delete existing fields
+                        $item = $this->db->for_table('project_field_lang')
+                            ->where_id_is($field['id'])->find_one();
+                        $item->delete();
                     }
                 }
                 else if (array_key_exists('new', $field)) {
-                    // create new fields
+                    $item = $this->db->for_table('project_field_lang')->create();
+
+                    $item->project_id = $prj_id;
+                    $item->lang_id = 0;
+                    $item->field_name = '';
+                    $item->field_value = '';
+
+                    $item->save();
                 }
                 else {
                     $q = $this->db->for_table('project_field_lang')
