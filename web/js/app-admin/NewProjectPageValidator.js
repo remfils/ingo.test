@@ -8,6 +8,7 @@ export default class NewProjectPageValidator {
     validate(e) {
         if (this.isValid()) {
             alert('valid');
+            $('#ProjectForm').submit();
         }
         else {
             alert('not valid');
@@ -25,6 +26,8 @@ export default class NewProjectPageValidator {
     }
 
     isValid() {
+        return true;
+
         var result = this.isLogoValid()
             && this.isColorValid()
             && this.isCommentsImageValid()
@@ -45,7 +48,7 @@ export default class NewProjectPageValidator {
 
     isShortLogoValid() {
         let $logo = $('#Logo_Input');
-        let $logo_img = $('#Logo_Input')
+        let $logo_img = $('#Logo_Input');
         let file_name = $logo.val('#Logo_Img');
 
         return this.validateImage('Large Logo', $logo_img, file_name);
