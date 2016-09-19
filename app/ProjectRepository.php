@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\Project;
+
 class ProjectRepository {
     private $db;
     private $app;
@@ -197,14 +199,47 @@ class ProjectRepository {
             'preview_url' => $prj_de['preview_url']
         ));
 
-        if (array_key_exists('logo',$prj_de)) {
-            $prj->set('logo', $prj_de['logo']);
+        $dummy_project = new Project(null);
+
+        $project_logo_name = $dummy_project->getLogoAttrName();
+        if ($this->isImageUploaded($project_logo_name)) {
+            $img_path = $this->moveUploadedImageToImagesDir($project_logo_name, 'movies');
+
+            $prj->logo = $img_path;
         }
-        if (array_key_exists('logo_short',$prj_de)) {
-            $prj->set('logo_short', $prj_de['logo_short']);
+
+        $project_shortlogo_name = $dummy_project->getLogoShortAttrName();
+        if ($this->isImageUploaded($project_shortlogo_name)) {
+            $img_path = $this->moveUploadedImageToImagesDir($project_shortlogo_name, 'movies/images_small');
+
+            $prj->logo = $img_path;
         }
 
         $prj->save();
+    }
+
+    private function isImageUploaded( $image_id )
+    {
+        if ( !isset($_FILES[$image_id]) ) {
+            return false;
+        }
+
+        $file = $_FILES[$image_id];
+        if ( !file_exists($file['tmp_name']) || !is_uploaded_file($file['tmp_name']) ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function moveUploadedImageToImagesDir ( $image, $sub_dir )
+    {
+        $img_dir = "img/$sub_dir";
+        $upload_directory = dirname($_SERVER["SCRIPT_FILENAME"]) . '/' . $img_dir;
+        $image_file_name = str_replace(' ', '_', $_FILES[$image]['name']);
+        move_uploaded_file($_FILES[$image]["tmp_name"], "$upload_directory/$image_file_name");
+
+        return "$img_dir/$image_file_name";
     }
 
     private function updateMultilangInfo($prj_id, $p_data)
