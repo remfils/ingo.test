@@ -34,6 +34,8 @@ class ProjectRepository {
             ->where('lang.name', $lang)
             ->find_array();
 
+        $result = self::array_utf8_encode($result);
+
         return $result;
     }
 
@@ -94,6 +96,8 @@ class ProjectRepository {
             ->find_array();
 
         $model['comments'] = $result;
+
+        $model = self::array_utf8_encode($model);
 
         return $model;
     }
@@ -162,6 +166,8 @@ class ProjectRepository {
         foreach ( $result as $key => $item ) {
             $model[$item['language']]['comments'][] = $item;
         }
+
+        $model = self::array_utf8_encode($model);
 
         return $model;
     }
@@ -255,8 +261,6 @@ class ProjectRepository {
                     $item->save();
                 }
                 else {
-                    !d($field);
-
                     $q = $this->db->for_table('project_field_lang')
                         ->where_id_is($field['id'])->find_one();
 
@@ -294,6 +298,10 @@ class ProjectRepository {
                     $q = $this->db->for_table('project_comment_lang')
                         ->where_id_is($comment['id'])->find_one();
 
+                    if (!$q) {
+                        continue;
+                    }
+
                     if (array_key_exists('delete', $comment)) {
                         $q->delete();
                     }
@@ -305,5 +313,17 @@ class ProjectRepository {
                 }
             }
         }
+    }
+
+    public static function array_utf8_encode($dat)
+    {
+        if (is_string($dat))
+            return utf8_encode($dat);
+        if (!is_array($dat))
+            return $dat;
+        $ret = array();
+        foreach ($dat as $i => $d)
+            $ret[$i] = self::array_utf8_encode($d);
+        return $ret;
     }
 }

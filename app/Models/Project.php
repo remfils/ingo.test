@@ -68,6 +68,10 @@ class Project
 
     public function getFields() {
         $result = array();
+
+        if (!$this->entity)
+            return $result;
+
         foreach ( $this->entity as $lang => $item) {
             $i = 0;
             foreach ($item['fields'] as $key => $field) {
@@ -83,6 +87,10 @@ class Project
 
     public function getComments() {
         $result = array();
+
+        if (!$this->entity)
+            return $result;
+
         foreach ( $this->entity as $lang => $item) {
             $i = 0;
             foreach ($item['comments'] as $key => $comment) {
