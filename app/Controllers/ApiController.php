@@ -11,7 +11,8 @@ class ApiController
 {
     public function indexAction( Request $req, Application $app )
     {
-
+        $password = $app['security.encoder.digest']->encodePassword('admin');
+        return $password;
     }
 
     public function changeLanguage(Request $req, Application $app)

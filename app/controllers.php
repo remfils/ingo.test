@@ -9,6 +9,8 @@ $app->get($app['sub_domain'] . '/impressum', 'App\\Controllers\\MainController::
 
 /* API */
 
+$app->get($app['sub_domain'] . '/api', 'App\\Controllers\\ApiController::indexAction');
+
 $app->get($app['sub_domain'] . '/api/all-movies', 'App\\Controllers\\ApiController::allMoviesAction');
 
 $app->get($app['sub_domain'] . '/api/movie/{id}', 'App\\Controllers\\ApiController::movieDescriptionAction');
