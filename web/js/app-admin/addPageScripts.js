@@ -147,12 +147,16 @@ export function addCommentClickListeners() {
     });
 
     $("#CommentBox").on('click', ".remove", function(){
-        var id = this.id.split("_").pop();
+        var $this = $(this);
+        var id_de = $this.data('id-de');
+        var id_en = $this.data('id-en');
 
         var $field = $('#comment_' + id);
 
-        var remove_marker = createRemoveMarker('de','comments', id);
-        $field.append(remove_marker)
+        var remove_marker_de = createRemoveMarker('de','comments', id_de);
+        var remove_marker_en = createRemoveMarker('en','comments', id_en);
+        $field.append(remove_marker_de)
+            .append(remove_marker_en)
             .hide();
     });
 }
