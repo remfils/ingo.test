@@ -272,9 +272,13 @@ export default class IndexPage extends React.Component {
     }
 
     getMouseScrollDirection(e) {
-        var delta = (e.type === 'DOMMouseScroll' ?
-        e.originalEvent.detail * -40 :
-            e.originalEvent.wheelDelta);
+        var delta = 0;
+        if (e.type === 'DOMMouseScroll') {
+            e.originalEvent.detail * -40;
+        }
+        else {
+            delta = e.originalEvent.wheelDelta || e.originalEvent.deltaX || e.originalEvent.deltaY;
+        }
 
         return delta > 0 ? -1 : 1;
     }
@@ -289,6 +293,8 @@ export default class IndexPage extends React.Component {
                 $scrl_msg.hide();
             }});
         }*/
+
+        e.preventDefault();
 
         if ( this.is_transition ) {
             return;
