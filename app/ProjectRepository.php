@@ -237,20 +237,35 @@ class ProjectRepository {
 
                 if (array_key_exists('delete', $field)) {
                     if (!array_key_exists('new', $field)) {
-                        // delete existing fields
+                        $item = $this->db->for_table('project_field_lang')->where_id_is($field['id'])->find_one();
+
+                        if ($item) {
+                            $item->delete();
+                        }
                     }
                 }
                 else if (array_key_exists('new', $field)) {
-                    // create new fields
+                    $item = $this->db->for_table('project_field_lang')->create();
+
+                    $item->project_id = $prj_id;
+                    $item->lang_id = $lang['id'];
+                    $item->field_name = $field['name'];
+                    $item->field_value = $field['value'];
+
+                    $item->save();
                 }
                 else {
+                    !d($field);
+
                     $q = $this->db->for_table('project_field_lang')
                         ->where_id_is($field['id'])->find_one();
 
-                    $q->field_name = $field['name'];
-                    $q->field_value = $field['value'];
+                    if ($q) {
+                        $q->field_name = $field['name'];
+                        $q->field_value = $field['value'];
 
-                    $q->save();
+                        $q->save();
+                    }
                 }
             }
         }
@@ -266,9 +281,13 @@ class ProjectRepository {
             foreach ($comments as $k2 => $comment) {
                 if (array_key_exists('new', $comment)) {
                     if (!array_key_exists('delete', $comment)) {
-                        /*$q = $this->for_table('project_comment_lang')->create();
+                        $item = $this->for_table('project_comment_lang')->create();
 
-                        $q->*/
+                        $item->project_id = $prj_id;
+                        $item->lang_id = $lang['id'];
+                        $item->text = $comment['text'];
+
+                        $item->save();
                     }
                 }
                 else {
@@ -276,7 +295,7 @@ class ProjectRepository {
                         ->where_id_is($comment['id'])->find_one();
 
                     if (array_key_exists('delete', $comment)) {
-                        //$q->delete();
+                        $q->delete();
                     }
                     else {
                         $q->text = $comment['text'];
