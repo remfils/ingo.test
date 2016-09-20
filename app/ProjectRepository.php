@@ -36,8 +36,6 @@ class ProjectRepository {
             ->where('lang.name', $lang)
             ->find_array();
 
-        //$result = self::array_utf8_encode($result);
-
         return $result;
     }
 
