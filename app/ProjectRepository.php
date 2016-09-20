@@ -201,43 +201,43 @@ class ProjectRepository {
 
         $dummy_project = new Project(null);
 
-        $project_logo_name = $dummy_project->getLogoAttrName();
-        if ($this->isImageUploaded($project_logo_name)) {
-            $img_path = $this->moveUploadedImageToImagesDir($project_logo_name, 'movies');
+        if ($this->isImageUploaded($dummy_project, 'logo')) {
+            $img_path = $this->moveUploadedImageToImagesDir($dummy_project, 'logo', 'movies');
 
             $prj->logo = $img_path;
         }
 
-        $project_shortlogo_name = $dummy_project->getLogoShortAttrName();
-        if ($this->isImageUploaded($project_shortlogo_name)) {
-            $img_path = $this->moveUploadedImageToImagesDir($project_shortlogo_name, 'movies/images_small');
+        if ($this->isImageUploaded($dummy_project, 'logo_short')) {
+            $img_path = $this->moveUploadedImageToImagesDir($dummy_project, 'logo_short', 'movies/images_small');
 
-            $prj->logo = $img_path;
+            $prj->logo_short = $img_path;
         }
 
         $prj->save();
     }
 
-    private function isImageUploaded( $image_id )
+    private function isImageUploaded( $prj, $image_name, $id = 0 )
     {
-        if ( !isset($_FILES[$image_id]) ) {
+        $image_file_name = $prj->getUploadedImage('name', $image_name, $id);
+
+        if ( !$image_file_name ) {
             return false;
         }
 
-        $file = $_FILES[$image_id];
-        if ( !file_exists($file['tmp_name']) || !is_uploaded_file($file['tmp_name']) ) {
+        $tmp_name = $prj->getUploadedImage('tmp_name', $image_name, $id);
+        if ( !file_exists($tmp_name) || !is_uploaded_file($tmp_name) ) {
             return false;
         }
 
         return true;
     }
 
-    private function moveUploadedImageToImagesDir ( $image, $sub_dir )
+    private function moveUploadedImageToImagesDir ( $prj, $image_name, $sub_dir, $cid = 0 )
     {
         $img_dir = "img/$sub_dir";
         $upload_directory = dirname($_SERVER["SCRIPT_FILENAME"]) . '/' . $img_dir;
-        $image_file_name = str_replace(' ', '_', $_FILES[$image]['name']);
-        move_uploaded_file($_FILES[$image]["tmp_name"], "$upload_directory/$image_file_name");
+        $image_file_name = str_replace(' ', '_', $prj->getUploadedImage('name', $image_name, $cid));
+        move_uploaded_file($prj->getUploadedImage('tmp_name', $image_name, $cid), "$upload_directory/$image_file_name");
 
         return "$img_dir/$image_file_name";
     }
@@ -314,6 +314,10 @@ class ProjectRepository {
     {
         $langs = $this->db->for_table('lang')->find_array();
 
+        $dummy_project = new Project(null);
+
+        $image_urls = array();
+
         foreach($langs as $k => $lang) {
             $comments = $p_data[$lang['name']]['comments'];
 
@@ -323,29 +327,43 @@ class ProjectRepository {
                         $item = $this->for_table('project_comment_lang')->create();
 
                         $item->project_id = $prj_id;
-                        $item->lang_id = $lang['id'];
-                        $item->text = $comment['text'];
-
-                        $item->save();
                     }
                 }
                 else {
-                    $q = $this->db->for_table('project_comment_lang')
+                    $item = $this->db->for_table('project_comment_lang')
                         ->where_id_is($comment['id'])->find_one();
 
-                    if (!$q) {
+                    if (!$item) {
                         continue;
                     }
 
                     if (array_key_exists('delete', $comment)) {
-                        $q->delete();
-                    }
-                    else {
-                        $q->text = $comment['text'];
-
-                        $q->save();
+                        $item->delete();
+                        continue;
                     }
                 }
+
+                $item->text = $comment['text'];
+
+                if ( strcmp($lang['name'], 'de') == 0) {
+                    if ($this->isImageUploaded($dummy_project, 'comments', $p_data['de']['comments'][$k2]['id'])) {
+                        $image_path = $this->moveUploadedImageToImagesDir($dummy_project, 'comments','movies/comments', $p_data['de']['comments'][$k2]['id']);
+
+                        $image_urls[] = $image_path;
+                        $item->image_url = $image_path;
+                    }
+                    else {
+                        $image_urls[] = 0;
+                    }
+                }
+                else {
+                    $val = array_shift($image_urls);
+                    if ($val) {
+                        $item->image_url = $val;
+                    }
+                }
+
+                $item->save();
             }
         }
     }

@@ -177,6 +177,14 @@ class Project
         return "project[$lang][comments][$comment_id][image_url]";
     }
 
+    public function getUploadedImage($file_type, $image_name, $id = 0) {
+        if ( strcmp($image_name, 'comments') == 0 ) {
+            return $_FILES['project'][$file_type]['de'][$image_name][$id]['image_url'];
+        }
+
+        return $_FILES['project'][$file_type]['de'][$image_name];
+    }
+
     public function setProjectFromPost( $data )
     {
         $this->name = $data['name'];
