@@ -303,6 +303,54 @@ export default class IndexPage extends React.Component {
         tl.set($nav, {opacity:0}, 'enter-stage');
     }
 
+    getMouseScrollDirection(e) {
+        var delta = 0;
+        if (e.type === 'DOMMouseScroll') {
+            e.originalEvent.detail * -40;
+        }
+        else {
+            delta = e.originalEvent.wheelDelta || e.originalEvent.deltaX || e.originalEvent.deltaY;
+        }
+
+        return delta > 0 ? -1 : 1;
+    }
+
+    scrollListener(e) {
+        /*if ( this.is_scroll_message_shown ) {
+            this.is_scroll_message_shown = false;
+
+            var $scrl_msg = $(".scroll-message");
+
+            TweenLite.to($scrl_msg, 1, {bottom: "-3em", opacity: 0, onComplete: () => {
+                $scrl_msg.hide();
+            }});
+        }*/
+
+        e.preventDefault();
+
+        if ( this.is_transition ) {
+            return;
+        }
+
+        clearTimeout(this.scroll_timer);
+
+        var dir = this.getMouseScrollDirection(e);
+        var self = this;
+        this.scroll_counter += dir;
+        this.scroll_timer = setTimeout(function(){
+            self.scroll_counter = 0;
+        }, 100);
+
+        if(this.scroll_counter >= MAX_SCROLL_COUNTER_VALUE) {
+            console.debug("SCROLL(nextMovie)");
+            this.nextMovie();
+        }
+        else if ( this.scroll_counter <= -MAX_SCROLL_COUNTER_VALUE) {
+            console.debug("SCROLL(prevMovie)");
+            this.prevMovie();
+        }
+    }
+
     nextMovie() {
         this.is_transition = true;
 
