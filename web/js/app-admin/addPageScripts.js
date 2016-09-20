@@ -33,7 +33,19 @@ function addInputClickListenerForImageLoad(input_selector, image_selector) {
 }
 
 function addCommentUploadButtonClickListener() {
-    
+    $('.comment-image-input').on('change', function() {
+        var img_id = $(this).data('img-id');
+
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e){
+                $('#' + img_id).attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(this.files[0]);
+        }
+    })
 }
 
 var field_count = 1;
