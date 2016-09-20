@@ -36,7 +36,7 @@ class ProjectRepository {
             ->where('lang.name', $lang)
             ->find_array();
 
-        $result = self::array_utf8_encode($result);
+        //$result = self::array_utf8_encode($result);
 
         return $result;
     }
@@ -99,7 +99,7 @@ class ProjectRepository {
 
         $model['comments'] = $result;
 
-        $model = self::array_utf8_encode($model);
+        //$model = self::array_utf8_encode($model);
 
         return $model;
     }
@@ -169,7 +169,7 @@ class ProjectRepository {
             $model[$item['language']]['comments'][] = $item;
         }
 
-        $model = self::array_utf8_encode($model);
+        //$model = self::array_utf8_encode($model);
 
         return $model;
     }

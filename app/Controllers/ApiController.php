@@ -29,7 +29,7 @@ class ApiController
         $db = new ProjectRepository($app);
         $model = $db->getAllProjects();
 
-        $model = self::array_utf8_encode($model);
+        //$model = self::array_utf8_encode($model);
 
         $result = $app->json($model);
 
@@ -96,7 +96,7 @@ class ApiController
 
         $model['comments'] = $result;
 
-        $model = self::array_utf8_encode($model);
+        //$model = self::array_utf8_encode($model);
 
         return json_encode($model);
     }
