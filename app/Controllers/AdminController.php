@@ -144,10 +144,10 @@ class AdminController
             }*/
         }
 
-        return $app['twig']->render('admin/new-project.html.twig', array(
-            'movie' => new Project(),
+        return $app['twig']->render('admin/edit-project.html.twig', array(
             'success_msg' => $success_message,
-            'error_msg' => $error_message
+            'error_msg' => $error_message,
+            'movie' => new Project(null)
         ));
     }
 

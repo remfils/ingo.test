@@ -300,7 +300,7 @@ a, a:hover, a:focus, a:visited, a:active {
 }
 
 .project-main-image {
-    height: 70%;
+    height: 80%;
     overflow: hidden;
     position: relative;
 }
@@ -378,7 +378,7 @@ a, a:hover, a:focus, a:visited, a:active {
 
 .movie-title-section {
     background-color: rgba(255,255,255,0);
-    height: 30%;
+    height: 20%;
     position: relative;
 }
 

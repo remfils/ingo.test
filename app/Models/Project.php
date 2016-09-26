@@ -79,6 +79,10 @@ class Project
 
     public function getFields() {
         $result = array();
+
+        if (!$this->entity)
+            return $result;
+
         foreach ( $this->entity as $lang => $item) {
             $i = 0;
             foreach ($item['fields'] as $key => $field) {
@@ -94,6 +98,10 @@ class Project
 
     public function getComments() {
         $result = array();
+
+        if (!$this->entity)
+            return $result;
+
         foreach ( $this->entity as $lang => $item) {
             $i = 0;
             foreach ($item['comments'] as $key => $comment) {
@@ -167,6 +175,14 @@ class Project
 
     public function getCommentsImageUrlAttrName($lang, $comment_id) {
         return "project[$lang][comments][$comment_id][image_url]";
+    }
+
+    public function getUploadedImage($file_type, $image_name, $id = 0) {
+        if ( strcmp($image_name, 'comments') == 0 ) {
+            return $_FILES['project'][$file_type]['de'][$image_name][$id]['image_url'];
+        }
+
+        return $_FILES['project'][$file_type]['de'][$image_name];
     }
 
     public function setProjectFromPost( $data )

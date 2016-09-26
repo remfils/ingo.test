@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\Project;
+
 class ProjectRepository {
     private $db;
     private $app;
@@ -95,6 +97,8 @@ class ProjectRepository {
 
         $model['comments'] = $result;
 
+        //$model = self::array_utf8_encode($model);
+
         return $model;
     }
 
@@ -163,6 +167,8 @@ class ProjectRepository {
             $model[$item['language']]['comments'][] = $item;
         }
 
+        //$model = self::array_utf8_encode($model);
+
         return $model;
     }
 
@@ -191,14 +197,47 @@ class ProjectRepository {
             'preview_url' => $prj_de['preview_url']
         ));
 
-        if (array_key_exists('logo',$prj_de)) {
-            $prj->set('logo', $prj_de['logo']);
+        $dummy_project = new Project(null);
+
+        if ($this->isImageUploaded($dummy_project, 'logo')) {
+            $img_path = $this->moveUploadedImageToImagesDir($dummy_project, 'logo', 'movies');
+
+            $prj->logo = $img_path;
         }
-        if (array_key_exists('logo_short',$prj_de)) {
-            $prj->set('logo_short', $prj_de['logo_short']);
+
+        if ($this->isImageUploaded($dummy_project, 'logo_short')) {
+            $img_path = $this->moveUploadedImageToImagesDir($dummy_project, 'logo_short', 'movies/images_small');
+
+            $prj->logo_short = $img_path;
         }
 
         $prj->save();
+    }
+
+    private function isImageUploaded( $prj, $image_name, $id = 0 )
+    {
+        $image_file_name = $prj->getUploadedImage('name', $image_name, $id);
+
+        if ( !$image_file_name ) {
+            return false;
+        }
+
+        $tmp_name = $prj->getUploadedImage('tmp_name', $image_name, $id);
+        if ( !file_exists($tmp_name) || !is_uploaded_file($tmp_name) ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function moveUploadedImageToImagesDir ( $prj, $image_name, $sub_dir, $cid = 0 )
+    {
+        $img_dir = "img/$sub_dir";
+        $upload_directory = dirname($_SERVER["SCRIPT_FILENAME"]) . '/' . $img_dir;
+        $image_file_name = str_replace(' ', '_', $prj->getUploadedImage('name', $image_name, $cid));
+        move_uploaded_file($prj->getUploadedImage('tmp_name', $image_name, $cid), "$upload_directory/$image_file_name");
+
+        return "$img_dir/$image_file_name";
     }
 
     private function updateMultilangInfo($prj_id, $p_data)
@@ -237,20 +276,33 @@ class ProjectRepository {
 
                 if (array_key_exists('delete', $field)) {
                     if (!array_key_exists('new', $field)) {
-                        // delete existing fields
+                        $item = $this->db->for_table('project_field_lang')->where_id_is($field['id'])->find_one();
+
+                        if ($item) {
+                            $item->delete();
+                        }
                     }
                 }
                 else if (array_key_exists('new', $field)) {
-                    // create new fields
+                    $item = $this->db->for_table('project_field_lang')->create();
+
+                    $item->project_id = $prj_id;
+                    $item->lang_id = $lang['id'];
+                    $item->field_name = $field['name'];
+                    $item->field_value = $field['value'];
+
+                    $item->save();
                 }
                 else {
                     $q = $this->db->for_table('project_field_lang')
                         ->where_id_is($field['id'])->find_one();
 
-                    $q->field_name = $field['name'];
-                    $q->field_value = $field['value'];
+                    if ($q) {
+                        $q->field_name = $field['name'];
+                        $q->field_value = $field['value'];
 
-                    $q->save();
+                        $q->save();
+                    }
                 }
             }
         }
@@ -260,31 +312,69 @@ class ProjectRepository {
     {
         $langs = $this->db->for_table('lang')->find_array();
 
+        $dummy_project = new Project(null);
+
+        $image_urls = array();
+
         foreach($langs as $k => $lang) {
             $comments = $p_data[$lang['name']]['comments'];
 
             foreach ($comments as $k2 => $comment) {
                 if (array_key_exists('new', $comment)) {
                     if (!array_key_exists('delete', $comment)) {
-                        /*$q = $this->for_table('project_comment_lang')->create();
+                        $item = $this->for_table('project_comment_lang')->create();
 
-                        $q->*/
+                        $item->project_id = $prj_id;
                     }
                 }
                 else {
-                    $q = $this->db->for_table('project_comment_lang')
+                    $item = $this->db->for_table('project_comment_lang')
                         ->where_id_is($comment['id'])->find_one();
 
-                    if (array_key_exists('delete', $comment)) {
-                        //$q->delete();
+                    if (!$item) {
+                        continue;
                     }
-                    else {
-                        $q->text = $comment['text'];
 
-                        $q->save();
+                    if (array_key_exists('delete', $comment)) {
+                        $item->delete();
+                        continue;
                     }
                 }
+
+                $item->text = $comment['text'];
+
+                if ( strcmp($lang['name'], 'de') == 0) {
+                    if ($this->isImageUploaded($dummy_project, 'comments', $p_data['de']['comments'][$k2]['id'])) {
+                        $image_path = $this->moveUploadedImageToImagesDir($dummy_project, 'comments','movies/comments', $p_data['de']['comments'][$k2]['id']);
+
+                        $image_urls[] = $image_path;
+                        $item->image_url = $image_path;
+                    }
+                    else {
+                        $image_urls[] = 0;
+                    }
+                }
+                else {
+                    $val = array_shift($image_urls);
+                    if ($val) {
+                        $item->image_url = $val;
+                    }
+                }
+
+                $item->save();
             }
         }
+    }
+
+    public static function array_utf8_encode($dat)
+    {
+        if (is_string($dat))
+            return utf8_encode($dat);
+        if (!is_array($dat))
+            return $dat;
+        $ret = array();
+        foreach ($dat as $i => $d)
+            $ret[$i] = self::array_utf8_encode($d);
+        return $ret;
     }
 }

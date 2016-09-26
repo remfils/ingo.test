@@ -33,9 +33,10 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 
 $app->register(new Arseniew\Silex\Provider\IdiormServiceProvider(), array(
     'idiorm.db.options' => array(
-        'connection_string' => 'mysql:host=localhost;dbname=' . $db_name,
+        'connection_string' => 'mysql:host=localhost;dbname=' . $db_name.';charset=utf8',
         'username' => $db_user,
-        'password' => $db_pass
+        'password' => $db_pass,
+        'driver_options', array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8')
     )
 ));
 

@@ -10,7 +10,8 @@ var LOCAL_WEBSITE = 'http://ingo.t';
 module.exports = {
     entry: {
         main: './web/js/app/main.js',
-        admin: './web/js/app-admin/admin-main.js'
+        admin: './web/js/app-admin/admin-main.js',
+        NewProjectScript: './web/js/app-admin/NewProjectScript.js'
     },
     output: {
         path: './web/js/',

@@ -33,7 +33,19 @@ function addInputClickListenerForImageLoad(input_selector, image_selector) {
 }
 
 function addCommentUploadButtonClickListener() {
-    
+    $('.comment-image-input').on('change', function() {
+        var img_id = $(this).data('img-id');
+
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e){
+                $('#' + img_id).attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(this.files[0]);
+        }
+    })
 }
 
 var field_count = 1;
@@ -48,25 +60,28 @@ export function addFieldButtonsClickListeners() {
     });
 
     $("#ProjectInfoTable").on('click', ".remove", function(){
-        var id = this.id.split("-").pop();
+        var $this = $(this);
+        var en_id = $this.data('id-en');
+        var de_id = $this.data('id-de');
 
-        var $field = $('#field-' + id);
+        var remove_field = function(lang, id) {
+            var $field = $('#field-' + lang + '-' + id);
 
-        if ( $field.parent().children().length > 1 ) {
-            var remove_marker = createRemoveMarker('fields', id);
+            var remove_marker = createRemoveMarker(lang, 'fields', id);
             $field.append(remove_marker);
-            $field.hide();
         }
-        else {
-            alert('There has to be at least one field');
-        }
+
+        remove_field('en', en_id);
+        remove_field('de', de_id);
+
+        $('#ProjectFieldGroup-' + de_id).hide();
     });
 };
 
-function createRemoveMarker(type, id) {
+function createRemoveMarker(lang, type, id) {
     var marker = document.createElement('input');
     marker.type = 'hidden';
-    marker.name = 'project[de]['+type+']['+id+'][delete]';
+    marker.name = 'project['+lang+']['+type+']['+id+'][delete]';
     marker.value = true;
 
     return marker;
@@ -77,7 +92,7 @@ function createField(name = "", value = "") {
 
     var container = document.createElement('div');
     container.classList.add('form-group');
-    container.id = "field-" + field_count;
+    container.id = "ProjectFieldGroup-" + field_count;
 
     var input_container = document.createElement('div');
     input_container.classList.add('col-lg-12');
@@ -91,6 +106,9 @@ function createField(name = "", value = "") {
     container.appendChild(input_container);
 
     var new_marker = createNewMarker('de', 'fields', field_count);
+    container.appendChild(new_marker);
+
+    new_marker = createNewMarker('en', 'fields', field_count);
     container.appendChild(new_marker);
 
     var field_container = document.createElement('div');
@@ -114,6 +132,7 @@ function createField(name = "", value = "") {
 
 function createLangRow(lang, name, value) {
     var lang_container = document.createElement('div');
+    lang_container.id = "field-" + lang + "-" + field_count;
     lang_container.classList.add('row');
     lang_container.classList.add('form-group');
 
@@ -170,12 +189,16 @@ export function addCommentClickListeners() {
     });
 
     $("#CommentBox").on('click', ".remove", function(){
-        var id = this.id.split("_").pop();
+        var $this = $(this);
+        var id_de = $this.data('id-de');
+        var id_en = $this.data('id-en');
 
         var $field = $('#comment_' + id);
 
-        var remove_marker = createRemoveMarker('comments', id);
-        $field.append(remove_marker)
+        var remove_marker_de = createRemoveMarker('de','comments', id_de);
+        var remove_marker_en = createRemoveMarker('en','comments', id_en);
+        $field.append(remove_marker_de)
+            .append(remove_marker_en)
             .hide();
     });
 }

@@ -52,9 +52,12 @@ export function fromMovieToWorks(movie_page, params={}) {
 function createTransition(type, prev_page, params) {
     params["prev_page"] = prev_page;
 
-    dispatcher.dispatch({
-        type: "TRANSITION_TO",
-        transition_type: type,
-        params
-    });
+    setTimeout(() => {
+        dispatcher.dispatch({
+            type: "TRANSITION_TO",
+            transition_type: type,
+            params
+        });
+    }, 1);
+
 }
