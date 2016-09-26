@@ -32,9 +32,6 @@ class TransitionStore extends EventEmmiter {
         switch ( action.type ) {
             case "TRANSITION_TO":
                 console.log("is transition");
-                /*if ( this.current_transition ) {
-                    return;
-                }*/
 
                 this.current_transition = {
                     type: action.transition_type
@@ -45,7 +42,10 @@ class TransitionStore extends EventEmmiter {
                     trans[param] = params[param];
                 }
 
-                this.emit("leave");
+                setTimeout(() => {
+                    this.emit("leave");
+                }, 1);
+
                 break;
         }
     }

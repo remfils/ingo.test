@@ -276,7 +276,12 @@ export default class MoviePage extends React.Component {
 
         var scroll_top = $(window).scrollTop();
 
-        if (scroll_top=== 0) {
+        if ( this.is_transition )
+            return false;
+
+        this.is_transition = true;
+
+        if (scroll_top === 0) {
             TransitionActions.fromMovieToIndexTransition(this, {});
         }
         else {
