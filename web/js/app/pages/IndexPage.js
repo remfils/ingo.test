@@ -332,8 +332,6 @@ export default class IndexPage extends React.Component {
 
         this.current_content_index++;
 
-        this.toggleArrowIfNessecery();
-
         this.setState({
             current_content: this.content[this.current_content_index],
             movement_direction: "right"
@@ -366,8 +364,6 @@ export default class IndexPage extends React.Component {
         this.is_transition = true;
 
         this.current_content_index--;
-
-        this.toggleArrowIfNessecery();
 
         this.setState({
             current_content: this.content[this.current_content_index],
