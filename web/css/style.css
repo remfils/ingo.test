@@ -107,6 +107,13 @@ a, a:hover, a:focus, a:visited, a:active {
     height: 100%;
 }
 
+.loading-text {
+    position: absolute;
+    right: 40px;
+    bottom: 100px;
+    color: lightgray;
+}
+
 .loading-percents {
     color: lightgray;
     position: absolute;
@@ -805,7 +812,7 @@ a:active {
     height: 100%;
     vertical-align: bottom;
     padding-bottom: 5em;
-    padding-left: 100px;
+    padding-left: 140px;
 }
 
 /* INDEX PAGE: TitleColoredTable */
