@@ -5,7 +5,7 @@ import config from '../../config';
 
 var $ = require('jquery');
 
-const POST_URL = 'url';
+const POST_URL = 'api/email';
 
 export default class EmailForm extends React.Component {
     static box_counter = 0;
@@ -42,11 +42,7 @@ export default class EmailForm extends React.Component {
             form_state: EmailForm.STATE_MESSAGE_IS_SENDING
         });
 
-        var post_data = {};
-
-        $('.email-form :input').each((i, item)=>{
-            post_data[$(item).attr('name')] = $(item).val();
-        });
+        var post_data = $('.email-form').serialize();
 
         console.debug('sendenClickListener: sending ', post_data);
 

@@ -14,6 +14,8 @@ $db_name = "wsh1490_ingo";
 $db_user = "wsh1490_ingo";
 $db_pass = "777qwe777";
 
+$app['sender_email'] = 'pereskokow@gmail.com';
+
 if ( $app['debug'] == true ) {
     $db_name = "ingo.test";
     $db_user = "root";
