@@ -17,7 +17,7 @@ import FullDescription from './MoviePage/FullDescription';
 import Description from './MoviePage/Description';
 import PreviewFrame from './MoviePage/PreviewFrame';
 import * as TransitionActions from "../actions/TransitionActions";
-import { asset, notReadyYet } from '../funcitons';
+import { asset, notReadyYet, changeUrl } from '../funcitons';
 import config from '../config';
 /*import MovieModel from '../models/MovieModel';*/
 import ShortProjectModel from '../models/ShortProjectModel';
@@ -368,7 +368,7 @@ export default class MoviePage extends React.Component {
 
         this.loadDataForCurrentMovie();
 
-        window.history.pushState({}, '', '/movie/' + this.short_models[this.current_movie_index].id);
+        changeUrl('movie/' + this.short_models[this.current_movie_index].id);
     }
 
     colorTransition() {
