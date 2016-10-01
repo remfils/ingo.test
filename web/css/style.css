@@ -1006,6 +1006,7 @@ a:active {
     top: 300px;
     width: 100%;
     font-size: 24px;
+    letter-spacing: 2px;
 }
 
 .contact-info p {
