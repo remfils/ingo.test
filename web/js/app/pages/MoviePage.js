@@ -17,7 +17,7 @@ import FullDescription from './MoviePage/FullDescription';
 import Description from './MoviePage/Description';
 import PreviewFrame from './MoviePage/PreviewFrame';
 import * as TransitionActions from "../actions/TransitionActions";
-import { asset, notReadyYet } from '../funcitons';
+import { asset, notReadyYet, changeUrl } from '../funcitons';
 import config from '../config';
 /*import MovieModel from '../models/MovieModel';*/
 import ShortProjectModel from '../models/ShortProjectModel';
@@ -315,13 +315,18 @@ export default class MoviePage extends React.Component {
     nextMovie() {
         console.debug(this.isTransitionLocked(), this.current_movie_index, this.short_models.length);
 
-        if ( this.isTransitionLocked() || (this.current_movie_index >= this.short_models.length) ) {
+        if ( this.isTransitionLocked() ) {
             return false;
         }
 
-        this.setState({movement_direction: "right"});
+        if (this.current_movie_index >= this.short_models.length -1) {
+            this.current_movie_index = 0;
+        }
+        else {
+            this.current_movie_index++;
+        }
 
-        this.current_movie_index++;
+        this.setState({movement_direction: "right"});
 
         this.transitionToNextMovie(false);
     }
@@ -329,13 +334,18 @@ export default class MoviePage extends React.Component {
     prevMovieClick(event) {
         event.preventDefault();
 
-        if ( this.isTransitionLocked() || (this.current_movie_index - 1 < 0) ) {
+        if ( this.isTransitionLocked() ) {
             return false;
         }
 
-        this.setState({movement_direction: "left"});
+        if (this.current_movie_index < 1) {
+            this.current_movie_index = this.short_models.length - 1;
+        }
+        else {
+            this.current_movie_index--;
+        }
 
-        this.current_movie_index--;
+        this.setState({movement_direction: "left"});
 
         this.transitionToNextMovie(true);
 
@@ -368,7 +378,7 @@ export default class MoviePage extends React.Component {
 
         this.loadDataForCurrentMovie();
 
-        window.history.pushState({}, '', '/movie/' + this.short_models[this.current_movie_index].id);
+        changeUrl('movie/' + this.short_models[this.current_movie_index].id);
     }
 
     colorTransition() {

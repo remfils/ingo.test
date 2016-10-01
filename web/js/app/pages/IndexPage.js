@@ -126,30 +126,6 @@ export default class IndexPage extends React.Component {
         $(window).off('mousewheel');
     }
 
-    scrollListener(e) {
-        if ( this.is_transition ) {
-            return;
-        }
-
-        clearTimeout(this.scroll_timer);
-
-        var dir = this.getMouseScrollDirection(e);
-        var self = this;
-        this.scroll_counter += dir;
-        this.scroll_timer = setTimeout(function(){
-            self.scroll_counter = 0;
-        }, 100);
-
-        if(this.scroll_counter >= MAX_SCROLL_COUNTER_VALUE) {
-            console.debug("SCROLL(nextMovie)");
-            this.nextMovie();
-        }
-        else if ( this.scroll_counter <= -MAX_SCROLL_COUNTER_VALUE) {
-            console.debug("SCROLL(prevMovie)");
-            this.prevMovie();
-        }
-    }
-
     getMouseScrollDirection(e) {
         var delta = e.deltaY;
 
@@ -356,8 +332,6 @@ export default class IndexPage extends React.Component {
 
         this.current_content_index++;
 
-        this.toggleArrowIfNessecery();
-
         this.setState({
             current_content: this.content[this.current_content_index],
             movement_direction: "right"
@@ -390,8 +364,6 @@ export default class IndexPage extends React.Component {
         this.is_transition = true;
 
         this.current_content_index--;
-
-        this.toggleArrowIfNessecery();
 
         this.setState({
             current_content: this.content[this.current_content_index],

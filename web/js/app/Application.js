@@ -7,7 +7,7 @@ import AboutPage from './pages/AboutPage';
 import WorksPage from './pages/WorksPage';
 import ImpressumPage from './pages/ImpressumPage';
 import TransitionStore from './stores/TransitionStore';
-import { asset, createCountdownCallback } from './funcitons';
+import { asset, createCountdownCallback, changeUrl } from './funcitons';
 import config from './config';
 
 import ShortProjectModel from './models/ShortProjectModel';
@@ -125,7 +125,7 @@ export default class Application extends React.Component {
 
     setUrl(url) {
         url = url.substr(1);
-        window.history.pushState({}, '', config.SITE_NAME + url);
+        changeUrl(url);
     }
 
     pushPage(page) {

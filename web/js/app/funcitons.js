@@ -52,3 +52,7 @@ export function lockScroll() {
 export function unlockScroll() {
     $(document).unbind('scroll');
 }
+
+export function changeUrl(clean_url) {
+    window.history.pushState({}, '', config.SITE_NAME + config.SUBDOMAIN_NAME + clean_url);
+}

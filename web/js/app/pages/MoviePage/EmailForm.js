@@ -87,7 +87,7 @@ export default class EmailForm extends React.Component {
         }
 
         return <form id={this._id} className={"email-form " + this.props.className}>
-            <h1>KONTAKTFORMULAR</h1>
+            <h1>LET'S TALK</h1>
 
             {response_msg}
 
