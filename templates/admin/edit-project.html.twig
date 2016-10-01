@@ -172,7 +172,7 @@ Editing Project:
                                 <div class="form-group">
                                     <label for="comment_img_{{ comment.de.id }}" class="col-sm-2 control-label">Image:</label>
                                     <div class="col-sm-4">
-                                        <img id="CommentImage-{{ comment.de.id }}" src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image" width="100%">
+                                        <img id="CommentImage-{{ comment.de.id }}" src="{{ app.asset_path }}/{{ comment.image_url }}" alt="Comment Image">
                                     </div>
                                     <div class="col-sm-6">
                                         <input class="comment-image-input" data-img-id="CommentImage-{{ comment.de.id }}" type="file" name="{{ movie.getCommentsImageUrlAttrName('de', comment.de.id) }}" />

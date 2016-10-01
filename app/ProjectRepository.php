@@ -322,9 +322,10 @@ class ProjectRepository {
             foreach ($comments as $k2 => $comment) {
                 if (array_key_exists('new', $comment)) {
                     if (!array_key_exists('delete', $comment)) {
-                        $item = $this->for_table('project_comment_lang')->create();
+                        $item = $this->db->for_table('project_comment_lang')->create();
 
                         $item->project_id = $prj_id;
+                        $item->lang_id = $lang['id'];
                     }
                 }
                 else {
@@ -344,8 +345,8 @@ class ProjectRepository {
                 $item->text = $comment['text'];
 
                 if ( strcmp($lang['name'], 'de') == 0) {
-                    if ($this->isImageUploaded($dummy_project, 'comments', $p_data['de']['comments'][$k2]['id'])) {
-                        $image_path = $this->moveUploadedImageToImagesDir($dummy_project, 'comments','movies/comments', $p_data['de']['comments'][$k2]['id']);
+                    if ($this->isImageUploaded($dummy_project, 'comments', $k2)) {
+                        $image_path = $this->moveUploadedImageToImagesDir($dummy_project, 'comments','movies/comments', $k2);
 
                         $image_urls[] = $image_path;
                         $item->image_url = $image_path;

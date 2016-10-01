@@ -97,3 +97,9 @@ html, body {
     display: table-cell;
     float: none;
 }
+
+/* ADD NEW PAGE */
+
+.comment-block img {
+    width: 100%;
+}

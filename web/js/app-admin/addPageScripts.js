@@ -33,7 +33,7 @@ function addInputClickListenerForImageLoad(input_selector, image_selector) {
 }
 
 function addCommentUploadButtonClickListener() {
-    $('.comment-image-input').on('change', function() {
+    $('#CommentBox').on('change', '.comment-image-input', function() {
         var img_id = $(this).data('img-id');
 
         if (this.files && this.files[0]) {
@@ -193,7 +193,7 @@ export function addCommentClickListeners() {
         var id_de = $this.data('id-de');
         var id_en = $this.data('id-en');
 
-        var $field = $('#comment_' + id);
+        var $field = $('#comment_' + id_de);
 
         var remove_marker_de = createRemoveMarker('de','comments', id_de);
         var remove_marker_en = createRemoveMarker('en','comments', id_en);
@@ -206,7 +206,8 @@ export function addCommentClickListeners() {
 function createComment() {
     comment_count ++;
 
-    var comment_container = createDiv(comment_count, ['form-group','comment-block']);
+    var comment_container = createDiv("comment_" + comment_count, ['form-group','comment-block']);
+
     var input_container = createDiv(null, 'col-sm-1');
     comment_container.appendChild(input_container);
 
@@ -229,28 +230,38 @@ function createComment() {
     comment_container.appendChild(btn_container);
 
     var marker = createNewMarker('de', 'comments', comment_count);
+    comment_container.appendChild(marker);
 
-    comment_container.id = 'Comment-' + comment_container;
+    marker = createNewMarker('en', 'comments', comment_count);
+    comment_container.appendChild(marker);
 
     $('#CommentBox').append(comment_container);
 }
 
 function createCommentLogo(comment_id) {
     var container = createDiv(null, 'form-group');
+    var IMAGE_ID = 'CommentImage-' + comment_count;
 
-    var logo_name = 'project[de][comments][' + comment_id + ']';
+    var logo_name = 'project[de][comments][' + comment_id + '][image_url]';
 
     var label = createElement('label', null, ['col-sm-2','control-label']);
     label.innerHTML = "Image:";
     label.for = logo_name;
     container.appendChild(label);
 
+    var img_container = createDiv(null, ['col-sm-4']);
+    var img = createElement('img', IMAGE_ID);
+
+    img_container.appendChild(img);
+    container.appendChild(img_container);
+
     var input_container = createDiv(null, 'col-sm-6');
 
-    var input = document.createElement('input');
+    var input = createElement('input', null, ['comment-image-input']);
     input.type = "file";
     input.name = logo_name;
     input_container.appendChild(input);
+    input.dataset.imgId = IMAGE_ID;
 
     container.appendChild(input_container);
 
@@ -283,6 +294,8 @@ function createCommentText(lang, comment_id) {
 function createRemoveCommentButton(comment_id) {
     var btn = createElement('span', 'remove_comment_' + comment_id, ['btn', 'btn-sm', 'btn-danger', 'remove']);
     btn.innerHTML = 'Remove Comment';
+    btn.dataset.idDe = comment_id;
+    btn.dataset.idEn = comment_id;
 
     return btn;
 }
