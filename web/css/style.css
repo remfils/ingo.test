@@ -538,6 +538,7 @@ a.arrow:hover {
     border: medium none;
     border-collapse: collapse;
     margin-bottom: 250px;
+    width: 100%;
 }
 
 .movie-comments tr,
