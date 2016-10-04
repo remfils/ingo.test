@@ -13,6 +13,8 @@ $app->get($app['sub_domain'] . '/api', 'App\\Controllers\\ApiController::indexAc
 
 $app->get($app['sub_domain'] . '/api/all-movies', 'App\\Controllers\\ApiController::allMoviesAction');
 
+$app->get($app['sub_domain'] . '/api/page/{page}', 'App\\Controllers\\ApiController::indexPageAction');
+
 $app->get($app['sub_domain'] . '/api/movie/{id}', 'App\\Controllers\\ApiController::movieDescriptionAction');
 
 $app->get($app['sub_domain'] . '/api/change-language/{language}', 'App\\Controllers\\ApiController::changeLanguage');

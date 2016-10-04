@@ -35,17 +35,26 @@ export default class ImpressumPage extends React.Component {
 
     componentWillMount() {
 
-        setTimeout(()=>{
+        $.ajax({
+            url: config.SITE_NAME + 'api/page/impressum',
+            dataType: 'json',
+            success: (data) => {
+                console.debug(data);
+                this.setState({dataState: STATUS_LOADED, data: data});
+            }
+        });
+
+        /*setTimeout(()=>{
             var data = {
-                pageTitle: "Impressum",
-                infoHeader: "Verantwortlich für den Inhalt dieser Seite:",
-                infoTitle: "Ingo Scheel",
-                infoLabelFirst: "Thielenstraße 13  I  50825 Köln ",
-                infoLabelSecond: "Tel: 0163 8765 082  I  E-Mail: ingo.scheel@yahoo.de",
-                infoText: "Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 6 Abs.1 MDStV und § 8 Abs.1 TDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich."
+                page_title: "Impressum",
+                info_header: "Verantwortlich für den Inhalt dieser Seite:",
+                info_title: "Ingo Scheel",
+                info_label_first: "Thielenstraße 13  I  50825 Köln ",
+                info_label_second: "Tel: 0163 8765 082  I  E-Mail: ingo.scheel@yahoo.de",
+                info_text: "Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 6 Abs.1 MDStV und § 8 Abs.1 TDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich."
             };
             this.setState({dataState: STATUS_LOADED, data: data});
-        }, 1000);
+        }, 1000);*/
 
     }
 
@@ -142,12 +151,12 @@ export default class ImpressumPage extends React.Component {
         if (this.state.dataState === STATUS_LOADED) {
             var d = this.state.data;
 
-            pageTitle = d.pageTitle;
-            infoHeader = d.infoHeader;
-            infoTitle = d.infoTitle;
-            infoLabelFirst = d.infoLabelFirst;
-            infoLabelSecond = d.infoLabelSecond;
-            infoText = d.infoText;
+            pageTitle = d.page_title;
+            infoHeader = d.info_header;
+            infoTitle = d.info_title;
+            infoLabelFirst = d.info_label_first;
+            infoLabelSecond = d.info_label_second;
+            infoText = d.info_text;
         }
 
         return (
