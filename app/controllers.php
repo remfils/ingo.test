@@ -34,3 +34,5 @@ $app->match($app['sub_domain'] . '/admin/add/project', 'App\\Controllers\\AdminC
     ->bind('admin-add_project');
 
 $app->get($app['sub_domain'] . '/admin/remove/project/{id}', 'App\\Controllers\\AdminController::removeProjectAction');
+
+$app->get($app['sub_domain'] . '/admin/edit/impressum', 'App\\Controllers\\AdminController::editImpressumPage');

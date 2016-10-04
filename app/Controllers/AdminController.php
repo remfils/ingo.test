@@ -67,6 +67,12 @@ class AdminController
         ));
     }
 
+    public function editImpressumPage(Request $req, Application $app) {
+        //$model
+
+        return $app['twig']->render('admin/edit-impressum.html.twig');
+    }
+
     public function addProjectAction( Request $req, Application $app ) {
         $success_message = '';
         $error_message = '';
