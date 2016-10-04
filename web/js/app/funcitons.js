@@ -54,5 +54,5 @@ export function unlockScroll() {
 }
 
 export function changeUrl(clean_url) {
-    window.history.pushState({}, '', config.SITE_NAME + config.SUBDOMAIN_NAME + clean_url);
+    window.history.pushState({}, '', config.SITE_NAME + clean_url);
 }
