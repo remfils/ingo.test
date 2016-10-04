@@ -18,12 +18,34 @@ import ShortProjectModel from "../models/ShortProjectModel";
 import MoviePage from './MoviePage';
 import EmailForm from './MoviePage/EmailForm';
 
+const STATUS_INIT = "page_init";
+const STATUS_LOADING = "page_loading";
+const STATUS_LOADED = "page_loaded";
+const STATUS_ERROR = "page_error";
+
 export default class ImpressumPage extends React.Component {
     constructor() {
         super();
+
+        this.state = {
+            dataState: STATUS_INIT,
+            data: null
+        };
     }
 
     componentWillMount() {
+
+        setTimeout(()=>{
+            var data = {
+                pageTitle: "Impressum",
+                infoHeader: "Verantwortlich für den Inhalt dieser Seite:",
+                infoTitle: "Ingo Scheel",
+                infoLabelFirst: "Thielenstraße 13  I  50825 Köln ",
+                infoLabelSecond: "Tel: 0163 8765 082  I  E-Mail: ingo.scheel@yahoo.de",
+                infoText: "Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 6 Abs.1 MDStV und § 8 Abs.1 TDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich."
+            };
+            this.setState({dataState: STATUS_LOADED, data: data});
+        }, 1000);
 
     }
 
@@ -110,6 +132,23 @@ export default class ImpressumPage extends React.Component {
     }
 
     render() {
+        var pageTitle = "Impressum",
+            infoHeader = "Verantwortlich für den Inhalt dieser Seite:",
+            infoTitle = "Ingo Scheel",
+            infoLabelFirst = "Thielenstraße 13  I  50825 Köln ",
+            infoLabelSecond = "Tel: 0163 8765 082  I  E-Mail: ingo.scheel@yahoo.de",
+            infoText = "";
+
+        if (this.state.dataState === STATUS_LOADED) {
+            var d = this.state.data;
+
+            pageTitle = d.pageTitle;
+            infoHeader = d.infoHeader;
+            infoTitle = d.infoTitle;
+            infoLabelFirst = d.infoLabelFirst;
+            infoLabelSecond = d.infoLabelSecond;
+            infoText = d.infoText;
+        }
 
         return (
             <section id='ImpressumPage' class='title-container impressum-page'>
@@ -126,19 +165,18 @@ export default class ImpressumPage extends React.Component {
                     </tr>
                     <tr>
                         <td class="title-content">
-                            <p><strong>Verantwortlich für den Inhalt dieser Seite:</strong></p>
+                            <p><strong>{infoHeader}</strong></p>
 
                             <p class="ingo-info">
-                                <strong>Ingo Scheel</strong> <br/>
+                                <strong>{infoTitle}</strong> <br/>
 
-                                Thielenstraße 13  I  50825 Köln <br/>
+                                {infoLabelFirst}<br/>
 
-                                Tel: 0163 8765 082  I  E-Mail: ingo.scheel@yahoo.de
+                                {infoLabelSecond}
                             </p>
 
                             <p class="ingo-description">
-                                Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.<br/>
-                                Als Diensteanbieter sind wir gemäß § 6 Abs.1 MDStV und § 8 Abs.1 TDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
+                                {infoText}
                             </p>
                         </td>
                     </tr>
@@ -152,7 +190,7 @@ export default class ImpressumPage extends React.Component {
 
                 <div class="title-header">
                     <AlphaBox>
-                        <span class="movie-title contact-title">Impressum</span>
+                        <span class="movie-title contact-title">{pageTitle}</span>
                     </AlphaBox>
                 </div>
 
