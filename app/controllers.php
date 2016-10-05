@@ -35,4 +35,9 @@ $app->match($app['sub_domain'] . '/admin/add/project', 'App\\Controllers\\AdminC
 
 $app->get($app['sub_domain'] . '/admin/remove/project/{id}', 'App\\Controllers\\AdminController::removeProjectAction');
 
-$app->get($app['sub_domain'] . '/admin/edit/impressum', 'App\\Controllers\\AdminController::editImpressumPage');
+$app->get($app['sub_domain'] . '/admin/show-custom-pages', 'App\\Controllers\\AdminController::showCustomPagesAction')
+    ->bind('show-pages');
+
+$app->get($app['sub_domain'] . '/admin/edit-page/{page_name}', 'App\\Controllers\\AdminController::editCustomPageGetAction')
+    ->bind('edit-page');
+$app->post($app['sub_domain'] . '/admin/edit-page/{page_name}', 'App\\Controllers\\AdminController::editCustomPagePostAction');

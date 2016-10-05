@@ -1,0 +1,19 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block main_title %}
+    Editing custom pages:
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h1>List of custom pages</h1>
+
+        <ul>
+            {% for page in model %}
+                <li><a href="{{ url('edit-page', {page_name: page.page_name}) }}">{{ page.page_name|capitalize }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}
