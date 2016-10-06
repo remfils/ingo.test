@@ -7,7 +7,7 @@ var config = {
 config.SITE_NAME = "http://localhost:3000/";
 //config.SUBDOMAIN_NAME = 'i.test/';
 //config.SITE_NAME = "http://192.168.0.100:3000/";
-//config.SITE_NAME = "http://wsh1490.web-shop-hosting.com/";
+//config.SITE_NAME = "http://wsh1490.web-shop-hosting.com/i.test/";
 
 console.log(config.SITE_NAME);
 
