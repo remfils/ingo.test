@@ -25,6 +25,43 @@ class ApiController
         return $app->redirect($referer);
     }
 
+    public function indexPageAction(Request $req, Application $app) {
+        $lang = $app['translator']->getLocale();
+
+        $lang_id_query = $app['idiorm.db']
+            ->for_table('lang')
+            ->select('id')
+            ->where('name', $lang)
+            ->find_one();
+
+        if (!$lang_id_query) {
+            throw new Exception("no lang_id was found");
+        }
+
+        $lang_id = $lang_id_query->get('id');
+
+        $page_name = $req->attributes->get('page');
+
+        $page = $app['idiorm.db']->for_table('pages_lang')
+            ->select_many(
+                'page_name',
+                'placeholder_name',
+                'placeholder_text'
+            )
+            ->where('page_name', $page_name)
+            ->where('lang_id', $lang_id)
+            ->group_by('placeholder_name')
+            ->find_array();
+
+        $result = array();
+
+        foreach($page as $k => $item) {
+            $result[$item['placeholder_name']] = $item['placeholder_text'];
+        }
+
+        return json_encode($result);
+    }
+
     public function allMoviesAction( Request $req, Application $app ) {
         $db = new ProjectRepository($app);
         $model = $db->getAllProjects();

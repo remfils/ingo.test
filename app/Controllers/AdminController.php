@@ -67,6 +67,117 @@ class AdminController
         ));
     }
 
+    public function showCustomPagesAction(Request $req, Application $app) {
+        $model = $app['idiorm.db']->for_table('pages_lang')
+            ->group_by('page_name')
+            ->find_array();
+
+        //!ddd($model);
+
+        return $app['twig']->render('admin/show-custom-pages.html.twig', array(
+            'model' => $model
+        ));
+    }
+
+    public function editCustomPageGetAction(Request $req, Application $app) {
+        $page = $req->get('page_name');
+
+        $model = $app['idiorm.db']->for_table('pages_lang')
+            ->table_alias('p')
+            ->select_many(array(
+                'p.id',
+                'page_name',
+                'lang' => 'l.name',
+                'placeholder_name',
+                'placeholder_text'
+            ))
+            ->join('lang', array('p.lang_id', '=', 'l.id'), 'l')
+            ->where('page_name', $page)
+            ->find_array();
+
+        $result = array();
+
+        foreach ($model as $k => $item) {
+            $lang = $item['lang'];
+            $key = $item['placeholder_name'];
+
+            if (!array_key_exists($key, $result)) {
+                $result[$key] = array();
+            }
+
+            if (!array_key_exists($lang, $result[$key])) {
+                $result[$key][$lang] = array();
+            }
+
+            $result[$key][$lang]['id'] = $item['id'];
+            $result[$key][$lang]['key'] = $item['placeholder_name'];
+            $result[$key][$lang]['value'] = $item['placeholder_text'];
+        }
+
+        return $app['twig']->render('admin/edit-custom-page.html.twig', array(
+            'page_name' => $page,
+            'model' => $result,
+            'message' => null,
+            'error_message' => null
+        ));
+    }
+
+    public function editCustomPagePostAction(Request $req, Application $app) {
+        $page = $req->get('page_name');
+        $data = $req->get('model');
+
+        foreach ($data as $k => $v) {
+            $item = $app['idiorm.db']->for_table('pages_lang')->where('id', $k)->find_one();
+            $item->placeholder_text = $v;
+            $item->save();
+        }
+
+        $model = $app['idiorm.db']->for_table('pages_lang')
+            ->table_alias('p')
+            ->select_many(array(
+                'p.id',
+                'page_name',
+                'lang' => 'l.name',
+                'placeholder_name',
+                'placeholder_text'
+            ))
+            ->join('lang', array('p.lang_id', '=', 'l.id'), 'l')
+            ->where('page_name', $page)
+            ->find_array();
+
+        $result = array();
+
+        foreach ($model as $k => $item) {
+            $lang = $item['lang'];
+            $key = $item['placeholder_name'];
+
+            if (!array_key_exists($key, $result)) {
+                $result[$key] = array();
+            }
+
+            if (!array_key_exists($lang, $result[$key])) {
+                $result[$key][$lang] = array();
+            }
+
+            $result[$key][$lang]['id'] = $item['id'];
+            $result[$key][$lang]['key'] = $item['placeholder_name'];
+            $result[$key][$lang]['value'] = $item['placeholder_text'];
+        }
+
+        return $app['twig']->render('admin/edit-custom-page.html.twig', array(
+            'page_name' => $page,
+            'model' => $result,
+            'message' => 'Page was saved successfully!',
+            'error_message' => null
+        ));
+    }
+
+    public function editImpressumPage(Request $req, Application $app) {
+
+
+        return $app['twig']->render('admin/edit-impressum.html.twig');
+    }
+
     public function addProjectAction( Request $req, Application $app ) {
         $success_message = '';
         $error_message = '';

@@ -1,0 +1,53 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block main_title %}
+    Editing Page: {{ page_name|capitalize }}
+{% endblock %}
+
+{% block content %}
+    <form action="/admin/edit-page/{{ page_name }}" method="post" class="form container">
+
+        {% if message %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        {% if error_message %}
+            <div class="alert alert-success">
+                {{ error_message }}
+            </div>
+        {% endif %}
+
+        {% for item in model %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="model[{{ item.de.id }}]">{{  item.de.key|replace({'_': ' '})|capitalize }} (de)</label>
+
+                        {% if 'text' not in item.de.key %}
+                            <input name="model[{{ item.de.id }}]" type="text" class="form-control" value="{{ item.de.value }}" />
+                        {% else %}
+                            <textarea name="model[{{ item.de.id }}]" type="text" class="form-control">{{ item.de.value }}</textarea>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="model[{{ item.en.id }}]">{{  item.en.key|replace({'_': ' '})|capitalize }} (en)</label>
+
+                    {% if 'text' not in item.en.key %}
+                        <input name="model[{{ item.en.id }}]" type="text" class="form-control" value="{{ item.en.value }}" />
+                    {% else %}
+                        <textarea name="model[{{ item.en.id }}]" type="text" class="form-control">{{ item.en.value }}</textarea>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <input type="submit" class="btn btn-success pull-right" value="SUBMIT" />
+            </div>
+        </div>
+    </form>
+{% endblock %}

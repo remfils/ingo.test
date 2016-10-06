@@ -13,6 +13,8 @@ $app->get($app['sub_domain'] . '/api', 'App\\Controllers\\ApiController::indexAc
 
 $app->get($app['sub_domain'] . '/api/all-movies', 'App\\Controllers\\ApiController::allMoviesAction');
 
+$app->get($app['sub_domain'] . '/api/page/{page}', 'App\\Controllers\\ApiController::indexPageAction');
+
 $app->get($app['sub_domain'] . '/api/movie/{id}', 'App\\Controllers\\ApiController::movieDescriptionAction');
 
 $app->get($app['sub_domain'] . '/api/change-language/{language}', 'App\\Controllers\\ApiController::changeLanguage');
@@ -32,3 +34,10 @@ $app->match($app['sub_domain'] . '/admin/add/project', 'App\\Controllers\\AdminC
     ->bind('admin-add_project');
 
 $app->get($app['sub_domain'] . '/admin/remove/project/{id}', 'App\\Controllers\\AdminController::removeProjectAction');
+
+$app->get($app['sub_domain'] . '/admin/show-custom-pages', 'App\\Controllers\\AdminController::showCustomPagesAction')
+    ->bind('show-pages');
+
+$app->get($app['sub_domain'] . '/admin/edit-page/{page_name}', 'App\\Controllers\\AdminController::editCustomPageGetAction')
+    ->bind('edit-page');
+$app->post($app['sub_domain'] . '/admin/edit-page/{page_name}', 'App\\Controllers\\AdminController::editCustomPagePostAction');

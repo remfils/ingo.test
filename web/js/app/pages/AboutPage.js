@@ -18,13 +18,30 @@ import ShortProjectModel from "../models/ShortProjectModel";
 import MoviePage from './MoviePage';
 import EmailForm from './MoviePage/EmailForm';
 
+const STATUS_INIT = "page_init";
+const STATUS_LOADING = "page_loading";
+const STATUS_LOADED = "page_loaded";
+const STATUS_ERROR = "page_error";
+
 export default class AboutPage extends React.Component {
     constructor() {
         super();
+
+        this.state = {
+            dataState: STATUS_INIT,
+            data: null
+        };
     }
 
     componentWillMount() {
-
+        $.ajax({
+            url: config.SITE_NAME + 'api/page/about',
+            dataType: 'json',
+            success: (data) => {
+                console.debug(data);
+                this.setState({dataState: STATUS_LOADED, data: data});
+            }
+        });
     }
 
     componentWillUnmount() {
@@ -110,6 +127,17 @@ export default class AboutPage extends React.Component {
     }
 
     render() {
+        var page_name = "About",
+            info_header = "Ingo Scheel - Dipl. Designer Kamera (FH)",
+            info_text = "";
+
+        if (this.state.dataState === STATUS_LOADED) {
+            var d = this.state.data;
+
+            page_name = d.page_name;
+            info_header = d.info_header;
+            info_text = d.info_text;
+        }
 
         return (
             <section id='AboutPage' class='title-container about-page'>
@@ -126,11 +154,8 @@ export default class AboutPage extends React.Component {
                     </tr>
                     <tr>
                         <td class="title-content">
-                            <h2>Ingo Scheel - Dipl. Designer Kamera (FH)</h2>
-                            <p>
-                                Geboren 1975 in Geldern, beschäftigte ich mich schon im Alter von 14 Jahren mit der Fotografie. Jahre später, nach mehr- jähriger Tätigkeit als Beleuchter bei Filmproduktionen absolvierte ich den Kamerastudiengang an der Fachhochschule Dortmund mit dem
-                                Abschluss als Diplomdesigner im Jahr 2008. Anschließend konnte ich zahlreiche Projekte als Lichtsetzender Kameramann für Filmproduktionen, Unternehmen und Freie Künstler umsetzen und freue mich auf neue Projekte.
-                            </p>
+                            <h2>{info_header}</h2>
+                            <p>{info_text}</p>
                         </td>
                     </tr>
                     <tr>
@@ -143,7 +168,7 @@ export default class AboutPage extends React.Component {
 
                 <div class="title-header">
                     <AlphaBox>
-                        <span class="movie-title contact-title">About</span>
+                        <span class="movie-title contact-title">{page_name}</span>
                     </AlphaBox>
                 </div>
 

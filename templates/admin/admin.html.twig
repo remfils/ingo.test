@@ -17,6 +17,7 @@
             <ul class="nav navbar-nav">
                 <li {% if active_page == '/admin' %} class="active" {% endif %}><a href="{{ path('admin') }}">Admin</a></li>
                 <li {% if active_page == '/admin/add/project' %} class="active" {% endif %}><a href="{{ path('admin-add_project') }}">Add project</a></li>
+                <li {% if active_page == '/admin/show-custom-pages' %} class="active" {% endif %}><a href="{{ url('show-pages') }}">Custom pages</a></li>
                 {#<li><a href="{{ path('admin_logout') }}">Logout</a></li>#}
             </ul>
         </div>
