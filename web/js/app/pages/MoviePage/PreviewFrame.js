@@ -41,30 +41,15 @@ export default class PreviewFrame extends React.Component {
         $iframe.css({
             width: '100%',
             height: '60%'
-        })
+        });
 
-        var ratio = window.innerHeight / window.innerWidth;
-        if (ratio < 0.5) {
-            var w = 1092 * $iframe.height() / 609;
-            $iframe.width(w);
+        var frame_height = 609 * $iframe.width() / 1092;
 
-            var p = ($('.btn-mehr-container').width() - w) / 2;
+        $iframe.height(frame_height);
 
-            $('.btn-mehr-container').css({
-                'padding-left': p,
-                'padding-right': p
-            });
-        }
-        else {
-            $iframe.height( 609 * $iframe.width() / 1092);
+        var margin_top = (window.innerHeight - frame_height - $('.btn-mehr-container').outerHeight()) / 4;
 
-            $('.btn-mehr-container').css({
-                'padding-left': 0,
-                'padding-right': 0
-            });
-        }
-
-        console.debug(ratio, 1092 * $iframe.height() / 609);
+        $iframe.css('margin-top', margin_top + "px");
     }
 
     componentWillUpdate(nextProps, nextState) {
