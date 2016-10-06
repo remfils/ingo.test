@@ -507,7 +507,8 @@ export default class MoviePage extends React.Component {
                         <div class="btn-mehr-container">
                             <a class="btn-mehr pull-left" onClick={this.mehrButtonClickListener.bind(this)}>MEHR ERFAHREN</a>
                             <a href="#" className="btn-mehr pull-left" onClick={this.projectGalerieButtonClickListener.bind(this)}>PROJEKTGALERIE</a>
-                            <a href="#" className="btn-mehr pull-right" onClick={this.nachtesProjectButtonClickListener.bind(this)}>NÄCHSTES PROJEKT</a>
+                            <a href="#" className="btn-mehr pull-right" onClick={this.nextMovieClick.bind(this)}>></a>
+                            <a href="#" className="btn-mehr pull-right" onClick={this.prevMovieClick.bind(this)}>{"<"}</a>
                         </div>
                     </div>
                 </section>
