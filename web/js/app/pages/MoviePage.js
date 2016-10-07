@@ -200,7 +200,7 @@ export default class MoviePage extends React.Component {
         console.debug("DEBUG(MoviePage.loadDataForCurrentMovie): loading movie ", movie);
 
         $.ajax({
-            url: config.SITE_NAME + 'api/movie/' + movie.id,
+            url: config.SITE_NAME + 'api/movie/' + movie.url,
             dataType: 'json',
             success: (data) => {
                 var prj = new ProjectModel()
@@ -384,7 +384,7 @@ export default class MoviePage extends React.Component {
 
         this.loadDataForCurrentMovie();
 
-        changeUrl('movie/' + this.short_models[this.current_movie_index].id);
+        changeUrl('movie/' + this.short_models[this.current_movie_index].url);
     }
 
     colorTransition() {

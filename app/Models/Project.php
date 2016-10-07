@@ -11,6 +11,7 @@ class Project
     public $name;
     public $color;
     public $year;
+    public $url;
     public $logo;
 
     public $preview_url;
@@ -54,6 +55,10 @@ class Project
 
     public function getYear() {
         return $this->entity['de']['year'];
+    }
+
+    public function getUrl() {
+        return $this->entity['de']['url'];
     }
 
     public function getLogo() {
@@ -133,6 +138,10 @@ class Project
         return "project[de][year]";
     }
 
+    public function getUrlAttrName() {
+        return "project[de][url]";
+    }
+
     public function getLogoAttrName() {
         return "project[de][logo]";
     }
@@ -190,6 +199,7 @@ class Project
         $this->name = $data['name'];
         $this->color = $data['color'];
         $this->year = $data['year'];
+        $this->url = $data['url'];
 
         $this->preview_url = $data['preview_url'];
         $this->description = str_replace("\n", '<br/>', trim($data['description']));;
@@ -296,7 +306,7 @@ class Project
 
     public function saveProject( Application $app, $is_new = false) {
         if ( $is_new ) {
-            $r = 'INSERT INTO projects (name, color, year, logo) VALUES (:name, :color, :year, :logo)';
+            $r = 'INSERT INTO projects (name, color, year, logo, url) VALUES (:name, :color, :year, :logo, :url)';
             var_dump($r);
             $q = $app['db']->prepare($r);
         }
@@ -310,6 +320,7 @@ class Project
         $q->bindValue(':name', $this->name);
         $q->bindValue(':color', $this->color);
         $q->bindValue(':year', $this->year);
+        $q->bindValue(':url', $this->url);
         if ( $this->is_logo_uploaded ) {
             $q->bindValue(':logo', $this->logo);
         }

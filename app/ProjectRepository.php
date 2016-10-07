@@ -23,6 +23,7 @@ class ProjectRepository {
                 'p.id',
                 'p.color',
                 'p.year',
+                'p.url',
                 'p.logo',
                 'p.logo_short',
                 'p.preview_url',
@@ -61,6 +62,7 @@ class ProjectRepository {
                 'p.id',
                 'p.color',
                 'p.year',
+                'p.url',
                 'p.logo',
                 'p.logo_short',
                 'p.preview_url',
@@ -110,6 +112,7 @@ class ProjectRepository {
                 'language' => 'lang.name',
                 'p.id',
                 'p.color',
+                'p.url',
                 'p.year',
                 'p.logo',
                 'p.logo_short',
@@ -194,7 +197,8 @@ class ProjectRepository {
         $prj->set(array(
             'color' => $prj_de['color'],
             'year' => $prj_de['year'],
-            'preview_url' => $prj_de['preview_url']
+            'preview_url' => $prj_de['preview_url'],
+            'url' => $prj_de['url']
         ));
 
         $dummy_project = new Project(null);

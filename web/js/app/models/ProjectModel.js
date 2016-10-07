@@ -7,6 +7,7 @@ export default class ProjectModel extends ShortProjectModel {
         super();
 
         this.year = 0;
+        this.url = "";
         this.preview_url = "";
         this.project_info_table = null;
         this.comments = null;

@@ -94,6 +94,7 @@ class ApiController
             ->select_many(
                 'p.id',
                 'p.color',
+                'p.url',
                 'p.logo',
                 'p.logo_short',
                 'p.preview_url',
@@ -103,7 +104,7 @@ class ApiController
                 'pl.description'
             )
             ->join('project_lang', array('p.id', '=', 'pl.project_id'), 'pl')
-            ->where('p.id', $project_id)
+            ->where('p.url', $project_id)
             ->where('p.active', true)
             ->where('pl.lang_id', $lang_id)
             ->find_one();

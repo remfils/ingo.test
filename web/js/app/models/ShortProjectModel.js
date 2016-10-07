@@ -10,6 +10,7 @@ export default class ShortProjectModel {
         this.logo = "";
         this.logo_short = "";
         this.color = "";
+        this.url = "";
     }
 
     parseJsonData(data) {
@@ -20,6 +21,7 @@ export default class ShortProjectModel {
         this.color = data.color;
         this.genre = data.genre;
         this.description = data.description;
+        this.url = data.url;
     }
 
     get page_name () {

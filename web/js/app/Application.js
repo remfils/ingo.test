@@ -83,7 +83,7 @@ export default class Application extends React.Component {
 
             var i = this.movies.length;
             while (i--) {
-                if (this.movies[i].id === id) {
+                if (this.movies[i].url === id) {
                     index = i;
                     break;
                 }
@@ -203,7 +203,7 @@ export default class Application extends React.Component {
 
                 var movie = movies[0];
 
-                this.setUrl('/movie/' + current_content.id);
+                this.setUrl('/movie/' + current_content.url);
 
                 page = <MoviePage
                     app={this}

@@ -8,6 +8,7 @@ export default class MovieModel {
     constructor(movie_data) {
         this.id = movie_data.id;
         this.name = movie_data.name;
+        this.url = movie_data.url;
         this.year = movie_data.year;
         this.logo = asset(movie_data.logo);
         this.logo_short = asset(movie_data.logo_short);
