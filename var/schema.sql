@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Окт 06 2016 г., 20:48
+-- Время создания: Окт 07 2016 г., 22:29
 -- Версия сервера: 5.5.48
 -- Версия PHP: 5.4.45
 
@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `id` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `color` varchar(20) NOT NULL,
+  `url` varchar(100) NOT NULL,
   `logo` varchar(255) NOT NULL,
   `logo_short` varchar(255) NOT NULL,
   `year` int(11) NOT NULL,
@@ -97,19 +98,19 @@ CREATE TABLE IF NOT EXISTS `projects` (
 -- Дамп данных таблицы `projects`
 --
 
-INSERT INTO `projects` (`id`, `active`, `color`, `logo`, `logo_short`, `year`, `preview_url`) VALUES
-(1, 1, '#CCE1EE', 'img/movies/1a.jpg', 'img/movies/images_small/test-2.jpg', 2011, 'https://player.vimeo.com/video/185216218'),
-(2, 1, '#D7E3FF', 'img/movies/1a.jpg', 'img/movies/images_small/2_ebene_small_156.jpg', 2011, ''),
-(3, 1, '#B5D6B6', 'img/movies/3aa.jpg', 'img/movies/images_small/3_ebene_small_158.jpg', 2011, 'https://www.youtube.com/watch?v=JL3HeSxWJuY'),
-(4, 1, '#D3EEDA', 'img/movies/4aa.jpg', 'img/movies/images_small/4_ebene_small_159.jpg', 2012, 'https://player.vimeo.com/video/185484562'),
-(5, 1, '#A28665', 'img/movies/09.jpg', 'img/movies/images_small/5_ebene_small_157.jpg', 2012, 'https://player.vimeo.com/video/185449117'),
-(6, 1, '#A0996A', 'img/movies/5aa.jpg', 'img/movies/images_small/6_ebene_small_164.jpg', 2012, 'https://player.vimeo.com/video/39619408'),
-(7, 1, '#C5CDCD', 'img/movies/6aa.jpg', 'img/movies/images_small/7_ebene_small_160.jpg', 2009, 'https://player.vimeo.com/video/185220694'),
-(8, 1, '#9BAA9D', 'img/movies/11aa.jpg', 'img/movies/images_small/8_ebene_small_180.jpg', 2013, ''),
-(9, 1, '#86AFB1', 'img/movies/12aa.jpg', 'img/movies/images_small/9_ebene_small_165.jpg', 2011, 'https://player.vimeo.com/video/185219470'),
-(10, 1, '#86AFB1', 'img/movies/10aa.jpg', 'img/movies/images_small/10_ebene_small_177.jpg', 2013, ''),
-(11, 1, '#A1A67D', 'img/movies/08aa.jpg', 'img/movies/images_small/11_ebene_small_162.jpg', 2009, 'https://player.vimeo.com/video/185442597'),
-(12, 1, '#C2C37D', 'img/movies/12_Ebene-182.jpg', 'img/movies/images_small/12_ebene_small_182.jpg', 2009, 'https://player.vimeo.com/video/41249930');
+INSERT INTO `projects` (`id`, `active`, `color`, `url`, `logo`, `logo_short`, `year`, `preview_url`) VALUES
+(1, 1, '#CCE1EE', 'burstner', 'img/movies/1a.jpg', 'img/movies/images_small/test-2.jpg', 2011, 'https://player.vimeo.com/video/185216218'),
+(2, 1, '#D7E3FF', 'jack_wolfskin', 'img/movies/1a.jpg', 'img/movies/images_small/2_ebene_small_156.jpg', 2011, ''),
+(3, 1, '#B5D6B6', 'insupad', 'img/movies/3aa.jpg', 'img/movies/images_small/3_ebene_small_158.jpg', 2011, 'https://www.youtube.com/watch?v=JL3HeSxWJuY'),
+(4, 1, '#D3EEDA', 'renault_twizzy', 'img/movies/4aa.jpg', 'img/movies/images_small/4_ebene_small_159.jpg', 2012, 'https://player.vimeo.com/video/185484562'),
+(5, 1, '#A28665', 'braun_olympia', 'img/movies/09.jpg', 'img/movies/images_small/5_ebene_small_157.jpg', 2012, 'https://player.vimeo.com/video/185449117'),
+(6, 1, '#A0996A', 'loose_connection', 'img/movies/5aa.jpg', 'img/movies/images_small/6_ebene_small_164.jpg', 2012, 'https://player.vimeo.com/video/39619408'),
+(7, 1, '#C5CDCD', 'lukas_podolski', 'img/movies/6aa.jpg', 'img/movies/images_small/7_ebene_small_160.jpg', 2009, 'https://player.vimeo.com/video/185220694'),
+(8, 1, '#9BAA9D', 'rosia_montana', 'img/movies/11aa.jpg', 'img/movies/images_small/8_ebene_small_180.jpg', 2013, ''),
+(9, 1, '#86AFB1', 'lilith', 'img/movies/12aa.jpg', 'img/movies/images_small/9_ebene_small_165.jpg', 2011, 'https://player.vimeo.com/video/185219470'),
+(10, 1, '#86AFB1', 'fusball_ist_unser_bier', 'img/movies/10aa.jpg', 'img/movies/images_small/10_ebene_small_177.jpg', 2013, ''),
+(11, 1, '#A1A67D', 'der_liebhaber', 'img/movies/08aa.jpg', 'img/movies/images_small/11_ebene_small_162.jpg', 2009, 'https://player.vimeo.com/video/185442597'),
+(12, 1, '#C2C37D', 'man_stirbt', 'img/movies/12_Ebene-182.jpg', 'img/movies/images_small/12_ebene_small_182.jpg', 2009, 'https://player.vimeo.com/video/41249930');
 
 -- --------------------------------------------------------
 
@@ -123,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `project_comment_lang` (
   `lang_id` int(11) NOT NULL,
   `text` text NOT NULL,
   `image_url` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `project_comment_lang`
@@ -416,7 +417,7 @@ ALTER TABLE `projects`
 -- AUTO_INCREMENT для таблицы `project_comment_lang`
 --
 ALTER TABLE `project_comment_lang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT для таблицы `project_field_lang`
 --
