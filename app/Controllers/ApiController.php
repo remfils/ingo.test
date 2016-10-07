@@ -116,6 +116,9 @@ class ApiController
             throw new Exception("Project was not found");
         }
 
+//!ddd($model);
+$project_id = $model['id'];
+
         $result = $app['idiorm.db']
             ->for_table('project_field_lang')
             ->where('project_id', $project_id)
