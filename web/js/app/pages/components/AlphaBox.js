@@ -42,6 +42,8 @@ export default class AlphaBox extends React.Component {
 
         var children = nextProps.children;
 
+        TweenLite.killTweensOf($this);
+
         TweenLite.to($this, 1, {opacity: 0, onComplete: () => {
 
             this.setState({

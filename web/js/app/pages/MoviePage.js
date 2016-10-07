@@ -193,7 +193,7 @@ export default class MoviePage extends React.Component {
     }
 
     loadDataForCurrentMovie() {
-        this.setState({current_movie: null});
+        //this.setState({current_movie: null});
 
         var movie = this.short_models[this.current_movie_index];
 
@@ -326,7 +326,10 @@ export default class MoviePage extends React.Component {
             this.current_movie_index++;
         }
 
-        this.setState({movement_direction: "right"});
+        this.setState({
+            current_movie: null,
+            movement_direction: "right"
+        });
 
         this.transitionToNextMovie(false);
     }
@@ -345,7 +348,10 @@ export default class MoviePage extends React.Component {
             this.current_movie_index--;
         }
 
-        this.setState({movement_direction: "left"});
+        this.setState({
+            current_movie: null,
+            movement_direction: "left"
+        });
 
         this.transitionToNextMovie(true);
 
@@ -448,11 +454,11 @@ export default class MoviePage extends React.Component {
 
         var movement_direction = this.state.movement_direction;
 
-        var is_model_full = movie instanceof ProjectModel;
+        // var is_model_full = movie instanceof ProjectModel;
 
         var movie_name, movie_year;
 
-        if (is_model_full) {
+        if (movie.name && movie.year) {
             movie_name = movie.name;
             movie_year = movie.year;
         }
