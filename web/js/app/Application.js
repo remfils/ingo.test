@@ -216,7 +216,7 @@ export default class Application extends React.Component {
             case "WORKS-MOVIE":
                 var current_movie_index = transition.movie_index;
 
-                this.setUrl('/movie/' + this.movies[current_movie_index].id);
+                this.setUrl('/movie/' + this.movies[current_movie_index].url);
 
                 page = <MoviePage
                     app={this}
