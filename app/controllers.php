@@ -19,7 +19,7 @@ $app->get($app['sub_domain'] . '/api/movie/{id}', 'App\\Controllers\\ApiControll
 
 $app->get($app['sub_domain'] . '/api/change-language/{language}', 'App\\Controllers\\ApiController::changeLanguage');
 
-$app->get($app['sub_domain'] . '/api/send-email', 'App\\Controllers\\ApiController::sendMail');
+$app->post($app['sub_domain'] . '/api/send-email', 'App\\Controllers\\ApiController::sendMail');
 
 /* ADMIN */
 

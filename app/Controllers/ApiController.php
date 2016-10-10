@@ -6,6 +6,7 @@ use App\ProjectRepository;
 use Silex\Application;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
+use PHPMailer;
 
 class ApiController
 {
@@ -116,8 +117,7 @@ class ApiController
             throw new Exception("Project was not found");
         }
 
-//!ddd($model);
-$project_id = $model['id'];
+        $project_id = $model['id'];
 
         $result = $app['idiorm.db']
             ->for_table('project_field_lang')
@@ -135,26 +135,46 @@ $project_id = $model['id'];
 
         $model['comments'] = $result;
 
-        //$model = self::array_utf8_encode($model);
-
         return json_encode($model);
     }
 
     public function sendMail(Request $req, Application $app) {
-        $to = $app['sender_email']; // this is your Email address
-        $from = $_POST['email']; // this is the sender's Email address
-        $name = $_POST['name'];
-        $subject = "Form submission";
-        $subject2 = "Copy of your form submission";
-        $message = $name . " wrote the following:" . "\n\n" . $_POST['message'];
-        $message2 = "Here is a copy of your message " . $name . "\n\n" . $_POST['message'];
+        $RECIPIENT_EMAIL = $app['recepient_email'] ;
+        $BOT_EMAIL = $app['bot_email'];
 
-        $headers = "From:" . $from;
-        $headers2 = "From:" . $to;
-        mail($to,$subject,$message,$headers);
-        mail($from,$subject2,$message2,$headers2); // sends a copy of the message to the sender
-        echo "Mail Sent. Thank you " . $name . ", we will contact you shortly.";
-        // You can also use header('Location: thank_you.php'); to redirect to another page.
+        $from = $_POST['email'];
+        $name = $_POST['name'];
+        $message = "Message from $name: $from <br/><br/>" . $_POST['message'];
+
+        $EMAIL_SUBJECT = "ingo: contact message from $from";
+
+        $mail = new PHPMailer;
+
+        $mail->isSMTP();                                      // Set mailer to use SMTP
+        $mail->SMTPDebug = 0;
+        $mail->Host = '94.100.180.160';  // Specify main and backup SMTP servers
+        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $mail->Username = $BOT_EMAIL;                 // SMTP username
+        $mail->Password = $app['bot_password'];                           // SMTP password
+        $mail->Port = 587;
+        $mail->SMTPSecure = 'tls';
+
+        $mail->From = $BOT_EMAIL;
+        $mail->FromName = $name;
+        $mail->addAddress($RECIPIENT_EMAIL, 'Joe User');     // Add a recipient
+
+        $mail->Subject = $EMAIL_SUBJECT;
+        $mail->Body = $message;
+        $mail->AltBody = $message;
+
+        if(!$mail->send()) {
+            return json_encode(array('message' => 'Message could not be sent.'));
+        } else {
+            return json_encode(array(
+                'message' => 'Message has been sent',
+                'messageIsSent' => true
+            ));
+        }
     }
 
     public static function array_utf8_encode($dat)

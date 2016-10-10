@@ -5,7 +5,7 @@ import config from '../../config';
 
 var $ = require('jquery');
 
-const POST_URL = 'api/email';
+const POST_URL = 'api/send-email';
 
 export default class EmailForm extends React.Component {
     static box_counter = 0;
@@ -50,6 +50,7 @@ export default class EmailForm extends React.Component {
             url: config.SITE_NAME + POST_URL,
             dataType: 'json',
             data: post_data,
+            method: 'POST',
             success: (response) => {
                 if (response.messageIsSent) {
                     this.setState({form_state: EmailForm.STATE_MESSAGE_IS_SENT});
@@ -57,7 +58,7 @@ export default class EmailForm extends React.Component {
             },
             error: (err) => {
                 this.setState({form_state: EmailForm.STATE_MESSAGE_SEND_FAILED});
-                console.log('ERROR:  ' + err);
+                console.debug('ERROR:  ', err);
             }
         });
 

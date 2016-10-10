@@ -14,7 +14,9 @@ $db_name = "wsh1490_ingo";
 $db_user = "wsh1490_ingo";
 $db_pass = "777qwe777";
 
-$app['sender_email'] = 'pereskokow@gmail.com';
+$app['recepient_email'] = 'pereskokow@gmail.com';
+$app['bot_email'] = 'it.cfy@mail.ru';
+$app['bot_password'] = '777qwe777';
 
 if ( $app['debug'] == true ) {
     $db_name = "ingo.test";

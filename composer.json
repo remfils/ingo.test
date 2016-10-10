@@ -13,7 +13,8 @@
         "symfony/security": "~2.8",
         "doctrine/dbal": "2.4",
         "arseniew/silex-idiorm-provider": "~1.1",
-        "raveren/kint": "^1.0"
+        "raveren/kint": "^1.0",
+        "phpmailer/phpmailer": "^5.2"
     },
     "platform": {"php": "5.3"},
     "authors": [
