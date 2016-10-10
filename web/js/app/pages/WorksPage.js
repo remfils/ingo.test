@@ -156,7 +156,9 @@ export default class WorksPage extends React.Component {
         return function(e) {
             e.preventDefault();
 
-            TransitionActions.fromWorksToMovie(self, project_id);
+            TransitionActions.fromWorksToMovie(self, project_id, {
+                command: MoviePage.CMD_SHOW_MOVIE
+            });
 
             return false;
         }
