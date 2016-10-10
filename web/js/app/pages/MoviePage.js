@@ -89,7 +89,7 @@ export default class MoviePage extends React.Component {
                 this.enterFromIndexPage(tl);
                 break;
             case "WORKS-MOVIE":
-                transition.prev_page.leaveToDifferentTitlePage(tl);
+                transition.prev_page.leaveToWorks(tl);
                 this.enterFromIndexPage(tl);
                 break;
         }

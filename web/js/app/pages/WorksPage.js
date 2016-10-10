@@ -150,6 +150,28 @@ export default class WorksPage extends React.Component {
         tl.set($nav, {opacity:0}, 'enter-stage');
     }
 
+    leaveToWorks(tl) {
+        var $this = $('#WorksPage');
+
+        $this.css('z-index', 9999);
+
+        var $nav = $('#WorksPage .title-navigation');
+        var $movies = $('#WorksPage .movie_cell');
+        var $color = $('#WorksPage .table-bg-color');
+        var $footer = $('.title-footer');
+
+        var movie_count = $movies.length;
+        var interval = 1 / (0.1*movie_count+1);
+        $movies.each((index, item)=>{
+            var delay = interval * index * 0.1;
+            tl.to(item, interval, {opacity: 0, delay}, 'clear-stage');
+        });
+
+        tl.to($color, 1, {opacity: 0}, 'leave-stage')
+            .to($footer, 1, {opacity: 0}, 'leave-stage')
+            .to($nav, 1, {opacity: 0}, 'leave-stage');
+    }
+
     createProjectOnClickFunction(project_id) {
         var self = this;
 
