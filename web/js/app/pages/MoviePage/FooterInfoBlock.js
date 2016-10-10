@@ -1,6 +1,9 @@
 import React from "react";
+import {asset} from "../../funcitons";
 
 var $ = require('jquery');
+
+const LINKED_IN_URL = "https://www.linkedin.com/";
 
 export default class FooterInfoBlock extends React.Component {
     static box_counter = 0;
@@ -22,6 +25,10 @@ export default class FooterInfoBlock extends React.Component {
     }
 
     render() {
+        const LINKED_IN_ICON = asset("img/icon-linkedin.png");
+        const LINKED_IN_STYLE = {display: "block"};
+
+
         return <div id={this._id} className={this.props.className}>
             <h4>Ingo Scheel </h4>
 
@@ -41,7 +48,7 @@ export default class FooterInfoBlock extends React.Component {
 
             <h4>Netzwerk:</h4>
 
-            <p><a href="https://www.linkedin.com/">in</a></p>
+            <p><a href={LINKED_IN_URL} style={LINKED_IN_STYLE}><img src={LINKED_IN_ICON} /></a></p>
 
             <span>© 2016, Ingo Scheel</span>
         </div>;
