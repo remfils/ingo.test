@@ -285,7 +285,8 @@ export default class IndexPage extends React.Component {
             e.originalEvent.detail * -40;
         }
         else {
-            delta = -e.originalEvent.wheelDelta || -e.originalEvent.deltaY || e.originalEvent.deltaX;
+            console.log(e.originalEvent.wheelDelta, e.originalEvent.deltaY, e.originalEvent.deltaX);
+            delta = -e.originalEvent.wheelDelta || -e.originalEvent.deltaY || -e.originalEvent.deltaX;
         }
 
         return delta > 0 ? -1 : 1;
