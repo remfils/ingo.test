@@ -469,6 +469,11 @@ a.arrow:hover {
     margin-right: 12px;
 }
 
+.btn-mehr-arrows {
+    margin-right: 0;
+    margin-left: 12px;
+}
+
 .btn-mehr:visited,
 .btn-mehr:active,
 .btn-mehr:focus {
@@ -637,7 +642,7 @@ td.info-text {
     padding: 20px 30px;
     position: relative;
     top: -50px;
-    width: 280px;
+    width: 390px;
 }
 
 .footer-info h4 {
