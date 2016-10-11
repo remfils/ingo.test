@@ -76,17 +76,26 @@ export default class EmailForm extends React.Component {
         }
 
         if (this.state.form_state === EmailForm.STATE_MESSAGE_SEND_FAILED) {
-            response_msg = <h2>sending message failed</h2>;
+          response_msg = <span class="email-reponse-message"><strong>ERROR</strong></span>;
         }
 
-        if (this.state.form_state === EmailForm.STATE_MESSAGE_IS_SENT) {
-            response_msg = <h2>message is sent</h2>;
+      if (this.state.form_state === EmailForm.STATE_MESSAGE_IS_SENT) {
+        if (window.lang === 'de') {
+          response_msg = <span class="email-response-message">
+            <strong>VIELEN DANK! </strong>
+            Wir haben Ihre Nachricht erhalten.
+            </span>;
+        }
+        else {
+          response_msg = <span class="email-response-message">
+            <strong>THANK YOU! </strong>
+            We have received your message.
+            </span>;
+        }
         }
 
         return <form id={this._id} className={"email-form " + this.props.className}>
             <h1>LET'S TALK</h1>
-
-            {response_msg}
 
             <div class="custom-form-gruop">
                 <label for="name">Name*</label>
@@ -105,6 +114,8 @@ export default class EmailForm extends React.Component {
 
             <div class="custom-form-gruop">
                 <input type="submit" value={senden_text} onClick={this.sendenClickListener.bind(this)}/>
+
+{response_msg}
             </div>
 
             <p>++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++</p>

@@ -730,6 +730,18 @@ td.info-text {
     cursor: pointer;
 }
 
+.email-response-message {
+    font-size: 24px;
+    color: #e16511;
+    position: relative;
+    bottom: 2px;
+    margin-left: 50px;
+}
+
+.email-response-message strong {
+    font-size: 30px;
+}
+
 
 /* NEW INDEX */
 
