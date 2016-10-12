@@ -2,6 +2,8 @@ import React from "react";
 
 import { asset } from "../../funcitons";
 import config from '../../config';
+import AlphaBox from "../components/AlphaBox";
+import ColoredSection from "../components/ColoredSection";
 
 var $ = require('jquery');
 
@@ -40,7 +42,7 @@ export default class Description extends React.Component {
         console.log("description rerender");
         var movie = this.props.movie;
 
-        console.log(movie, movie.comments);
+        console.log("RENDER(Description)", movie, movie.comments);
 
         if ( !movie || !movie.comments ) {
             return <div>This is test</div>;
@@ -63,16 +65,20 @@ export default class Description extends React.Component {
 
         return (
             <div {...this.props}>
-                <section class="default-side-padding project-dsc" style={description_style}>
+                <ColoredSection class="default-side-padding project-dsc" color={movie.color}>
                     <div class="description-container">
                         <div class="col-30p">
                             <h2>ZUM PROJEKT:</h2>
-                            <h1><strong>{movie.name} {movie.year}</strong></h1>
+                            <h1><strong>
+                                <AlphaBox>{movie.name} {movie.year}</AlphaBox>
+                            </strong></h1>
                         </div>
 
-                        <div class="col-70p project-desctription-text" dangerouslySetInnerHTML={description_html}></div>
+                        <AlphaBox>
+                            <div class="col-70p project-desctription-text" dangerouslySetInnerHTML={description_html}></div>
+                        </AlphaBox>
                     </div>
-                </section>
+                </ColoredSection>
 
                 <section className="default-side-padding more-info">
                     <table className="movie-comments" cellspacing="0" cellpadding="0">

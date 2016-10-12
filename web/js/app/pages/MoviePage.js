@@ -50,7 +50,8 @@ export default class MoviePage extends React.Component {
             project_year: "",
             current_movie: null,
             description: null,
-            movement_direction: "left"
+            movement_direction: "left",
+            prev_full_movie: null
         }
     }
 
@@ -328,7 +329,8 @@ export default class MoviePage extends React.Component {
 
         this.setState({
             current_movie: null,
-            movement_direction: "right"
+            movement_direction: "right",
+            prev_full_movie: this.state.current_movie
         });
 
         this.transitionToNextMovie(false);
@@ -445,6 +447,7 @@ export default class MoviePage extends React.Component {
     render() {
         var movie_table;
         var movie = this.Model;
+        var movie_for_descripriton = movie;
 
         console.debug("RENDER(MoviePage): movie, direction", movie, this.state.movement_direction);
 
@@ -455,6 +458,11 @@ export default class MoviePage extends React.Component {
         var movement_direction = this.state.movement_direction;
 
         // var is_model_full = movie instanceof ProjectModel;
+
+        if (!movie_for_descripriton.comments) {
+            movie_for_descripriton = this.state.prev_full_movie || movie;
+        }
+
 
         var movie_name, movie_year;
 
@@ -519,7 +527,7 @@ export default class MoviePage extends React.Component {
                     </div>
                 </section>
 
-                <Description id="MovieDescription" movie={movie} />
+                <Description id="MovieDescription" movie={movie_for_descripriton} />
 
                 <footer class="default-side-padding project-footer">
                     <table>
