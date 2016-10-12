@@ -126,12 +126,6 @@ export default class IndexPage extends React.Component {
         $(window).off('mousewheel');
     }
 
-    getMouseScrollDirection(e) {
-        var delta = e.deltaY;
-
-        return delta > 0 ? -1 : 1;
-    }
-
     componentDidMount() {
         this.hadleTransitionAnimations();
     }
@@ -286,7 +280,7 @@ export default class IndexPage extends React.Component {
         }
         else {
             console.log(e.originalEvent.wheelDelta, e.originalEvent.deltaY, e.originalEvent.deltaX);
-            delta = -e.originalEvent.wheelDelta || -e.originalEvent.deltaY || -e.originalEvent.deltaX;
+            delta = -e.originalEvent.wheelDelta || -e.originalEvent.deltaY || e.originalEvent.deltaX;
         }
 
         return delta > 0 ? -1 : 1;
