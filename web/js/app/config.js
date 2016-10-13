@@ -15,4 +15,6 @@ console.log(config.SITE_NAME);
 
 config['ASSET_PATH'] = config.SITE_NAME +"web/";
 
+config['MIN_LOAD_TIME'] = 3500;
+
 export default config;

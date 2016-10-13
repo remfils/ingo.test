@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import 'gsap';
+import config from './config';
 // require('gsap/src/minified/plugins/ColorPropsPlugin.min');
 require('../../../node_modules/gsap/src/minified/plugins/ColorPropsPlugin.min');
 
@@ -28,15 +29,22 @@ function updatePercents() {
 
 var timer = setInterval(updatePercents, 10);
 
+var load_start_time = Date.now();
+
 function hideLoadingScreen(callback) {
     loading_cover.css('width', '100%');
-    setTimeout(function(){
-        clearInterval(timer);
-        loading_screen.hide();
-        if (callback) {
-            callback();
-        }
-    }, 2000);
+
+    var delta_time = Date.now() - load_start_time;
+
+    if (delta_time < config.MIN_LOAD_TIME) {
+        setTimeout(function(){
+            clearInterval(timer);
+            loading_screen.fadeOut(500);
+            if (callback) {
+                callback();
+            }
+        }, config.MIN_LOAD_TIME - delta_time);
+    }
 }
 
 ReactDOM.render(<Application onAjaxLoaded={hideLoadingScreen} lang={window.lang}/>, app);
