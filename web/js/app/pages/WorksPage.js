@@ -227,20 +227,22 @@ export default class WorksPage extends React.Component {
                 <SiteMap current_page={this} page_name={SiteMap.PAGE_WORKS} lang={this.props.lang}/>
 
                 <TitleColoredTable className="title-project-dsc" color="#CCE1EE" direction="">
-                    <tr>
-                        <td class="title-navigation">
-                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_WORKS}/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title-content">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title-footer">
-                            ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
-                        </td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td class="title-navigation">
+                                <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_WORKS}/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-content">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-footer">
+                                ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
+                            </td>
+                        </tr>
+                    </tbody>
                 </TitleColoredTable>
 
 

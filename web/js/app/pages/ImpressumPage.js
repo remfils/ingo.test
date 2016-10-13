@@ -167,33 +167,35 @@ export default class ImpressumPage extends React.Component {
                 <div className="contact-bg-image"></div>
 
                 <TitleColoredTable className="title-project-dsc" color="#C7D8D2" direction="">
-                    <tr>
-                        <td class="title-navigation">
-                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_IMPRESSUM} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title-content">
-                            <p><strong>{infoHeader}</strong></p>
+                    <tbody>
+                        <tr>
+                            <td class="title-navigation">
+                                <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_IMPRESSUM} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-content">
+                                <p><strong>{infoHeader}</strong></p>
 
-                            <p class="ingo-info">
-                                <strong>{infoTitle}</strong> <br/>
+                                <p class="ingo-info">
+                                    <strong>{infoTitle}</strong> <br/>
 
-                                {infoLabelFirst}<br/>
+                                    {infoLabelFirst}<br/>
 
-                                {infoLabelSecond}
-                            </p>
+                                    {infoLabelSecond}
+                                </p>
 
-                            <p class="ingo-description">
-                                {infoText}
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title-footer">
-                            ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
-                        </td>
-                    </tr>
+                                <p class="ingo-description">
+                                    {infoText}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-footer">
+                                ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
+                            </td>
+                        </tr>
+                    </tbody>
                 </TitleColoredTable>
 
 

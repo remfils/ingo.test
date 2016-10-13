@@ -467,23 +467,25 @@ export default class IndexPage extends React.Component {
                 <ImageRotator class="index-page-image-rotator" movie_id={content.id} img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 
                 <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
-                    <tr>
-                        <td class="title-navigation">
-                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_INDEX} menuClickListener={this.menuClickListener.bind(this)}/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title-content">
-                            <AlphaBox class="movie-short-description" onClick={this.currentMovieTextClickListener.bind(this)}>
-                                <p dangerouslySetInnerHTML={{__html: description_text}}></p>
-                            </AlphaBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title-footer">
-                            ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
-                        </td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td class="title-navigation">
+                                <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_INDEX} menuClickListener={this.menuClickListener.bind(this)}/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-content">
+                                <AlphaBox class="movie-short-description" onClick={this.currentMovieTextClickListener.bind(this)}>
+                                    <p dangerouslySetInnerHTML={{__html: description_text}}></p>
+                                </AlphaBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-footer">
+                                ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
+                            </td>
+                        </tr>
+                    </tbody>
                 </TitleColoredTable>
 
 

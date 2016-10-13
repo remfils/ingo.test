@@ -124,21 +124,23 @@ export default class ContactPage extends React.Component {
                 <div className="contact-bg-image"></div>
 
                 <TitleColoredTable className="title-project-dsc" color="#D1D3D0" direction="">
-                    <tr>
-                        <td class="title-navigation">
-                            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_CONTACTS}/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title-content">
-                            <EmailForm class="contact-form"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="title-footer">
-                            ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
-                        </td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td class="title-navigation">
+                                <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_CONTACTS}/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-content">
+                                <EmailForm class="contact-form"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="title-footer">
+                                ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
+                            </td>
+                        </tr>
+                    </tbody>
                 </TitleColoredTable>
 
 

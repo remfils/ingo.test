@@ -71,11 +71,13 @@ export default class SmallDescription extends React.Component {
         return (
             <section class="default-side-padding project-sm-dsc">
                 <table class="col-30p project-stats">
-                    <tr>
-                        <th>Project:</th>
-                        <th>{ mov.name }</th>
-                    </tr>
-                    {table}
+                    <tbody>
+                        <tr>
+                            <th>Project:</th>
+                            <th>{ mov.name }</th>
+                        </tr>
+                        {table}
+                    </tbody>
                 </table>
 
                 <div class="col-70p project-demo-video">

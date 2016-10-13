@@ -496,19 +496,21 @@ export default class MoviePage extends React.Component {
 
                     <div class="default-side-padding movie-title-section">
                         <table class="movie-navigation">
-                            <tr>
-                                <td>
-                                    <AlphaBox>
-                                        <h1 class="project-title">{ movie_name } <span class="project-year">{ movie_year }</span></h1>
-                                    </AlphaBox>
-                                </td>
-                                <td class="cell-movies-nav">
-                                    <div class="movies-nav">
-                                        <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
-                                        <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
-                                    </div>
-                                </td>
-                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <AlphaBox>
+                                            <h1 class="project-title">{ movie_name } <span class="project-year">{ movie_year }</span></h1>
+                                        </AlphaBox>
+                                    </td>
+                                    <td class="cell-movies-nav">
+                                        <div class="movies-nav">
+                                            <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
+                                            <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </section>
@@ -531,14 +533,16 @@ export default class MoviePage extends React.Component {
 
                 <footer class="default-side-padding project-footer">
                     <table>
-                        <tr>
-                            <td class="footer_info_cell">
-                                <FooterInfoBlock class="footer-info"/>
-                            </td>
-                            <td class="footer_mail_cell">
-                                <EmailForm class="footer-form"/>
-                            </td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td class="footer_info_cell">
+                                    <FooterInfoBlock class="footer-info"/>
+                                </td>
+                                <td class="footer_mail_cell">
+                                    <EmailForm class="footer-form"/>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </footer>
 

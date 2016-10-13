@@ -82,10 +82,12 @@ export default class MovieFieldsTable extends React.Component {
 
         if (!movie) {
             return <table class="col-30p project-stats">
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
             </table>
         }
 
@@ -102,12 +104,15 @@ export default class MovieFieldsTable extends React.Component {
         }
 
         return <table id={this._id} class="col-30p project-stats">
-             <tr>
-                 <th>Project:</th>
-                 <th>{project_name}</th>
-             </tr>
+             <tbody>
+                 <tr>
+                     <th>Project:</th>
+                     <th>{project_name}</th>
+                 </tr>
 
-            {movie_table}
+                 {movie_table}
+
+             </tbody>
          </table>;
     }
 }

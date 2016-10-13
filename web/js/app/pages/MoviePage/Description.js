@@ -82,7 +82,9 @@ export default class Description extends React.Component {
 
                 <section className="default-side-padding more-info">
                     <table className="movie-comments" cellspacing="0" cellpadding="0">
-                        { comments }
+                        <tbody>
+                            { comments }
+                        </tbody>
                     </table>
 
                     <hr/>
