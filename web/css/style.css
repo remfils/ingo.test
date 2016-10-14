@@ -1084,6 +1084,13 @@ a:active {
     border-color: #C1C3C0;
 }
 
+.email-reponse-message {
+    color: #FF6900;
+    font-size: 30px;
+    font-weight: normal;
+    margin-left: 60px;
+}
+
 .contact-form p {
     display: none;
 }
