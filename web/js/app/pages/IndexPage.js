@@ -275,12 +275,15 @@ export default class IndexPage extends React.Component {
 
     getMouseScrollDirection(e) {
         var delta = 0;
+
+        var o_e = e.originalEvent;
+
         if (e.type === 'DOMMouseScroll') {
             e.originalEvent.detail * -40;
         }
         else {
-            console.log(e.originalEvent.wheelDelta, e.originalEvent.deltaY, e.originalEvent.deltaX);
-            delta = -e.originalEvent.wheelDelta || -e.originalEvent.deltaY || e.originalEvent.deltaX;
+            console.log("SCROLL: ", o_e.wheelDelta, o_e.detail, o_e.deltaY, o_e.deltaX);
+            delta = -o_e.wheelDelta || -o_e.deltaY || o_e.deltaX;
         }
 
         return delta > 0 ? -1 : 1;
