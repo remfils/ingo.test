@@ -35,15 +35,23 @@ function hideLoadingScreen(callback) {
     loading_cover.css('width', '100%');
 
     var delta_time = Date.now() - load_start_time;
+    var load_delay = 0;
+    if (delta_time < config.MIN_LOAD_TIME)
+        load_delay = config.MIN_LOAD_TIME - delta_time;
 
-    if (delta_time < config.MIN_LOAD_TIME) {
-        setTimeout(function(){
-            clearInterval(timer);
-            loading_screen.fadeOut(500);
-            if (callback) {
-                callback();
-            }
-        }, config.MIN_LOAD_TIME - delta_time);
+    setTimeout(function(){
+        clearInterval(timer);
+
+        var $load_screen = $('#LoadingScreen');
+
+        TweenLite.to($('#LoadingScreen .loading-text'), 0.5, {opacity: 0});
+        TweenLite.to($load_screen, 1, {opacity: 0, delay: 0.8, onComplete: () => {
+            $load_screen.hide();
+        }});
+    }, load_delay);
+
+    if (callback) {
+        callback();
     }
 }
 
