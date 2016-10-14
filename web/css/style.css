@@ -1075,6 +1075,10 @@ a:active {
     background-image: url("../img/bg/bg-contact.jpg");
 }
 
+.impressum-page .contact-bg-image {
+    background-image: url("../img/bg/bg-impressum.jpg");
+}
+
 .contact-form.email-form input[type="text"],
 .contact-form.email-form textarea {
     border-color: #C1C3C0;
