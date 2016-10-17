@@ -55,6 +55,14 @@ export default class AlphaBox extends React.Component {
         }});
     }
 
+    componentDidUpdate() {
+        var redrawFunction = this.props.onRedraw;
+
+        if (redrawFunction) {
+            redrawFunction();
+        }
+    }
+
     render() {
         var text = this.state.children;
 

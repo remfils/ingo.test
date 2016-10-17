@@ -23,8 +23,20 @@ const ROWS_PER_TABLE = 3;
 const MOVIE_TITLE_ALPHA = 0.85;
 
 export default class WorksPage extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+
+        this.leftArrowClickListener = this.leftArrowClickListener.bind(this);
+        this.rightArrowClickListener = this.rightArrowClickListener.bind(this);
+        this.onAlphaBoxRedrawListener = this.onAlphaBoxRedrawListener.bind(this);
+
+        this.current_page = 0;
+
+        var displayed_movies = props.movies.slice(0,12);
+
+        this.state = {
+            displayed_movies: displayed_movies
+        };
     }
 
     componentWillMount() {
@@ -75,11 +87,15 @@ export default class WorksPage extends React.Component {
     }
 
     updateSizeOfImages() {
-        var image_width = (window.innerWidth - $('#WorksPage .movie-works-table').offset().left - 200 - 25 * (CELLS_PER_ROW - 1)) / CELLS_PER_ROW;
-        var image_height = (window.innerHeight - $('#WorksPage .title-header').offset().top * 2 - 25 * (CELLS_PER_ROW - 1)) / ROWS_PER_TABLE;
-        $('.movie_cell > .movie_image')
-            .width(image_width)
-            .height(image_height);
+        var $movie_table = $('#WorksPage .movie-works-table');
+
+        if ($movie_table.length) {
+            var image_width = (window.innerWidth - $movie_table.offset().left - 200 - 25 * (CELLS_PER_ROW - 1)) / CELLS_PER_ROW;
+            var image_height = (window.innerHeight - $('#WorksPage .title-header').offset().top * 2 - 25 * (CELLS_PER_ROW - 1)) / ROWS_PER_TABLE;
+            $('.movie_cell > .movie_image')
+                .width(image_width)
+                .height(image_height);
+        }
     }
 
     addHoverListeners() {
@@ -87,7 +103,7 @@ export default class WorksPage extends React.Component {
 
         TweenLite.set($logo_span, {opacity: 0});
 
-        $logo_span.on('mouseover', (e)=>{
+        $('.movie-works-table').on('mouseover', '.movie_cell > .movie_image > span', (e)=>{
             if (e.target != e.currentTarget)
                 return;
 
@@ -97,7 +113,7 @@ export default class WorksPage extends React.Component {
             TweenLite.to(e.currentTarget, 0.5, {opacity: 0.85});
         });
 
-        $logo_span.on('mouseout', (e)=>{
+        $('.movie-works-table').on('mouseout', '.movie_cell > .movie_image > span', (e)=>{
             if (e.target != e.currentTarget)
                 return;
 
@@ -186,9 +202,53 @@ export default class WorksPage extends React.Component {
         }
     }
 
+    leftArrowClickListener(e) {
+        e.preventDefault();
+
+        if (this.current_page <= 0)
+            return false;
+
+        this.current_page --;
+
+        var slice_index = this.current_page == 0 ? 0 : this.current_page * 12 - 1;
+        var displayed_movies = this.props.movies.slice(slice_index, 12);
+
+        if (displayed_movies) {
+            this.setState({
+                displayed_movies
+            });
+        }
+
+        return false;
+    }
+
+    rightArrowClickListener(e) {
+        e.preventDefault();
+
+        this.current_page ++;
+
+        var displayed_movies = this.props.movies.slice(this.current_page * 12 - 1, 12);
+
+        if (displayed_movies) {
+            this.setState({
+                displayed_movies
+            });
+        }
+
+        return false;
+    }
+
+    onAlphaBoxRedrawListener() {
+        this.updateSizeOfImages();
+
+        var $logo_span = $('.movie_cell > .movie_image > span');
+
+        TweenLite.set($logo_span, {opacity: 0});
+    }
+
     render() {
 
-        var tds = this.props.movies.map((item, index) => {
+        var tds = this.state.displayed_movies.map((item, index) => {
             //var span_style = {backgroundColor: hexToRgba(item.color, MOVIE_TITLE_ALPHA)};
             var span_style = {backgroundColor: item.color};
             var image_style = {backgroundImage: 'url(' + item.logo + ')'};
@@ -247,9 +307,18 @@ export default class WorksPage extends React.Component {
 
 
                 <div class="title-header">
-                    <AlphaBox>
+                    <AlphaBox onRedraw={this.onAlphaBoxRedrawListener}>
                         <table class='movie-works-table'>
-                            {rows}
+
+                            <tbody>
+                                {rows}
+                                <tr>
+                                    <td class="work-cotnrols" colSpan="4">
+                                        <img class="fliped" onClick={this.leftArrowClickListener} src={asset('img/button-arrow-next.png')}/>
+                                        <img onClick={this.rightArrowClickListener} src={asset('img/button-arrow-next.png')}/>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </AlphaBox>
                 </div>
