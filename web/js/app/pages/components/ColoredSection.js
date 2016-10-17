@@ -12,7 +12,7 @@ export default class ColoredSection extends React.Component {
 
         ColoredSection.box_counter ++;
 
-        this.id = "TitleColoredTable" + ColoredSection.box_counter;
+        this.id = "ColoredSection" + ColoredSection.box_counter;
 
         this.state = {
             is_transition: false,
@@ -35,7 +35,8 @@ export default class ColoredSection extends React.Component {
     }
 
     componentDidMount() {
-        $(this.id).css('background-color', this.props.color);
+        console.log("ColoredSection mount: color=", this.props.color, this.id);
+        TweenLite.set($(this.id), {backgroundColor: this.props.color});
     }
 
     componentWillUpdate( nextProps, nextState ) {
@@ -51,7 +52,6 @@ export default class ColoredSection extends React.Component {
     }
 
     render() {
-        var table_style = { backgroundColor: this.props.color };
 
         return <section id={this._id} key={this._id} {...this.props}>
             {this.props.children}
