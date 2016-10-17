@@ -183,76 +183,11 @@ class AdminController
         $error_message = '';
 
         if ( $req->isMethod('POST') ) {
-            $project = new Project();
-            $project->setProjectFromPost($req->request->all());
+            $db = new ProjectRepository($app);
 
-            $project->saveToDB($app);
+            $project = $req->request->all()['project'];
 
-            /*$data = array();
-
-            $img_dir = 'img/movies';
-            $upload_directory = dirname($_SERVER["SCRIPT_FILENAME"]) . '/' . $img_dir;
-            $logo_file_name = str_replace(' ', '_', $_FILES['logo']['name']);*/
-
-            // var_dump($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
-
-            /*$data['name'] = $req->get('name');
-            $data['color'] = $req->get('color');
-            $data['year'] = $req->get('year');
-            $data['logo'] = $img_dir . '/' . $logo_file_name;
-            $data['preview_url'] = $req->get('preview_url');
-            $data['description'] = $comment["text"] = str_replace("\n", '<br/>', trim($req->get('description')));;
-
-            $data = $this->getFieldsAndCommentsFromArray($req->request->all());
-            $fields = $data['fields'];
-            $comments = $data['comments'];*/
-
-            /*if ( file_exists("$upload_directory/$logo_file_name") ) {
-                $error_message = "Logotype file: $logo_file_name already exists!";
-            }*/
-
-            /*if ( empty($error_message) ) {
-                move_uploaded_file($_FILES["logo"]["tmp_name"], "$upload_directory/$logo_file_name");
-
-                $q = $app['db']->prepare('INSERT INTO projects (name, color, year, logo) VALUES (:name, :color, :year, :logo)');
-                $q->bindValue(':name', $data['name']);
-                $q->bindValue(':color', $data['color']);
-                $q->bindValue(':year', $data['year']);
-                $q->bindValue(':logo', $data['logo']);
-                $q->execute();
-
-                $id = $app['db']->lastInsertId();
-
-                $q = $app['db']->prepare('INSERT INTO project_description (preview_url, description, movie_id) VALUES (:preview_url, :description, :movie_id)');
-                $q->bindValue(':preview_url', $data['preview_url']);
-                $q->bindValue(':description', $data['description']);
-                $q->bindValue(':movie_id', $id);
-                $q->execute();
-
-                foreach ( $fields as $key => $field ) {
-                    $q = $app['db']->prepare('INSERT INTO project_fields (movie_id, field_name, field_value) VALUES (:movie_id, :field_name, :field_value)');
-                    $q->bindValue(':field_name', $field['name']);
-                    $q->bindValue(':field_value', $field['value']);
-                    $q->bindValue(':movie_id', $id);
-                    $q->execute();
-                }
-
-                foreach ( $comments as $key => $comment ) {
-                    $comment["text"] = str_replace("\n", '<br/>', trim($comment["text"]));
-
-                    $file_name = $id . '_' . str_replace(' ', '_', $comment['file'][name]);
-                    var_dump("$upload_directory/comments/$file_name");
-                    move_uploaded_file($comment['file']["tmp_name"], "$upload_directory/comments/$file_name");
-
-                    $q = $app['db']->prepare('INSERT INTO project_comments (movie_id, image_url, text) VALUES (:movie_id, :image_url, :text)');
-                    $q->bindValue(':movie_id', $id);
-                    $q->bindValue(':image_url', "$img_dir/comments/$file_name");
-                    $q->bindValue(':text', $comment["text"]);
-                    $q->execute();
-                }
-
-                $success_message = 'project successfully created! ';
-            }*/
+            $db->createProjectFromPost($project);
         }
 
         return $app['twig']->render('admin/edit-project.html.twig', array(

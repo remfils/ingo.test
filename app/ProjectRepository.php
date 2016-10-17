@@ -175,8 +175,41 @@ class ProjectRepository {
         return $model;
     }
 
+    public function createProjectFromPost($p_data)
+    {
+        $prj = $this->createOrUpdateBasicProject(null, $p_data);
+        $prj_id = $prj->id;
+
+        $this->createMultilangInfo($prj_id, $p_data);
+
+        $this->updateFields($prj_id, $p_data);
+
+        $this->updateComments($prj_id, $p_data);
+    }
+
+    private function createMultilangInfo($prj_id, $p_data) {
+        $langs = $this->db->for_table('lang')->find_array();
+
+        foreach ($langs as $i => $lang) {
+            $l = $lang['name'];
+
+            $row = $this->db->for_table('project_lang')->create();
+
+            $row->lang_id = $lang['id'];
+            $row->project_id = $prj_id;
+
+            $row->name = $p_data[$l]['name'];
+            $row->description = $p_data[$l]['description'];
+            $row->genre = $p_data[$l]['genre'];
+
+            $row->save();
+
+
+        }
+    }
+
     public function updateProjectFromPost($prj_id, $p_data) {
-        $this->updateBaseProjectInfo($prj_id, $p_data);
+        $this->createOrUpdateBasicProject($prj_id, $p_data);
 
         $this->updateMultilangInfo($prj_id, $p_data);
 
@@ -185,11 +218,16 @@ class ProjectRepository {
         $this->updateComments($prj_id, $p_data);
     }
 
-    private function updateBaseProjectInfo($prj_id, $p_data)
+    private function createOrUpdateBasicProject($prj_id, $p_data)
     {
-        $prj = $this->db->for_table('projects')->table_alias('p')
-            ->where_equal('id', $prj_id)
-            ->find_one();
+        if ($prj_id) {
+            $prj = $this->db->for_table('projects')->table_alias('p')
+                ->where_equal('id', $prj_id)
+                ->find_one();
+        }
+        else {
+            $prj = $this->db->for_table('projects')->create();
+        }
 
         $prj_de = $p_data['de'];
         $prj_en = $p_data['en'];
@@ -216,6 +254,8 @@ class ProjectRepository {
         }
 
         $prj->save();
+
+        return $prj;
     }
 
     private function isImageUploaded( $prj, $image_name, $id = 0 )
@@ -238,7 +278,7 @@ class ProjectRepository {
     {
         $img_dir = "img/$sub_dir";
         $upload_directory = dirname($_SERVER["SCRIPT_FILENAME"]) . '/' . $img_dir;
-        $image_file_name = str_replace(' ', '_', $prj->getUploadedImage('name', $image_name, $cid));
+        $image_file_name = time() . '_' . str_replace(' ', '_', $prj->getUploadedImage('name', $image_name, $cid));
         move_uploaded_file($prj->getUploadedImage('tmp_name', $image_name, $cid), "$upload_directory/$image_file_name");
 
         return "$img_dir/$image_file_name";
