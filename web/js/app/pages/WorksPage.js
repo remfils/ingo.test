@@ -71,6 +71,14 @@ export default class WorksPage extends React.Component {
             case "CONTACTS-WORKS":
             case "ABOUT-WORKS":
             case "IMPRESSUM-WORKS":
+                if (tr.movie_index) {
+                    this.current_page = page = tr.movie_index % 12;
+                    var slice_index = this.current_page * 12;
+                    this.setState({
+                        displayed_movies: this.props.movies.slice(slice_index, slice_index + 12)
+                    });
+                }
+
                 tr.prev_page.leaveToDifferentTitlePage(tl);
                 this.enterFromDifferentTitlePage(tl);
                 break;
@@ -210,8 +218,8 @@ export default class WorksPage extends React.Component {
 
         this.current_page --;
 
-        var slice_index = this.current_page == 0 ? 0 : this.current_page * 12 - 1;
-        var displayed_movies = this.props.movies.slice(slice_index, 12);
+        var slice_index = this.current_page * 12;
+        var displayed_movies = this.props.movies.slice(slice_index, slice_index + 12);
 
         if (displayed_movies) {
             this.setState({
@@ -227,7 +235,8 @@ export default class WorksPage extends React.Component {
 
         this.current_page ++;
 
-        var displayed_movies = this.props.movies.slice(this.current_page * 12 - 1, 12);
+        var slice_index = this.current_page * 12;
+        var displayed_movies = this.props.movies.slice(slice_index, slice_index+12);
 
         if (displayed_movies) {
             this.setState({
@@ -255,7 +264,7 @@ export default class WorksPage extends React.Component {
 
             return <td className='movie_cell'>
                     <div class='movie_image' style={image_style}>
-                        <span style={span_style} onClick={this.createProjectOnClickFunction(index)}>
+                        <span style={span_style} onClick={this.createProjectOnClickFunction(item.id)}>
                             <h2>{item.name}</h2><br/>
                             <h3>{item.genre}</h3>
                         </span>

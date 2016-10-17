@@ -31,8 +31,8 @@ export function fromMovieToMovie(is_right, prev_page, params={}) {
     );
 }
 
-export function fromWorksToMovie(works_page, movie_index, params={}) {
-    params.movie_index = movie_index;
+export function fromWorksToMovie(works_page, movie_id, params={}) {
+    params.movie_id = movie_id;
 
     createTransition(
         "WORKS-MOVIE",
@@ -41,7 +41,9 @@ export function fromWorksToMovie(works_page, movie_index, params={}) {
     );
 }
 
-export function fromMovieToWorks(movie_page, params={}) {
+export function fromMovieToWorks(movie_page, movie_index, params={}) {
+    params.movie_index = movie_index;
+
     createTransition(
         "MOVIE-WORKS",
         movie_page,

@@ -299,7 +299,7 @@ export default class MoviePage extends React.Component {
         e.preventDefault();
 
         TweenLite.to('html, body', 0.5, {scrollTop: 0, onComplete: ()=>{
-            TransitionActions.fromMovieToWorks(this);
+            TransitionActions.fromMovieToWorks(this, this.current_movie_index);
         }})
 
         return false;

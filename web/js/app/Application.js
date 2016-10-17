@@ -214,7 +214,15 @@ export default class Application extends React.Component {
 
                 break;
             case "WORKS-MOVIE":
-                var current_movie_index = transition.movie_index;
+                var movie_id = transition.movie_id;
+                var movies = this.movies;
+                var i = movies.length;
+                while (i--) {
+                    if (movies[i].id === movie_id) {
+                        break;
+                    }
+                }
+                var current_movie_index = i;
 
                 this.setUrl('/movie/' + this.movies[current_movie_index].url);
 
