@@ -71,10 +71,15 @@ export default class TitleColoredTable extends React.Component {
             ResizeActions.resizeTableHeaderAction(HEADER_MIN_WIDTH + delta);
         }
         else {
-            if ( $(".colored-table-header").width() > HEADER_MIN_WIDTH ) {
+            var colored_table_width = $(".colored-table-header").width();
+
+            if ( colored_table_width > HEADER_MIN_WIDTH ) {
                 $(".colored-table-header").width(HEADER_MIN_WIDTH);
 
                 ResizeActions.resizeTableHeaderAction(HEADER_MIN_WIDTH);
+            }
+            else {
+                ResizeActions.resizeTableHeaderAction(colored_table_width);
             }
         }
     }
