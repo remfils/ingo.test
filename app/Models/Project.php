@@ -85,7 +85,7 @@ class Project
     public function getFields() {
         $result = array();
 
-        if (!$this->entity)
+        if (!$this->entity || !array_key_exists('fields',$this->entity['de']))
             return $result;
 
         foreach ( $this->entity as $lang => $item) {
@@ -104,7 +104,7 @@ class Project
     public function getComments() {
         $result = array();
 
-        if (!$this->entity)
+        if (!$this->entity || !array_key_exists('comments',$this->entity['de']))
             return $result;
 
         foreach ( $this->entity as $lang => $item) {

@@ -181,19 +181,24 @@ class AdminController
     public function addProjectAction( Request $req, Application $app ) {
         $success_message = '';
         $error_message = '';
+        $errs = array();
+        $project = null;
 
         if ( $req->isMethod('POST') ) {
             $db = new ProjectRepository($app);
 
             $project = $req->request->all()['project'];
 
-            $db->createProjectFromPost($project);
+            if ($db->isProjectValid($project, $errs)) {
+                $db->createProjectFromPost($project);
+            }
         }
 
         return $app['twig']->render('admin/edit-project.html.twig', array(
             'success_msg' => $success_message,
             'error_msg' => $error_message,
-            'movie' => new Project(null)
+            'errors' => $errs,
+            'movie' => new Project($project)
         ));
     }
 
@@ -240,6 +245,7 @@ class AdminController
         return $app['twig']->render('admin/edit-project.html.twig', array(
             'error_msg' => '',
             'success_msg' => '',
+            'errors' => array(),
             'movie' => $model
         ));
     }

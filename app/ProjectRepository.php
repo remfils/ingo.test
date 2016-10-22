@@ -175,6 +175,67 @@ class ProjectRepository {
         return $model;
     }
 
+    public function isProjectValid($project, &$errs) {
+        $prj_de = $project['de'];
+
+        $this->testForEmptyFields($prj_de, $errs);
+
+        $this->testForCorrectValues($prj_de, $errs);
+
+        return count($errs) === 0;
+    }
+
+    private function testForEmptyFields($p, &$e) {
+        if (!array_key_exists('name', $p) || $p['name'] === '') {
+            array_push($e, 'You should at least set project name in german.');
+        }
+
+        if (!array_key_exists('url', $p) || $p['url'] === '') {
+            array_push($e, 'You have to set project url.');
+        }
+
+        if (!array_key_exists('genre', $p) || $p['genre'] === '') {
+            array_push($e, 'Movie genre is not set.');
+        }
+
+        if (!array_key_exists('year', $p) || $p['year'] === '') {
+            array_push($e, 'Project year is not set.');
+        }
+
+        if (!array_key_exists('preview_url', $p) || $p['preview_url'] === '') {
+            array_push($e, 'Project preview url is not set.');
+        }
+
+        if (!array_key_exists('color', $p) || $p['color'] === '') {
+            array_push($e, 'Project color is not set.');
+        }
+
+        if (!array_key_exists('description', $p) || $p['description'] === '') {
+            array_push($e, 'Project description is not set.');
+        }
+    }
+
+    private function testForCorrectValues($p, &$e) {
+        $this->testForCorrectColor($p['color'], $e);
+
+        $this->testForCorrectUrl($p['url'], $e);
+    }
+
+    private function testForCorrectColor($color, &$e) {
+        if (preg_match('/^#[A-Fa-f0-9]{6}$/', $color) === 0) {
+            array_push($e, 'Color doesnt match hex format.');
+        }
+    }
+
+    private function testForCorrectUrl($url, &$e) {
+        $test = $this->db->for_table('projects')->where('url', $url)->find_array();
+
+        if ($test) {
+            array_push($e, 'Url should be unique!');
+        }
+
+    }
+
     public function createProjectFromPost($p_data)
     {
         $prj = $this->createOrUpdateBasicProject(null, $p_data);
@@ -227,6 +288,7 @@ class ProjectRepository {
         }
         else {
             $prj = $this->db->for_table('projects')->create();
+            $prj->active = true;
         }
 
         $prj_de = $p_data['de'];
@@ -314,6 +376,10 @@ class ProjectRepository {
         $langs = $this->db->for_table('lang')->find_array();
 
         foreach($langs as $k => $lang) {
+            if (!array_key_exists('fields', $p_data[$lang['name']])) {
+                continue;
+            }
+
             $fields = $p_data[$lang['name']]['fields'];
 
             foreach ($fields as $k2 => $field) {
@@ -361,6 +427,10 @@ class ProjectRepository {
         $image_urls = array();
 
         foreach($langs as $k => $lang) {
+            if (!array_key_exists('comments', $p_data[$lang['name']])) {
+                continue;
+            }
+
             $comments = $p_data[$lang['name']]['comments'];
 
             foreach ($comments as $k2 => $comment) {
