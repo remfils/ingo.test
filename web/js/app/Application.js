@@ -65,14 +65,20 @@ export default class Application extends React.Component {
 
     }
 
+    generatePageKey() {
+        return 'Page_' + (new Date()).getTime();
+    }
+
     route() {
         var domain = config.SITE_NAME;
         var url = document.URL;
+        var page_key = this.generatePageKey();
+
 
         if ( url == domain + URL_INDEX ) {
 
             this.pushPage(
-                <IndexPage movies={this.movies} lang={this.props.lang} />
+                <IndexPage key={page_key} movies={this.movies} lang={this.props.lang} />
             );
         }
         else if ( url.indexOf(URL_MOVIE) !== -1 ) {
@@ -91,6 +97,7 @@ export default class Application extends React.Component {
 
             this.pushPage(
                 <MoviePage
+                    key={page_key}
                     app={this}
                     lang={this.props.lang}
                     current_movie_index={index}
@@ -101,25 +108,25 @@ export default class Application extends React.Component {
             if (this.props.onAjaxLoaded)
                 this.props.onAjaxLoaded();
 
-            this.pushPage(<ContactPage lang={this.props.lang} />);
+            this.pushPage(<ContactPage key={page_key} lang={this.props.lang} />);
         }
         else if (url.indexOf(URL_ABOUT) !== -1) {
             if (this.props.onAjaxLoaded)
                 this.props.onAjaxLoaded();
 
-            this.pushPage(<AboutPage lang={this.props.lang} />);
+            this.pushPage(<AboutPage key={page_key} lang={this.props.lang} />);
         }
         else if (url.indexOf(URL_WORKS) !== -1) {
             if (this.props.onAjaxLoaded)
                 this.props.onAjaxLoaded();
 
-            this.pushPage(<WorksPage movies={this.movies} lang={this.props.lang} />);
+            this.pushPage(<WorksPage key={page_key} movies={this.movies} lang={this.props.lang} />);
         }
         else if (url.indexOf(URL_IMPRESSUM) !== -1) {
             if (this.props.onAjaxLoaded)
                 this.props.onAjaxLoaded();
 
-            this.pushPage(<ImpressumPage lang={this.props.lang}/>);
+            this.pushPage(<ImpressumPage key={page_key} lang={this.props.lang}/>);
         }
     }
 
@@ -177,6 +184,8 @@ export default class Application extends React.Component {
         if (this.is_transition)
             return;
 
+        var page_key = this.generatePageKey();
+
         this.is_transition = true;
 
         var transition = TransitionStore.current_transition;
@@ -206,6 +215,7 @@ export default class Application extends React.Component {
                 this.setUrl('/movie/' + current_content.url);
 
                 page = <MoviePage
+                    key={page_key}
                     app={this}
                     lang={this.props.lang}
                     current_movie_index={current_movie_index}
@@ -227,6 +237,7 @@ export default class Application extends React.Component {
                 this.setUrl('/movie/' + this.movies[current_movie_index].url);
 
                 page = <MoviePage
+                    key={page_key}
                     app={this}
                     lang={this.props.lang}
                     current_movie_index={current_movie_index}
@@ -240,6 +251,7 @@ export default class Application extends React.Component {
                 this.setUrl('/');
 
                 page = <IndexPage
+                    key={page_key}
                     lang={this.props.lang}
                     movies={this.movies}
                     current_content_index={prev_page.current_movie_index}
@@ -250,21 +262,21 @@ export default class Application extends React.Component {
             case "WORKS-CONTACTS":
             case "IMPRESSUM-CONTACTS":
                 this.setUrl('/contacts');
-                page = <ContactPage transition={transition} lang={this.props.lang}/>;
+                page = <ContactPage key={page_key} transition={transition} lang={this.props.lang}/>;
                 break;
             case "CONTACTS-INDEX":
             case "ABOUT-INDEX":
             case "WORKS-INDEX":
             case "IMPRESSUM-INDEX":
                 this.setUrl('/');
-                page = <IndexPage movies={this.movies} transition={transition} lang={this.props.lang} />;
+                page = <IndexPage key={page_key} movies={this.movies} transition={transition} lang={this.props.lang} />;
                 break;
             case "INDEX-ABOUT":
             case "CONTACTS-ABOUT":
             case "WORKS-ABOUT":
             case "IMPRESSUM-ABOUT":
                 this.setUrl('/about');
-                page = <AboutPage transition={transition} lang={this.props.lang} />;
+                page = <AboutPage key={page_key} transition={transition} lang={this.props.lang} />;
                 break;
             case "INDEX-WORKS":
             case "CONTACTS-WORKS":
@@ -272,14 +284,14 @@ export default class Application extends React.Component {
             case "MOVIE-WORKS":
             case "IMPRESSUM-WORKS":
                 this.setUrl('/works');
-                page = <WorksPage movies={this.movies} transition={transition} lang={this.props.lang} />;
+                page = <WorksPage key={page_key} movies={this.movies} transition={transition} lang={this.props.lang} />;
                 break;
             case "INDEX-IMPRESSUM":
             case "CONTACTS-IMPRESSUM":
             case "ABOUT-IMPRESSUM":
             case "WORKS-IMPRESSUM":
                 this.setUrl('/impressum');
-                page = <ImpressumPage transition={transition} lang={this.props.lang} />;
+                page = <ImpressumPage key={page_key} transition={transition} lang={this.props.lang} />;
                 break;
         }
 

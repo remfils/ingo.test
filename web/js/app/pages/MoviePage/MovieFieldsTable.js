@@ -96,7 +96,8 @@ export default class MovieFieldsTable extends React.Component {
         
         if (movie.project_info_table) {
             movie_table = movie.project_info_table.map(function(item, i) {
-                return <tr>
+                var field_key = 'field_key_' + i;
+                return <tr key={field_key}>
                     <td>{item.field_name}</td>
                     <td>{item.field_value}</td>
                 </tr>;

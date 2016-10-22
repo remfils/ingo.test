@@ -51,11 +51,12 @@ export default class Description extends React.Component {
         var description_html = {__html: movie.description };
         var description_style = {backgroundColor: movie.color};
 
-        var comments = movie.comments.map((item) => {
+        var comments = movie.comments.map((item, index) => {
             console.log("DESCRIPTION RENDER: ", item);
             var text_html = {__html: item.text };
+            var tr_key = 'comment_key_' + index;
 
-            return <tr class="info-block">
+            return <tr key={tr_key} class="info-block">
                 <td class="info-text" dangerouslySetInnerHTML={text_html} />
                 <td class="info-img">
                     <img src={ asset(item.image_url) } alt="Girl"/>
@@ -81,7 +82,7 @@ export default class Description extends React.Component {
                 </ColoredSection>
 
                 <section className="default-side-padding more-info">
-                    <table className="movie-comments" cellspacing="0" cellpadding="0">
+                    <table className="movie-comments">
                         <tbody>
                             { comments }
                         </tbody>

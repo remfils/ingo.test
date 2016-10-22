@@ -212,8 +212,6 @@ export default class MoviePage extends React.Component {
                 this.setState({
                     current_movie: prj
                 });
-
-                this.setHomeButtonScrollMagicScene();
             }
         });
     }
@@ -226,6 +224,18 @@ export default class MoviePage extends React.Component {
         this.hadleTransitionAnimations();
 
         this.init();
+    }
+
+    componentWillUpdate() {
+        if ( !this.isTransitionLocked() ) {
+            console.log("ScrollMagic happened!");
+            //this.setScrollmagicScene();
+        }
+    }
+
+    componentDidUpdate() {
+        this.setHomeButtonScrollMagicScene();
+        //this.setScrollmagicScene(null, true);
     }
 
     init() {
@@ -244,14 +254,21 @@ export default class MoviePage extends React.Component {
         var ctrl = new ScrollMagic.Controller();
 
         var $small_dsc = $('.project-sm-dsc');
-        var duration = $small_dsc.offset().top - $('.movie-title-section').offset().top + $small_dsc.outerHeight(true) / 2;
+        var duration = 0;
+        if ($small_dsc.length != 0) {
+            duration += $small_dsc.offset().top + $small_dsc.outerHeight(true) / 2;
+        }
+        duration +=  - $('.movie-title-section').offset().top;
 
-        console.debug("DEBUG(setHomeButtonScrollMagicScene)", duration)
+        console.debug("DEBUG(setHomeButtonScrollMagicScene)", duration);
 
         var scene = new ScrollMagic.Scene({triggerElement: '.movie-title-section', duration: duration})
             .setClassToggle('#HomeButton', 'darker')
             .triggerHook(0.05)
             .addTo(ctrl);
+
+        if ($('#MovieDescription').length === 0)
+            return;
 
         var scene = new ScrollMagic.Scene({triggerElement: '#MovieDescription'})
             .setClassToggle('#HomeButton', 'darker')
@@ -409,17 +426,6 @@ export default class MoviePage extends React.Component {
         });
     }
 
-    componentWillUpdate() {
-        if ( !this.isTransitionLocked() ) {
-            console.log("ScrollMagic happened!");
-            //this.setScrollmagicScene();
-        }
-    }
-
-    componentDidUpdate() {
-        //this.setScrollmagicScene(null, true);
-    }
-
     setScrollmagicScene(bg_color, isForced) {
         if ( !bg_color ) {
             bg_color = this.Model.color;
@@ -475,8 +481,9 @@ export default class MoviePage extends React.Component {
 
         if ( movie.project_info_table ) {
             console.log("RENDER(MoviePage): movie.project_info_table", movie.project_info_table);
-            movie_table = movie.project_info_table.map((item) => {
-                return <SlidingTableRow field_key={item['field_name']} field_val={item.field_value} />;
+            movie_table = movie.project_info_table.map((item, index) => {
+                var field_key = 'field_' + index;
+                return <SlidingTableRow key={field_key} field_key={item['field_name']} field_val={item.field_value} />;
             });
 
             console.log("RENDER(MoviePage): movie_table", movie_table);

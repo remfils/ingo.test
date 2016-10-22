@@ -88,7 +88,7 @@ export default class PreviewFrame extends React.Component {
             frameBorder="0"
             webkitallowfullscreen
             mozallowfullscreen
-            allowfullscreen>
+            allowFullScreen>
         </iframe>;
     }
 }
