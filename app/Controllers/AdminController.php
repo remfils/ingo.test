@@ -72,8 +72,6 @@ class AdminController
             ->group_by('page_name')
             ->find_array();
 
-        //!ddd($model);
-
         return $app['twig']->render('admin/show-custom-pages.html.twig', array(
             'model' => $model
         ));
@@ -173,8 +171,6 @@ class AdminController
     }
 
     public function editImpressumPage(Request $req, Application $app) {
-
-
         return $app['twig']->render('admin/edit-impressum.html.twig');
     }
 
@@ -200,39 +196,6 @@ class AdminController
             'errors' => $errs,
             'movie' => new Project($project)
         ));
-    }
-
-    private function getFieldsAndCommentsFromArray( $data, $images_required = true ) {
-        $fields = array();
-        $comments = array();
-
-        foreach ( $data as $key => $value ) {
-            if ( preg_match('/^field_(?P<name>.+)_(?P<id>.+)/', $key, $matches ) ) {
-                if ( isset($fields[$matches['id']]) ) {
-                    $fields[$matches['id']][$matches['name']] = $value;
-                }
-                else {
-                    $fields[$matches['id']] = array( $matches['name'] => $value);
-                }
-            }
-            else if ( preg_match('/^comment_(?P<name>.+)_(?P<id>.+)/', $key, $matches ) ) {
-                $cid = $matches['id'];
-                if ( isset($comments[$matches['id']]) ) {
-                    $comments[$cid][$matches['name']] = $value;
-                }
-                else {
-                    if ( !$images_required or $_FILES['comment_img_' . $cid]['size'] > 1 ) {
-                        $comments[$cid] = array( $matches['name'] => $value);
-                        $comments[$cid]['file'] = $_FILES['comment_img_' . $cid];
-                    }
-                }
-            }
-        }
-
-        return array(
-            'fields' => $fields,
-            'comments' => $comments
-        );
     }
 
     public function editProjectAction( Request $req, Application $app ) {
@@ -264,7 +227,10 @@ class AdminController
     public function removeProjectAction( Request $req, Application $app ) {
         $id = $req->attributes->get('id');
 
-        $q = $app['db']->prepare('DELETE FROM projects WHERE id=:id');
+        $db = new ProjectRepository($app);
+        $db->softRemoveProject($id);
+
+        /*$q = $app['db']->prepare('DELETE FROM projects WHERE id=:id');
         $q->bindValue(':id', $id);
         $q->execute();
 
@@ -278,8 +244,8 @@ class AdminController
 
         $remove_project_from('project_fields');
 
-        $remove_project_from('project_comments');
+        $remove_project_from('project_comments');*/
 
-        return $app->redirect('/admin');
+        return $app->redirect($app['url_generator']->generate('admin'));
     }
 }
