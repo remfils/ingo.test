@@ -492,4 +492,12 @@ class ProjectRepository {
             $ret[$i] = self::array_utf8_encode($d);
         return $ret;
     }
+
+    public function softRemoveProject($project_id) {
+        $project = $this->db->for_table('projects')->where('id', $project_id)->find_one();
+
+        $project->active = false;
+
+        $project->save();
+    }
 }

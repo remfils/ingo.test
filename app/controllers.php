@@ -33,7 +33,8 @@ $app->post($app['sub_domain'] . '/admin/edit/project/{id}', 'App\\Controllers\\A
 $app->match($app['sub_domain'] . '/admin/add/project', 'App\\Controllers\\AdminController::addProjectAction', '(GET|POST)')
     ->bind('admin-add_project');
 
-$app->get($app['sub_domain'] . '/admin/remove/project/{id}', 'App\\Controllers\\AdminController::removeProjectAction');
+$app->get($app['sub_domain'] . '/admin/remove/project/{id}', 'App\\Controllers\\AdminController::removeProjectAction')
+    ->bind('admin-remove_project');
 
 $app->get($app['sub_domain'] . '/admin/show-custom-pages', 'App\\Controllers\\AdminController::showCustomPagesAction')
     ->bind('show-pages');
