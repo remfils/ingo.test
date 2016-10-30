@@ -221,7 +221,7 @@ export default class WorksPage extends React.Component {
         var slice_index = this.current_page * 12;
         var displayed_movies = this.props.movies.slice(slice_index, slice_index + 12);
 
-        if (displayed_movies) {
+        if (displayed_movies && displayed_movies.length) {
             this.setState({
                 displayed_movies
             });
@@ -238,10 +238,13 @@ export default class WorksPage extends React.Component {
         var slice_index = this.current_page * 12;
         var displayed_movies = this.props.movies.slice(slice_index, slice_index+12);
 
-        if (displayed_movies) {
+        if (displayed_movies && displayed_movies.length) {
             this.setState({
                 displayed_movies
             });
+        }
+        else {
+            this.current_page --;
         }
 
         return false;
