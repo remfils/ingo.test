@@ -141,6 +141,7 @@ export default class WorksPage extends React.Component {
 
     enterFromDifferentTitlePage(tl) {
         var $nav = $('#WorksPage .title-navigation');
+        var $control = $('#WorksPage .work-cotnrols');
 
         tl.from($nav, 0, {opacity:0}, 'enter-stage');
 
@@ -148,6 +149,8 @@ export default class WorksPage extends React.Component {
             var delay = 0.1 * index;
             tl.from(item, 0.5, {opacity: 0, delay: delay, ease: Power4.easeInOut}, 'enter-stage');
         });
+
+        tl.fromTo($control, 0.5, {opacity: 0}, {opacity: 1}, 'enter-stage');
 
         tl.set($nav, {opacity:0}, 'clear-stage');
         tl.set($nav, {opacity:1}, 'enter-stage');
@@ -161,13 +164,16 @@ export default class WorksPage extends React.Component {
         var $nav = $('#WorksPage .title-navigation');
         var $movies = $('#WorksPage .movie_cell');
         var $color = $('#WorksPage .table-bg-color');
+        var $control = $('#WorksPage .work-cotnrols');
 
         var movie_count = $movies.length;
         var interval = 1 / (0.1*movie_count+1);
         $movies.each((index, item)=>{
             var delay = interval * index * 0.1;
             tl.to(item, interval, {opacity: 0, delay}, 'clear-stage');
-        })
+        });
+
+        tl.to($control, 0.5, {opacity: 0}, 'clear-stage');
 
         tl.to($color, 1, {opacity: 0}, 'leave-stage');
 
@@ -183,6 +189,7 @@ export default class WorksPage extends React.Component {
         var $movies = $('#WorksPage .movie_cell');
         var $color = $('#WorksPage .table-bg-color');
         var $footer = $('.title-footer');
+        var $control = $('#WorksPage .work-cotnrols');
 
         var movie_count = $movies.length;
         var interval = 1 / (0.1*movie_count+1);
@@ -190,6 +197,8 @@ export default class WorksPage extends React.Component {
             var delay = interval * index * 0.1;
             tl.to(item, interval, {opacity: 0, delay}, 'clear-stage');
         });
+
+        tl.to($control, 0.5, {opacity: 0}, 'clear-stage');
 
         tl.to($color, 1, {opacity: 0}, 'leave-stage')
             .to($footer, 1, {opacity: 0}, 'leave-stage')
