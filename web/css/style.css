@@ -301,6 +301,26 @@ a, a:hover, a:focus, a:visited, a:active {
 
 /* PROJECT section: header */
 
+.footer-in-header {
+  display: block;
+  font-size: 16px;
+  color: #3c3c3b;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: left;
+  vertical-align: bottom;
+  padding-bottom: 35px;
+  position: relative;
+  top: 13px;
+
+  max-width: 70%;
+  margin-left: 11px;
+}
+
+.footer-in-header__margin-block {
+  margin-left: 12px;
+}
+
 
 .movie-navigation,
 .project-title-section {
@@ -1228,7 +1248,6 @@ a:active {
     z-index: 9999;
     width: 100%;
     height: 100%;
-    padding-left: 350px;
     padding-top: 130px;
 }
 
@@ -1242,6 +1261,7 @@ a:active {
     font-family: MyriadPro-BoldCond_1;
     font-weight: 100;
     font-size: 60px;
+    text-align: center;
 }
 
 .site-map a {
@@ -1315,8 +1335,8 @@ a:active {
 .site-map .description {
     position: absolute;
     bottom: 200px;
-    left: 300px;
-    width: 400px;
+    width: 100%;
+    text-align: center;
     font-size: 28px;
 }
 
@@ -1339,4 +1359,12 @@ a:active {
 strong {
     font-family: MyriadPro-BoldCond_1;
     font-weight: 100;
+}
+
+/* @tablet */
+
+@media (min-width: 769px) {
+  .tablet-only {
+    display: none;
+  }
 }

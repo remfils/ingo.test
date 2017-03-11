@@ -473,6 +473,10 @@ export default class IndexPage extends React.Component {
                     <tbody>
                         <tr>
                             <td class="title-navigation">
+                                <p class="footer-in-header tablet-only">
+                                    ++ <b>Ingo Scheel</b> I Kameramann  <br/>
+                                    <span class="footer-in-header__margin-block"></span>DOP I visual concepts ++
+                                </p>
                                 <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_INDEX} menuClickListener={this.menuClickListener.bind(this)}/>
                             </td>
                         </tr>
