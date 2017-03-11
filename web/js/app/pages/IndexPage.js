@@ -505,6 +505,7 @@ export default class IndexPage extends React.Component {
                         <span class="movie-title">{large_name} </span>
                         <span class="movie-genre">{small_name}</span>
                         <img src={asset("img/button-film.png")} class="title-play-button" alt="" onClick={self.playButtonClickLister.bind(self)}/>
+                        <img src={asset("img/button-film-2.png")} class="title-additional-play-button" alt="" onClick={self.playButtonClickLister.bind(self)}/>
                     </AlphaBox>
                 </div>
 

@@ -928,6 +928,10 @@ a:active {
     left: 10px;
 }
 
+.title-additional-play-button {
+  display: none;
+}
+
 .movie-title,
 .movie-genre {
     font-family: pt-zerif_4;
