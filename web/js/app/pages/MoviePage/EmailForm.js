@@ -42,8 +42,10 @@ export default class EmailForm extends React.Component {
             form_state: EmailForm.STATE_MESSAGE_IS_SENDING
         });
 
+        if (!this.validate())
+            return false;
+  
         var post_data = $('.email-form').serialize();
-
         console.debug('sendenClickListener: sending ', post_data);
 
         $.ajax({
@@ -63,6 +65,20 @@ export default class EmailForm extends React.Component {
         });
 
         return false;
+    }
+
+    validate() {
+        var $form = $('.email-form');
+        var name_value  = $form.find('*[name="name"]').val();
+        var email_value = $form.find('*[name="email"]').val();
+        var message_value = $form.find('*[name="message"]').val();
+    
+        if (!name_value || !email_value || !message_value){
+            this.setState({form_state: EmailForm.STATE_MESSAGE_SEND_FAILED});
+            return false;
+        }
+        
+        return true;
     }
 
     render() {
