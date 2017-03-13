@@ -301,7 +301,7 @@ a, a:hover, a:focus, a:visited, a:active {
 
 /* PROJECT section: header */
 
-.footer-in-header {
+.title-navigation > p.footer-in-header {
   display: block;
   font-size: 16px;
   color: #3c3c3b;
@@ -315,6 +315,8 @@ a, a:hover, a:focus, a:visited, a:active {
 
   max-width: 70%;
   margin-left: 11px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .footer-in-header__margin-block {
@@ -762,12 +764,23 @@ td.info-text {
     cursor: pointer;
 }
 
+.custom-form-gruop {
+  position: relative;
+}
+
 .email-response-message {
     font-size: 24px;
     color: #e16511;
     position: relative;
     bottom: 2px;
     margin-left: 50px;
+
+    display: block;
+    margin-left: 0;
+    position: absolute;
+    right: 0;
+    top: 1px;
+    width: 387px;
 }
 
 .email-response-message strong {
@@ -1369,6 +1382,6 @@ strong {
 
 @media (min-width: 769px) {
   .tablet-only {
-    display: none;
+    display: none !important;
   }
 }
