@@ -1117,7 +1117,11 @@ a:active {
 }
 
 .impressum-page .contact-bg-image {
-    background-image: url("../img/bg/bg-impressum.jpg");
+  background-image: url("../img/bg/bg-impressum.jpg");
+}
+
+.about-page .contact-bg-image {
+  background-image: url("../img/bg/bg-about.jpg");
 }
 
 .contact-form.email-form input[type="text"],
