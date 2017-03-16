@@ -23,5 +23,13 @@ module.exports = {
                 }
             }
         ]
+    },
+
+  resolve: {
+    root: path.resolve(__dirname),
+    extensions: ['', '.js'],
+    alias: {
+      "TweenLite": "gsap/src/uncompressed/TweenLite"
     }
+  }
 };
