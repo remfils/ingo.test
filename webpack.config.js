@@ -5,7 +5,7 @@ var WebpackNotifierPlugin = require('webpack-notifier');
 
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
-var LOCAL_WEBSITE = 'http://ingo.t';
+var LOCAL_WEBSITE = 'http://ingo.test';
 
 module.exports = {
     entry: {
