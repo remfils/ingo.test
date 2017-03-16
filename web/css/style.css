@@ -1146,6 +1146,31 @@ a:active {
     cursor: default;
 }
 
+.about-info {
+  position: absolute;
+  left: 700px;
+  top: -40px;
+  width: 100%;
+  font-size: 24px;
+  letter-spacing: 2px;
+}
+
+div.about-info > p {
+  color: white;
+  font-size: 16px;
+  font-family: MyriadPro-Cond_3;
+  line-height: 18px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.about-info .preise-text {
+  font-size: 24px;
+  font-family: MyriadPro-BoldCond_1;
+  line-height: 28px;
+  margin-bottom: 15px;
+}
+
 .about-page h2 {
     color: #3C3C3B;
     font-family: MyriadPro-BoldCond_1;

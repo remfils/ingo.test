@@ -171,11 +171,32 @@ export default class AboutPage extends React.Component {
                     </tbody>
                 </TitleColoredTable>
 
-
                 <div class="title-header">
                     <AlphaBox>
                         <span class="movie-title contact-title">{page_name}</span>
                     </AlphaBox>
+
+                    <div className="about-info">
+                        <p className="preise-text">*Preise/Auszeicnungen</p>
+
+                        <p>
+                            “Loose Connection” <br/>
+                            - Deutscher Kamerapreis 2009 (Förderpreis)
+                        </p>
+
+                        <p>
+                            “Man stirbt.”  Dokumentarfilm (KHM Köln)  <br/>
+                            - “Bester Deutscher Film” beim Kurzfilmfestival Hamburg 2009  <br/>
+                            - Kölner Designpreis 2009
+                        </p>
+
+                        <p>
+                            “Lilith” Kurzspielfilm 2012 (Homo Ludens Pictures)  <br/>
+                            - Prädikat Besonders Wertvoll  <br/>
+                            - Participant in Festival of Cannes
+                        </p>
+                    </div>
+
                 </div>
 
                 <div className="scroll-message">
