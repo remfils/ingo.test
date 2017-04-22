@@ -1,11 +1,39 @@
 <?php
 
+use App\ProjectRepository;
+
 $app->get($app['sub_domain'] . '/', 'App\\Controllers\\MainController::indexAction');
 $app->get($app['sub_domain'] . '/movie/{id}', 'App\\Controllers\\MainController::indexAction');
 $app->get($app['sub_domain'] . '/contacts', 'App\\Controllers\\MainController::indexAction');
 $app->get($app['sub_domain'] . '/about', 'App\\Controllers\\MainController::indexAction');
 $app->get($app['sub_domain'] . '/works', 'App\\Controllers\\MainController::indexAction');
 $app->get($app['sub_domain'] . '/impressum', 'App\\Controllers\\MainController::indexAction');
+
+
+/* SITEMAP */
+
+$app->get('sitemap.xml', function () use ($app) {
+  
+    $host = $app['request']->getSchemeAndHttpHost();
+      
+    $sitemap = $app['sitemap'];
+    $sitemap->addEntry($host . '/', 1, 'monthly');
+
+    $sitemap->addEntry($host . '/contacts', 1, 'monthly');
+    $sitemap->addEntry($host . '/about', 1, 'monthly');
+    $sitemap->addEntry($host . '/works', 1, 'monthly');
+    $sitemap->addEntry($host . '/impressum', 1, 'monthly');
+
+    $db = new ProjectRepository($app);
+    $projects = $db->getAllProjects();
+
+    foreach ($projects as $k => $p) {
+        $sitemap->addEntry($host . '/movie/' . $p['url'], 0.8, 'monthly');
+    }
+  
+    return $sitemap->generate();
+})
+    ->bind('sitemap');
 
 /* API */
 

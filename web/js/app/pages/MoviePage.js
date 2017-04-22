@@ -512,8 +512,8 @@ export default class MoviePage extends React.Component {
                                     </td>
                                     <td class="cell-movies-nav">
                                         <div class="movies-nav">
-                                            <a href="http://ya.ru" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
-                                            <a href="http://ya.ru" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
+                                            <a href="#" onClick={this.prevMovieClick.bind(this)} class="arrow right">⟵</a>
+                                            <a href="#" onClick={this.nextMovieClick.bind(this)} class="arrow left">⟶</a>
                                         </div>
                                     </td>
                                 </tr>

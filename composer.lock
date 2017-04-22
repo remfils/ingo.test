@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "50250008613849804de509cf9f173d25",
-    "content-hash": "d3c1442835d7d7efd83642aa6e880487",
+    "content-hash": "c4aebb8eef6babcd77276118d28daf57",
     "packages": [
         {
             "name": "arseniew/silex-idiorm-provider",
@@ -47,7 +46,7 @@
                 "service provider",
                 "silex"
             ],
-            "time": "2014-09-19 21:02:34"
+            "time": "2014-09-19T21:02:34+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -115,7 +114,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2015-08-31 12:32:49"
+            "time": "2015-08-31T12:32:49+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -185,7 +184,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-12-19 05:03:47"
+            "time": "2015-12-19T05:03:47+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -251,7 +250,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2015-04-14 22:21:58"
+            "time": "2015-04-14T22:21:58+00:00"
         },
         {
             "name": "doctrine/common",
@@ -324,7 +323,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2015-12-25 13:10:16"
+            "time": "2015-12-25T13:10:16+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -390,7 +389,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2013-09-07 10:49:18"
+            "time": "2013-09-07T10:49:18+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -457,7 +456,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06 14:35:42"
+            "time": "2015-11-06T14:35:42+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -511,7 +510,7 @@
                 "lexer",
                 "parser"
             ],
-            "time": "2014-09-09 13:34:57"
+            "time": "2014-09-09T13:34:57+00:00"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -553,7 +552,7 @@
                 "hashing",
                 "password"
             ],
-            "time": "2014-11-20 16:49:30"
+            "time": "2014-11-20T16:49:30+00:00"
         },
         {
             "name": "j4mie/idiorm",
@@ -611,7 +610,7 @@
                 "orm",
                 "query builder"
             ],
-            "time": "2013-12-12 10:25:27"
+            "time": "2013-12-12T10:25:27+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -659,7 +658,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-04-03 06:00:07"
+            "time": "2016-04-03T06:00:07+00:00"
         },
         {
             "name": "phpmailer/phpmailer",
@@ -719,7 +718,7 @@
                 }
             ],
             "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
-            "time": "2016-06-06 09:09:37"
+            "time": "2016-06-06T09:09:37+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -765,7 +764,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2013-11-22 08:30:29"
+            "time": "2013-11-22T08:30:29+00:00"
         },
         {
             "name": "psr/log",
@@ -803,7 +802,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2012-12-21 11:40:51"
+            "time": "2012-12-21T11:40:51+00:00"
         },
         {
             "name": "raveren/kint",
@@ -854,7 +853,8 @@
                 "kint",
                 "php"
             ],
-            "time": "2015-09-16 14:09:00"
+            "abandoned": "kint-php/kint",
+            "time": "2015-09-16T14:09:00+00:00"
         },
         {
             "name": "silex/silex",
@@ -931,7 +931,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2016-01-06 14:59:35"
+            "time": "2016-01-06T14:59:35+00:00"
         },
         {
             "name": "symfony/config",
@@ -984,7 +984,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-26 08:02:44"
+            "time": "2016-07-26T08:02:44+00:00"
         },
         {
             "name": "symfony/debug",
@@ -1041,7 +1041,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-30 07:20:35"
+            "time": "2016-07-30T07:20:35+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -1101,7 +1101,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-28 16:56:28"
+            "time": "2016-07-28T16:56:28+00:00"
         },
         {
             "name": "symfony/filesystem",
@@ -1150,7 +1150,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-20 05:41:28"
+            "time": "2016-07-20T05:41:28+00:00"
         },
         {
             "name": "symfony/form",
@@ -1224,7 +1224,7 @@
             ],
             "description": "Symfony Form Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-30 07:20:35"
+            "time": "2016-07-30T07:20:35+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -1279,7 +1279,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-30 07:20:35"
+            "time": "2016-07-30T07:20:35+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -1361,7 +1361,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-30 08:48:39"
+            "time": "2016-07-30T08:48:39+00:00"
         },
         {
             "name": "symfony/intl",
@@ -1437,7 +1437,7 @@
                 "l10n",
                 "localization"
             ],
-            "time": "2016-07-30 07:20:35"
+            "time": "2016-07-30T07:20:35+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -1491,7 +1491,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2016-06-29 05:29:29"
+            "time": "2016-06-29T05:29:29+00:00"
         },
         {
             "name": "symfony/polyfill-intl-icu",
@@ -1549,7 +1549,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-05-18T14:26:46+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1608,7 +1608,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-05-18T14:26:46+00:00"
         },
         {
             "name": "symfony/polyfill-php54",
@@ -1666,7 +1666,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-05-18T14:26:46+00:00"
         },
         {
             "name": "symfony/polyfill-php55",
@@ -1722,7 +1722,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-05-18T14:26:46+00:00"
         },
         {
             "name": "symfony/polyfill-php56",
@@ -1778,7 +1778,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-05-18T14:26:46+00:00"
         },
         {
             "name": "symfony/polyfill-php70",
@@ -1837,7 +1837,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-05-18T14:26:46+00:00"
         },
         {
             "name": "symfony/polyfill-util",
@@ -1889,7 +1889,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2016-05-18 14:26:46"
+            "time": "2016-05-18T14:26:46+00:00"
         },
         {
             "name": "symfony/property-access",
@@ -1949,7 +1949,7 @@
                 "property path",
                 "reflection"
             ],
-            "time": "2016-07-30 07:20:35"
+            "time": "2016-07-30T07:20:35+00:00"
         },
         {
             "name": "symfony/routing",
@@ -2024,7 +2024,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2016-06-29 05:29:29"
+            "time": "2016-06-29T05:29:29+00:00"
         },
         {
             "name": "symfony/security",
@@ -2104,7 +2104,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-17 09:06:15"
+            "time": "2016-07-17T09:06:15+00:00"
         },
         {
             "name": "symfony/security-acl",
@@ -2165,7 +2165,7 @@
             ],
             "description": "Symfony Security Component - ACL (Access Control List)",
             "homepage": "https://symfony.com",
-            "time": "2015-12-28 09:39:09"
+            "time": "2015-12-28T09:39:09+00:00"
         },
         {
             "name": "symfony/translation",
@@ -2229,7 +2229,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-30 07:20:35"
+            "time": "2016-07-30T07:20:35+00:00"
         },
         {
             "name": "symfony/twig-bridge",
@@ -2310,7 +2310,7 @@
             ],
             "description": "Symfony Twig Bridge",
             "homepage": "https://symfony.com",
-            "time": "2016-07-30 07:20:35"
+            "time": "2016-07-30T07:20:35+00:00"
         },
         {
             "name": "symfony/validator",
@@ -2383,7 +2383,7 @@
             ],
             "description": "Symfony Validator Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-26 08:02:44"
+            "time": "2016-07-26T08:02:44+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -2432,7 +2432,61 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-07-17 09:06:15"
+            "time": "2016-07-17T09:06:15+00:00"
+        },
+        {
+            "name": "tm/silex-sitemap-service-provider",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tommy-muehle/silex-sitemap-service-provider.git",
+                "reference": "6f387f8ed7cec51ac0e95a6055224501f9ca41a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tommy-muehle/silex-sitemap-service-provider/zipball/6f387f8ed7cec51ac0e95a6055224501f9ca41a0",
+                "reference": "6f387f8ed7cec51ac0e95a6055224501f9ca41a0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0",
+                "silex/silex": "^1.0"
+            },
+            "require-dev": {
+                "beberlei/assert": "^2.0",
+                "tm/tooly-composer-script": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "tools": {
+                    "behat": {
+                        "url": "https://github.com/Behat/Behat/releases/download/v3.2.1/behat.phar"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TM\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tommy Muehle",
+                    "email": "tommy.muehle@gmail.com",
+                    "homepage": "https://tommy-muehle.de"
+                }
+            ],
+            "description": "Simple service provider to generate a xml-sitemap.",
+            "keywords": [
+                "Sitemap",
+                "silex",
+                "xml"
+            ],
+            "time": "2016-10-10T19:27:31+00:00"
         },
         {
             "name": "twig/twig",
@@ -2493,7 +2547,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-05-30 09:11:59"
+            "time": "2016-05-30T09:11:59+00:00"
         }
     ],
     "packages-dev": [],

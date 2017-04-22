@@ -55,6 +55,15 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     )
 ));
 
+/* SITEMAP */
+$app->register(new TM\Provider\SitemapServiceProvider(), [
+    'sitemap.options' => [
+        'charset' => 'UTF-8',
+        'version' => '1.0',
+        'scheme' => 'http://www.sitemaps.org/schemas/sitemap/0.8'
+    ]
+]);
+
 /* LANGUAGE */
 
 $app->register(new Silex\Provider\TranslationServiceProvider(), array(

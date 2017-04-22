@@ -72,10 +72,10 @@ export default class NavigationMenu extends React.Component {
 
         return <div class='title-menu'>
                 <ul>
-                    <li><a href="#" class={page_name === NavigationMenu.PAGE_INDEX ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_INDEX)}>news</a></li>
-                    <li><a href="#" class={page_name === NavigationMenu.PAGE_WORKS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_WORKS)}>work</a></li>
-                    <li><a href="#" class={page_name === NavigationMenu.PAGE_ABOUT ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_ABOUT)}>about</a></li>
-                    <li><a href="#" class={page_name === NavigationMenu.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_CONTACTS)}>contact</a></li>
+                    <li><a href="/" class={page_name === NavigationMenu.PAGE_INDEX ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_INDEX)}>news</a></li>
+                    <li><a href="/works" class={page_name === NavigationMenu.PAGE_WORKS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_WORKS)}>work</a></li>
+                    <li><a href="/about" class={page_name === NavigationMenu.PAGE_ABOUT ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_ABOUT)}>about</a></li>
+                    <li><a href="/contacts" class={page_name === NavigationMenu.PAGE_CONTACTS ? 'active' : ''} onClick={this.createClickFunctionForPage(NavigationMenu.PAGE_CONTACTS)}>contact</a></li>
                 </ul>
                 <span class='btn-menu'><img src={asset('img/button-menu.png')} alt="" onClick={this.titleMenuClickListener.bind(this)}/></span>
             </div>;
