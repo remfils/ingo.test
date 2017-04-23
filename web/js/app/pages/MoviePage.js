@@ -331,8 +331,6 @@ export default class MoviePage extends React.Component {
     }
 
     nextMovie() {
-        console.debug(this.isTransitionLocked(), this.current_movie_index, this.short_models.length);
-
         if ( this.isTransitionLocked() ) {
             return false;
         }
@@ -374,6 +372,8 @@ export default class MoviePage extends React.Component {
 
         this.transitionToNextMovie(true);
 
+        this.updateArrowLinks();
+
         return false;
     }
 
@@ -381,6 +381,8 @@ export default class MoviePage extends React.Component {
         event.preventDefault()
 
         this.nextMovie();
+
+        this.updateArrowLinks();
 
         return false;
     }
@@ -391,6 +393,33 @@ export default class MoviePage extends React.Component {
         this.scrollToDescription();
 
         return false;
+    }
+
+    updateArrowLinks() {
+      var $arrows = $('.cell-movies-nav > .movies-nav');
+      var $next = $arrows.find('.left');
+      var $prev = $arrows.find('.right');
+
+      var prev_movie, next_movie;
+
+      console.log('updateArrowLinks: current_index ', this.current_movie_index);
+
+      if (this.current_movie_index == 0) {
+        prev_movie = this.short_models[this.short_models.length-1];
+      }
+      else {
+        prev_movie = this.short_models[this.current_movie_index-1];
+      }
+
+      if (this.current_movie_index == this.short_models.length - 1) {
+        next_movie = this.short_models[0];
+      }
+      else {
+        next_movie = this.short_models[this.current_movie_index+1];
+      }
+
+      $next.prop('href', next_movie.url);
+      $prev.prop('href', prev_movie.url);
     }
 
     isTransitionLocked() {
@@ -455,8 +484,6 @@ export default class MoviePage extends React.Component {
         var movie = this.Model;
         var movie_for_descripriton = movie;
 
-        console.debug("RENDER(MoviePage): movie, direction", movie, this.state.movement_direction);
-
         if ( !movie ) {
             return <div></div>;
         }
@@ -480,13 +507,10 @@ export default class MoviePage extends React.Component {
         var current_logo_style = {backgroundImage: "url(" + movie.logo + ")"};
 
         if ( movie.project_info_table ) {
-            console.log("RENDER(MoviePage): movie.project_info_table", movie.project_info_table);
             movie_table = movie.project_info_table.map((item, index) => {
                 var field_key = 'field_' + index;
                 return <SlidingTableRow key={field_key} field_key={item['field_name']} field_val={item.field_value} />;
             });
-
-            console.log("RENDER(MoviePage): movie_table", movie_table);
         }
 
         return (
