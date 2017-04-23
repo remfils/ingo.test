@@ -1270,6 +1270,11 @@ div.about-info > p {
     font-weight: normal;
 }
 
+.movie_cell h2 > a,
+.movie_cell h3 > a {
+    color: white;
+}
+
 .movie_cell h2 {
     font-size: 22px;
 }

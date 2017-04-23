@@ -274,11 +274,12 @@ export default class WorksPage extends React.Component {
             var span_style = {backgroundColor: item.color};
             var image_style = {backgroundImage: 'url(' + item.logo + ')'};
             var td_key = 'movie_cell_key_' + index;
+            var url = '/movie/' + item.url;
 
             return <td key={td_key} className='movie_cell'>
                     <div class='movie_image' style={image_style}>
                         <span style={span_style} onClick={this.createProjectOnClickFunction(item.id)}>
-                            <h2>{item.name}</h2><br/>
+                            <h2><a href={url}>{item.name}</a></h2><br/>
                             <h3>{item.genre}</h3>
                         </span>
                     </div>
@@ -292,10 +293,7 @@ export default class WorksPage extends React.Component {
             var tr_key = 'tr_movie_cell_key_' + i;
             row_array.push(tds[i-1]);
 
-            console.debug(i, i % CELLS_PER_ROW === 0 , i !== 0);
-
             if (i % CELLS_PER_ROW === 0) {
-                console.debug('PUSH!');
                 rows.push(<tr key={tr_key}>{row_array}</tr>);
                 row_array = [];
             }
