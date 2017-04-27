@@ -1,5 +1,25 @@
 .loading-screen {
-	
+	display: none;
+}
+.close-btn-container {
+	margin-left: 70%!important;
+}
+.close-btn-container img {
+	margin-left: 0!important;
+}
+.btn-menu {
+	display: inline-block;
+	vertical-align: top;
+	 margin-top: 6px;
+}
+.title-navigation {
+	z-index: 99;
+}
+#MoviePage .email-response-message {
+	width: auto;
+}
+.lang-menu, .site-map ul {
+	z-index: 55;
 }
 
 @media(max-width: 1730px) {
@@ -73,6 +93,24 @@
     left: 565px;
     top: auto;
     bottom: -270px;
+	}
+	.contact-title {
+		margin-left: 700px;
+	}
+	.about-info {
+		top: 140px;
+	}
+
+}
+
+@media(max-width: 1366px) {
+	.contact-title {
+		margin-left: 565px;
+	}
+	.about-info {
+		top: 140px;
+		width: 400px;
+		left: 565px;
 	}
 }
 
@@ -204,6 +242,10 @@
 	}
 	#MoviePage td {
 		padding-right: 0;
+	}
+	.about-info {
+		top: 120px;
+		left: 420px;
 	}
 
 	footer {
@@ -408,6 +450,9 @@
 	.movie_cell {
 		height: 124px!important;
 	}
+	.movie_image {
+		height: 100%!important;
+	}
 	.site-map {
 		box-sizing: border-box;
 		padding-left: 0;
@@ -430,6 +475,25 @@
 		width: 100%;
 		text-align: center;
 	}
+	.email-response-message {
+		width: auto;
+		position: relative;
+	}
+	#MoviePage .email-response-message {
+		position: absolute;
+	}
+}
+
+@media(max-width: 1024px) {
+	.title-page-name {
+		color: #fff;
+	}
+	.title-page-name {
+		font-size: 30pt;
+	}
+	.title-page-name {
+		top: 0;
+	}
 }
 
 @media(max-width: 980px) {
@@ -444,6 +508,9 @@
 	}
 	.title-play-button {
 		bottom: -23px;
+	}
+	.about-info {
+		left: 353px;
 	}
 }
 
@@ -467,6 +534,9 @@
 	.movie_image, .movie_cell {
 		width: 140px!important;
 	}
+	.about-info {
+		width: 320px;
+	}
 }
 
 @media(max-width: 768px) {
@@ -479,14 +549,23 @@
 		padding-top: 50px;
 		padding-bottom: 45px;
 	}
+	.email-response-message {
+		position: absolute;
+	}
 	.movie-title-section {
 		padding-bottom: 25px;
+	}
+	.btn-menu {
+		margin-top: 0;
 	}
 	.footer-info p:nth-child(10) img {
     margin-top: -17px;
 	}
 	.site-map .description {
 		bottom: 110px;
+	}
+	#IndexPage #TableHeader .title-footer {
+		padding-left: 88px;
 	}
 
 	/* home*/
@@ -524,9 +603,13 @@
 		box-sizing: border-box;
 	}
 	#TableHeader .title-footer {
-		padding-left: 88px;
 		text-align: left;
 		padding-right: 0;
+		text-align: center;
+	}
+	#WorksPage #TableHeader .title-footer {
+		display: block;
+		padding-left: 0;
 	}
 	.title-navigation {
 		position: fixed;
@@ -544,7 +627,10 @@
 	.btn-menu {
 		position: absolute;
 		top: 19px;
-		right: 40px;
+		right: 88px;
+	}
+	.title-navigation > p.footer-in-header {
+		margin-left: 88px;
 	}
 	.title-header {
 		left: 88px;
@@ -559,7 +645,8 @@
 		font-size: 23px;
 	}
 	.close-btn-container {
-		top: 20px;
+		top: 17px;
+		right: 88px;
 		width: auto;
 		position: absolute;
 	}
@@ -680,10 +767,17 @@
     padding-bottom: 88px;
 	}
 	#ContactPage .title-header #AlphaBox1, 
-	#AboutPage .title-header #AlphaBox1,
 	#ImpressumPage .title-header #AlphaBox1 {
 		position: absolute;
 		bottom: 60px;
+	}
+	#AboutPage .title-header .contact-title {
+		margin-top: 320px;
+	}
+	.about-info {
+		left: 155px;
+		top: 430px;
+		width: auto;
 	}
 	#ContactPage .contact-info,
 	#AboutPage .contact-info,
@@ -775,7 +869,8 @@
 		flex-flow: row wrap;
 	}
 	.movie_cell {
-    width: 47%!important;
+		box-sizing: border-box;
+    width: 50%!important;
     height: 200px!important;
 	}
 	.movie_image span {
@@ -900,8 +995,15 @@
 	#AboutPage #TableHeader .title-content {
 		padding-right: 30px;
 	}
+	#MoviePage .email-response-message {
+		right: auto;
+		left: 88px;
+	}
 	.title-header {
 		left: 30px;
+	}
+	#IndexPage #TableHeader .title-footer {
+		padding-left: 30px;
 	}
 	.movie-title {
     font-size: 80px;
@@ -925,6 +1027,21 @@
 
 	#ContactPage .title-content {
 		padding-right: 30px;
+	}
+	.btn-menu {
+		right: 30px;
+	}
+	.title-navigation > p.footer-in-header {
+		margin-left: 30px;
+	}
+	#ContactPage .title-header, #AboutPage .title-header, #ImpressumPage .title-header, #WorksPage .title-header {
+		padding-left: 30px;
+	}
+	.close-btn-container {
+		right: 30px;
+	}
+	.about-info {
+		left: 98px;
 	}
 }
 
@@ -982,6 +1099,16 @@
 	.description-container .col-30p {
 		float: none;
 		width: 100%;
+	}
+	.description-container {
+		padding-top: 20px;
+	}
+	.email-form input[type="submit"] {
+		font-size: 22px;
+	}
+	#MoviePage .email-response-message {
+		right: auto;
+		left: 70px;
 	}
 	.project-dsc h2 {
 		margin-bottom: 0;
@@ -1144,11 +1271,67 @@
     font-size: 20px;
     margin-bottom: 20px;
 	}
+	.email-response-message {
+		font-size: 18px;
+	}
+	.email-response-message strong {
+    font-size: 23px;
+	}
+	.email-response-message {
+		width: auto;
+	}
+}
+
+@media only screen 
+and (min-device-width : 500px) 
+and (max-device-width : 750px) 
+and (orientation : landscape) {
+	#IndexPage #TableHeader {
+		display: none;
+	}
+}
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 736px)
+  and (-webkit-min-device-pixel-ratio: 1)
+  and (orientation: landscape) {
+  	#IndexPage #TableHeader, #IndexPage .scroll-message {
+			display: none;
+		}
+		#IndexPage .title-header {
+			bottom: 80px;
+		}
+		#IndexPage .title-page-name {
+			top: 28px;
+		}
 }
 
 @media(max-width: 480px) {
+	#AlphaBox5 {
+		margin-left: 0;
+	}
 	.footer-info p:nth-child(4), .footer-info p:nth-child(6) {
     margin-right: 0;
+	}
+	#IndexPage #TableHeader .title-footer {
+    padding-left: 10px;
+	}
+	.btn-menu {
+		right: 10px;
+	}
+	.email-response-message {
+		right: auto;
+		left: 60px;
+		line-height: 24px;
+	}
+	.title-navigation > p.footer-in-header {
+		margin-left: 10px;
+	}
+	.close-btn-container {
+		right: 10px;
+	}
+	.about-info {
+		left: 98px;
 	}
 	.lang-menu, .site-map ul {
 		width: 150px;
@@ -1167,9 +1350,6 @@
 	.movie-short-description p {
 		margin-top: 7px;
 		margin-bottom: 4px;
-	}
-	.btn-menu {
-		right: 20px;
 	}
 	.title-navigation {
 		height: 55px!important;
@@ -1237,7 +1417,6 @@
 	}
 	.close-btn-container {
     top: 15px;
-    right: 20px;
 	}
 	.site-map li, .lang-menu {
     font-size: 36px;
@@ -1294,7 +1473,7 @@
 	}
 	.title-header div:first-child {
 		position: absolute;
-		bottom: 30px!important;
+		bottom: 0!important;
 	}
 	#ContactPage .contact-info {
 		margin-top: 80px;
@@ -1340,7 +1519,7 @@
 	#ContactPage .title-header,
 	#AboutPage .title-header,
 	#ImpressumPage .title-header {
-		height: 330px;
+		height: 380px;
 	}
 	#IndexPage .title-project-dsc table tr:last-child {
 		display: none;
@@ -1404,9 +1583,6 @@
   .movie_cell h2 {
     font-size: 26px;
     margin-top: 38px;
-	}
-	.title-page-name {
-		color: #fff;
 	}
 	#WorksPage .title-project-dsc {
 		padding-bottom: 15px;
