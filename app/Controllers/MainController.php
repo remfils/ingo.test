@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 class MainController
 {
     public function indexAction( Request $req, Application $app ) {
+        $languages = array();
+        
         foreach(glob(__DIR__ . '/locale/*') as $locale) {
             $languages[] = basename($locale);
         }
