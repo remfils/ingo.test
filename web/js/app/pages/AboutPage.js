@@ -31,9 +31,13 @@ export default class AboutPage extends React.Component {
             dataState: STATUS_INIT,
             data: null
         };
+
+        this.backClickListener = this.backClickListener.bind(this);
     }
 
     componentWillMount() {
+        TransitionStore.on('back_to', this.backClickListener);
+        
         $.ajax({
             url: config.SITE_NAME + 'api/page/about',
             dataType: 'json',
@@ -44,8 +48,23 @@ export default class AboutPage extends React.Component {
         });
     }
 
-    componentWillUnmount() {
+    backClickListener(params) {
+        console.log("back:", params, " from: about");
 
+        switch (params.to_page) {
+            case "INDEX":
+            case "CONTACTS":
+            case "WORKS":
+            case "IMPRESSUM":
+                TransitionStore.removeListener('back_to', this.backClickListener);
+                TransitionActions.createTitleTransition(SiteMap.PAGE_ABOUT, params.to_page, this);
+                console.log("back:", params, " from: about");
+                break;
+        }
+    }
+
+    componentWillUnmount() {
+        TransitionStore.removeListener('back_to', this.backClickListener);
     }
 
     componentDidMount() {

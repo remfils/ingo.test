@@ -31,9 +31,12 @@ export default class ImpressumPage extends React.Component {
             dataState: STATUS_INIT,
             data: null
         };
+
+        this.backClickListener = this.backClickListener.bind(this);
     }
 
     componentWillMount() {
+        TransitionStore.on('back_to', this.backClickListener);
 
         $.ajax({
             url: config.SITE_NAME + 'api/page/impressum',
@@ -58,8 +61,23 @@ export default class ImpressumPage extends React.Component {
 
     }
 
-    componentWillUnmount() {
+    backClickListener(params) {
+        console.log("back:", params, " from: impressum");
 
+        switch (params.to_page) {
+            case "INDEX":
+            case "CONTACTS":
+            case "ABOUT":
+            case "WORKS":
+                TransitionStore.removeListener('back_to', this.backClickListener);
+                TransitionActions.createTitleTransition(SiteMap.PAGE_IMPRESSUM, params.to_page, this);
+                console.log("back:", params, " from: impressum");
+                break;
+        }
+    }
+
+    componentWillUnmount() {
+        TransitionStore.removeListener('back_to', this.backClickListener);
     }
 
     componentDidMount() {

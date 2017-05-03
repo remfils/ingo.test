@@ -21,14 +21,30 @@ import EmailForm from './MoviePage/EmailForm';
 export default class ContactPage extends React.Component {
     constructor() {
         super();
+
+        this.backClickListener = this.backClickListener.bind(this);
     }
 
     componentWillMount() {
+        TransitionStore.on('back_to', this.backClickListener);
+    }
 
+    backClickListener(params) {
+        console.log("back:", params, " from: contact");
+        switch (params.to_page) {
+            case "INDEX":
+            case "ABOUT":
+            case "WORKS":
+            case "IMPRESSUM":
+                TransitionStore.removeListener('back_to', this.backClickListener);
+                TransitionActions.createTitleTransition(SiteMap.PAGE_CONTACTS, params.to_page, this);
+                console.log("back:", params, " from: contact");
+                break;
+        }
     }
 
     componentWillUnmount() {
-
+        TransitionStore.removeListener('back_to', this.backClickListener);
     }
 
     componentDidMount() {

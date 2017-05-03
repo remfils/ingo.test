@@ -51,7 +51,18 @@ export function fromMovieToWorks(movie_page, movie_index, params={}) {
     );
 }
 
-function createTransition(type, prev_page, params) {
+export function backTransition(to_page_transition_part, params={}) {
+  params['to_page'] = to_page_transition_part;
+  
+  setTimeout(() => {
+    dispatcher.dispatch({
+      type: "BACK_TO",
+      params
+    });
+  });
+}
+
+export function createTransition(type, prev_page, params) {
     params["prev_page"] = prev_page;
 
     setTimeout(() => {

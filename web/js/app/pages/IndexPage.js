@@ -39,6 +39,8 @@ export default class IndexPage extends React.Component {
 
         this.scroll_timer = null;
         this.scroll_counter = 0;
+
+        this.backClickListener = this.backClickListener.bind(this);
     }
 
     get current_content_index() {
@@ -74,6 +76,8 @@ export default class IndexPage extends React.Component {
 
     componentWillMount() {
         lockScroll();
+
+        TransitionStore.on('back_to', this.backClickListener);
 
         if ( this.props.movies ) {
             this.content = this.props.movies;
@@ -120,10 +124,25 @@ export default class IndexPage extends React.Component {
         $(window).on('mousewheel', this.scrollListener);
     }
 
+    backClickListener(params) {
+        console.log("back:", params, " from: index");
+        switch (params.to_page) {
+            case "CONTACTS":
+            case "ABOUT":
+            case "WORKS":
+            case "IMPRESSUM":
+                TransitionStore.removeListener('back_to', this.backClickListener);
+                TransitionActions.createTitleTransition(SiteMap.PAGE_INDEX, params.to_page, this);
+                console.log("back:", params, " from: index");
+                break;
+        }
+    }
+
     componentWillUnmount() {
         unlockScroll();
         console.debug('DEBUG(IndexPage.componentWillUnmount)');
         $(window).off('mousewheel');
+        TransitionStore.removeListener('back_to', this.backClickListener);
     }
 
     componentDidMount() {

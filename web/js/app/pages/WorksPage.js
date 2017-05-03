@@ -37,14 +37,33 @@ export default class WorksPage extends React.Component {
         this.state = {
             displayed_movies: displayed_movies
         };
+
+        this.backClickListener = this.backClickListener.bind(this);
     }
 
     componentWillMount() {
         $(window).on('resize', this.updateSizeOfImages.bind(this))
+
+        TransitionStore.on('back_to', this.backClickListener);
+    }
+
+    backClickListener(params) {
+        console.log("back:", params, " from: works");
+        switch (params.to_page) {
+            case "INDEX":
+            case "CONTACTS":
+            case "ABOUT":
+            case "IMPRESSUM":
+                TransitionStore.removeListener('back_to', this.backClickListener);
+                TransitionActions.createTitleTransition(SiteMap.PAGE_WORKS, params.to_page, this);
+                console.log("back:", params, " from: works");
+                break;
+        }
     }
 
     componentWillUnmount() {
         $(window).off('resize');
+        TransitionStore.removeListener('back_to', this.backClickListener);
     }
 
     componentDidMount() {

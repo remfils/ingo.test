@@ -46,7 +46,11 @@ class TransitionStore extends EventEmmiter {
                     this.emit("leave");
                 }, 1);
 
-                break;
+            break;
+
+        case "BACK_TO":
+          console.log('this is back!');
+          this.emit("back_to", action.params);
         }
     }
 }
