@@ -70,7 +70,7 @@ export default class ImpressumPage extends React.Component {
             case "ABOUT":
             case "WORKS":
                 TransitionStore.removeListener('back_to', this.backClickListener);
-                TransitionActions.createTitleTransition(SiteMap.PAGE_IMPRESSUM, params.to_page, this);
+                TransitionActions.createTitleTransition(SiteMap.PAGE_IMPRESSUM, params.to_page, this, {back: true});
                 console.log("back:", params, " from: impressum");
                 break;
         }

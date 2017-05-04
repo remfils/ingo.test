@@ -55,7 +55,7 @@ export default class WorksPage extends React.Component {
             case "ABOUT":
             case "IMPRESSUM":
                 TransitionStore.removeListener('back_to', this.backClickListener);
-                TransitionActions.createTitleTransition(SiteMap.PAGE_WORKS, params.to_page, this);
+                TransitionActions.createTitleTransition(SiteMap.PAGE_WORKS, params.to_page, this, {back: true});
                 console.log("back:", params, " from: works");
                 break;
         }
@@ -82,8 +82,8 @@ export default class WorksPage extends React.Component {
         var callback = tr.callback;
         var tl = new TimelineLite();
         tl.add('clear-stage', 0)
-            .add('leave-stage', 0.5)
-            .add('enter-stage', 1.5);
+          .add('leave-stage', 0.5)
+          .add('enter-stage', 1.5);
 
         switch ( tr.type ) {
             case "INDEX-WORKS":
@@ -220,8 +220,8 @@ export default class WorksPage extends React.Component {
         tl.to($control, 0.5, {opacity: 0}, 'clear-stage');
 
         tl.to($color, 1, {opacity: 0}, 'leave-stage')
-            .to($footer, 1, {opacity: 0}, 'leave-stage')
-            .to($nav, 1, {opacity: 0}, 'leave-stage');
+          .to($footer, 1, {opacity: 0}, 'leave-stage')
+          .to($nav, 1, {opacity: 0}, 'leave-stage');
     }
 
     createProjectOnClickFunction(project_id) {
@@ -296,13 +296,13 @@ export default class WorksPage extends React.Component {
             var url = '/movie/' + item.url;
 
             return <td key={td_key} className='movie_cell'>
-                    <div class='movie_image' style={image_style}>
-                        <span style={span_style} onClick={this.createProjectOnClickFunction(item.id)}>
-                            <h2><a href={url}>{item.name}</a></h2><br/>
-                            <h3>{item.genre}</h3>
-                        </span>
-                    </div>
-                </td>;
+            <div class='movie_image' style={image_style}>
+            <span style={span_style} onClick={this.createProjectOnClickFunction(item.id)}>
+            <h2><a href={url}>{item.name}</a></h2><br/>
+            <h3>{item.genre}</h3>
+            </span>
+            </div>
+            </td>;
         });
 
         var m_len = tds.length;
@@ -327,51 +327,51 @@ export default class WorksPage extends React.Component {
         return (
             <section id='WorksPage' class='title-container works-page'>
 
-                <SiteMap current_page={this} page_name={SiteMap.PAGE_WORKS} lang={this.props.lang}/>
+            <SiteMap current_page={this} page_name={SiteMap.PAGE_WORKS} lang={this.props.lang}/>
 
-                <TitleColoredTable className="title-project-dsc" color="#CCE1EE" direction="">
-                    <tbody>
-                        <tr>
-                            <td class="title-navigation">
-                                <p class="footer-in-header tablet-only">
-                                    ++ <b>Ingo Scheel</b> I Kameramann  <br/>
-                                    <span class="footer-in-header__margin-block"></span>DOP I visual concepts ++
-                                </p>
-                                <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_WORKS}/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="title-content">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="title-footer">
-                                ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
-                            </td>
-                        </tr>
-                    </tbody>
-                </TitleColoredTable>
+            <TitleColoredTable className="title-project-dsc" color="#CCE1EE" direction="">
+            <tbody>
+            <tr>
+            <td class="title-navigation">
+            <p class="footer-in-header tablet-only">
+                    ++ <b>Ingo Scheel</b> I Kameramann  <br/>
+            <span class="footer-in-header__margin-block"></span>DOP I visual concepts ++
+                        </p>
+            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_WORKS}/>
+            </td>
+            </tr>
+            <tr>
+            <td class="title-content">
+            </td>
+            </tr>
+            <tr>
+            <td class="title-footer">
+                     ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
+                                                          </td>
+            </tr>
+            </tbody>
+            </TitleColoredTable>
 
 
-                <div class="title-header">
-                    <AlphaBox onRedraw={this.onAlphaBoxRedrawListener}>
-                        <table class='movie-works-table'>
+            <div class="title-header">
+            <AlphaBox onRedraw={this.onAlphaBoxRedrawListener}>
+            <table class='movie-works-table'>
 
-                            <tbody>
-                                {rows}
-                                <tr>
-                                    <td class="work-cotnrols" colSpan="4">
-                                        <img class="fliped" onClick={this.leftArrowClickListener} src={asset('img/button-arrow-next.png')}/>
-                                        <img onClick={this.rightArrowClickListener} src={asset('img/button-arrow-next.png')}/>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </AlphaBox>
-                </div>
+            <tbody>
+            {rows}
+            <tr>
+            <td class="work-cotnrols" colSpan="4">
+            <img class="fliped" onClick={this.leftArrowClickListener} src={asset('img/button-arrow-next.png')}/>
+            <img onClick={this.rightArrowClickListener} src={asset('img/button-arrow-next.png')}/>
+            </td>
+            </tr>
+            </tbody>
+            </table>
+            </AlphaBox>
+            </div>
 
-                <div className="scroll-message">
-                </div>
+            <div className="scroll-message">
+            </div>
 
             </section>
         );

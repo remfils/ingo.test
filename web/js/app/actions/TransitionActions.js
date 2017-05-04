@@ -52,14 +52,14 @@ export function fromMovieToWorks(movie_page, movie_index, params={}) {
 }
 
 export function backTransition(to_page_transition_part, params={}) {
-  params['to_page'] = to_page_transition_part;
-  
-  setTimeout(() => {
-    dispatcher.dispatch({
-      type: "BACK_TO",
-      params
+    params['to_page'] = to_page_transition_part;
+    
+    setTimeout(() => {
+        dispatcher.dispatch({
+            type: "BACK_TO",
+            params
+        });
     });
-  });
 }
 
 export function createTransition(type, prev_page, params) {

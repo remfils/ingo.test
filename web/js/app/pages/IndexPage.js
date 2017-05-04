@@ -132,7 +132,7 @@ export default class IndexPage extends React.Component {
             case "WORKS":
             case "IMPRESSUM":
                 TransitionStore.removeListener('back_to', this.backClickListener);
-                TransitionActions.createTitleTransition(SiteMap.PAGE_INDEX, params.to_page, this);
+                TransitionActions.createTitleTransition(SiteMap.PAGE_INDEX, params.to_page, this, {back: true});
                 console.log("back:", params, " from: index");
                 break;
         }
@@ -161,8 +161,8 @@ export default class IndexPage extends React.Component {
 
         var tl = new TimelineLite();
         tl.add('clear-stage', 0)
-            .add('leave-stage', 0.5)
-            .add('enter-stage', 1.5);
+          .add('leave-stage', 0.5)
+          .add('enter-stage', 1.5);
 
         switch ( tr.type ) {
             case "MOVIE-INDEX":
@@ -203,12 +203,12 @@ export default class IndexPage extends React.Component {
         var $movie_dsc = $('#IndexPage .movie-short-description');
 
         tl.from($this, 1, {x: "-=100%"}, 'leave-stage')
-            .from($current_image, 1, {x: "-=100%", ease: Power2.easeInOut}, 'leave-stage+=0.5');
+          .from($current_image, 1, {x: "-=100%", ease: Power2.easeInOut}, 'leave-stage+=0.5');
 
         tl.from($brackets, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
-            .from($title, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
-            .from($scroll_msg, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
-            .from($movie_dsc, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage');
+          .from($title, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
+          .from($scroll_msg, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage')
+          .from($movie_dsc, 0.5, {opacity: 0, clearProps: "all"}, 'enter-stage');
     }
 
 
@@ -223,22 +223,22 @@ export default class IndexPage extends React.Component {
         var $movie_dsc = $('#IndexPage .movie-short-description');
 
         tl.to($brackets, 0.5, {opacity: 0}, 'clear-stage')
-            .to($title, 0.5, {opacity: 0}, 'clear-stage')
-            .to($scroll_msg, 0.5, {opacity: 0}, 'clear-stage')
-            .to($movie_dsc, 0.5, {opacity: 0}, 'clear-stage');
+          .to($title, 0.5, {opacity: 0}, 'clear-stage')
+          .to($scroll_msg, 0.5, {opacity: 0}, 'clear-stage')
+          .to($movie_dsc, 0.5, {opacity: 0}, 'clear-stage');
 
         tl.to($current_image, 1, {x: "-=100%", ease: Power2.easeOut}, 'leave-stage')
-            .to($("#IndexPage"), 1, {x: "-=100%", ease: Power2.easeInOut}, 'leave-stage+=1');
+          .to($("#IndexPage"), 1, {x: "-=100%", ease: Power2.easeInOut}, 'leave-stage+=1');
 
         /*TweenLite.to( , 1, {left: "-=60%"} );
-        TweenLite.to( , 1, {left: "0", height: "70%"} );
-        TweenLite.to( $(".title-header"), 1, {opacity: 0, onComplete: () => {
-            $("#IndexPage").css("display", "none");
+           TweenLite.to( , 1, {left: "0", height: "70%"} );
+           TweenLite.to( $(".title-header"), 1, {opacity: 0, onComplete: () => {
+           $("#IndexPage").css("display", "none");
 
-            if (callback)
-                callback();
-        }} );
-        TweenLite.set($("#IndexPage"), {"z-index": 0});*/
+           if (callback)
+           callback();
+           }} );
+           TweenLite.set($("#IndexPage"), {"z-index": 0});*/
     }
 
     enterFromDifferentTitlePage(tl) {
@@ -254,12 +254,12 @@ export default class IndexPage extends React.Component {
         var $nav = $('#IndexPage .title-navigation');
 
         tl.from($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'leave-stage')
-            .from($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage');
+          .from($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage');
 
         tl.from($title, 0.5, {opacity: 0}, 'enter-stage')
-            .from($brackets, 0.5, {opacity: 0}, 'enter-stage')
-            .from($scroll_msg, 0.5, {opacity: 0}, 'enter-stage')
-            .from($movie_dsc, 0.5, {opacity: 0}, 'enter-stage');
+          .from($brackets, 0.5, {opacity: 0}, 'enter-stage')
+          .from($scroll_msg, 0.5, {opacity: 0}, 'enter-stage')
+          .from($movie_dsc, 0.5, {opacity: 0}, 'enter-stage');
 
         tl.set($nav, {opacity:0}, 'clear-stage');
         tl.set($nav, {opacity:1}, 'enter-stage');
@@ -281,13 +281,13 @@ export default class IndexPage extends React.Component {
         var $nav = $('#IndexPage .title-navigation');
 
         tl.to($title, 0.5, {opacity: 0}, 'clear-stage')
-            .to($brackets, 0.5, {opacity: 0}, 'clear-stage')
-            .to($scroll_msg, 0.5, {opacity: 0}, 'clear-stage')
-            .to($movie_dsc, 0.5, {opacity: 0}, 'clear-stage');
+          .to($brackets, 0.5, {opacity: 0}, 'clear-stage')
+          .to($scroll_msg, 0.5, {opacity: 0}, 'clear-stage')
+          .to($movie_dsc, 0.5, {opacity: 0}, 'clear-stage');
 
         tl.to($left_image, 1, {y: "+=100%", ease: Power4.easeInOut}, 'leave-stage')
-            .to($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage')
-            .to($color, 1, {opacity: 0}, 'leave-stage');
+          .to($right_image, 1, {y: "-=100%", ease: Power4.easeInOut}, 'leave-stage')
+          .to($color, 1, {opacity: 0}, 'leave-stage');
 
         tl.set($nav, {opacity:0}, 'enter-stage');
     }
@@ -310,14 +310,14 @@ export default class IndexPage extends React.Component {
 
     scrollListener(e) {
         /*if ( this.is_scroll_message_shown ) {
-            this.is_scroll_message_shown = false;
+           this.is_scroll_message_shown = false;
 
-            var $scrl_msg = $(".scroll-message");
+           var $scrl_msg = $(".scroll-message");
 
-            TweenLite.to($scrl_msg, 1, {bottom: "-3em", opacity: 0, onComplete: () => {
-                $scrl_msg.hide();
-            }});
-        }*/
+           TweenLite.to($scrl_msg, 1, {bottom: "-3em", opacity: 0, onComplete: () => {
+           $scrl_msg.hide();
+           }});
+           }*/
 
         e.preventDefault();
 
@@ -484,54 +484,54 @@ export default class IndexPage extends React.Component {
 
         return (
             <section id='IndexPage' class='title-container'>
-                <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} lang={this.props.lang} />
+            <SiteMap current_page={this} page_name={SiteMap.PAGE_INDEX} lang={this.props.lang} />
 
-                <ImageRotator class="index-page-image-rotator" movie_id={content.id} img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
+            <ImageRotator class="index-page-image-rotator" movie_id={content.id} img_front={img_current_url} img_back={img_back_url} img_next={img_next} img_last={img_last} direction={this.state.movement_direction} />
 
-                <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
-                    <tbody>
-                        <tr>
-                            <td class="title-navigation">
-                                <p class="footer-in-header tablet-only">
-                                    ++ <b>Ingo Scheel</b> I Kameramann  <br/>
-                                    <span class="footer-in-header__margin-block"></span>DOP I visual concepts ++
-                                </p>
-                                <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_INDEX} menuClickListener={this.menuClickListener.bind(this)}/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="title-content">
-                                <AlphaBox class="movie-short-description" onClick={this.currentMovieTextClickListener.bind(this)}>
-                                    <p dangerouslySetInnerHTML={{__html: description_text}}></p>
-                                </AlphaBox>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="title-footer">
-                                ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
-                            </td>
-                        </tr>
-                    </tbody>
-                </TitleColoredTable>
+            <TitleColoredTable className="title-project-dsc" color={color} direction={this.state.movement_direction}>
+            <tbody>
+            <tr>
+            <td class="title-navigation">
+            <p class="footer-in-header tablet-only">
+                    ++ <b>Ingo Scheel</b> I Kameramann  <br/>
+            <span class="footer-in-header__margin-block"></span>DOP I visual concepts ++
+                        </p>
+            <NavigationMenu current_page={this} page_name={NavigationMenu.PAGE_INDEX} menuClickListener={this.menuClickListener.bind(this)}/>
+            </td>
+            </tr>
+            <tr>
+            <td class="title-content">
+            <AlphaBox class="movie-short-description" onClick={this.currentMovieTextClickListener.bind(this)}>
+            <p dangerouslySetInnerHTML={{__html: description_text}}></p>
+            </AlphaBox>
+            </td>
+            </tr>
+            <tr>
+            <td class="title-footer">
+                     ++ Ingo Scheel Kameramann I DOP für: Imagefilm I Werbung I Spielfilm I Dokumentarfilm I Köln ++
+                                                          </td>
+            </tr>
+            </tbody>
+            </TitleColoredTable>
 
 
-                <div class="title-header">
-                    <div className="title-page-name">
-                        <BracketTextBox text={page_name} />
-                        <img src={asset("img/button-arrow-next.png")} class="img-next-arrow" onClick={this.nextArrowButtonClickListener.bind(this)} alt="" />
-                    </div>
-                    <AlphaBox>
-                        <span class="movie-title">{large_name} </span>
-                        <span class="movie-genre">{small_name}</span>
-                        <img src={asset("img/button-film.png")} class="title-play-button" alt="" onClick={self.playButtonClickLister.bind(self)}/>
-                        <img src={asset("img/button-film-2.png")} class="title-additional-play-button" alt="" onClick={self.playButtonClickLister.bind(self)}/>
-                    </AlphaBox>
-                </div>
+            <div class="title-header">
+            <div className="title-page-name">
+            <BracketTextBox text={page_name} />
+            <img src={asset("img/button-arrow-next.png")} class="img-next-arrow" onClick={this.nextArrowButtonClickListener.bind(this)} alt="" />
+            </div>
+            <AlphaBox>
+            <span class="movie-title">{large_name} </span>
+            <span class="movie-genre">{small_name}</span>
+            <img src={asset("img/button-film.png")} class="title-play-button" alt="" onClick={self.playButtonClickLister.bind(self)}/>
+            <img src={asset("img/button-film-2.png")} class="title-additional-play-button" alt="" onClick={self.playButtonClickLister.bind(self)}/>
+            </AlphaBox>
+            </div>
 
-                <div className="scroll-message">
-                    <img src={asset("img/button-two-arrows.png")} alt="" />
-                    <span>Scroll and click to discover</span>
-                </div>
+            <div className="scroll-message">
+            <img src={asset("img/button-two-arrows.png")} alt="" />
+            <span>Scroll and click to discover</span>
+            </div>
 
             </section>
         );

@@ -169,7 +169,7 @@ export default class Application extends React.Component {
     setUrl(url) {
         url = url.substr(1);
         changeUrl(url);
-      this.history.push(window.location.toString());
+        this.history.push(window.location.toString());
     }
 
     pushPage(page) {
@@ -249,7 +249,8 @@ export default class Application extends React.Component {
 
                 var movie = movies[0];
 
-                this.setUrl('/movie/' + current_content.url);
+                if (!transition.back)
+                    this.setUrl('/movie/' + current_content.url);
 
                 page = <MoviePage
                     key={page_key}
@@ -271,7 +272,8 @@ export default class Application extends React.Component {
                 }
                 var current_movie_index = i;
 
-                this.setUrl('/movie/' + this.movies[current_movie_index].url);
+                if (!transition.back)
+                    this.setUrl('/movie/' + this.movies[current_movie_index].url);
 
                 page = <MoviePage
                     key={page_key}
@@ -285,34 +287,39 @@ export default class Application extends React.Component {
                 var prev_page = transition.prev_page;
                 var movies = prev_page.short_models;
 
-                this.setUrl('/');
+                if (!transition.back)
+                    this.setUrl('/');
 
                 page = <IndexPage
-                    key={page_key}
-                    lang={this.props.lang}
-                    movies={this.movies}
-                    current_content_index={prev_page.current_movie_index}
-                    transition={transition}/>;
+                key={page_key}
+                lang={this.props.lang}
+                movies={this.movies}
+                current_content_index={prev_page.current_movie_index}
+                transition={transition}/>;
                 break;
             case "INDEX-CONTACTS":
             case "ABOUT-CONTACTS":
             case "WORKS-CONTACTS":
             case "IMPRESSUM-CONTACTS":
-                this.setUrl('/contacts');
+                if (!transition.back)
+                    this.setUrl('/contacts');
                 page = <ContactPage key={page_key} transition={transition} lang={this.props.lang}/>;
                 break;
             case "CONTACTS-INDEX":
             case "ABOUT-INDEX":
             case "WORKS-INDEX":
             case "IMPRESSUM-INDEX":
-                this.setUrl('/');
+                if (!transition.back)
+                    this.setUrl('/');
                 page = <IndexPage key={page_key} movies={this.movies} transition={transition} lang={this.props.lang} />;
                 break;
             case "INDEX-ABOUT":
             case "CONTACTS-ABOUT":
             case "WORKS-ABOUT":
             case "IMPRESSUM-ABOUT":
-                this.setUrl('/about');
+                if (!transition.back)
+                    this.setUrl('/about');
+                
                 page = <AboutPage key={page_key} transition={transition} lang={this.props.lang} />;
                 break;
             case "INDEX-WORKS":
@@ -320,14 +327,18 @@ export default class Application extends React.Component {
             case "ABOUT-WORKS":
             case "MOVIE-WORKS":
             case "IMPRESSUM-WORKS":
-                this.setUrl('/works');
+                if (!transition.back)
+                    this.setUrl('/works');
+                
                 page = <WorksPage key={page_key} movies={this.movies} transition={transition} lang={this.props.lang} />;
                 break;
             case "INDEX-IMPRESSUM":
             case "CONTACTS-IMPRESSUM":
             case "ABOUT-IMPRESSUM":
             case "WORKS-IMPRESSUM":
-                this.setUrl('/impressum');
+                if (!transition.back)
+                    this.setUrl('/impressum');
+                
                 page = <ImpressumPage key={page_key} transition={transition} lang={this.props.lang} />;
                 break;
         }
