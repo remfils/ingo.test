@@ -9,11 +9,13 @@ export function clickTitleMenu() {
 }
 
 export function clickMenuItem(current_page_name, next_page_name) {
-    dispatcher.dispatch({
-        type: ClickStore.ACTION_MENU_ITEM_CLICK,
-        data: {
-            from: current_page_name,
-            to: next_page_name
-        }
-    });
+    setTimeout(() => {
+        dispatcher.dispatch({
+            type: ClickStore.ACTION_MENU_ITEM_CLICK,
+            data: {
+                from: current_page_name,
+                to: next_page_name
+            }
+        });
+    }, 1);
 }

@@ -7,7 +7,7 @@ import AboutPage from './pages/AboutPage';
 import WorksPage from './pages/WorksPage';
 import ImpressumPage from './pages/ImpressumPage';
 import TransitionStore from './stores/TransitionStore';
-import { asset, createCountdownCallback, changeUrl } from './funcitons';
+import { asset, createCountdownCallback, changeUrl, prev_url } from './funcitons';
 import {createTransition, backTransition} from './actions/TransitionActions';
 import config from './config';
 
@@ -42,34 +42,38 @@ export default class Application extends React.Component {
       $(window).on('popstate', this.onPopStateListener.bind(this));
     }
 
-  onPopStateListener(e) {
-    var current_url = window.location.toString();
-    var prev_url = this.history.pop();
+    onPopStateListener(e) {
+        if (prev_url === current_url)
+            return;
+        
+        var current_url = window.location.toString();
 
-    var current_tr_part = this.urlToTransitionEventPart(current_url);
-    var prev_tr_part = this.urlToTransitionEventPart(prev_url);
+        var route_obj = this.urlToTransitionEventPart(current_url);
 
-    var transition_event = prev_tr_part + '-' + current_tr_part;
+        backTransition(route_obj.route, {
+            route_params: route_obj.route_rest
+        });
 
-    console.log('hash: ', this.state.pages[this.state.pages.length - 1]);
-
-    backTransition(current_tr_part);
-
-    //createTransition(transition_event, this.state.pages[this.state.pages.length - 1], {});
-
-    console.log('hash: ', transition_event);
-  }
-
-  urlToTransitionEventPart(url) {
-    var route = url.split('/');
-    route.splice(0, 3);
-
-    if (!route[0]) {
-      return "INDEX";
     }
 
-    return route[0].toUpperCase();
-  }
+    urlToTransitionEventPart(url) {
+        var route, route_rest;
+        var url = url.split('/');
+        url.splice(0, 3);
+
+        if (!url[0]) {
+            route = "INDEX";
+        }
+        else {
+            route = url[0].toUpperCase();
+
+            if (url.length > 1) {
+                route_rest = url;
+            }
+        }
+
+        return { route, route_rest };
+    }
   
 
     componentWillMount() {
@@ -170,6 +174,8 @@ export default class Application extends React.Component {
         url = url.substr(1);
         changeUrl(url);
         this.history.push(window.location.toString());
+
+        console.log("SET_URL: ", this.history)
     }
 
     pushPage(page) {

@@ -77,6 +77,12 @@ export default class EmailForm extends React.Component {
             this.setState({form_state: EmailForm.STATE_MESSAGE_SEND_FAILED});
             return false;
         }
+
+        var email_re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!email_re.test(email_value)) {
+            this.setState({form_state: EmailForm.STATE_MESSAGE_SEND_FAILED});
+            return false;
+        }
         
         return true;
     }

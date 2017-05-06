@@ -5,6 +5,7 @@ var $ = require('jquery');
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
+import * as ClickActions from '../actions/ClickActions';
 import { asset, createNotReadyYetFunction } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import NavigationMenu from "./components/NavigationMenu";
@@ -32,14 +33,14 @@ export default class ContactPage extends React.Component {
     backClickListener(params) {
         console.log("back:", params, " from: contact");
         switch (params.to_page) {
-            case "INDEX":
-            case "ABOUT":
-            case "WORKS":
-            case "IMPRESSUM":
-                TransitionStore.removeListener('back_to', this.backClickListener);
-                TransitionActions.createTitleTransition(SiteMap.PAGE_CONTACTS, params.to_page, this, {back: true});
-                console.log("back:", params, " from: contact");
-                break;
+        case "INDEX":
+        case "ABOUT":
+        case "WORKS":
+        case "IMPRESSUM":
+            TransitionStore.removeListener('back_to', this.backClickListener);
+            TransitionActions.createTitleTransition(SiteMap.PAGE_CONTACTS, params.to_page, this, {back: true});
+            ClickActions.clickMenuItem("CONTACTS", params.to_page);
+            break;
         }
     }
 

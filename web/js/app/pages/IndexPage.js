@@ -5,6 +5,7 @@ var $ = require('jquery');
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
+import * as ClickActions from '../actions/ClickActions';
 import { asset, createNotReadyYetFunction, notReadyYet, lockScroll, unlockScroll } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import SiteMap from "./components/SiteMap";
@@ -127,14 +128,24 @@ export default class IndexPage extends React.Component {
     backClickListener(params) {
         console.log("back:", params, " from: index");
         switch (params.to_page) {
-            case "CONTACTS":
-            case "ABOUT":
-            case "WORKS":
-            case "IMPRESSUM":
-                TransitionStore.removeListener('back_to', this.backClickListener);
-                TransitionActions.createTitleTransition(SiteMap.PAGE_INDEX, params.to_page, this, {back: true});
-                console.log("back:", params, " from: index");
-                break;
+        case "CONTACTS":
+        case "ABOUT":
+        case "WORKS":
+        case "IMPRESSUM":
+            TransitionStore.removeListener('back_to', this.backClickListener);
+            TransitionActions.createTitleTransition(SiteMap.PAGE_INDEX, params.to_page, this, {back: true});
+            ClickActions.clickMenuItem("INDEX", params.to_page);
+            break;
+        case "MOVIE":
+            var movies = [];
+            this.content.forEach((item, index, array)=>{
+                if ( item.content_type == "movie" ) {
+                    movies.push(item.model);
+                }
+            });
+
+            TransitionActions.fromIndexToMovieTranstion(this, {movies: movies, back: true});
+            break;
         }
     }
 

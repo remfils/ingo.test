@@ -5,6 +5,7 @@ var $ = require('jquery');
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
+import * as ClickActions from '../actions/ClickActions';
 import { asset, createNotReadyYetFunction, hexToRgba } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import NavigationMenu from "./components/NavigationMenu";
@@ -50,14 +51,18 @@ export default class WorksPage extends React.Component {
     backClickListener(params) {
         console.log("back:", params, " from: works");
         switch (params.to_page) {
-            case "INDEX":
-            case "CONTACTS":
-            case "ABOUT":
-            case "IMPRESSUM":
-                TransitionStore.removeListener('back_to', this.backClickListener);
-                TransitionActions.createTitleTransition(SiteMap.PAGE_WORKS, params.to_page, this, {back: true});
-                console.log("back:", params, " from: works");
-                break;
+        case "INDEX":
+        case "CONTACTS":
+        case "ABOUT":
+        case "IMPRESSUM":
+            TransitionStore.removeListener('back_to', this.backClickListener);
+            TransitionActions.createTitleTransition(SiteMap.PAGE_WORKS, params.to_page, this, {back: true});
+            ClickActions.clickMenuItem("WORKS", params.to_page);
+            break;
+
+        case "MOVIE":
+            TransitionActions.fromWorksToMovie(this, 1, {back: true});
+            break;
         }
     }
 

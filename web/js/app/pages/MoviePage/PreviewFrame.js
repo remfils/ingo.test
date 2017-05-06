@@ -35,6 +35,10 @@ export default class PreviewFrame extends React.Component {
         $(window).on('resize', this.resizePreviewIframe.bind(this));
     }
 
+  componentDidMount() {
+    
+  }
+
     resizePreviewIframe(event) {
         var $iframe = $(this.id);
 
@@ -53,42 +57,41 @@ export default class PreviewFrame extends React.Component {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        if ( this.props.url == nextProps.url ) {
+        if ( !nextProps.url || this.props.url == nextProps.url ) {
             return;
         }
+        console.log("PREVIEW_URL: " +nextProps.url);
 
         var $this = $(this.id);
 
         var url = nextProps.url;
 
         setTimeout(() => {
-            this.setState({
-                is_transition: true,
-                url: url
-            });
+            var frame = $(this.id)[0];
+            frame.contentWindow.location.replace(url);
 
             this.resizePreviewIframe(null);
 
             TweenLite.to($this, 1, {
                 opacity: 1,
                 delay: 2
-            })
+            });
         }, 2000);
     }
-
+  
     render() {
-        console.debug("Render(PreviewFrame)");
-        var preview_url = this.state.url;
+        var frame;
 
-        return <iframe
-            id={this._id}
-            className={this.props.className}
-            height="60%"
-            src={preview_url}
-            frameBorder="0"
-            webkitallowfullscreen
-            mozallowfullscreen
-            allowFullScreen>
-        </iframe>;
+        frame = <iframe
+        id={this._id}
+        className={this.props.className}
+        height="60%"
+        frameBorder="0"
+        webkitallowfullscreen
+        mozallowfullscreen
+        allowFullScreen>
+            </iframe>;
+
+        return frame;
     }
 }

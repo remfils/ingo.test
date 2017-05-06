@@ -5,6 +5,7 @@ var $ = require('jquery');
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
+import * as ClickActions from '../actions/ClickActions';
 import { asset, createNotReadyYetFunction } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import NavigationMenu from "./components/NavigationMenu";
@@ -65,14 +66,14 @@ export default class ImpressumPage extends React.Component {
         console.log("back:", params, " from: impressum");
 
         switch (params.to_page) {
-            case "INDEX":
-            case "CONTACTS":
-            case "ABOUT":
-            case "WORKS":
-                TransitionStore.removeListener('back_to', this.backClickListener);
-                TransitionActions.createTitleTransition(SiteMap.PAGE_IMPRESSUM, params.to_page, this, {back: true});
-                console.log("back:", params, " from: impressum");
-                break;
+        case "INDEX":
+        case "CONTACTS":
+        case "ABOUT":
+        case "WORKS":
+            TransitionStore.removeListener('back_to', this.backClickListener);
+            TransitionActions.createTitleTransition(SiteMap.PAGE_IMPRESSUM, params.to_page, this, {back: true});
+            ClickActions.clickMenuItem("IMPRESSUM", params.to_page);
+            break;
         }
     }
 

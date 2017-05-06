@@ -53,6 +53,8 @@ export default class MoviePage extends React.Component {
             movement_direction: "left",
             prev_full_movie: null
         }
+
+        this.backClickListener = this.backClickListener.bind(this);
     }
 
     get Model () {
@@ -143,6 +145,8 @@ export default class MoviePage extends React.Component {
     }
 
     componentWillMount() {
+        TransitionStore.on('back_to', this.backClickListener);
+        
         if ( this.props.movies ) {
             console.log("DEBUG(MoviePage.componentWillMount): ", this.props.movies);
 
@@ -214,6 +218,45 @@ export default class MoviePage extends React.Component {
                 });
             }
         });
+    }
+
+    backClickListener(params) {
+        console.log("BACK_FROM:", params, " from: movie");
+
+        switch (params.to_page) {
+        case "INDEX":
+            TransitionStore.removeListener('back_to', this.backClickListener);
+            this.homeButtonClickListener(null);
+            break;
+        case "WORKS":
+            TransitionStore.removeListener('back_to', this.backClickListener);
+            TransitionActions.fromMovieToWorks(this, 1, {back: true});
+            break;
+        case "MOVIE":
+            var prev_movie_url = params.route_params[1];
+            var current_movie = this.Model;
+            var prev_movie = this.short_models.filter((m) => { return m.url === prev_movie_url})[0];
+            var first_movie = this.short_models[0];
+            var last_movie = this.short_models[this.short_models.length-1];
+            console.log("BACK_FROM: ", last_movie);
+
+            var is_right = parseInt(prev_movie.id) > parseInt(current_movie.id);
+
+            if (current_movie.id === first_movie.id && prev_movie.id === last_movie.id)
+                is_right = false;
+
+            if (current_movie.id === last_movie.id && prev_movie.id === first_movie.id)
+                is_right = true;
+            
+            
+            if (is_right) {
+                this.nextMovieClick(null, false);
+            }
+            else {
+                this.prevMovieClick(null, false);
+            }
+            break
+        }
     }
 
     componentWillUnmount() {
@@ -290,7 +333,8 @@ export default class MoviePage extends React.Component {
     }
 
     homeButtonClickListener(e) {
-        e.preventDefault();
+        if (e)
+            e.preventDefault();
 
         var scroll_top = $(window).scrollTop();
 
@@ -298,6 +342,8 @@ export default class MoviePage extends React.Component {
             return false;
 
         this.is_transition = true;
+
+        console.log("homeButtonClickListener", scroll_top);
 
         if (scroll_top === 0) {
             TransitionActions.fromMovieToIndexTransition(this, {});
@@ -313,7 +359,8 @@ export default class MoviePage extends React.Component {
     }
 
     projectGalerieButtonClickListener(e) {
-        e.preventDefault();
+        if (e)
+            e.preventDefault();
 
         TweenLite.to('html, body', 0.5, {scrollTop: 0, onComplete: ()=>{
             TransitionActions.fromMovieToWorks(this, this.current_movie_index);
@@ -330,7 +377,7 @@ export default class MoviePage extends React.Component {
         return false;
     }
 
-    nextMovie() {
+    nextMovie(is_url_change=true) {
         if ( this.isTransitionLocked() ) {
             return false;
         }
@@ -348,11 +395,12 @@ export default class MoviePage extends React.Component {
             prev_full_movie: this.state.current_movie
         });
 
-        this.transitionToNextMovie(false);
+        this.transitionToNextMovie(false, is_url_change);
     }
 
-    prevMovieClick(event) {
-        event.preventDefault();
+    prevMovieClick(event, is_url_change=true) {
+        if (event)
+            event.preventDefault();
 
         if ( this.isTransitionLocked() ) {
             return false;
@@ -370,17 +418,18 @@ export default class MoviePage extends React.Component {
             movement_direction: "left"
         });
 
-        this.transitionToNextMovie(true);
+        this.transitionToNextMovie(true, is_url_change);
 
         this.updateArrowLinks();
 
         return false;
     }
 
-    nextMovieClick(event) {
-        event.preventDefault()
+    nextMovieClick(event, is_url_change=true) {
+        if (event)
+            event.preventDefault()
 
-        this.nextMovie();
+        this.nextMovie(is_url_change);
 
         this.updateArrowLinks();
 
@@ -427,16 +476,17 @@ export default class MoviePage extends React.Component {
             || !this.is_movie_loaded;
     }
 
-    transitionToNextMovie( is_left, callback ) {
+    transitionToNextMovie( is_left, is_url_change=true, callback ) {
         this.colorTransition();
 
         this.loadDataForCurrentMovie();
 
-        changeUrl('movie/' + this.short_models[this.current_movie_index].url);
+        if (is_url_change)
+            changeUrl('movie/' + this.short_models[this.current_movie_index].url);
     }
 
     colorTransition() {
-        var from_color = this.state.current_movie.color;
+        var from_color = this.Model.color;
         var to_color = this.short_models[this.current_movie_index].color;
 
         var c = {color: from_color};
@@ -495,7 +545,6 @@ export default class MoviePage extends React.Component {
         if (!movie_for_descripriton.comments) {
             movie_for_descripriton = this.state.prev_full_movie || movie;
         }
-
 
         var movie_name, movie_year;
 

@@ -5,6 +5,7 @@ var $ = require('jquery');
 import config from '../config';
 import TransitionStore from '../stores/TransitionStore';
 import * as TransitionActions from '../actions/TransitionActions';
+import * as ClickActions from '../actions/ClickActions';
 import { asset, createNotReadyYetFunction } from "../funcitons";
 import AlphaTextBox from "./components/AlphaTextBox";
 import NavigationMenu from "./components/NavigationMenu";
@@ -52,14 +53,14 @@ export default class AboutPage extends React.Component {
         console.log("back:", params, " from: about");
 
         switch (params.to_page) {
-            case "INDEX":
-            case "CONTACTS":
-            case "WORKS":
-            case "IMPRESSUM":
-                TransitionStore.removeListener('back_to', this.backClickListener);
-                TransitionActions.createTitleTransition(SiteMap.PAGE_ABOUT, params.to_page, this, {back: true});
-                console.log("back:", params, " from: about");
-                break;
+        case "INDEX":
+        case "CONTACTS":
+        case "WORKS":
+        case "IMPRESSUM":
+            TransitionStore.removeListener('back_to', this.backClickListener);
+            TransitionActions.createTitleTransition(SiteMap.PAGE_ABOUT, params.to_page, this, {back: true});
+            ClickActions.clickMenuItem("ABOUT", params.to_page);
+            break;
         }
     }
 
