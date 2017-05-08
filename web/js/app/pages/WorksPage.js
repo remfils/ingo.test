@@ -59,9 +59,13 @@ export default class WorksPage extends React.Component {
             TransitionActions.createTitleTransition(SiteMap.PAGE_WORKS, params.to_page, this, {back: true});
             ClickActions.clickMenuItem("WORKS", params.to_page);
             break;
-
         case "MOVIE":
-            TransitionActions.fromWorksToMovie(this, 1, {back: true});
+            TransitionStore.removeListener('back_to', this.backClickListener);
+
+            var to_movie_url = params.route_params[1];
+            var movie = this.props.movies.filter((m)=>{return m.url === to_movie_url;})[0];
+            
+            TransitionActions.fromWorksToMovie(this, movie.id, {back: true});
             break;
         }
     }

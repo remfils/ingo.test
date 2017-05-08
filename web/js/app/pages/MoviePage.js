@@ -233,9 +233,12 @@ export default class MoviePage extends React.Component {
             TransitionActions.fromMovieToWorks(this, 1, {back: true});
             break;
         case "MOVIE":
+            if (!params.route_params || params.route_params.length != 2) {
+                return;
+            }
             var prev_movie_url = params.route_params[1];
             var current_movie = this.Model;
-            var prev_movie = this.short_models.filter((m) => { return m.url === prev_movie_url})[0];
+            var prev_movie = this.short_models.filter((m) => {return m.url === prev_movie_url;})[0];
             var first_movie = this.short_models[0];
             var last_movie = this.short_models[this.short_models.length-1];
             console.log("BACK_FROM: ", last_movie);
@@ -255,12 +258,14 @@ export default class MoviePage extends React.Component {
             else {
                 this.prevMovieClick(null, false);
             }
-            break
+            break;
         }
     }
 
     componentWillUnmount() {
+        TransitionStore.removeListener('back_to', this.backClickListener);
         $(window).off('resize', this.resizePreviewIframe);
+        this.scroll_magic_scene.destroy();
     }
 
     componentDidMount() {

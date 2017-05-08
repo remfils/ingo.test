@@ -56,5 +56,6 @@ export function unlockScroll() {
 }
 
 export function changeUrl(clean_url) {
+    prev_url = window.location.toString();
     window.history.pushState({}, '', config.SITE_NAME + clean_url);
 }

@@ -49,6 +49,10 @@ export default class AboutPage extends React.Component {
         });
     }
 
+    componentWillUnmount() {
+        TransitionStore.removeListener('back_to', this.backClickListener);
+    }
+
     backClickListener(params) {
         console.log("back:", params, " from: about");
 

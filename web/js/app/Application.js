@@ -36,10 +36,12 @@ export default class Application extends React.Component {
             pages: []
         };
 
-      this.history = [];
-      this.history.push(window.location.toString());
-      
-      $(window).on('popstate', this.onPopStateListener.bind(this));
+        this.history = [];
+        this.history.push(window.location.toString());
+
+        this.back_route_queue = [];
+        
+        $(window).on('popstate', this.onPopStateListener.bind(this));
     }
 
     onPopStateListener(e) {
@@ -49,6 +51,11 @@ export default class Application extends React.Component {
         var current_url = window.location.toString();
 
         var route_obj = this.urlToTransitionEventPart(current_url);
+
+        if (this.is_transition) {
+            this.back_route_queue.push(route_obj);
+            return;
+        }
 
         backTransition(route_obj.route, {
             route_params: route_obj.route_rest
@@ -73,6 +80,17 @@ export default class Application extends React.Component {
         }
 
         return { route, route_rest };
+    }
+
+    shiftBackQueue() {
+        if (this.back_route_queue.length === 0)
+            return;
+        
+        var route_obj = this.back_route_queue.shift();
+
+        backTransition(route_obj.route, {
+            route_params: route_obj.route_rest
+        });
     }
   
 
@@ -240,6 +258,8 @@ export default class Application extends React.Component {
         transition.callback = () => {
             this.is_transition = false;
             this.shiftPage();
+
+            this.shiftBackQueue();
         };
 
         switch ( transition.type ) {
