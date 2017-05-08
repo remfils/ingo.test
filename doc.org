@@ -1,0 +1,15 @@
+* УПРАВЛЕНИЕ
+[[elisp:(let%20((mt-buffer-name%20"*terminal*"))%0A%20%20%20%20(shell)%0A%20%20%20%20(rename-buffer%20"ingo/watch")%0A%20%20%20%20(comint-send-string%20(get-buffer-process%20mt-buffer-name)%20"webpack%20--watch\n")%0A%20%20%20%20(print%20"%5Bauto%5D%20started%20webpack%20--watch")%0A%20%20%20%20(delete-window))][watch]]        [[elisp:(kill-buffer%20"ingo/watch")][kill watch buffer]]
+
+#+begin_src emacs-lisp :tangle yes
+  (let ((mt-buffer-name "*terminal*"))
+    (shell)
+    (rename-buffer "ingo/watch")
+    (comint-send-string (get-buffer-process mt-buffer-name) "webpack --watch\n")
+    (print "[auto] started webpack --watch")
+    (delete-window))
+#+end_src
+* ВЕРСИИ
+* ЗАДАЧИ
+* ОПИСАНИЕ
+* ЛОГ
