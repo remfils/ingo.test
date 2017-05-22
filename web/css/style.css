@@ -1424,3 +1424,7 @@ strong {
 #ContactPage .title-header {
   pointer-events: none;
 }
+
+.img-next-arrow--mobile {
+  display: none;
+}

@@ -66,7 +66,10 @@ export default class Application extends React.Component {
     urlToTransitionEventPart(url) {
         var route, route_rest;
         var url = url.split('/');
-        url.splice(0, 3);
+        if (!config.SUBDOMAIN_NAME_MOD)
+            url.splice(0, 3);
+        else
+            url.splice(0, 4);
 
         if (!url[0]) {
             route = "INDEX";
@@ -96,6 +99,8 @@ export default class Application extends React.Component {
 
     componentWillMount() {
         TransitionStore.on("leave", this.leavePageListener.bind(this));
+
+        console.log(config.SITE_NAME + 'api/all-movies');
 
         $.ajax({
             url: config.SITE_NAME + 'api/all-movies',
